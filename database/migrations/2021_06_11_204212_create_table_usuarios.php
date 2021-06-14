@@ -20,7 +20,6 @@ class CreateTableUsuarios extends Migration
             $table->boolean('status');
             $table->timestamps();
         });
-       
     }
 
     /**

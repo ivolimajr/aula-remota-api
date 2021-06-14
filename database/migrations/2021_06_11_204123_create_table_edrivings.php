@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableParceiro extends Migration
+class CreateTableEdrivings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateTableParceiro extends Migration
      */
     public function up()
     {
-        Schema::create('parceiros', function (Blueprint $table) {
-            $table->id('idParceiro');
-            $table->string('uf', 3);
+        Schema::create('edrivings', function (Blueprint $table) {
+            $table->id('idEdriving');
             $table->string('nome', 50);
-            $table->string('descricao', 150);
-            $table->string('cnpj', 14);
             $table->string('email', 50);
-            
+            $table->string('telefone', 13);
+            $table->string('cpf', 11);
+            $table->string('cargo', 50);
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ class CreateTableParceiro extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parceiros');
+        Schema::dropIfExists('edrivings');
     }
 }
