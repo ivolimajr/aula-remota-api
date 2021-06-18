@@ -15,23 +15,23 @@ class CreateTableEstudantes extends Migration
     {
         Schema::create('estudantes', function (Blueprint $table) {
             $table->id('idEstudantes');
-            $table->string('nome', 50);
+            $table->string('fullName', 50);
+            $table->string('email', 50);
             $table->string('cpf',11);
-            $table->string('identidade',9);
-            $table->string('orgaoexpedidor');
-            $table->dateTime('dataNascimento');
+            $table->string('telefone', 13);
+            $table->boolean('status');
+            $table->string('cep',8);
+            $table->string('cidade',50);
+            $table->string('bairro',50);
+            $table->string('uf',2);
             $table->string('enderecoLogradouro', 150);
             $table->string('numero',10);
-            $table->string('bairro',50);
-            $table->string('cidade',50);
-            $table->string('uf',2);
-            $table->string('cep',8);
-            $table->string('email', 50);
-            $table->string('telefone1', 13);
-            $table->string('telefone2', 13);
-            $table->string('curso', 50);            
-            $table->string('turno', 50);
-            $table->string('turma', 50);
+            $table->string('curso', 100);
+            $table->dateTime('dataNascimento');
+            $table->string('identidade',9);
+            $table->string('orgaoexpedidor');
+            $table->string('turno', 10);
+            $table->string('turma', 10);
             $table->timestamps();
         });
     }
