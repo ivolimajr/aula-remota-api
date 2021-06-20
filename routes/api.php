@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\UsuarioController;
 use App\Http\Controllers\Api\InstrutorController;
 use App\Http\Controllers\Api\EstudanteController;
 use App\Http\Controllers\Api\ParceiroController;
-
+use App\Http\Controllers\Api\TurmaController;
+use App\Http\Controllers\Api\CursoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,5 +83,19 @@ Route::namespace('Api')->group(function () {
         Route::get('/{id}', [EstudanteController::class, 'show']);
         Route::post('/', [EstudanteController::class, 'save']);
         Route::put('/{id}', [EstudanteController::class, 'update']);
+    });
+
+    Route::prefix('turma')->group(function () {
+        Route::get('/', [TurmaController::class, 'index']);
+        Route::get('/{id}', [TurmaController::class, 'show']);
+        Route::post('/', [TurmaController::class, 'save']);
+        Route::put('/{id}', [TurmaController::class, 'update']);
+    });
+
+    Route::prefix('curso')->group(function () {
+        Route::get('/', [CursoController::class, 'index']);
+        Route::get('/{id}', [CursoController::class, 'show']);
+        Route::post('/', [CursoController::class, 'save']);
+        Route::put('/{id}', [CursoController::class, 'update']);
     });
 });

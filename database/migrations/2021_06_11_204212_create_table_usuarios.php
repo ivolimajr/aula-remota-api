@@ -19,7 +19,7 @@ class CreateTableUsuarios extends Migration
             $table->string('email',50)->nullable();
             $table->boolean('status');
             $table->string('telefone', 13);
-            $table->string('senha', 50);
+            $table->string('senha', 150);
             
             $table->timestamps();
         });

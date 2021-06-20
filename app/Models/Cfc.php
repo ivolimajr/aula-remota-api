@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Cfc extends Model
 {
     protected $fillable = [
-        'razaoSocial','nomeFantasia','cnpj','inscricaoEstadual',
-        'datadaFundacao','enderecoLogradouro','numero','bairro',
-        'cidade','uf','cep','localizacaoLatitude','longitude',
-        'telefone1','telefone2','email','site',
+        'fullName', 'email', 'telefone', 'status', 'bairro',
+        'cep', 'cidade', 'cnpj', 'datadaFundacao', 'enderecoLogradouro',
+        'inscricaoEstadual', 'localizacaoLatitude', 'longitude',
+        'nomeFantasia', 'numero', 'razaoSocial', 'site', 'uf'
+
     ];
 }

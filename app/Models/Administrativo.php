@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Administrativo extends Model
 {
     protected $fillable = [
-        'nome','email','cargo','cpf','identidade',
-        'orgaoexpedidor','dataNascimento','enderecoLogradouro',
-        'numero','bairro','cidade','uf','cep','localizacaoLatitude',
-        'longitude','telefone1','telefone2','email','site',
+        'fullName','email','cpf','identidade', 'telefone',
+        'status', 'cargo','cep', 'bairro', 'cidade','uf', 'numero',
+        'dataNascimento','enderecoLogradouro','localizacaoLatitude',
+        'longitude', 'orgaoexpedidor', 'site'
+        
     ];
 }

@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Estudante extends Model
 {
     protected $fillable = [
-        'nome', 'cpf','identidade',
-        'orgaoexpedidor','dataNascimento','enderecoLogradouro',
-        'numero','bairro','cidade','uf','cep','email',
-        'telefone1','telefone2','curso', 'turno', 'turma'
+        'fullName', 'email', 'cpf','identidade', 'telefone', 'turma',
+        'cep', 'cidade', 'bairro', 'uf', 'enderecoLogradouro', 
+        'numero', 'curso', 'dataNascimento', 'identidade', 'orgaoexpedidor',
+        'turno', 'turma'
     ];
 }
