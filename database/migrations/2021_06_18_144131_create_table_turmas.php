@@ -14,7 +14,7 @@ class CreateTableTurmas extends Migration
     public function up()
     {
         Schema::create('turmas', function (Blueprint $table) {
-            $table->id('idTurmas');
+            $table->id('id');
             $table->string('cursoId', 50);
             $table->string('instrutorId', 50);
             $table->string('turma', 50);

@@ -17,9 +17,10 @@ class CreateTableUsuarios extends Migration
             $table->id('idUsuario');
             $table->string('fullName', 50);
             $table->string('email',50)->nullable();
-            $table->boolean('status');
-            $table->string('telefone', 13);
             $table->string('senha', 150);
+            $table->string('telefone', 13);
+            $table->integer('nivelAcesso');
+            $table->boolean('status');
             
             $table->timestamps();
         });

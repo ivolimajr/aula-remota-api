@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 use App\Models\Usuario;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UsuarioRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UsuarioController extends Controller
 {
@@ -14,30 +17,53 @@ class UsuarioController extends Controller
         $this->usuario = $usuario;
     }
 
+    /**
+     * BUSCA TODOS OS USUÁRIO NO BANCO, SE TIVER UMA FALHA NA CUNSULTA O SISTEMA RETORNA UMA EXCEPTION
+     */
     public function index()
     {
-        $usr = $this->usuario->all();
-
-        return response()->json($usr);
+        $result = $this->usuario->all();
+        if($result) return $result;
+        if(!$result) return  response()->json(['result' => 'internal server error'], 500);
     }
 
-    public function show($id)
+    public function show($id)   
     {
-        return Usuario::where('idUsuario', $id)->get();
+        $result = Usuario::where('idUsuario', $id)->first();
+        return $result;
+        if(!$result) return  response()->json(['result' => 'not found'], 200);
     }
 
+    /**
+    * 
+    */
     public function save(Request $request)
     {
-        $data = $request->all();
-        $usr = $this->usuario->create($data);
-        return response()->json($usr);
+        if(Usuario::where('email', $request->email)->first()) return  response()->json(['result' => 'email already exists'], 202);
+
+        $request->merge(['senha' => Hash::make($request->senha)]);
+        $result = $this->usuario->create($request->all());
+        return $result;
+        if(!$result) return response()->json(['result' => 'internal server error'], 500);
+
+    }
+
+    public function login(UsuarioRequest $request)
+    {
+        $result = Usuario::where('email', $request->email)->first();
+        if(!$result) return  response()->json(['result' => 'not Found'], 404);
+
+        if (Hash::check($request->senha, $result->senha)){
+            return $result;
+        } else{
+            return  response()->json(['result' => 'senha incorreta'], 202);
+        }        
     }
 
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-
-        return Usuario::where('idUsuario', $id)->update($data);
-
+        $result = Usuario::where('idUsuario', $id)->update($request->all());
+        return  $result;
+        if(!$result) return  response()->json(['result' => 'not found'], 200);
     }
 }

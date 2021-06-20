@@ -14,7 +14,7 @@ class CreateTableInstrutores extends Migration
     public function up()
     {
         Schema::create('instrutores', function (Blueprint $table) {
-            $table->id('idInstrutores');
+            $table->id('id');
             $table->string('fullName', 50);
             $table->string('email', 50);
             $table->string('cpf',11);

@@ -15,7 +15,7 @@ class CreateTableParceiros extends Migration
     {/* O modelo de parceiros na versão passada tinha menos campos, todos os novos
         campos foram adicionados com exceção do confirmar senha e senha */
         Schema::create('parceiros', function (Blueprint $table) {
-            $table->id('idParceiro');
+            $table->id('id');
             $table->string('fullName', 50);
             $table->string('email', 50);
             $table->boolean('status');

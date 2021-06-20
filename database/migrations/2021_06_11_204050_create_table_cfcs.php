@@ -15,7 +15,7 @@ class CreateTableCfcs extends Migration
     {/* No print que o Yuri mandou, ta pedindo para ser feito mais dois campos: senha e confirmar senha. 
         Não vejo necessidade de fazer eles pois senha é dada para o usuario e confirmação de senha é uma tarefa feita no front*/
         Schema::create('cfcs', function (Blueprint $table) {
-            $table->id('idCfc');
+            $table->id('id');
             $table->string('fullName', 50);
             $table->string('email', 50);
             $table->string('telefone', 13);

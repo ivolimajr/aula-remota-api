@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $fillable = [
-        'email', 'senha', 'status'
+        'fullName','telefone','email', 'senha', 'status'
     ];
 }
