@@ -18,6 +18,7 @@ namespace AulaRemota.Api.Controllers
             _edrivingCargoService = EdrivingCargoService;
         }
 
+        //EXIBE TODOS OS CARGOS DO EDRIVING
         [HttpGet]
         public IActionResult GetAll()
         {
