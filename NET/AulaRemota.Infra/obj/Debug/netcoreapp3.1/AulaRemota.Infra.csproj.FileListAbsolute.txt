@@ -1,0 +1,60 @@
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.deps.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.AssemblyReference.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfoInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfo.cs
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CoreCompileInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CopyComplete
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.dev.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.genruntimeconfig.cache
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csprojAssemblyReference.cache
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfoInputs.cache
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfo.cs
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CoreCompileInputs.cache
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.deps.json
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.dll
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.pdb
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CopyComplete
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.json
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.dev.json
+C:\Users\ivoli\Desktop\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.genruntimeconfig.cache
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.deps.json
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.json
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.dev.json
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.dll
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.pdb
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.AssemblyReference.cache
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfoInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfo.cs
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CoreCompileInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CopyComplete
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\NET\Aula_Remote_Api\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.genruntimeconfig.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.deps.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.runtimeconfig.dev.json
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\bin\Debug\netcoreapp3.1\AulaRemota.Core.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.AssemblyReference.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfoInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.AssemblyInfo.cs
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CoreCompileInputs.cache
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.csproj.CopyComplete
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.dll
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.pdb
+C:\Users\Ivo Lima\Documents\My Repos\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Infra\obj\Debug\netcoreapp3.1\AulaRemota.Infra.genruntimeconfig.cache
