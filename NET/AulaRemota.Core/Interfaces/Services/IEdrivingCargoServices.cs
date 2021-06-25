@@ -7,13 +7,13 @@ namespace AulaRemota.Core.Interfaces.Services
 {
     public interface IEdrivingCargoServices
     {
+        IEnumerable<EdrivingCargo> GetAll();
+        
+        EdrivingCargo GetById(int id);
+        
         EdrivingCargo Create(EdrivingCargo entity);
 
         EdrivingCargo Update(EdrivingCargo entity);
-
-        IEnumerable<EdrivingCargo> GetAll();
-
-        EdrivingCargo GetById(int id);
 
         IEnumerable<EdrivingCargo> GetWhere(Expression<Func<EdrivingCargo, bool>> predicado);
 

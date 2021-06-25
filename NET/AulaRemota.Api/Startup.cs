@@ -38,6 +38,9 @@ namespace AulaRemota.Api
             services.AddScoped<IEdrivingServices, EdrivingServices>();
             services.AddScoped<IEdrivingRepository, EdrivingRepository>();
 
+            services.AddScoped<IEdrivingCargoServices, EdrivingCargoServices>();
+            services.AddScoped<IEdrivingCargoRepository, EdrivingCargoRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AulaRemota.Api", Version = "v1" });
@@ -56,6 +59,13 @@ namespace AulaRemota.Api
 
             app.UseHttpsRedirection();
 
+            app.UseCors(c =>
+            {
+                c.AllowAnyOrigin();
+                c.AllowAnyHeader();
+                c.AllowAnyMethod();
+
+            });
             app.UseRouting();
 
             app.UseAuthorization();
