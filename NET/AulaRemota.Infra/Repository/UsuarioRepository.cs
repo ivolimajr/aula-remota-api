@@ -8,7 +8,7 @@ namespace AulaRemota.Infra.Repository
 {
     public class UsuarioRepository : EFRepository<Usuario>, IUsuarioRepository
     {
-        public UsuarioRepository(SqlContext context) : base(context)
+        public UsuarioRepository(MySqlContext context) : base(context)
         {
 
         }

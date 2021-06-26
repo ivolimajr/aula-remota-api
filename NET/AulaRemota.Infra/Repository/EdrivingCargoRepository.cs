@@ -8,7 +8,7 @@ namespace AulaRemota.Infra.Repository
 {
     public class EdrivingCargoRepository : EFRepository<EdrivingCargo>, IEdrivingCargoRepository
     {
-        public EdrivingCargoRepository(SqlContext context) : base(context)
+        public EdrivingCargoRepository(MySqlContext context) : base(context)
         {
 
         }

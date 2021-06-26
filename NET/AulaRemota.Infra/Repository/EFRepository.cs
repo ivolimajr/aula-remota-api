@@ -10,9 +10,9 @@ namespace AulaRemota.Infra.Repository
 {
     public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly SqlContext _context;
+        protected readonly MySqlContext _context;
 
-        public EFRepository(SqlContext dbContext)
+        public EFRepository(MySqlContext dbContext)
         {
             _context = dbContext;
         }

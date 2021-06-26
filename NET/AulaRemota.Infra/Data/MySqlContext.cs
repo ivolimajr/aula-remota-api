@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Infra.Data
 {
-    public class SqlContext : DbContext
+    public class MySqlContext : DbContext
     {
-        public SqlContext(DbContextOptions<SqlContext> options) : base(options) { }
+        public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

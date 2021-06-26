@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace AulaRemota.Api
 {
@@ -28,7 +29,15 @@ namespace AulaRemota.Api
 
             services.AddControllers();
 
-            services.AddDbContext<SqlContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString")));
+            var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
+            services.AddDbContext<MySqlContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion)
+                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors());
+
+
 
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 

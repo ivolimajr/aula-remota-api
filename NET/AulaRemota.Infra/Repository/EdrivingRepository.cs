@@ -10,7 +10,7 @@ namespace AulaRemota.Infra.Repository
 {
     public class EdrivingRepository : EFRepository<Edriving>, IEdrivingRepository
     {
-        public EdrivingRepository(SqlContext context) : base(context)
+        public EdrivingRepository(MySqlContext context) : base(context)
         {
 
         }
