@@ -22,6 +22,18 @@ namespace AulaRemota.Api.Controllers
         public IActionResult GetAll()
         {
             var result = _usuarioService.GetAll();
+            if (result == null) return NoContent();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            if (id == 0) return BadRequest("Invalid values");
+
+            var result = _usuarioService.GetById(id);
+            if (result == null) return NotFound();
 
             return Ok(result);
         }
@@ -29,25 +41,34 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario)
         {
-            if (usuario == null)
-                return BadRequest();
+            if (usuario == null) return BadRequest();
 
             var result = _usuarioService.Create(usuario);
-
             if (result != null) return Ok(result);
 
             return NotFound();
 
         }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] Usuario usuario)
+        {
+            if (!_usuarioService.ValidateEntity(usuario)) return BadRequest("Invalid values");
+
+            var result = _usuarioService.Update(usuario);
+            if (result == null) return BadRequest();
+
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("login")]
         public IActionResult Post([FromQuery] string email, string senha)
         {
-            if (email == string.Empty || senha == string.Empty) return BadRequest();
+            if (email == string.Empty || senha == string.Empty) return BadRequest("Invalid values");
 
             var result = _usuarioService.Login(email,senha);
-            if (result == null) return NotFound();
+            if (result == null) return  BadRequest("Invalid values");
 
             result.Password = null;
 
@@ -58,8 +79,12 @@ namespace AulaRemota.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _usuarioService.Delete(id);
-            return NoContent();
+            if (id == 0) return BadRequest("Invalid values");
+
+            var result = _usuarioService.Delete(id);
+            if (!result) return NoContent();
+
+            return Ok();
         }
     }
 }

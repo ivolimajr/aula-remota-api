@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography;
 
 namespace AulaRemota.Core.Entity
 {
@@ -51,46 +49,6 @@ namespace AulaRemota.Core.Entity
                 }
             }
             return senha;
-        }
-
-        public string HashPassword(string senha)
-        {
-            // generate a 128-bit salt using a secure PRNG
-            byte[] salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: senha,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-             return hashed;
-        }
-
-        public bool VerifyHashedPassword(byte[] hashedPassword, string password)
-        {
-            const KeyDerivationPrf Pbkdf2Prf = KeyDerivationPrf.HMACSHA1;
-            const int Pbkdf2IterCount = 1000; 
-            const int Pbkdf2SubkeyLength = 256 / 8;
-            const int SaltSize = 128 / 8;
-
-            if (hashedPassword.Length != 1 + SaltSize + Pbkdf2SubkeyLength)
-            {
-                return false;
-            }
-
-            byte[] salt = new byte[SaltSize];
-            Buffer.BlockCopy(hashedPassword, 1, salt, 0, salt.Length);
-
-            byte[] expectedSubkey = new byte[Pbkdf2SubkeyLength];
-            Buffer.BlockCopy(hashedPassword, 1 + salt.Length, expectedSubkey, 0, expectedSubkey.Length);
-
-            byte[] actualSubkey = KeyDerivation.Pbkdf2(password, salt, Pbkdf2Prf, Pbkdf2IterCount, Pbkdf2SubkeyLength);
-            return CryptographicOperations.FixedTimeEquals(actualSubkey, expectedSubkey);
         }
     }
 }

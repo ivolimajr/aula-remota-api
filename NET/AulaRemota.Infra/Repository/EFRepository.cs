@@ -11,12 +11,10 @@ namespace AulaRemota.Infra.Repository
     public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly SqlContext _context;
-        private DbSet<TEntity> dataset;
 
         public EFRepository(SqlContext dbContext)
         {
             _context = dbContext;
-            dataset = _context.Set<TEntity>();
         }
 
 

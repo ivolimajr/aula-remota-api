@@ -12,10 +12,10 @@ namespace AulaRemota.Api.Controllers
         private readonly ILogger<EdrivingController> _logger;
         private readonly IEdrivingServices _edrivingService;
 
-        public EdrivingController(ILogger<EdrivingController> logger, IEdrivingServices EdrivingService)
+        public EdrivingController(ILogger<EdrivingController> logger, IEdrivingServices edrivingService)
         {
             _logger = logger;
-            _edrivingService = EdrivingService;
+            _edrivingService = edrivingService;
         }
 
         [HttpGet]
@@ -23,38 +23,57 @@ namespace AulaRemota.Api.Controllers
         {
             var result = _edrivingService.GetAllWithRelationship();
 
+            if (result == null) return NoContent();
+
             return Ok(result);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var person = _edrivingService.GetById(id);
+            if (id == 0) return BadRequest("Invalid values");
 
-            if (person == null)
-                return NotFound();
+            var result = _edrivingService.GetById(id);
 
-            return Ok(person);
+            if (result == null) return NotFound();
+
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] EdrivingCreateRequest Edriving)
+        public IActionResult Post([FromBody] EdrivingCreateRequest edriving)
         {
-            if (Edriving == null)   return BadRequest();
+            if (!_edrivingService.ValidateEntity(edriving)) return BadRequest("Invalid values");
 
-            var result = _edrivingService.Create(Edriving);
+            var result = _edrivingService.Create(edriving);
 
             if (result != null) return Ok(result);
 
-            return NotFound();
+            return BadRequest("Email já registrado");
 
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] EdrivingCreateRequest edriving)
+        {
+            if (edriving.Id == 0 ) return BadRequest("Invalid values");
+            if (!_edrivingService.ValidateEntity(edriving)) return BadRequest("Invalid values");
+
+            var result = _edrivingService.Update(edriving);
+            if (result == null) return NoContent();
+
+            return Ok(result);
         }
 
         [HttpPost]
         [Route("delete")]
         public IActionResult Delete([FromQuery] int id)
         {
-            _edrivingService.Delete(id);
+            if (id == 0) return BadRequest("Invalid values");
+            
+            var result = _edrivingService.Delete(id);
+            if (!result) return NoContent();
+
             return Ok();
         }
 
@@ -62,7 +81,11 @@ namespace AulaRemota.Api.Controllers
         [Route("inativar")]
        public IActionResult Inativar([FromQuery] int id)
         {
-            _edrivingService.Inativar(id);
+            if (id == 0) return BadRequest("Invalid values");
+
+            var result = _edrivingService.Inativar(id);
+            if (!result) return NoContent();
+
             return Ok();
         }
 
@@ -70,7 +93,11 @@ namespace AulaRemota.Api.Controllers
         [Route("ativar")]
        public IActionResult Ativar([FromQuery] int id)
         {
-            _edrivingService.Ativar(id);
+            if (id == 0) return BadRequest("Invalid values");
+
+            var result = _edrivingService.Ativar(id);
+            if (!result) return NoContent();
+
             return Ok();
         }
 

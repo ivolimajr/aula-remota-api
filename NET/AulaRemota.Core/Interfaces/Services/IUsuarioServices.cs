@@ -15,10 +15,13 @@ namespace AulaRemota.Core.Interfaces.Services
 
         Usuario GetById(int id);
 
+        Usuario GetByEmail(string email);
+
         IEnumerable<Usuario> GetWhere(Expression<Func<Usuario, bool>> predicado);
 
         bool Delete(int id);
 
         Usuario Login(string email, string senha);
+        bool ValidateEntity(Usuario entity);
     }
 }

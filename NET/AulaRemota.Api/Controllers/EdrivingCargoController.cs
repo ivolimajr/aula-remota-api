@@ -18,33 +18,68 @@ namespace AulaRemota.Api.Controllers
             _edrivingCargoService = EdrivingCargoService;
         }
 
-        //EXIBE TODOS OS CARGOS DO EDRIVING
+        /*
+            Exibe todos os cargos do Edriving
+            Se o retorno for Null siginifica que não exite valores no banco
+         */
         [HttpGet]
         public IActionResult GetAll()
         {
             var result = _edrivingCargoService.GetAll();
+            if (result == null) return NoContent();
 
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            if (id == 0) return BadRequest("Invalid values");
+
+            var cargo = _edrivingCargoService.GetById(id);
+            if (cargo == null) return NotFound();
+
+            return Ok(cargo);
+        }
+
+        /*
+            Cria um novo cargo
+            Recebe body no formato Json:
+            int id
+            string cargo
+         */
         [HttpPost]
         public IActionResult Post([FromBody] EdrivingCargo cargo)
         {
-            if (cargo == null)   return BadRequest();
+            if (cargo.Cargo == null) return BadRequest("Invalid values");
 
             var result = _edrivingCargoService.Create(cargo);
+            if (result == null) return Problem("processing error");
 
-            if (result != null) return Ok(result);
+            return Created("Sucesso", result);
 
-            return NotFound();
+        }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] EdrivingCargo cargo)
+        {
+            if (cargo == null || cargo.Id == 0) return BadRequest("Invalid values");
+
+            var result = _edrivingCargoService.Update(cargo);
+            if (result == null) return NoContent();
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _edrivingCargoService.Delete(id);
-            return NoContent();
+            if (id == 0) return BadRequest("Invalid values");
+
+            var result = _edrivingCargoService.Delete(id);
+            if (!result) return NoContent();
+
+            return Ok();
         }
 
     }

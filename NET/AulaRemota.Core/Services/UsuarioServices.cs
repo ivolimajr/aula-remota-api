@@ -19,9 +19,11 @@ namespace AulaRemota.Core.Services
         Usuario IUsuarioServices.Create(Usuario entity)
         {
 
-            var userExists = _usuarioRepository.GetWhere(e => e.Email == entity.Email);
+            var userExists = _usuarioRepository.GetByEmail(entity.Email);
 
             if (userExists != null) return null;
+
+            entity.Password = BCrypt.Net.BCrypt.HashPassword(entity.Password);
 
             return _usuarioRepository.Create(entity);
         }
@@ -42,6 +44,11 @@ namespace AulaRemota.Core.Services
             return _usuarioRepository.GetById(id);
         }
 
+        Usuario IUsuarioServices.GetByEmail(string email)
+        {
+            return _usuarioRepository.GetByEmail(email);
+        }
+
         IEnumerable<Usuario> IUsuarioServices.GetWhere(Expression<Func<Usuario, bool>> predicado)
         {
             return _usuarioRepository.GetWhere(predicado);
@@ -51,6 +58,8 @@ namespace AulaRemota.Core.Services
         {
             var result = _usuarioRepository.GetByEmail(email);
 
+            if (result == null) return null;
+
             bool validPassword = BCrypt.Net.BCrypt.Verify(senha, result.Password);
 
             if (validPassword) return result;
@@ -58,9 +67,28 @@ namespace AulaRemota.Core.Services
             return null;
         }
 
-        Usuario IUsuarioServices.Update(Usuario entity)
+        Usuario IUsuarioServices.Update(Usuario usuario)
         {
+            var entity = _usuarioRepository.GetById(usuario.Id);
+
+            if (entity == null) return null;
+            if (!BCrypt.Net.BCrypt.Verify(usuario.Password, entity.Password)) return null;
+
+            entity.FullName = usuario.FullName;
+            entity.Email = usuario.Email;
+
             return _usuarioRepository.Update(entity);
+        }
+
+        bool IUsuarioServices.ValidateEntity(Usuario entity)
+        {
+            if (entity.FullName == null ||
+                entity.Email == null ||
+                entity.Password == null ||
+                entity.Id == 0)
+                return false;
+
+            return true;
         }
     }
 }
