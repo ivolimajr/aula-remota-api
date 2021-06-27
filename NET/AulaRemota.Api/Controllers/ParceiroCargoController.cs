@@ -7,15 +7,15 @@ namespace AulaRemota.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EdrivingCargoController : ControllerBase
+    public class ParceiroCargoController : ControllerBase
     {
-        private readonly ILogger<EdrivingCargoController> _logger;
-        private readonly IEdrivingCargoServices _edrivingCargoService;
+        private readonly ILogger<ParceiroCargoController> _logger;
+        private readonly IParceiroCargoServices _parceiroCargoService;
 
-        public EdrivingCargoController(ILogger<EdrivingCargoController> logger, IEdrivingCargoServices edrivingCargoService)
+        public ParceiroCargoController(ILogger<ParceiroCargoController> logger, IParceiroCargoServices parceiroCargoService)
         {
             _logger = logger;
-            _edrivingCargoService = edrivingCargoService;
+            _parceiroCargoService = parceiroCargoService;
         }
 
         /*
@@ -25,7 +25,7 @@ namespace AulaRemota.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _edrivingCargoService.GetAll();
+            var result = _parceiroCargoService.GetAll();
             if (result == null) return NoContent();
 
             return Ok(result);
@@ -36,7 +36,7 @@ namespace AulaRemota.Api.Controllers
         {
             if (id == 0) return BadRequest("Invalid values");
 
-            var cargo = _edrivingCargoService.GetById(id);
+            var cargo = _parceiroCargoService.GetById(id);
             if (cargo == null) return NotFound();
 
             return Ok(cargo);
@@ -49,11 +49,11 @@ namespace AulaRemota.Api.Controllers
             string cargo
          */
         [HttpPost]
-        public IActionResult Post([FromBody] EdrivingCargo cargo)
+        public IActionResult Post([FromBody] ParceiroCargo cargo)
         {
             if (cargo.Cargo == null) return BadRequest("Invalid values");
 
-            var result = _edrivingCargoService.Create(cargo);
+            var result = _parceiroCargoService.Create(cargo);
             if (result == null) return Problem("processing error");
 
             return Created("Sucesso", result);
@@ -61,11 +61,11 @@ namespace AulaRemota.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] EdrivingCargo cargo)
+        public IActionResult Put([FromBody] ParceiroCargo cargo)
         {
             if (cargo == null || cargo.Id == 0) return BadRequest("Invalid values");
 
-            var result = _edrivingCargoService.Update(cargo);
+            var result = _parceiroCargoService.Update(cargo);
             if (result == null) return NoContent();
 
             return Ok(result);
@@ -76,7 +76,7 @@ namespace AulaRemota.Api.Controllers
         {
             if (id == 0) return BadRequest("Invalid values");
 
-            var result = _edrivingCargoService.Delete(id);
+            var result = _parceiroCargoService.Delete(id);
             if (!result) return NoContent();
 
             return Ok();

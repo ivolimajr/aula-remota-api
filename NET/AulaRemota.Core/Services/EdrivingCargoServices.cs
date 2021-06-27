@@ -12,9 +12,9 @@ namespace AulaRemota.Core.Services
     {
         private readonly IEdrivingCargoRepository _edrivingCargoRepository;
 
-        public EdrivingCargoServices(IEdrivingCargoRepository edrivingRepository)
+        public EdrivingCargoServices(IEdrivingCargoRepository edrivingCargoRepository)
         {
-            _edrivingCargoRepository = edrivingRepository;
+            _edrivingCargoRepository = edrivingCargoRepository;
         }
 
         EdrivingCargo IEdrivingCargoServices.Create(EdrivingCargo entity)
