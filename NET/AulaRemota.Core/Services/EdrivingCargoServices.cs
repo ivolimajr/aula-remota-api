@@ -4,7 +4,6 @@ using AulaRemota.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using AulaRemota.Api.Models.Requests;
 
 namespace AulaRemota.Core.Services
 {

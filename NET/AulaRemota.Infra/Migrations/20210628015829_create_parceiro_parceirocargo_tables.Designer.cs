@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AulaRemota.Infra.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20210627224522_create_parceiro_parceirocargo_tables")]
+    [Migration("20210628015829_create_parceiro_parceirocargo_tables")]
     partial class create_parceiro_parceirocargo_tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,35 @@ namespace AulaRemota.Infra.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AulaRemota.Core.Entity.Endereco", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Cep")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EnderecoLogradouro")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Numero")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Uf")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Endereco");
+                });
+
             modelBuilder.Entity("AulaRemota.Core.Entity.Parceiro", b =>
                 {
                     b.Property<int>("Id")
@@ -91,7 +120,7 @@ namespace AulaRemota.Infra.Migrations
                     b.Property<int>("CargoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Cpnpj")
+                    b.Property<string>("Cnpj")
                         .HasColumnType("varchar(14)");
 
                     b.Property<string>("Descricao")
@@ -99,6 +128,9 @@ namespace AulaRemota.Infra.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("varchar(70)");
+
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .HasColumnType("varchar(100)");
@@ -112,6 +144,8 @@ namespace AulaRemota.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CargoId");
+
+                    b.HasIndex("EnderecoId");
 
                     b.HasIndex("UsuarioId");
 
@@ -202,6 +236,12 @@ namespace AulaRemota.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AulaRemota.Core.Entity.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AulaRemota.Core.Entity.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
@@ -209,6 +249,8 @@ namespace AulaRemota.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Cargo");
+
+                    b.Navigation("Endereco");
 
                     b.Navigation("Usuario");
                 });

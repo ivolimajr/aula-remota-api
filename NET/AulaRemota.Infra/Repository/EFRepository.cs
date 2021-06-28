@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Infra.Data;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

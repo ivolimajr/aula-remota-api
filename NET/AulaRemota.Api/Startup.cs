@@ -53,6 +53,12 @@ namespace AulaRemota.Api
             services.AddScoped<IParceiroCargoServices, ParceiroCargoServices>();
             services.AddScoped<IParceiroCargoRepository, ParceiroCargoRepository>();
 
+            services.AddScoped<IParceiroServices, ParceiroServices>();
+            services.AddScoped<IParceiroRepository, ParceiroRepository>();
+
+            services.AddScoped<IEnderecoServices, EnderecoServices>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AulaRemota.Api", Version = "v1" });

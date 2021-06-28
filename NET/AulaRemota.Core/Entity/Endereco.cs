@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AulaRemota.Core.Entity
+﻿namespace AulaRemota.Core.Entity
 {
     public class Endereco
     {

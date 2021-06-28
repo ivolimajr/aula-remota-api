@@ -72,7 +72,7 @@ namespace AulaRemota.Core.Services
             var entity = _usuarioRepository.GetById(usuario.Id);
 
             if (entity == null) return null;
-            if (!BCrypt.Net.BCrypt.Verify(usuario.Password, entity.Password)) return null;
+            //if (!BCrypt.Net.BCrypt.Verify(usuario.Password, entity.Password)) return null;
 
             entity.FullName = usuario.FullName;
             entity.Email = usuario.Email;

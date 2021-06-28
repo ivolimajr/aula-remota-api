@@ -31,10 +31,16 @@ namespace AulaRemota.Infra.Data
         }
 
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Endereco> Endereco { get; set; }
+
+        // EDRIVING
         public DbSet<Edriving> Edriving { get; set; }
         public DbSet<EdrivingCargo> EdrivingCargo { get; set; }
+
+        // PARCEIRO
         public DbSet<Parceiro> Parceiro { get; set; }
         public DbSet<ParceiroCargo> ParceiroCargo { get; set; }
+
 
     }
 }

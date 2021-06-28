@@ -19,12 +19,15 @@ namespace AulaRemota.Core.Entity
         public string Descricao { get; set; }
 
         [Column(TypeName = "varchar(14)")]
-        public string Cpnpj { get; set; }
+        public string Cnpj { get; set; }
 
         public int CargoId { get; set; }
         public ParceiroCargo Cargo { get; set; }
+        public int EnderecoId { get; set; }
+        public Endereco Endereco { get; set; }
 
         public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
+
     }
 }

@@ -4,9 +4,9 @@ using AulaRemota.Infra.Data;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class EdrivingCargoRepository : EFRepository<EdrivingCargo>, IEdrivingCargoRepository
+    public class EnderecoRepository : EFRepository<Endereco>, IEnderecoRepository
     {
-        public EdrivingCargoRepository(MySqlContext context) : base(context)
+        public EnderecoRepository(MySqlContext context) : base(context)
         {
 
         }
