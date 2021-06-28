@@ -21,7 +21,7 @@ namespace AulaRemota.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _edrivingService.GetAllWithRelationship();
+            var result = _edrivingService.GetAll();
 
             if (result == null) return NoContent();
 

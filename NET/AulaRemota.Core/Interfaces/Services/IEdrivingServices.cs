@@ -12,7 +12,7 @@ namespace AulaRemota.Core.Interfaces.Services
 
         Edriving Update(EdrivingCreateRequest entity);
 
-        IEnumerable<Edriving> GetAll();
+        IEnumerable<EdrivingGetAllRequest> GetAll();
         IEnumerable<Edriving> GetAllWithRelationship();
 
         Edriving GetById(int id);

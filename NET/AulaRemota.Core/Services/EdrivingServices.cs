@@ -56,9 +56,28 @@ namespace AulaRemota.Core.Services
             return _edrivingRepository.Create(edriving);
         }
 
-        IEnumerable<Edriving> IEdrivingServices.GetAll()
+        IEnumerable<EdrivingGetAllRequest> IEdrivingServices.GetAll()
         {
-            return _edrivingRepository.GetAll();
+            var result = _edrivingRepository.GetAllWithRelationship();
+
+            var listaEdriving = new List<EdrivingGetAllRequest>();
+
+            foreach (var item in result)
+            {
+                var output = new EdrivingGetAllRequest();
+                output.Id = item.Id;
+                output.FullName = item.FullName;
+                output.Cpf = item.Cpf;
+                output.Email = item.Email;
+                output.Telefone = item.Telefone;
+                output.Cargo = item.Cargo.Cargo;
+                output.NivelAcesso = item.Usuario.NivelAcesso;
+                output.Status = item.Usuario.status;
+
+                listaEdriving.Add(output);
+            }
+
+            return listaEdriving;
         }
 
         IEnumerable<Edriving> IEdrivingServices.GetAllWithRelationship()
