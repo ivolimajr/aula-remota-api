@@ -37,7 +37,7 @@ namespace AulaRemota.Core.Services
             user.FullName = entity.FullName.ToUpper();
             user.Email = entity.Email.ToUpper();
             user.NivelAcesso = 10;
-            user.status = 1;
+            user.status = entity.Status;
             user.Password =  BCrypt.Net.BCrypt.HashPassword(entity.Senha);
 
             //CRIA UM EDRIVING
@@ -56,28 +56,12 @@ namespace AulaRemota.Core.Services
             return _edrivingRepository.Create(edriving);
         }
 
-        IEnumerable<EdrivingGetAllRequest> IEdrivingServices.GetAll()
+        IEnumerable<Edriving> IEdrivingServices.GetAll()
         {
             var result = _edrivingRepository.GetAllWithRelationship();
+            if (result == null) return null;
+            return result;
 
-            var listaEdriving = new List<EdrivingGetAllRequest>();
-
-            foreach (var item in result)
-            {
-                var output = new EdrivingGetAllRequest();
-                output.Id = item.Id;
-                output.FullName = item.FullName;
-                output.Cpf = item.Cpf;
-                output.Email = item.Email;
-                output.Telefone = item.Telefone;
-                output.Cargo = item.Cargo.Cargo;
-                output.NivelAcesso = item.Usuario.NivelAcesso;
-                output.Status = item.Usuario.status;
-
-                listaEdriving.Add(output);
-            }
-
-            return listaEdriving;
         }
 
         IEnumerable<Edriving> IEdrivingServices.GetAllWithRelationship()
@@ -87,12 +71,16 @@ namespace AulaRemota.Core.Services
 
         Edriving IEdrivingServices.GetById(int id)
         {
-            return _edrivingRepository.GetById(id);
+            var result = _edrivingRepository.GetById(id);
+            if (result == null) return null;
+            return result;
         }
 
         IEnumerable<Edriving> IEdrivingServices.GetWhere(Expression<Func<Edriving, bool>> predicado)
         {
-            return _edrivingRepository.GetWhere(predicado);
+            var result = _edrivingRepository.GetWhere(predicado);
+            if (result == null) return null;
+            return result;
         }
 
         Edriving IEdrivingServices.Update(EdrivingCreateRequest edriving)
@@ -164,6 +152,7 @@ namespace AulaRemota.Core.Services
                 entity.Email    == null ||
                 entity.Senha    == null ||
                 entity.Telefone == null ||
+                entity.Status  == 0     ||
                 entity.CargoId  == 0)
                 return false;
 

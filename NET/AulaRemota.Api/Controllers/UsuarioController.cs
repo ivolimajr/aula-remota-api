@@ -65,10 +65,23 @@ namespace AulaRemota.Api.Controllers
         [Route("login")]
         public IActionResult Post([FromQuery] string email, string senha)
         {
-            if (email == string.Empty || senha == string.Empty) return BadRequest("Invalid values");
+            if (email == null || senha == null) return BadRequest(new
+            {
+                success = false,
+                error = "Verifique os dados"
+            });
+            if (email == string.Empty || senha == string.Empty) return BadRequest(new
+            {
+                success = false,
+                error = "Verifique os dados"
+            });
 
             var result = _usuarioService.Login(email,senha);
-            if (result == null) return  BadRequest("Invalid values");
+            if (result == null) return BadRequest(new
+            {
+                success = false,
+                error = "Credenciais não encontradas"
+            });
 
             result.Password = null;
 
