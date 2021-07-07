@@ -2,7 +2,7 @@
 using AulaRemota.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+/*
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
@@ -18,10 +18,8 @@ namespace AulaRemota.Api.Controllers
             _parceiroCargoService = parceiroCargoService;
         }
 
-        /*
-            Exibe todos os cargos do Edriving
-            Se o retorno for Null siginifica que não exite valores no banco
-         */
+        
+         
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -42,12 +40,7 @@ namespace AulaRemota.Api.Controllers
             return Ok(cargo);
         }
 
-        /*
-            Cria um novo cargo
-            Recebe body no formato Json:
-            int id
-            string cargo
-         */
+        
         [HttpPost]
         public IActionResult Post([FromBody] ParceiroCargo cargo)
         {
@@ -84,3 +77,4 @@ namespace AulaRemota.Api.Controllers
 
     }
 }
+*/
