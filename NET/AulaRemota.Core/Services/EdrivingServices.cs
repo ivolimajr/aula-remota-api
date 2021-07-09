@@ -73,6 +73,13 @@ namespace AulaRemota.Core.Services
         {
             var result = _edrivingRepository.GetById(id);
             if (result == null) return null;
+
+            var cargo = _edrivingCargoRepository.GetById(result.CargoId);
+            var usuario = _usuarioServices.GetById(result.UsuarioId);
+
+            result.Cargo = cargo;
+            result.Usuario = usuario;
+
             return result;
         }
 
