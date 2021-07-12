@@ -1,11 +1,13 @@
 ﻿using AulaRemota.Core.Entity;
 using AulaRemota.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
@@ -63,20 +65,20 @@ namespace AulaRemota.Api.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Post([FromQuery] string email, string senha)
+        public IActionResult Post([FromBody] Login login)
         {
-            if (email == null || senha == null) return BadRequest(new
+            if (login.Email == null || login.Password == null) return BadRequest(new
             {
                 success = false,
                 error = "Verifique os dados"
             });
-            if (email == string.Empty || senha == string.Empty) return BadRequest(new
+            if (login.Email == string.Empty || login.Password == string.Empty) return BadRequest(new
             {
                 success = false,
                 error = "Verifique os dados"
             });
 
-            var result = _usuarioService.Login(email,senha);
+            var result = _usuarioService.Login(login.Email, login.Password);
             if (result == null) return BadRequest(new
             {
                 success = false,

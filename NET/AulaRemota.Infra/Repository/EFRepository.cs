@@ -27,7 +27,6 @@ namespace AulaRemota.Infra.Repository
             }
             catch (Exception)
             {
-
                 throw;
             }
             return entity;

@@ -1,16 +1,26 @@
+using AulaRemota.Core.Configuration;
 using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Core.Interfaces.Repository.Auth;
 using AulaRemota.Core.Interfaces.Services;
+using AulaRemota.Core.Interfaces.Services.Auth;
 using AulaRemota.Core.Services;
+using AulaRemota.Core.Services.Auth;
 using AulaRemota.Infra.Data;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Infra.Repository.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Text;
 
 namespace AulaRemota.Api
 {
@@ -26,14 +36,50 @@ namespace AulaRemota.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenConfigurations = new TokenConfiguration();
+
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                    Configuration.GetSection("TokenConfiguration")
+                )
+                .Configure(tokenConfigurations);
+
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfigurations.Issuer,
+                    ValidAudience = tokenConfigurations.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+                };
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
+            });
+
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
 
             services.AddControllers();
 
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
             services.AddDbContext<MySqlContext>(
                 dbContextOptions => dbContextOptions
-                    //.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
-                    .UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
+                    .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
+                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
 
@@ -49,6 +95,12 @@ namespace AulaRemota.Api
 
             services.AddScoped<IEdrivingCargoServices, EdrivingCargoServices>();
             services.AddScoped<IEdrivingCargoRepository, EdrivingCargoRepository>();
+
+            services.AddScoped<IAuthUserServices, AuthUserServices>();
+            services.AddScoped<IAuthUserRepository, AuthUserRepository>();
+
+            services.AddScoped<IAuthServices, AuthServices>();
+            services.AddScoped<ITokenServices, TokenServices>();
 
             services.AddScoped<IParceiroCargoServices, ParceiroCargoServices>();
             services.AddScoped<IParceiroCargoRepository, ParceiroCargoRepository>();
@@ -77,13 +129,13 @@ namespace AulaRemota.Api
 
             app.UseHttpsRedirection();
 
-            app.UseCors(c =>
+            /*app.UseCors(c =>
             {
                 c.AllowAnyOrigin();
                 c.AllowAnyHeader();
                 c.AllowAnyMethod();
 
-            });
+            });*/
             app.UseRouting();
 
             app.UseAuthorization();

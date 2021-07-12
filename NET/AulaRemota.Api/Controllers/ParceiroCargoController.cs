@@ -1,11 +1,13 @@
 ﻿using AulaRemota.Core.Entity;
 using AulaRemota.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 /*
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     public class ParceiroCargoController : ControllerBase
     {

@@ -1,4 +1,5 @@
 ﻿using AulaRemota.Core.Entity;
+using AulaRemota.Core.Entity.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Infra.Data
@@ -30,6 +31,10 @@ namespace AulaRemota.Infra.Data
             modelBuilder.Entity<Parceiro>().HasOne(e => e.Usuario);
         }
 
+        //AUTH
+        public DbSet<AuthUser> AuthUser { get; set; }
+
+        //USUARIO
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Endereco> Endereco { get; set; }
 
