@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {

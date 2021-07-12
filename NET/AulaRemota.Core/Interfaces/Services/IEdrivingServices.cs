@@ -10,7 +10,7 @@ namespace AulaRemota.Core.Interfaces.Services
     {
         Edriving Create(EdrivingCreateRequest entity);
 
-        Edriving Update(EdrivingCreateRequest entity);
+        Edriving Update(EdrivingUpdateRequest entity);
 
         IEnumerable<Edriving> GetAll();
         IEnumerable<Edriving> GetAllWithRelationship();
@@ -24,6 +24,5 @@ namespace AulaRemota.Core.Interfaces.Services
         bool Inativar(int id);
 
         bool Ativar(int id);
-        bool ValidateEntity(EdrivingCreateRequest entity);
     }
 }

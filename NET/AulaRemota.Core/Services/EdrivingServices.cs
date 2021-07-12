@@ -12,24 +12,25 @@ namespace AulaRemota.Core.Services
     {
         private readonly IEdrivingRepository _edrivingRepository;
         private readonly IUsuarioServices _usuarioServices;
-        private readonly IEdrivingCargoServices _edrivingCargoRepository;
+        private readonly IEdrivingCargoServices _edrivingCargoServices;
 
-        public EdrivingServices(IEdrivingRepository edrivingRepository, IUsuarioServices usuarioServices, IEdrivingCargoServices edrivingCargoRepository)
+        public EdrivingServices(IEdrivingRepository edrivingRepository, IUsuarioServices usuarioServices, IEdrivingCargoServices edrivingCargoServices)
         {
             _edrivingRepository = edrivingRepository;
             _usuarioServices = usuarioServices;
-            _edrivingCargoRepository = edrivingCargoRepository;
+            _edrivingCargoServices = edrivingCargoServices;
         }
 
         Edriving IEdrivingServices.Create(EdrivingCreateRequest entity)
         {
-            //VERIFICA SE O CARGO INFORMADO EXISTE
-            var cargo = _edrivingCargoRepository.GetById(entity.CargoId);
-            if (cargo == null) return null;
 
             //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
             var emailResult = _usuarioServices.GetByEmail(entity.Email);
             if (emailResult != null) return null;
+
+            //VERIFICA SE O CARGO INFORMADO EXISTE
+            var cargo = _edrivingCargoServices.GetById(entity.CargoId);
+            if (cargo == null) return null;
 
             //CRIA USUARIO
             var user = new Usuario();
@@ -71,14 +72,13 @@ namespace AulaRemota.Core.Services
 
         Edriving IEdrivingServices.GetById(int id)
         {
+            //BUSCA O OBJETO A SER RETORNADO
             var result = _edrivingRepository.GetById(id);
             if (result == null) return null;
 
-            var cargo = _edrivingCargoRepository.GetById(result.CargoId);
-            var usuario = _usuarioServices.GetById(result.UsuarioId);
-
-            result.Cargo = cargo;
-            result.Usuario = usuario;
+            //MONTA O CARGO E USUARIO
+            result.Cargo = _edrivingCargoServices.GetById(result.CargoId);
+            result.Usuario = _usuarioServices.GetById(result.UsuarioId);
 
             return result;
         }
@@ -87,43 +87,70 @@ namespace AulaRemota.Core.Services
         {
             var result = _edrivingRepository.GetWhere(predicado);
             if (result == null) return null;
+
             return result;
         }
 
-        Edriving IEdrivingServices.Update(EdrivingCreateRequest edriving)
+        Edriving IEdrivingServices.Update(EdrivingUpdateRequest edriving)
         {
+            //BUSCA O OBJETO A SER ATUALIZADO
             var entity = _edrivingRepository.GetById(edriving.Id);
             if (entity == null) return null;
 
+            //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
+            if (edriving.CargoId != 0)
+            {
+                var cargo = _edrivingCargoServices.GetById(edriving.CargoId);
+                if (cargo == null) return null;
+
+                //SE O CARGO EXISTE, O OBJETO SERÁ ATUALIZADO
+                entity.CargoId = cargo.Id;
+                entity.Cargo = cargo;
+            } else
+            {
+                //SE O USUÁRIO NÃO INFORMAR UM CARGO, É SETADO O CARGO ANTERIOR
+                var cargo = _edrivingCargoServices.GetById(entity.CargoId);
+                if (cargo == null) return null;
+
+                entity.Cargo = cargo;
+            }
+
+            //BUSCA O OBJETO USUARIO PARA ATUALIZAR
             var usuario = _usuarioServices.GetById(entity.UsuarioId);
             if (usuario == null) return null;
 
-            usuario.FullName = edriving.FullName.ToUpper();
-            usuario.Email = edriving.Email.ToUpper();
+            //ATUALIZA O NOME E EMAIL
+            if(edriving.FullName != null)   usuario.FullName = edriving.FullName.ToUpper();
+            if(edriving.Email != null)      usuario.Email = edriving.Email.ToUpper();
 
             var result = _usuarioServices.Update(usuario);
             if (result == null) return null;
 
-            entity.FullName = edriving.FullName.ToUpper();
-            entity.Email = edriving.Email.ToUpper();
-            entity.Telefone = edriving.Telefone.ToUpper();
-            entity.Cpf = edriving.Cpf.ToUpper();
-            entity.CargoId = edriving.CargoId;
+            // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
+            if (edriving.FullName != null)  entity.FullName = edriving.FullName.ToUpper();
+            if (edriving.Email != null)     entity.Email = edriving.Email.ToUpper();
+            if (edriving.Telefone != null)  entity.Telefone = edriving.Telefone.ToUpper();
+            if (edriving.Cpf != null)       entity.Cpf = edriving.Cpf.ToUpper();
 
             return _edrivingRepository.Update(entity);
         }
 
         bool IEdrivingServices.Delete(int id)
         {
+            //BUSCA O OBJETO A SER REMOVIDO
             var edriving = _edrivingRepository.GetById(id);
             if (edriving == null) return false;
 
-            var usuario = _usuarioServices.GetById(edriving.UsuarioId);
-            if (usuario == null) return false;
-            usuario.status = 0;
+            //REMOVE O OBJETO
+            bool resEdriving = _edrivingRepository.Delete(edriving);
+            if (!resEdriving) return false;
 
-            if (_usuarioServices.Update(usuario) != null) return true;
-            return false;
+            //REMOVE O USUARIO
+            bool resUsuario = _usuarioServices.Delete(edriving.UsuarioId);
+            if (!resUsuario) return false;
+
+            return true;
+            
         }
 
         bool IEdrivingServices.Ativar(int id)
@@ -150,20 +177,6 @@ namespace AulaRemota.Core.Services
 
             if (_usuarioServices.Update(usuario) != null) return true;
             return false;
-        }
-
-        bool IEdrivingServices.ValidateEntity(EdrivingCreateRequest entity)
-        {
-            if( entity.Cpf      == null ||
-                entity.FullName == null ||
-                entity.Email    == null ||
-                entity.Senha    == null ||
-                entity.Telefone == null ||
-                entity.Status  == 0     ||
-                entity.CargoId  == 0)
-                return false;
-
-            return true;
         }
     }
 }

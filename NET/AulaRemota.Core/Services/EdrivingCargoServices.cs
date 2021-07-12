@@ -18,6 +18,7 @@ namespace AulaRemota.Core.Services
 
         EdrivingCargo IEdrivingCargoServices.Create(EdrivingCargo entity)
         {
+            entity.Id = 0;
             entity.Cargo = entity.Cargo.ToUpper();
             return _edrivingCargoRepository.Create(entity);
         }

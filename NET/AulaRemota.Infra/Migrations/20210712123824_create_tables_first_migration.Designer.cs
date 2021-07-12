@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AulaRemota.Infra.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20210712002156_crate_authtable")]
-    partial class crate_authtable
+    [Migration("20210712123824_create_tables_first_migration")]
+    partial class create_tables_first_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

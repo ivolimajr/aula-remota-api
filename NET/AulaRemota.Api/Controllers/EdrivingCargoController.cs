@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     [Route("api/[controller]")]
     public class EdrivingCargoController : ControllerBase
     {
@@ -53,19 +53,21 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EdrivingCargo cargo)
         {
-            if (cargo.Cargo == null) return BadRequest("Invalid values");
-
             var result = _edrivingCargoService.Create(cargo);
-            if (result == null) return Problem("processing error");
+            if (result == null) return BadRequest(new
+            {
+                success = false,
+                error = "Valires inválidos"
+            });
 
-            return Created("Sucesso", result);
+            return Ok(result);
 
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] EdrivingCargo cargo)
         {
-            if (cargo == null || cargo.Id == 0) return BadRequest("Invalid values");
+            if (cargo.Id < 1) return BadRequest("Invalid values");
 
             var result = _edrivingCargoService.Update(cargo);
             if (result == null) return NoContent();

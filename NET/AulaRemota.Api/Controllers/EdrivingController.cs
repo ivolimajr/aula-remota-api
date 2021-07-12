@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     [Route("api/[controller]")]
     public class EdrivingController : ControllerBase
     {
@@ -47,12 +47,6 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EdrivingCreateRequest edriving)
         {
-            if (!_edrivingService.ValidateEntity(edriving)) return BadRequest(new
-            {
-                success = false,
-                error = "Valores Inválidos"
-            });
-
             var result = _edrivingService.Create(edriving);
             if (result == null) return BadRequest(new
             {
@@ -65,14 +59,8 @@ namespace AulaRemota.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] EdrivingCreateRequest edriving)
+        public IActionResult Put([FromBody] EdrivingUpdateRequest edriving)
         {
-            if (edriving.Id == 0 ) return BadRequest("Invalid values");
-            if (!_edrivingService.ValidateEntity(edriving)) return BadRequest(new
-            {
-                success = false,
-                error = "Valores informados inválidos"
-            });
 
             var result = _edrivingService.Update(edriving);
             if (result == null) return NoContent();
@@ -87,7 +75,7 @@ namespace AulaRemota.Api.Controllers
             if (id == 0) return BadRequest(new
             {
                 success = false,
-                error = "Valor informados inválidos"
+                error = "Valor informados inválido"
             });
 
             var result = _edrivingService.Delete(id);
@@ -103,7 +91,7 @@ namespace AulaRemota.Api.Controllers
             if (id == 0) return BadRequest(new
             {
                 success = false,
-                error = "Valor informados inválidos"
+                error = "Valor informados inválido"
             });
 
             var result = _edrivingService.Inativar(id);
@@ -119,7 +107,7 @@ namespace AulaRemota.Api.Controllers
             if (id == 0) return BadRequest(new
             {
                 success = false,
-                error = "Valor informados inválidos"
+                error = "Valor informados inválido"
             });
 
             var result = _edrivingService.Ativar(id);
