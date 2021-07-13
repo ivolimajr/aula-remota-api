@@ -24,8 +24,8 @@ namespace AulaRemota.Infra.Data
                 new EdrivingCargo { Id = 3, Cargo = "ADMINISTRATIVO" }
                 );
 
-            modelBuilder.Entity<Edriving>().HasOne(e => e.Cargo);
-            modelBuilder.Entity<Edriving>().HasOne(e => e.Usuario);
+            modelBuilder.Entity<EdrivingModel>().HasOne(e => e.Cargo);
+            modelBuilder.Entity<EdrivingModel>().HasOne(e => e.Usuario);
 
             modelBuilder.Entity<Parceiro>().HasOne(e => e.Cargo);
             modelBuilder.Entity<Parceiro>().HasOne(e => e.Usuario);
@@ -39,7 +39,7 @@ namespace AulaRemota.Infra.Data
         public DbSet<Endereco> Endereco { get; set; }
 
         // EDRIVING
-        public DbSet<Edriving> Edriving { get; set; }
+        public DbSet<EdrivingModel> Edriving { get; set; }
         public DbSet<EdrivingCargo> EdrivingCargo { get; set; }
 
         // PARCEIRO

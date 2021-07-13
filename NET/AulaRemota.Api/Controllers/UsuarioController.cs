@@ -96,8 +96,7 @@ namespace AulaRemota.Api.Controllers
         {
             if (id == 0) return BadRequest("Invalid values");
 
-            var result = _usuarioService.Delete(id);
-            if (!result) return NoContent();
+            _usuarioService.Delete(id);
 
             return Ok();
         }

@@ -1,9 +1,10 @@
 ﻿using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Infra.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace AulaRemota.Infra.Repository
 {
@@ -16,20 +17,29 @@ namespace AulaRemota.Infra.Repository
             _context = dbContext;
         }
 
+        public DbContext Context
+        {
+            get { return this._context; }
+        }
+
+        public IQueryable<TEntity> GetAll()
+        {
+            return _context.Set<TEntity>();
+        }
 
         //INSERIR
         TEntity IRepository<TEntity>.Create(TEntity entity)
         {
-            try
-            {
                 _context.Set<TEntity>().Add(entity);
                 _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return entity;
+                return entity;
+        }
+
+        public async Task<TEntity> CreateAsync(TEntity entity)
+        {
+            var result = await _context.Set<TEntity>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return result.Entity;
         }
 
         //ATUALIZAR
@@ -56,25 +66,29 @@ namespace AulaRemota.Infra.Repository
             }
         }
 
-        //BUSCAR COM CLÁUSULA
-        IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> predicado)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            return _context.Set<TEntity>().Where(predicado).AsEnumerable();
+            var result = _context.Set<TEntity>().Update(entity);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
+
+        //BUSCAR COM CLÁUSULA
+        IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Func<TEntity, bool> queryLambda)
+        {
+            return _context.Set<TEntity>().Where(queryLambda).AsEnumerable();
+        }
+
+        public TEntity Find(Func<TEntity, bool> queryLambda)
+        {
+            return _context.Set<TEntity>().Where(queryLambda).FirstOrDefault();
         }
 
         //REMOVER
-        bool IRepository<TEntity>.Delete(TEntity entity)
+        void IRepository<TEntity>.Delete(TEntity entity)
         {
-            try
-            {
-                _context.Set<TEntity>().Remove(entity);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
         }
 
         //BUSCAR TODOS
@@ -88,5 +102,10 @@ namespace AulaRemota.Infra.Repository
         {
             return _context.Set<TEntity>().Find(id);
         }
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await _context.Set<TEntity>().FindAsync(id);
+        }
+
     }
 }

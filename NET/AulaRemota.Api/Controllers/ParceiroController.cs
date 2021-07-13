@@ -73,8 +73,7 @@ namespace AulaRemota.Api.Controllers
         {
             if (id == 0) return BadRequest("Invalid values");
             
-            var result = _parceiroService.Delete(id);
-            if (!result) return NoContent();
+            _parceiroService.Delete(id);
 
             return Ok();
         }

@@ -1,8 +1,13 @@
-﻿using AulaRemota.Api.Models.Requests;
-using AulaRemota.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using AulaRemota.Core.Edriving.Atualizar;
+using AulaRemota.Core.Edriving.Deletar;
+using AulaRemota.Core.Edriving.ListarTodos;
+using AulaRemota.Core.Entity.Edriving.Criar;
+using AulaRemota.Core.Helpers;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -11,111 +16,109 @@ namespace AulaRemota.Api.Controllers
     [Route("api/[controller]")]
     public class EdrivingController : ControllerBase
     {
-        private readonly ILogger<EdrivingController> _logger;
-        private readonly IEdrivingServices _edrivingService;
+        private readonly IMediator _mediator;
 
-        public EdrivingController(ILogger<EdrivingController> logger, IEdrivingServices edrivingService)
+        public EdrivingController(IMediator mediator)
         {
-            _logger = logger;
-            _edrivingService = edrivingService;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [ProducesResponseType(typeof(EdrivingListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> GetAll()
         {
-            var result = _edrivingService.GetAll();
-            if (result == null) return NoContent();
-
-            return Ok(result);
+            try
+            {
+                return Ok(await _mediator.Send(new EdrivingListarTodosInput()));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
+
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [ProducesResponseType(typeof(EdrivingListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Get(int id)
         {
-            if (id == 0) return BadRequest(new 
+            try
             {
-                success = false,
-                error = "Informe um valor"
-            });
-
-            var result = _edrivingService.GetById(id);
-            if (result == null) return NoContent();
-
-            return Ok(result);
+                var result = await _mediator.Send(new EdrivingListarPorIdInput { Id = id});
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
+
         [HttpPost]
-        public IActionResult Post([FromBody] EdrivingCreateRequest edriving)
+        [ProducesResponseType(typeof(EdrivingCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Post([FromBody] EdrivingCriarInput request)
         {
-            var result = _edrivingService.Create(edriving);
-            if (result == null) return BadRequest(new
+            try
             {
-                success = false,
-                error = "Email já informado"
-            });
-
-            return Ok(result);
-
+                return StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] EdrivingUpdateRequest edriving)
+        [ProducesResponseType(typeof(EdrivingAtualizarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Put([FromBody] EdrivingAtualizarInput request)
         {
-
-            var result = _edrivingService.Update(edriving);
-            if (result == null) return NoContent();
-
-            return Ok(result);
-        }
-
-        [HttpPost]
-        [Route("delete")]
-        public IActionResult Delete([FromQuery] int id)
-        {
-            if (id == 0) return BadRequest(new
+            try
             {
-                success = false,
-                error = "Valor informados inválido"
-            });
-
-            var result = _edrivingService.Delete(id);
-            if (!result) return NoContent();
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("inativar")]
-       public IActionResult Inativar([FromQuery] int id)
-        {
-            if (id == 0) return BadRequest(new
+                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
             {
-                success = false,
-                error = "Valor informados inválido"
-            });
-
-            var result = _edrivingService.Inativar(id);
-            if (!result) return NoContent();
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("ativar")]
-       public IActionResult Ativar([FromQuery] int id)
-        {
-            if (id == 0) return BadRequest(new
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
             {
-                success = false,
-                error = "Valor informados inválido"
-            });
-
-            var result = _edrivingService.Ativar(id);
-            if (!result) return NoContent();
-
-            return Ok();
+                return BadRequest(e);
+            }
         }
 
+        [HttpDelete("{id}")]
+        public async ValueTask<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new EdrivingDeletarInput { Id = id });
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
 
     }
 }

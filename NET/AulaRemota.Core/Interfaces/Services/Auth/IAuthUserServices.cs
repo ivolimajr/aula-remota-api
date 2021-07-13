@@ -1,7 +1,6 @@
 ﻿using AulaRemota.Core.Entity.Auth;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Interfaces.Services.Auth
 {
@@ -15,9 +14,9 @@ namespace AulaRemota.Core.Interfaces.Services.Auth
 
         AuthUser Update(AuthUserRequest entity);
 
-        IEnumerable<AuthUser> GetWhere(Expression<Func<AuthUser, bool>> predicado);
+        IEnumerable<AuthUser> GetWhere(Func<AuthUser, bool> queryLambda);
 
-        bool Delete(int id);
+        void Delete(int id);
         bool ValidateEntity(AuthUserRequest entity);
     }
 }

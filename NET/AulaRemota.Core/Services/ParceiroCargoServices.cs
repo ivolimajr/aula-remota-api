@@ -3,7 +3,6 @@ using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Services
 {
@@ -22,10 +21,10 @@ namespace AulaRemota.Core.Services
             return _parceiroCargoRepository.Create(entity);
         }
 
-        bool IParceiroCargoServices.Delete(int id)
+        void IParceiroCargoServices.Delete(int id)
         {
             var result = _parceiroCargoRepository.GetById(id);
-            return _parceiroCargoRepository.Delete(result);
+            _parceiroCargoRepository.Delete(result);
         }
 
         IEnumerable<ParceiroCargo> IParceiroCargoServices.GetAll()
@@ -38,7 +37,7 @@ namespace AulaRemota.Core.Services
             return _parceiroCargoRepository.GetById(id);
         }
 
-        IEnumerable<ParceiroCargo> IParceiroCargoServices.GetWhere(Expression<Func<ParceiroCargo, bool>> predicado)
+        IEnumerable<ParceiroCargo> IParceiroCargoServices.GetWhere(Func<ParceiroCargo, bool> predicado)
         {
             return _parceiroCargoRepository.GetWhere(predicado);
         }

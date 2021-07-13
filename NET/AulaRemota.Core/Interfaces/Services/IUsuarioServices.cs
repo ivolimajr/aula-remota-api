@@ -1,7 +1,6 @@
 ﻿using AulaRemota.Core.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Interfaces.Services
 {
@@ -17,9 +16,9 @@ namespace AulaRemota.Core.Interfaces.Services
 
         Usuario GetByEmail(string email);
 
-        IEnumerable<Usuario> GetWhere(Expression<Func<Usuario, bool>> predicado);
+        IEnumerable<Usuario> GetWhere(Func<Usuario, bool> predicado);
 
-        bool Delete(int id);
+        void Delete(int id);
 
         Usuario Login(string email, string senha);
         bool ValidateEntity(Usuario entity);

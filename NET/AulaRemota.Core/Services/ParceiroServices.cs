@@ -4,7 +4,6 @@ using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Services
 {
@@ -85,7 +84,7 @@ namespace AulaRemota.Core.Services
             return _parceiroRepository.GetById(id);
         }
 
-        IEnumerable<Parceiro> IParceiroServices.GetWhere(Expression<Func<Parceiro, bool>> predicado)
+        IEnumerable<Parceiro> IParceiroServices.GetWhere(Func<Parceiro, bool> predicado)
         {
             return _parceiroRepository.GetWhere(predicado);
         }
@@ -127,17 +126,13 @@ namespace AulaRemota.Core.Services
             return _parceiroRepository.Update(entity);
         }
 
-        bool IParceiroServices.Delete(int id)
+        void IParceiroServices.Delete(int id)
         {
             var Parceiro = _parceiroRepository.GetById(id);
-            if (Parceiro == null) return false;
 
             var usuario = _usuarioServices.GetById(Parceiro.UsuarioId);
-            if (usuario == null) return false;
             usuario.status = 0;
-
-            if (_usuarioServices.Update(usuario) != null) return true;
-            return false;
+            _usuarioServices.Update(usuario);
         }
 
         bool IParceiroServices.Ativar(int id)

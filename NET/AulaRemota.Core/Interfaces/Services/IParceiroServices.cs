@@ -2,7 +2,6 @@
 using AulaRemota.Core.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Interfaces.Services
 {
@@ -17,9 +16,9 @@ namespace AulaRemota.Core.Interfaces.Services
 
         Parceiro GetById(int id);
 
-        IEnumerable<Parceiro> GetWhere(Expression<Func<Parceiro, bool>> predicado);
+        IEnumerable<Parceiro> GetWhere(Func<Parceiro, bool> predicado);
 
-        bool Delete(int id);
+        void Delete(int id);
 
         bool Inativar(int id);
 

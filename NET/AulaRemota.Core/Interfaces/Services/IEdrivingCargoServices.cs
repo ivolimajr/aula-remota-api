@@ -1,7 +1,6 @@
 ﻿using AulaRemota.Core.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Interfaces.Services
 {
@@ -15,7 +14,7 @@ namespace AulaRemota.Core.Interfaces.Services
 
         EdrivingCargo Update(EdrivingCargo entity);
 
-        IEnumerable<EdrivingCargo> GetWhere(Expression<Func<EdrivingCargo, bool>> predicado);
+        IEnumerable<EdrivingCargo> GetWhere(Func<EdrivingCargo, bool> queryLambda);
 
         bool Delete(int id);
     }

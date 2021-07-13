@@ -46,10 +46,10 @@ namespace AulaRemota.Core.Services.Auth
             return _authUserRepository.Create(AuthUser);
         }
 
-        bool IAuthUserServices.Delete(int id)
+        void IAuthUserServices.Delete(int id)
         {
             var result = _authUserRepository.GetById(id);
-            return _authUserRepository.Delete(result);
+            _authUserRepository.Delete(result);
         }
 
         IEnumerable<AuthUser> IAuthUserServices.GetAll()
@@ -62,9 +62,9 @@ namespace AulaRemota.Core.Services.Auth
             return _authUserRepository.GetById(id);
         }
 
-        IEnumerable<AuthUser> IAuthUserServices.GetWhere(Expression<Func<AuthUser, bool>> predicado)
+        IEnumerable<AuthUser> IAuthUserServices.GetWhere(Func<AuthUser, bool> queryLambda)
         {
-            return _authUserRepository.GetWhere(predicado);
+            return _authUserRepository.GetWhere(queryLambda);
         }
 
         AuthUser IAuthUserServices.Update(AuthUserRequest entity)

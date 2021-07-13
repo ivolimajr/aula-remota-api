@@ -2,7 +2,7 @@
 
 namespace AulaRemota.Core.Entity
 {
-    public class Edriving
+    public class EdrivingModel
     {
         public int Id { get; set; }
 

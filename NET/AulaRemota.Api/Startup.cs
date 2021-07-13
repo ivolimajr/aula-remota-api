@@ -8,6 +8,7 @@ using AulaRemota.Core.Services.Auth;
 using AulaRemota.Infra.Data;
 using AulaRemota.Infra.Repository;
 using AulaRemota.Infra.Repository.Auth;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -78,8 +79,8 @@ namespace AulaRemota.Api
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
             services.AddDbContext<MySqlContext>(
                 dbContextOptions => dbContextOptions
-                    //.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
-                    .UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
+                    .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
+                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
 
@@ -89,9 +90,6 @@ namespace AulaRemota.Api
 
             services.AddScoped<IUsuarioServices, UsuarioServices>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
-            services.AddScoped<IEdrivingServices, EdrivingServices>();
-            services.AddScoped<IEdrivingRepository, EdrivingRepository>();
 
             services.AddScoped<IEdrivingCargoServices, EdrivingCargoServices>();
             services.AddScoped<IEdrivingCargoRepository, EdrivingCargoRepository>();
@@ -110,6 +108,9 @@ namespace AulaRemota.Api
 
             services.AddScoped<IEnderecoServices, EnderecoServices>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+
+            var assembly = AppDomain.CurrentDomain.Load("AulaRemota.Core");
+            services.AddMediatR(assembly);
 
             services.AddSwaggerGen(c =>
             {

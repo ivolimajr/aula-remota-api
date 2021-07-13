@@ -20,10 +20,7 @@ namespace AulaRemota.Api.Controllers
             _edrivingCargoService = edrivingCargoService;
         }
 
-        /*
-            Exibe todos os cargos do Edriving
-            Se o retorno for Null siginifica que não exite valores no banco
-         */
+        
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -44,12 +41,6 @@ namespace AulaRemota.Api.Controllers
             return Ok(cargo);
         }
 
-        /*
-            Cria um novo cargo
-            Recebe body no formato Json:
-            int id
-            string cargo
-         */
         [HttpPost]
         public IActionResult Post([FromBody] EdrivingCargo cargo)
         {

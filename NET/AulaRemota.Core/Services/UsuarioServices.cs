@@ -28,10 +28,10 @@ namespace AulaRemota.Core.Services
             return _usuarioRepository.Create(entity);
         }
 
-        bool IUsuarioServices.Delete(int id)
+        void IUsuarioServices.Delete(int id)
         {
             var result = _usuarioRepository.GetById(id);
-            return _usuarioRepository.Delete(result);
+            _usuarioRepository.Delete(result);
         }
 
         IEnumerable<Usuario> IUsuarioServices.GetAll()
@@ -49,7 +49,7 @@ namespace AulaRemota.Core.Services
             return _usuarioRepository.GetByEmail(email);
         }
 
-        IEnumerable<Usuario> IUsuarioServices.GetWhere(Expression<Func<Usuario, bool>> predicado)
+        IEnumerable<Usuario> IUsuarioServices.GetWhere(Func<Usuario, bool> predicado)
         {
             return _usuarioRepository.GetWhere(predicado);
         }
