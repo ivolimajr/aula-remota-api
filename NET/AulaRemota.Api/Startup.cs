@@ -96,7 +96,6 @@ namespace AulaRemota.Api
 
             services.AddScoped<IAuthUserRepository, AuthUserRepository>();
 
-            services.AddScoped<IAuthServices, AuthServices>();
             services.AddScoped<ITokenServices, TokenServices>();
 
             services.AddScoped<IParceiroCargoServices, ParceiroCargoServices>();

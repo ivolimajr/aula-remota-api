@@ -1,6 +1,12 @@
-﻿using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Core.Auth.GenerateToken;
+using AulaRemota.Core.Auth.RefreshToken;
+using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Services.Auth;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -8,37 +14,51 @@ namespace AulaRemota.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private IAuthServices _authServices;
+        private readonly IMediator _mediator;
 
-        public AuthController(IAuthServices authServices)
+        public AuthController(IMediator mediator)
         {
-            _authServices = authServices;
+            _mediator = mediator;
         }
 
         [HttpPost]
         [Route("getToken")]
-        public IActionResult GetToken([FromBody] GetTokenRequest user)
+        [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Post([FromBody] GenerateTokenInput request)
         {
-            if (user == null) return BadRequest("Invalid Client Request");
-
-            var token = _authServices.ValidateCredentials(user);
-            if (token == null) return Unauthorized(); 
-
-            return Ok(token);
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpPost]
         [Route("refresh")]
-        public IActionResult Refresh([FromBody] Token tokenRequest)
+        [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Refresh([FromBody] RefreshTokenInput request)
         {
-            if (tokenRequest == null) return BadRequest("Invalid Client Request");
-
-            var token = _authServices.ValidateCredentials(tokenRequest);
-
-            if (token == null) return BadRequest("Invalid Client Request");
-
-            return Ok(token);
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
-
     }
 }

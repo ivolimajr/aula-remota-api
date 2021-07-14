@@ -2,6 +2,7 @@
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,8 +21,8 @@ namespace AulaRemota.Core.AuthUser.Criar
         {
             try
             {
-                var result = await _authUserRepository.Context
-                       .Set<AuthUserModel>().ToListAsync();
+                var result = await _authUserRepository.Context.Set<AuthUserModel>()
+                    .OrderBy(u => u.Id).ToListAsync();
 
                 return new AuthUserListarTodosResponse { Items = result };
             }

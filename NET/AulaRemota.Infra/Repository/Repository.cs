@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class Repository<TEntity> : Core.Interfaces.Repository.IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly MySqlContext _context;
 
@@ -29,7 +29,7 @@ namespace AulaRemota.Infra.Repository
         }
 
         //INSERIR
-        TEntity Core.Interfaces.Repository.IRepository<TEntity>.Create(TEntity entity)
+        TEntity IRepository<TEntity>.Create(TEntity entity)
         {
                 _context.Set<TEntity>().Add(entity);
                 _context.SaveChanges();
@@ -44,7 +44,7 @@ namespace AulaRemota.Infra.Repository
         }
 
         //ATUALIZAR
-        TEntity Core.Interfaces.Repository.IRepository<TEntity>.Update(TEntity entity)
+        TEntity IRepository<TEntity>.Update(TEntity entity)
         {
             var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
 
@@ -75,7 +75,7 @@ namespace AulaRemota.Infra.Repository
         }
 
         //BUSCAR COM CLÁUSULA
-        IEnumerable<TEntity> Core.Interfaces.Repository.IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> queryLambda)
+        IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> queryLambda)
         {
             return _context.Set<TEntity>().Where(queryLambda).AsEnumerable();
         }
@@ -86,20 +86,20 @@ namespace AulaRemota.Infra.Repository
         }
 
         //REMOVER
-        void Core.Interfaces.Repository.IRepository<TEntity>.Delete(TEntity entity)
+        void IRepository<TEntity>.Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
             _context.SaveChanges();
         }
 
         //BUSCAR TODOS
-        IEnumerable<TEntity> Core.Interfaces.Repository.IRepository<TEntity>.GetAll()
+        IEnumerable<TEntity> IRepository<TEntity>.GetAll()
         {
             return _context.Set<TEntity>().AsEnumerable();
         }
 
         //BUSCAR POR ID
-        TEntity Core.Interfaces.Repository.IRepository<TEntity>.GetById(int id)
+        TEntity IRepository<TEntity>.GetById(int id)
         {
             return _context.Set<TEntity>().Find(id);
         }
