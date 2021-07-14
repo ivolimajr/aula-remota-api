@@ -86,7 +86,7 @@ namespace AulaRemota.Api
 
 
 
-            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+            services.AddScoped(typeof(Core.Interfaces.Repository.IRepository<>), typeof(Infra.Repository.Repository<>));
 
             services.AddScoped<IUsuarioServices, UsuarioServices>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -94,7 +94,6 @@ namespace AulaRemota.Api
             services.AddScoped<IEdrivingCargoServices, EdrivingCargoServices>();
             services.AddScoped<IEdrivingCargoRepository, EdrivingCargoRepository>();
 
-            services.AddScoped<IAuthUserServices, AuthUserServices>();
             services.AddScoped<IAuthUserRepository, AuthUserRepository>();
 
             services.AddScoped<IAuthServices, AuthServices>();

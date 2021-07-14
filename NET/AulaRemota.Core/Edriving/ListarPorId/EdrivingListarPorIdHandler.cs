@@ -1,4 +1,5 @@
 ﻿using AulaRemota.Core.Entity;
+using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +20,28 @@ namespace AulaRemota.Core.Edriving.ListarTodos
 
         public async Task<EdrivingListarPorIdResponse> Handle(EdrivingListarPorIdInput request, CancellationToken cancellationToken)
         {
-            var result = await _edrivingRepository.Context
-                    .Set<EdrivingModel>()
-                    .Include(u => u.Usuario)
-                    .Include(c => c.Cargo)
-                    .Where( u => u.Usuario.status > 0)
-                    .FirstAsync();
+            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
 
-            return new EdrivingListarPorIdResponse { Item = result };
+            try
+            {
+                var res = await _edrivingRepository.GetByIdAsync(request.Id);
+                if (res == null) throw new HttpClientCustomException("Não Encontrado");
+
+                var result = await _edrivingRepository.Context
+                        .Set<EdrivingModel>()
+                        .Include(u => u.Usuario)
+                        .Include(c => c.Cargo)
+                        .Where(u => u.Id == request.Id)
+                        .Where(u => u.Usuario.status > 0)
+                        .FirstAsync();
+
+                return new EdrivingListarPorIdResponse { Item = result };
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

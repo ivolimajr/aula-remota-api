@@ -4,7 +4,7 @@ using AulaRemota.Infra.Data;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class EnderecoRepository : EFRepository<Endereco>, IEnderecoRepository
+    public class EnderecoRepository : Repository<Endereco>, IEnderecoRepository
     {
         public EnderecoRepository(MySqlContext context) : base(context)
         {

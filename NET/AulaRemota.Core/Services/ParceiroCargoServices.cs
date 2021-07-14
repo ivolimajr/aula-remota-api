@@ -3,6 +3,7 @@ using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Services
 {
@@ -37,7 +38,7 @@ namespace AulaRemota.Core.Services
             return _parceiroCargoRepository.GetById(id);
         }
 
-        IEnumerable<ParceiroCargo> IParceiroCargoServices.GetWhere(Func<ParceiroCargo, bool> predicado)
+        IEnumerable<ParceiroCargo> IParceiroCargoServices.GetWhere(Expression<Func<ParceiroCargo, bool>> predicado)
         {
             return _parceiroCargoRepository.GetWhere(predicado);
         }

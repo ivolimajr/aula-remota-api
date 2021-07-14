@@ -49,7 +49,7 @@ namespace AulaRemota.Core.Services
             return _usuarioRepository.GetByEmail(email);
         }
 
-        IEnumerable<Usuario> IUsuarioServices.GetWhere(Func<Usuario, bool> predicado)
+        IEnumerable<Usuario> IUsuarioServices.GetWhere(Expression<Func<Usuario, bool>> predicado)
         {
             return _usuarioRepository.GetWhere(predicado);
         }

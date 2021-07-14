@@ -4,15 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : Core.Interfaces.Repository.IRepository<TEntity> where TEntity : class
     {
         protected readonly MySqlContext _context;
 
-        public EFRepository(MySqlContext dbContext)
+        public Repository(MySqlContext dbContext)
         {
             _context = dbContext;
         }
@@ -28,7 +29,7 @@ namespace AulaRemota.Infra.Repository
         }
 
         //INSERIR
-        TEntity IRepository<TEntity>.Create(TEntity entity)
+        TEntity Core.Interfaces.Repository.IRepository<TEntity>.Create(TEntity entity)
         {
                 _context.Set<TEntity>().Add(entity);
                 _context.SaveChanges();
@@ -43,7 +44,7 @@ namespace AulaRemota.Infra.Repository
         }
 
         //ATUALIZAR
-        TEntity IRepository<TEntity>.Update(TEntity entity)
+        TEntity Core.Interfaces.Repository.IRepository<TEntity>.Update(TEntity entity)
         {
             var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
 
@@ -74,31 +75,31 @@ namespace AulaRemota.Infra.Repository
         }
 
         //BUSCAR COM CLÁUSULA
-        IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Func<TEntity, bool> queryLambda)
+        IEnumerable<TEntity> Core.Interfaces.Repository.IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> queryLambda)
         {
             return _context.Set<TEntity>().Where(queryLambda).AsEnumerable();
         }
 
-        public TEntity Find(Func<TEntity, bool> queryLambda)
+        public TEntity Find(Expression<Func<TEntity, bool>> queryLambda)
         {
             return _context.Set<TEntity>().Where(queryLambda).FirstOrDefault();
         }
 
         //REMOVER
-        void IRepository<TEntity>.Delete(TEntity entity)
+        void Core.Interfaces.Repository.IRepository<TEntity>.Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
             _context.SaveChanges();
         }
 
         //BUSCAR TODOS
-        IEnumerable<TEntity> IRepository<TEntity>.GetAll()
+        IEnumerable<TEntity> Core.Interfaces.Repository.IRepository<TEntity>.GetAll()
         {
             return _context.Set<TEntity>().AsEnumerable();
         }
 
         //BUSCAR POR ID
-        TEntity IRepository<TEntity>.GetById(int id)
+        TEntity Core.Interfaces.Repository.IRepository<TEntity>.GetById(int id)
         {
             return _context.Set<TEntity>().Find(id);
         }

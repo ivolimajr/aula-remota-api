@@ -2,15 +2,15 @@
 
 namespace AulaRemota.Core.Interfaces.Repository.Auth
 {
-    public interface IAuthUserRepository: IRepository<AuthUser>
+    public interface IAuthUserRepository: IRepository<AuthUserModel>
     {
-        AuthUser ValidateCredentials(GetTokenRequest user);
+        AuthUserModel ValidateCredentials(GetTokenRequest user);
 
-        AuthUser ValidateCredentials(string userName);
+        AuthUserModel ValidateCredentials(string userName);
 
         bool RevokeToken(string userName);
 
-        AuthUser RefreshUserInfo(AuthUser user);
-        AuthUser GetByUserName(string email);
+        AuthUserModel RefreshUserInfo(AuthUserModel user);
+        AuthUserModel GetByUserName(string email);
     }
 }

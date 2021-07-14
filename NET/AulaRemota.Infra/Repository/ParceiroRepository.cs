@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class ParceiroRepository : EFRepository<Parceiro>, IParceiroRepository
+    public class ParceiroRepository : Repository<Parceiro>, IParceiroRepository
     {
         public ParceiroRepository(MySqlContext context) : base(context)
         {

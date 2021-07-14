@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class UsuarioRepository : EFRepository<Usuario>, IUsuarioRepository
+    public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
         public UsuarioRepository(MySqlContext context) : base(context)
         {

@@ -1,6 +1,7 @@
 ﻿using AulaRemota.Core.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Interfaces.Services
 {
@@ -14,7 +15,7 @@ namespace AulaRemota.Core.Interfaces.Services
 
         Endereco Update(Endereco entity);
 
-        IEnumerable<Endereco> GetWhere(Func<Endereco, bool> predicado);
+        IEnumerable<Endereco> GetWhere(Expression<Func<Endereco, bool>> queryLambda);
 
         void Delete(int id);
     }

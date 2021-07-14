@@ -7,6 +7,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
     public class EdrivingAtualizarInput : IRequest<EdrivingAtualizarResponse>
     {
         [Required]
+        [Range(1, 99999)]
         public int Id { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 3)]

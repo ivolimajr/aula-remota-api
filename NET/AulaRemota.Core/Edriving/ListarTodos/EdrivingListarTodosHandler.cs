@@ -19,14 +19,22 @@ namespace AulaRemota.Core.Edriving.ListarTodos
 
         public async Task<EdrivingListarTodosResponse> Handle(EdrivingListarTodosInput request, CancellationToken cancellationToken)
         {
-            var result = await _edrivingRepository.Context
+            try
+            {
+                var result = await _edrivingRepository.Context
                     .Set<EdrivingModel>()
                     .Include(u => u.Usuario)
                     .Include(c => c.Cargo)
-                    .Where( u => u.Usuario.status > 0)
+                    .Where(u => u.Usuario.status > 0)
                     .OrderBy(e => e.Id).ToListAsync();
 
-            return new EdrivingListarTodosResponse { Items = result };
+                return new EdrivingListarTodosResponse { Items = result };
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

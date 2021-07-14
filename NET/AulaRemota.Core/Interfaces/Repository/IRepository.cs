@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Core.Interfaces.Repository
@@ -22,8 +23,8 @@ namespace AulaRemota.Core.Interfaces.Repository
         public TEntity GetById(int id);
         public Task<TEntity> GetByIdAsync(int id);
 
-        IEnumerable<TEntity> GetWhere(Func<TEntity, bool> queryLambda);
-        TEntity Find(Func<TEntity, bool> queryLambda);
+        IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> queryLambda);
+        TEntity Find(Expression<Func<TEntity, bool>> queryLambda);
 
         void Delete(TEntity entity);
     }

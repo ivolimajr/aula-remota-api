@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AulaRemota.Core.Entity.Auth
 {
-    public class AuthUser
+    public class AuthUserModel
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
 
         [Column(TypeName = "varchar(150)")]

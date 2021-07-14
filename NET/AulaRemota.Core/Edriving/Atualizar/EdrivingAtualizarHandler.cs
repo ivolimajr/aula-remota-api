@@ -54,8 +54,8 @@ namespace AulaRemota.Core.Edriving.Atualizar
             if (usuario == null) throw new HttpClientCustomException("Errro ao carregar usuário");
 
             //ATUALIZA O NOME E EMAIL
-            if (request.FullName != null) usuario.FullName = request.FullName.ToUpper();
-            if (request.Email != null) usuario.Email = request.Email.ToUpper();
+            if (request.FullName != null)   usuario.FullName    = request.FullName.ToUpper();
+            if (request.Email != null)      usuario.Email       = request.Email.ToUpper();
 
 
             // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
@@ -83,7 +83,6 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     Cargo = edrivingModel.Cargo,
                     Usuario = edrivingModel.Usuario
                 };
-                edrivingModel.Usuario.Password = "";
 
                 return edrivingResult;
 

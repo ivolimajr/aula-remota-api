@@ -4,7 +4,7 @@ using AulaRemota.Infra.Data;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class ParceiroCargoRepository : EFRepository<ParceiroCargo>, IParceiroCargoRepository
+    public class ParceiroCargoRepository : Repository<ParceiroCargo>, IParceiroCargoRepository
     {
         public ParceiroCargoRepository(MySqlContext context) : base(context)
         {

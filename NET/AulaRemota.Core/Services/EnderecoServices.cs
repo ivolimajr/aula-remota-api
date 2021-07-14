@@ -3,6 +3,7 @@ using AulaRemota.Core.Interfaces.Repository;
 using AulaRemota.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace AulaRemota.Core.Services
 {
@@ -42,7 +43,7 @@ namespace AulaRemota.Core.Services
             return _enderecoRepository.GetById(id);
         }
 
-        IEnumerable<Endereco> IEnderecoServices.GetWhere(Func<Endereco, bool> predicado)
+        IEnumerable<Endereco> IEnderecoServices.GetWhere(Expression<Func<Endereco, bool>> predicado)
         {
             return _enderecoRepository.GetWhere(predicado);
         }

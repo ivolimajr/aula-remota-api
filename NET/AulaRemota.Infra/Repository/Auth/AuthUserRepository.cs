@@ -8,14 +8,14 @@ using System.Text;
 
 namespace AulaRemota.Infra.Repository.Auth
 {
-    public class AuthUserRepository : EFRepository<AuthUser>, IAuthUserRepository
+    public class AuthUserRepository : Repository<AuthUserModel>, IAuthUserRepository
     {
         public AuthUserRepository(MySqlContext context) : base(context)
         {
 
         }
 
-        AuthUser IAuthUserRepository.RefreshUserInfo(AuthUser user)
+        AuthUserModel IAuthUserRepository.RefreshUserInfo(AuthUserModel user)
         {
             if (!_context.AuthUser.Any(u => u.Id.Equals(user.Id))) return null;
 
@@ -45,7 +45,7 @@ namespace AulaRemota.Infra.Repository.Auth
             return true;
         }
 
-        AuthUser IAuthUserRepository.ValidateCredentials(GetTokenRequest user)
+        AuthUserModel IAuthUserRepository.ValidateCredentials(GetTokenRequest user)
         {
             var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
             var result = _context.AuthUser.FirstOrDefault(u => u.UserName == user.UserName);
@@ -54,7 +54,7 @@ namespace AulaRemota.Infra.Repository.Auth
             return result;
         }
 
-        AuthUser IAuthUserRepository.ValidateCredentials(string userName)
+        AuthUserModel IAuthUserRepository.ValidateCredentials(string userName)
         {
             return _context.AuthUser.SingleOrDefault(u => (u.UserName == userName));
         }
@@ -66,11 +66,11 @@ namespace AulaRemota.Infra.Repository.Auth
             return BitConverter.ToString(hashedBytes);
         }
 
-        public AuthUser GetByUserName(string userName)
+        public AuthUserModel GetByUserName(string userName)
         {
             try
             {
-                return _context.Set<AuthUser>().Where(u => u.UserName == userName).FirstOrDefault();
+                return _context.Set<AuthUserModel>().Where(u => u.UserName == userName).FirstOrDefault();
             }
             catch (Exception)
             {

@@ -32,7 +32,7 @@ namespace AulaRemota.Infra.Data
         }
 
         //AUTH
-        public DbSet<AuthUser> AuthUser { get; set; }
+        public DbSet<AuthUserModel> AuthUser { get; set; }
 
         //USUARIO
         public DbSet<Usuario> Usuario { get; set; }
