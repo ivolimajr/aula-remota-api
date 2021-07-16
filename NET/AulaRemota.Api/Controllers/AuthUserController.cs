@@ -2,6 +2,7 @@
 using AulaRemota.Core.AuthUser.Login;
 using AulaRemota.Core.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace AulaRemota.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize("Bearer")]
     [ApiController]
     public class AuthUserController : ControllerBase
     {

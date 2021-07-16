@@ -24,7 +24,7 @@ namespace AulaRemota.Api.Controllers
         [Route("getToken")]
         [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Post([FromBody] GenerateTokenInput request)
+        public async ValueTask<ActionResult> GetToken([FromBody] GenerateTokenInput request)
         {
             try
             {
