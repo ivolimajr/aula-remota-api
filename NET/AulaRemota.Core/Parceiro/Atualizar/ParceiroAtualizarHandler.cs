@@ -37,8 +37,10 @@ namespace AulaRemota.Core.Parceiro.Atualizar
             if (entity == null) throw new HttpClientCustomException("Não Encontrado");
 
             //BUSCA O OBJETO ENDEREÇO A SER ATUALIZADO
-            var endereco = _parceiroRepository.GetById(entity.EnderecoId);
+            var endereco = _enderecoRepository.GetById(entity.EnderecoId);
             if (endereco == null) throw new HttpClientCustomException("Errro ao carregar endereço");
+
+            entity.Endereco = endereco;
 
             //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
             if (request.CargoId != 0)
@@ -99,7 +101,9 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                     CargoId = parceiroModel.CargoId,
                     UsuarioId = parceiroModel.UsuarioId,
                     Cargo = parceiroModel.Cargo,
-                    Usuario = parceiroModel.Usuario
+                    Usuario = parceiroModel.Usuario,
+                    EnderecoId = parceiroModel.EnderecoId,
+                    Endereco = parceiroModel.Endereco
                 };
 
             }

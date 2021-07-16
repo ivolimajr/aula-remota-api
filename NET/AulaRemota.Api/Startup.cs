@@ -1,6 +1,6 @@
 using AulaRemota.Core.Configuration;
 using AulaRemota.Core.Interfaces.Repository;
-using AulaRemota.Infra.Data;
+using AulaRemota.Infra.Context;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

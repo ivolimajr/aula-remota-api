@@ -2,7 +2,7 @@
 using AulaRemota.Core.Entity.Auth;
 using Microsoft.EntityFrameworkCore;
 
-namespace AulaRemota.Infra.Data
+namespace AulaRemota.Infra.Context
 {
     public class MySqlContext : DbContext
     {
