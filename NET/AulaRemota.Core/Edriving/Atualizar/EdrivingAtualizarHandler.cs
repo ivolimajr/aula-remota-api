@@ -11,10 +11,10 @@ namespace AulaRemota.Core.Edriving.Atualizar
     public class EdrivingAtualizarHandler : IRequestHandler<EdrivingAtualizarInput, EdrivingAtualizarResponse>
     {
         private readonly IRepository<EdrivingModel> _edrivingRepository;
-        private readonly IRepository<Usuario> _usuarioRepository;
-        private readonly IRepository<EdrivingCargo> _cargoRepository;
+        private readonly IRepository<UsuarioModel> _usuarioRepository;
+        private readonly IRepository<EdrivingCargoModel> _cargoRepository;
 
-        public EdrivingAtualizarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<Usuario> usuarioRepository, IRepository<EdrivingCargo> cargoRepository)
+        public EdrivingAtualizarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository, IRepository<EdrivingCargoModel> cargoRepository)
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;

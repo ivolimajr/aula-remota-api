@@ -1,13 +1,7 @@
 using AulaRemota.Core.Configuration;
 using AulaRemota.Core.Interfaces.Repository;
-using AulaRemota.Core.Interfaces.Repository.Auth;
-using AulaRemota.Core.Interfaces.Services;
-using AulaRemota.Core.Interfaces.Services.Auth;
-using AulaRemota.Core.Services;
-using AulaRemota.Core.Services.Auth;
 using AulaRemota.Infra.Data;
 using AulaRemota.Infra.Repository;
-using AulaRemota.Infra.Repository.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -69,11 +63,6 @@ namespace AulaRemota.Api
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder().AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
             });
 
-/*            services.AddCors(options => options.AddDefaultPolicy(builder =>
-            {
-                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-            }));*/
-
             services.AddControllers();
 
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
@@ -86,26 +75,7 @@ namespace AulaRemota.Api
 
 
 
-            services.AddScoped(typeof(Core.Interfaces.Repository.IRepository<>), typeof(Infra.Repository.Repository<>));
-
-            services.AddScoped<IUsuarioServices, UsuarioServices>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
-            services.AddScoped<IEdrivingCargoServices, EdrivingCargoServices>();
-            services.AddScoped<IEdrivingCargoRepository, EdrivingCargoRepository>();
-
-            services.AddScoped<IAuthUserRepository, AuthUserRepository>();
-
-            services.AddScoped<ITokenServices, TokenServices>();
-
-            services.AddScoped<IParceiroCargoServices, ParceiroCargoServices>();
-            services.AddScoped<IParceiroCargoRepository, ParceiroCargoRepository>();
-
-            services.AddScoped<IParceiroServices, ParceiroServices>();
-            services.AddScoped<IParceiroRepository, ParceiroRepository>();
-
-            services.AddScoped<IEnderecoServices, EnderecoServices>();
-            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             var assembly = AppDomain.CurrentDomain.Load("AulaRemota.Core");
             services.AddMediatR(assembly);
@@ -116,7 +86,6 @@ namespace AulaRemota.Api
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

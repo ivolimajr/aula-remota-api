@@ -24,7 +24,10 @@ namespace AulaRemota.Core.Interfaces.Repository
         public Task<TEntity> GetByIdAsync(int id);
 
         IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> queryLambda);
+
         TEntity Find(Expression<Func<TEntity, bool>> queryLambda);
+
+        public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda);
 
         void Delete(TEntity entity);
     }

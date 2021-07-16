@@ -9,10 +9,10 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
     public  class EdrivingCriarHandler : IRequestHandler<EdrivingCriarInput, EdrivingCriarResponse>
     {
         private readonly IRepository<EdrivingModel> _edrivingRepository;
-        private readonly IRepository<Usuario> _usuarioRepository;
-        private readonly IRepository<EdrivingCargo> _cargoRepository;
+        private readonly IRepository<UsuarioModel> _usuarioRepository;
+        private readonly IRepository<EdrivingCargoModel> _cargoRepository;
 
-        public EdrivingCriarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<Usuario> usuarioRepository, IRepository<EdrivingCargo> cargoRepository)
+        public EdrivingCriarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository, IRepository<EdrivingCargoModel> cargoRepository)
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
@@ -30,7 +30,7 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
             if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
 
             //CRIA USUARIO
-            var user = new Usuario();
+            var user = new UsuarioModel();
 
             user.FullName = request.FullName.ToUpper();
             user.Email = request.Email.ToUpper();

@@ -13,9 +13,9 @@
         public string Telefone { get; set; }
 
         public int CargoId { get; set; }
-        public EdrivingCargo Cargo { get; set; }
+        public EdrivingCargoModel Cargo { get; set; }
 
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public UsuarioModel Usuario { get; set; }
     }
 }

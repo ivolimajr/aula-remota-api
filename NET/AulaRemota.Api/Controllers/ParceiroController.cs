@@ -1,8 +1,13 @@
-﻿using AulaRemota.Api.Models.Requests;
-using AulaRemota.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using AulaRemota.Core.Parceiro.Atualizar;
+using AulaRemota.Core.Parceiro.Deletar;
+using AulaRemota.Core.Parceiro.ListarTodos;
+using AulaRemota.Core.Entity.Parceiro.Criar;
+using AulaRemota.Core.Helpers;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -11,97 +16,109 @@ namespace AulaRemota.Api.Controllers
     [Route("api/[controller]")]
     public class ParceiroController : ControllerBase
     {
-        private readonly ILogger<ParceiroController> _logger;
-        private readonly IParceiroServices _parceiroService;
+        private readonly IMediator _mediator;
 
-        public ParceiroController(ILogger<ParceiroController> logger, IParceiroServices parceiroServices)
+        public ParceiroController(IMediator mediator)
         {
-            _logger = logger;
-            _parceiroService = parceiroServices;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        [ProducesResponseType(typeof(ParceiroListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> GetAll()
         {
-            var result = _parceiroService.GetAllWithRelationship();
-
-            if (result == null) return NoContent();
-
-            return Ok(result);
+            try
+            {
+                return Ok(await _mediator.Send(new ParceiroListarTodosInput()));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
+
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Get(int id)
         {
-            if (id == 0) return BadRequest("Invalid values");
-
-            var result = _parceiroService.GetById(id);
-
-            if (result == null) return NotFound();
-
-            return Ok(result);
+            try
+            {
+                var result = await _mediator.Send(new ParceiroListarPorIdInput { Id = id});
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
+
         [HttpPost]
-        public IActionResult Post([FromBody] ParceiroCreateRequest parceiro)
+        [ProducesResponseType(typeof(ParceiroCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Post([FromBody] ParceiroCriarInput request)
         {
-            if (!_parceiroService.ValidateEntity(parceiro)) return BadRequest("Invalid values");
-
-            var result = _parceiroService.Create(parceiro);
-
-            if (result != null) return Ok(result);
-
-            return BadRequest("Email já registrado");
-
+            try
+            {
+                return StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] ParceiroCreateRequest parceiro)
+        [ProducesResponseType(typeof(ParceiroAtualizarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Put([FromBody] ParceiroAtualizarInput request)
         {
-            if (parceiro.Id == 0 ) return BadRequest("Invalid values");
-            if (!_parceiroService.ValidateEntity(parceiro)) return BadRequest("Invalid values");
-
-            var result = _parceiroService.Update(parceiro);
-            if (result == null) return NoContent();
-
-            return Ok(result);
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
-        [HttpPost]
-        [Route("delete")]
-        public IActionResult Delete([FromQuery] int id)
+        [HttpDelete("{id}")]
+        public async ValueTask<ActionResult> Delete(int id)
         {
-            if (id == 0) return BadRequest("Invalid values");
-            
-            _parceiroService.Delete(id);
-
-            return Ok();
+            try
+            {
+                var result = await _mediator.Send(new ParceiroDeletarInput { Id = id });
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
-
-        [HttpPost]
-        [Route("inativar")]
-       public IActionResult Inativar([FromQuery] int id)
-        {
-            if (id == 0) return BadRequest("Invalid values");
-
-            var result = _parceiroService.Inativar(id);
-            if (!result) return NoContent();
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("ativar")]
-       public IActionResult Ativar([FromQuery] int id)
-        {
-            if (id == 0) return BadRequest("Invalid values");
-
-            var result = _parceiroService.Ativar(id);
-            if (!result) return NoContent();
-
-            return Ok();
-        }
-
 
     }
 }

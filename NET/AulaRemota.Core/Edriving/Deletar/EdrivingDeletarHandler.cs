@@ -10,9 +10,9 @@ namespace AulaRemota.Core.Edriving.Deletar
     public class EdrivingDeletarHandler : IRequestHandler<EdrivingDeletarInput, string>
     {
         private readonly IRepository<EdrivingModel> _edrivingRepository;
-        private readonly IRepository<Usuario> _usuarioRepository;
+        private readonly IRepository<UsuarioModel> _usuarioRepository;
 
-        public EdrivingDeletarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<Usuario> usuarioRepository)
+        public EdrivingDeletarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository)
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
@@ -25,7 +25,7 @@ namespace AulaRemota.Core.Edriving.Deletar
             EdrivingModel edriving = await _edrivingRepository.GetByIdAsync(request.Id);
             if (edriving == null) throw new HttpClientCustomException("Não encontrado");
 
-            Usuario usuario = await _usuarioRepository.GetByIdAsync(edriving.UsuarioId);
+            UsuarioModel usuario = await _usuarioRepository.GetByIdAsync(edriving.UsuarioId);
 
             //REMOVE O OBJETO
             _edrivingRepository.Delete(edriving);

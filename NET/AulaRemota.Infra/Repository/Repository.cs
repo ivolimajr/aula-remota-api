@@ -85,6 +85,11 @@ namespace AulaRemota.Infra.Repository
             return _context.Set<TEntity>().Where(queryLambda).FirstOrDefault();
         }
 
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda)
+        {
+            return await _context.Set<TEntity>().Where(queryLambda).FirstOrDefaultAsync();
+        }
+
         //REMOVER
         void IRepository<TEntity>.Delete(TEntity entity)
         {
