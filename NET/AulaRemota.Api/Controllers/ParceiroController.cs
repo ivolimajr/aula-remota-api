@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     public class ParceiroController : ControllerBase
     {

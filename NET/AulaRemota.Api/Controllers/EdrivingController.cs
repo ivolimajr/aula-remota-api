@@ -4,6 +4,7 @@ using AulaRemota.Core.Edriving.ListarTodos;
 using AulaRemota.Core.Entity.Edriving.Criar;
 using AulaRemota.Core.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace AulaRemota.Api.Controllers
 {
     [ApiController]
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     public class EdrivingController : ControllerBase
     {
