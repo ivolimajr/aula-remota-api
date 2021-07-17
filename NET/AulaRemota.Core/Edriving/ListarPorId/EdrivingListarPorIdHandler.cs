@@ -35,7 +35,18 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                         .Where(u => u.Usuario.status > 0)
                         .FirstAsync();
 
-                return new EdrivingListarPorIdResponse { Item = result };
+                return new EdrivingListarPorIdResponse { 
+                
+                    Id = result.Id,
+                    FullName = result.FullName,
+                    Email = result.Email,
+                    Cpf = result.Cpf,
+                    Telefone = result.Telefone,
+                    CargoId = result.CargoId,
+                    Cargo = result.Cargo,
+                    UsuarioId= result.UsuarioId,
+                    Usuario= result.Usuario
+                };
             }
             catch (System.Exception)
             {

@@ -2,8 +2,7 @@
 
 namespace AulaRemota.Core.Edriving.ListarTodos
 {
-    public class EdrivingListarPorIdResponse
+    public class EdrivingListarPorIdResponse : EdrivingModel
     {
-        public EdrivingModel Item { get; set; }
     }
 }

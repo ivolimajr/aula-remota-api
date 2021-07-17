@@ -1,0 +1,66 @@
+﻿using AulaRemota.Core.EdrivingCargo.ListarPorId;
+using AulaRemota.Core.EdrivingCargo.ListarTodos;
+using AulaRemota.Core.Helpers;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
+
+namespace AulaRemota.Api.Controllers
+{
+    [ApiController]
+    [Authorize("Bearer")]
+    [Route("api/[controller]")]
+    public class EdrivingCargoController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+
+        public EdrivingCargoController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(EdrivingCargoListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> GetAll()
+        {
+            try
+            {
+                return Ok(await _mediator.Send(new EdrivingCargoListarTodosInput()));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(EdrivingCargoListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> Get(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new EdrivingCargoListarPorIdInput { Id = id});
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+    }
+}
