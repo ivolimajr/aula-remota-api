@@ -2,7 +2,7 @@
 
 namespace AulaRemota.Core.Edriving.Deletar
 {
-    public class EdrivingDeletarInput : IRequest<string>
+    public class EdrivingDeletarInput : IRequest<bool>
     {
         public int Id { get; set; }
     }

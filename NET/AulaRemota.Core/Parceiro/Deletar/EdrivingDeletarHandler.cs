@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Core.Parceiro.Deletar
 {
-    public class ParceiroDeletarHandler : IRequestHandler<ParceiroDeletarInput, string>
+    public class ParceiroDeletarHandler : IRequestHandler<ParceiroDeletarInput, bool>
     {
         private readonly IRepository<ParceiroModel> _parceiroRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
@@ -20,7 +20,7 @@ namespace AulaRemota.Core.Parceiro.Deletar
             _enderecoRepository = enderecoRepository;
         } 
 
-        public async Task<string> Handle(ParceiroDeletarInput request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(ParceiroDeletarInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
 
@@ -35,7 +35,7 @@ namespace AulaRemota.Core.Parceiro.Deletar
             _usuarioRepository.Delete(usuario);
             _enderecoRepository.Delete(endereco);
 
-            return "Removido Com Sucesso";
+            return true;
         }
     }
 }

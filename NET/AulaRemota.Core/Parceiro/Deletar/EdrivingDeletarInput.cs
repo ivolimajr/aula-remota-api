@@ -2,7 +2,7 @@
 
 namespace AulaRemota.Core.Parceiro.Deletar
 {
-    public class ParceiroDeletarInput : IRequest<string>
+    public class ParceiroDeletarInput : IRequest<bool>
     {
         public int Id { get; set; }
     }

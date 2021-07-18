@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Core.AuthUser.Criar
 {
-    public class AuthUserDeletarHandler : IRequestHandler<AuthUserDeletarInput, string>
+    public class AuthUserDeletarHandler : IRequestHandler<AuthUserDeletarInput, bool>
     {
         private readonly IRepository<AuthUserModel> _authUserRepository;
 
@@ -16,7 +16,7 @@ namespace AulaRemota.Core.AuthUser.Criar
             _authUserRepository = authUserRepository;
         }
 
-        public async Task<string> Handle(AuthUserDeletarInput request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AuthUserDeletarInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
 
@@ -26,7 +26,7 @@ namespace AulaRemota.Core.AuthUser.Criar
                 if (authUser == null) throw new HttpClientCustomException("Não encontrado");
 
                 _authUserRepository.Delete(authUser);
-                return "Removido Com Sucesso";
+                return true;
             }
             catch (System.Exception)
             {

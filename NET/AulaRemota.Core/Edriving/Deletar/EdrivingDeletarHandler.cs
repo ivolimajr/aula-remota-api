@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Core.Edriving.Deletar
 {
-    public class EdrivingDeletarHandler : IRequestHandler<EdrivingDeletarInput, string>
+    public class EdrivingDeletarHandler : IRequestHandler<EdrivingDeletarInput, bool>
     {
         private readonly IRepository<EdrivingModel> _edrivingRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
@@ -18,7 +18,7 @@ namespace AulaRemota.Core.Edriving.Deletar
             _usuarioRepository = usuarioRepository;
         } 
 
-        public async Task<string> Handle(EdrivingDeletarInput request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EdrivingDeletarInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
 
@@ -31,7 +31,7 @@ namespace AulaRemota.Core.Edriving.Deletar
             _edrivingRepository.Delete(edriving);
             _usuarioRepository.Delete(usuario);
 
-            return "Removido Com Sucesso";
+            return true;
         }
     }
 }
