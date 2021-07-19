@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : class
     {
         protected readonly MySqlContext _context;
 
@@ -111,6 +111,26 @@ namespace AulaRemota.Infra.Repository
         public async Task<TEntity> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
     }

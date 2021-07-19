@@ -20,8 +20,6 @@ namespace AulaRemota.Core.Entity
 
         public int NivelAcesso { get; set; } // 10 a 19 -> PLATAFORMA | 20 a 29 -> PARCEIRO | 30 a 39 -> CFC | 40 a 49 -> ALUNO 
 
-
-
         public string GerarSenhas()
         {
             int Tamanho = 10; // Numero de digitos da senha

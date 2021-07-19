@@ -6,35 +6,31 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.Edriving.ListarTodos
+namespace AulaRemota.Core.EdrivingCargo.ListarTodos
 {
-    public class EdrivingListarTodosHandler : IRequestHandler<EdrivingListarTodosInput, EdrivingListarTodosResponse>
+    public class EdrivingCargoListarTodosHandler : IRequestHandler<EdrivingCargoListarTodosInput, EdrivingCargoListarTodosResponse>
     {
-        private readonly IRepository<EdrivingModel> _edrivingRepository;
+        private readonly IRepository<EdrivingCargoModel> _edrivingCargoRepository;
 
-        public EdrivingListarTodosHandler(IRepository<EdrivingModel> edrivingRepository)
+        public EdrivingCargoListarTodosHandler(IRepository<EdrivingCargoModel> edrivingRepository)
         {
-            _edrivingRepository = edrivingRepository;
+            _edrivingCargoRepository = edrivingRepository;
         }
 
-        public async Task<EdrivingListarTodosResponse> Handle(EdrivingListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<EdrivingCargoListarTodosResponse> Handle(EdrivingCargoListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _edrivingRepository.Context
-                    .Set<EdrivingModel>()
-                    .Include(u => u.Usuario)
-                    .Include(c => c.Cargo)
-                    .Where(u => u.Usuario.status > 0)
-                    .OrderBy(e => e.Id).ToListAsync();
+                var result = await _edrivingCargoRepository.Context.Set<EdrivingCargoModel>()
+                    .OrderBy(u => u.Cargo).ToListAsync();
 
-                return new EdrivingListarTodosResponse { Items = result };
+                return new EdrivingCargoListarTodosResponse { Items = result };
             }
             catch (System.Exception)
             {
                 throw;
             }
-            
+
         }
     }
 }
