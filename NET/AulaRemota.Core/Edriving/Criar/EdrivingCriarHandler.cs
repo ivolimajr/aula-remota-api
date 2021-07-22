@@ -1,4 +1,5 @@
-﻿using AulaRemota.Core.Helpers;
+﻿using AulaRemota.Core.Email.EnviarEmailRegistro;
+using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
 using System.Threading;
@@ -11,16 +12,24 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
         private readonly IRepository<EdrivingModel> _edrivingRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<EdrivingCargoModel> _cargoRepository;
+        private readonly IMediator _mediator;
 
-        public EdrivingCriarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository, IRepository<EdrivingCargoModel> cargoRepository)
+        public EdrivingCriarHandler(
+            IRepository<EdrivingModel> edrivingRepository, 
+            IRepository<UsuarioModel> usuarioRepository, 
+            IRepository<EdrivingCargoModel> cargoRepository, 
+            IMediator mediator
+            )
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
             _cargoRepository = cargoRepository;
+            _mediator = mediator;
         }
 
         public async Task<EdrivingCriarResponse> Handle(EdrivingCriarInput request, CancellationToken cancellationToken)
         {
+
             //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
             var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
             if (emailResult != null) throw new HttpClientCustomException("Email em uso");
@@ -50,30 +59,36 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
                 Usuario = user,
                 UsuarioId = user.Id
             };
-
+            EdrivingCriarResponse edrivingResult = new EdrivingCriarResponse();
             try
             {
                 EdrivingModel edrivingModel = await _edrivingRepository.CreateAsync(edriving);
 
-                var edrivingResult = new EdrivingCriarResponse
-                {
-                    Id = edrivingModel.Id,
-                    FullName = edrivingModel.FullName,
-                    Email = edrivingModel.Email,
-                    Cpf = edrivingModel.Cpf,
-                    Telefone = edrivingModel.Telefone,
-                    CargoId = edrivingModel.CargoId,
-                    UsuarioId = edrivingModel.UsuarioId,
-                    Cargo = edrivingModel.Cargo,
-                    Usuario = edrivingModel.Usuario
-                };
+                edrivingResult.Id = edrivingModel.Id;
+                edrivingResult.FullName = edrivingModel.FullName;
+                edrivingResult.Email = edrivingModel.Email;
+                edrivingResult.Cpf = edrivingModel.Cpf;
+                edrivingResult.Telefone = edrivingModel.Telefone;
+                edrivingResult.CargoId = edrivingModel.CargoId;
+                edrivingResult.UsuarioId = edrivingModel.UsuarioId;
+                edrivingResult.Cargo = edrivingModel.Cargo;
+                edrivingResult.Usuario = edrivingModel.Usuario;
                 edriving.Usuario.Password = "";
+
+                //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
+
                 return edrivingResult;
             }
             catch (System.Exception)
             {
 
                 throw;
+            }
+            finally
+            {
+                user = null;
+                edriving = null;
+                edrivingResult = null;
             }
         }
     }
