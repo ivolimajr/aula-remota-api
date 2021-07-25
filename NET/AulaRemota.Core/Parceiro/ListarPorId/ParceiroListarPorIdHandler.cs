@@ -36,7 +36,20 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
                         .Where(u => u.Usuario.status > 0)
                         .FirstAsync();
 
-                return new ParceiroListarPorIdResponse { Item = result };
+                return new ParceiroListarPorIdResponse {
+                    Id = result.Id,
+                    FullName = result.FullName,
+                    Email = result.Email,
+                    Telefone = result.Telefone,
+                    Descricao = result.Descricao,
+                    Cnpj = result.Cnpj,
+                    CargoId = result.CargoId,
+                    Cargo = result.Cargo,
+                    EnderecoId = result.EnderecoId,
+                    Endereco = result.Endereco,
+                    UsuarioId = result.UsuarioId,
+                    Usuario = result.Usuario,
+                };
             }
             catch (System.Exception)
             {

@@ -2,8 +2,7 @@
 
 namespace AulaRemota.Core.Parceiro.ListarTodos
 {
-    public class ParceiroListarPorIdResponse
+    public class ParceiroListarPorIdResponse : ParceiroModel
     {
-        public ParceiroModel Item { get; set; }
     }
 }
