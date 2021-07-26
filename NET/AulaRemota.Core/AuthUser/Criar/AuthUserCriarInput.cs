@@ -12,7 +12,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]

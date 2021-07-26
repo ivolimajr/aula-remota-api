@@ -19,7 +19,7 @@ namespace AulaRemota.Infra.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FullName = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -94,7 +94,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(type: "varchar(100)", nullable: true)
+                    Nome = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -115,7 +115,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(type: "varchar(100)", nullable: true)
+                    Nome = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cpf = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -150,7 +150,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(type: "varchar(100)", nullable: true)
+                    Nome = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),

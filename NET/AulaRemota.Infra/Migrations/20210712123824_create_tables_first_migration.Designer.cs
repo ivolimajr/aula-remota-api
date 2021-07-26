@@ -25,7 +25,7 @@ namespace AulaRemota.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Nome")
                         .HasColumnType("varchar(150)");
 
                     b.Property<string>("Password")
@@ -60,7 +60,7 @@ namespace AulaRemota.Infra.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(70)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Nome")
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Telefone")
@@ -159,7 +159,7 @@ namespace AulaRemota.Infra.Migrations
                     b.Property<int>("EnderecoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Nome")
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Telefone")
@@ -219,7 +219,7 @@ namespace AulaRemota.Infra.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(70)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Nome")
                         .HasColumnType("varchar(100)");
 
                     b.Property<int>("NivelAcesso")

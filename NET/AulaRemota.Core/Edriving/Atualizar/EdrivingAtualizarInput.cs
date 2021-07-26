@@ -11,7 +11,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
         public int Id { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
         [StringLength(maximumLength: 11, MinimumLength = 11)]
         public string Cpf { get; set; }

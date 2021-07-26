@@ -32,7 +32,7 @@ namespace AulaRemota.Core.AuthUser.Login
                 return new AuthUserLoginResponse
                 {
                     Id = result.Id,
-                    FullName = result.FullName,
+                    Nome = result.Nome,
                     Email = result.Email,
                     NivelAcesso = result.NivelAcesso,
                     status = result.status,

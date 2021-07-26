@@ -26,7 +26,7 @@ namespace AulaRemota.Core.AuthUser.Criar
             if (entity == null) throw new HttpClientCustomException("Não Encontrado");
 
 
-            if(request.FullName != null) entity.FullName = request.FullName.ToUpper();
+            if(request.Nome != null) entity.Nome = request.Nome.ToUpper();
             if(request.UserName != null) entity.UserName = request.UserName.ToUpper();
 
             try
@@ -35,7 +35,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
                 var AuthUser = new AuthUserAtualizarResponse();
                 AuthUser.Id         = result.Id; 
-                AuthUser.FullName   = result.FullName;
+                AuthUser.Nome   = result.Nome;
                 AuthUser.UserName   = result.UserName;
 
                 return AuthUser;

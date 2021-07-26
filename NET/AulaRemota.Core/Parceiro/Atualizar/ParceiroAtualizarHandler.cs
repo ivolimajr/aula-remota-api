@@ -67,12 +67,12 @@ namespace AulaRemota.Core.Parceiro.Atualizar
             if (usuario == null) throw new HttpClientCustomException("Errro ao carregar usuário");
 
             //ATUALIZA O NOME E EMAIL
-            if (request.FullName != null) usuario.FullName = request.FullName.ToUpper();
+            if (request.Nome != null) usuario.Nome = request.Nome.ToUpper();
             if (request.Email != null) usuario.Email = request.Email.ToUpper();
 
 
             // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
-            if (request.FullName != null)   entity.FullName     = request.FullName.ToUpper();
+            if (request.Nome != null)   entity.Nome     = request.Nome.ToUpper();
             if (request.Email != null)      entity.Email        = request.Email.ToUpper();
             if (request.Telefone != null)   entity.Telefone     = request.Telefone.ToUpper();
             if (request.Cnpj != null)       entity.Cnpj         = request.Cnpj.ToUpper();
@@ -94,7 +94,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                 return new ParceiroAtualizarResponse
                 {
                     Id = parceiroModel.Id,
-                    FullName = parceiroModel.FullName,
+                    Nome = parceiroModel.Nome,
                     Email = parceiroModel.Email,
                     Cnpj = parceiroModel.Cnpj,
                     Telefone = parceiroModel.Telefone,

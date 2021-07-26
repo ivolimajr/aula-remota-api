@@ -13,7 +13,7 @@ namespace AulaRemota.Core.Entity.Auth
 
 
         [Column(TypeName = "varchar(150)")]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
 
         [Column(TypeName = "varchar(150)")]

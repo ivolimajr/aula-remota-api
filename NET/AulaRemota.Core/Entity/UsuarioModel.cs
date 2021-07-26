@@ -8,7 +8,7 @@ namespace AulaRemota.Core.Entity
         public int Id { get; set; }
 
         [Column(TypeName = "varchar(100)")]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
         [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }

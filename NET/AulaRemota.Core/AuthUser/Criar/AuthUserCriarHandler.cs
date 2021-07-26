@@ -22,12 +22,12 @@ namespace AulaRemota.Core.AuthUser.Criar
             var userExists = _authUserRepository.Find(u => u.UserName == request.UserName);
             if (userExists != null) throw new HttpClientCustomException("Usuário já cadastrado");
 
-            request.FullName = request.FullName.ToUpper();
+            request.Nome = request.Nome.ToUpper();
             request.UserName = request.UserName.ToUpper();
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var AuthUserModel = new AuthUserModel();
-            AuthUserModel.FullName = request.FullName;
+            AuthUserModel.Nome = request.Nome;
             AuthUserModel.UserName = request.UserName;
             AuthUserModel.Password = request.Password;
 
@@ -38,7 +38,7 @@ namespace AulaRemota.Core.AuthUser.Criar
                 var authUserResult = new AuthUserCriarResponse
                 {
                     Id = authUser.Id,
-                    FullName = authUser.FullName,
+                    Nome = authUser.Nome,
                     UserName = authUser.UserName
                 };
                 return authUserResult;

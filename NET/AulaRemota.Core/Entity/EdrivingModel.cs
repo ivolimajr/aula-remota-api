@@ -4,10 +4,15 @@ namespace AulaRemota.Core.Entity
 {
     public class EdrivingModel
     {
+        public EdrivingModel()
+        {
+            this.Cargo = new EdrivingCargoModel();
+            this.Usuario = new UsuarioModel();
+        }
         public int Id { get; set; }
 
         [Column(TypeName = "varchar(100)")]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
         [Column(TypeName = "varchar(14)")]
         public string Cpf { get; set; }

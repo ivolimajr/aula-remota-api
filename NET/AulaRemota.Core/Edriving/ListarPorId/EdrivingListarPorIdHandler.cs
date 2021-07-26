@@ -38,7 +38,7 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                 return new EdrivingListarPorIdResponse { 
                 
                     Id = result.Id,
-                    FullName = result.FullName,
+                    Nome = result.Nome,
                     Email = result.Email,
                     Cpf = result.Cpf,
                     Telefone = result.Telefone,

@@ -4,10 +4,16 @@ namespace AulaRemota.Core.Entity
 {
     public class ParceiroModel
     {
+        public ParceiroModel()
+        {
+            this.Cargo = new ParceiroCargoModel();
+            this.Endereco = new EnderecoModel();
+            this.Usuario = new UsuarioModel();
+        }
         public int Id { get; set; }
 
         [Column(TypeName = "varchar(100)")]
-        public string FullName { get; set; }
+        public string Nome { get; set; }
 
         [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }

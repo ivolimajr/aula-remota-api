@@ -27,7 +27,7 @@ namespace AulaRemota.Core.Usuario.Criar
 
             var usuario = new UsuarioModel
             {
-                FullName = request.FullName.ToUpper(),
+                Nome = request.Nome.ToUpper(),
                 Email = request.Email.ToUpper(),
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
@@ -38,7 +38,7 @@ namespace AulaRemota.Core.Usuario.Criar
                 return new UsuarioCriarResponse
                 {
                     Id = user.Id,
-                    FullName = user.FullName,
+                    Nome = user.Nome,
                     Email = user.Email
                 };
 

@@ -38,7 +38,7 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
 
                 return new ParceiroListarPorIdResponse {
                     Id = result.Id,
-                    FullName = result.FullName,
+                    Nome = result.Nome,
                     Email = result.Email,
                     Telefone = result.Telefone,
                     Descricao = result.Descricao,
