@@ -1,4 +1,7 @@
-﻿namespace AulaRemota.Core.Entity.Edriving.Criar
+﻿using AulaRemota.Core.Entity.Auto_Escola;
+using System.Collections.Generic;
+
+namespace AulaRemota.Core.Entity.Edriving.Criar
 {
     public class EdrivingCriarResponse
     {
@@ -10,7 +13,7 @@
 
         public string Email { get; set; }
 
-        public string Telefone { get; set; }
+        public List<TelefoneModel> Telefone { get; set; }
 
         public int CargoId { get; set; }
         public EdrivingCargoModel Cargo { get; set; }

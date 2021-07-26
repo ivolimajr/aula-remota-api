@@ -13,6 +13,7 @@ namespace AulaRemota.Core.Entity
             this.Arquivos = new List<ArquivoModel>();
             this.Endereco = new EnderecoModel();
             this.Usuario = new UsuarioModel();
+            this.Telefones = new List<TelefoneModel>();
         }
         public int Id { get; set; }
 
@@ -27,14 +28,8 @@ namespace AulaRemota.Core.Entity
 
         public DateTime DataFundacao { get; set; }
 
-        [Column(TypeName = "varchar(15)")]
-        public string TelefoneFixo { get; set; }
-
         [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
-
-        [Column(TypeName = "varchar(15)")]
-        public string Telefone { get; set; }
 
         [Column(TypeName = "varchar(150)")]
         public string Descricao { get; set; }
@@ -44,6 +39,13 @@ namespace AulaRemota.Core.Entity
 
         [Column(TypeName = "varchar(14)")]
         public string Cnpj { get; set; }
+        public bool Status { get; set; }
+
+        public int TelefoneId { get; set; }
+        public ICollection<TelefoneModel> Telefones { get; set; }
+
+        public int ArquivoId { get; set; }
+        public virtual ICollection<ArquivoModel> Arquivos { get; set; }
 
         public int EnderecoId { get; set; }
         public EnderecoModel Endereco { get; set; }
@@ -51,9 +53,10 @@ namespace AulaRemota.Core.Entity
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
 
-        public virtual ICollection<ArquivoModel> Arquivos { get; set; }
         public virtual ICollection<AdministrativoModel> Administrativos { get; set; }
         public virtual ICollection<InstrutorModel> Instrutores { get; set; }
+        public virtual ICollection<CursoModel> Cursos { get; set; }
+        public virtual ICollection<TurmaModel> Turmas { get; set; }
         public virtual ICollection<AlunoModel> Alunos { get; set; }
     }
 }

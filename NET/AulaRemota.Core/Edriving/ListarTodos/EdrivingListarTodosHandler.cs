@@ -25,6 +25,7 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                     .Set<EdrivingModel>()
                     .Include(u => u.Usuario)
                     .Include(c => c.Cargo)
+                    .Include(t => t.Telefones)
                     //.Where(u => u.Usuario.status > 0)
                     .OrderBy(e => e.Id).ToListAsync();
 

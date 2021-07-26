@@ -26,6 +26,7 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
                     .Include(u => u.Usuario)
                     .Include(c => c.Cargo)
                     .Include(e => e.Endereco)
+                    .Include(t => t.Telefones)
                     .Where(u => u.Usuario.status > 0)
                     .OrderBy(e => e.Id).ToListAsync();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AulaRemota.Core.Entity.Auto_Escola
@@ -10,6 +11,7 @@ namespace AulaRemota.Core.Entity.Auto_Escola
             this.Cargo = new AutoEscolaCargoModel();
             this.Endereco = new EnderecoModel();
             this.Usuario = new UsuarioModel();
+            this.Telefones = new List<TelefoneModel>();
         }
 
         public int Id { get; set; }
@@ -30,14 +32,12 @@ namespace AulaRemota.Core.Entity.Auto_Escola
         public string Orgão { get; set; }
         public DateTime Aniversario { get; set; }
 
-        [Column(TypeName = "varchar(15)")]
-        public string Telefone { get; set; }
-
-        [Column(TypeName = "varchar(15)")]
-        public string TelefoneFixo { get; set; }
+        public int TelefoneId { get; set; }
+        public ICollection<TelefoneModel> Telefones { get; set; }
 
         [Column(TypeName = "varchar(150)")]
         public string Site { get; set; }
+        public bool Status { get; set; }
 
         public int EnderecoId { get; set; }
         public EnderecoModel Endereco { get; set; }
@@ -47,5 +47,8 @@ namespace AulaRemota.Core.Entity.Auto_Escola
 
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
+
+        public int AutoEscolaId { get; set; }
+        public AutoEscolaModel AutoEscola { get; set; }
     }
 }

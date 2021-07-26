@@ -40,7 +40,7 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
                     Id = result.Id,
                     Nome = result.Nome,
                     Email = result.Email,
-                    Telefone = result.Telefone,
+                    Telefones = result.Telefones,
                     Descricao = result.Descricao,
                     Cnpj = result.Cnpj,
                     CargoId = result.CargoId,

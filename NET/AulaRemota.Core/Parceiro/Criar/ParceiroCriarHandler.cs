@@ -1,6 +1,9 @@
-﻿using AulaRemota.Core.Helpers;
+﻿using AulaRemota.Core.Entity.Auto_Escola;
+using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,26 +31,37 @@ namespace AulaRemota.Core.Entity.Parceiro.Criar
             //VERIFICA SE O CARGO INFORMADO EXISTE
             var cargo = _cargoRepository.GetById(request.CargoId);
             if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
+            var user = new UsuarioModel();
+
+            user.Nome = request.Nome.ToUpper();
+            user.Email = request.Email.ToUpper();
+            user.NivelAcesso = 20;
+            user.status = 1;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Senha);
+
+            //CRIA UM ENDEREÇO
+            var endereco = new EnderecoModel();
+
+            endereco.Bairro = request.Bairro.ToUpper();
+            endereco.Cep = request.Cep.ToUpper();
+            endereco.Cidade = request.Cidade.ToUpper();
+            endereco.EnderecoLogradouro = request.EnderecoLogradouro.ToUpper();
+            endereco.Numero = request.Numero.ToUpper();
+            endereco.Uf = request.Uf.ToUpper();
 
             //CRIA UM Parceiro
-            var parceiro = new ParceiroModel();
-            parceiro.Nome = request.Nome.ToUpper();
-            parceiro.Cnpj = request.Cnpj.ToUpper();
-            parceiro.Descricao = request.Descricao.ToUpper();
-            parceiro.Email = request.Email.ToUpper();
-            parceiro.Telefone = request.Telefone;
-            parceiro.Cargo = cargo;
-            parceiro.Endereco.Bairro = request.Bairro.ToUpper();
-            parceiro.Endereco.Cep = request.Cep;
-            parceiro.Endereco.Cidade = request.Cidade.ToUpper();
-            parceiro.Endereco.EnderecoLogradouro = request.EnderecoLogradouro.ToUpper();
-            parceiro.Endereco.Numero = request.Numero.ToUpper();
-            parceiro.Endereco.Uf = request.Uf.ToUpper();
-            parceiro.Usuario.Nome = request.Nome.ToUpper();
-            parceiro.Usuario.Email = request.Email.ToUpper();
-            parceiro.Usuario.NivelAcesso = 20;
-            parceiro.Usuario.status = 1;
-            parceiro.Usuario.Password = BCrypt.Net.BCrypt.HashPassword(request.Senha);
+            var parceiro = new ParceiroModel()
+            {
+                Nome = request.Nome.ToUpper(),
+                Cnpj = request.Cnpj.ToUpper(),
+                Descricao = request.Descricao.ToUpper(),
+                Email = request.Email.ToUpper(),
+                Telefones = request.Telefones.ToList(),
+                CargoId = request.CargoId,
+                Cargo = cargo,
+                Endereco = endereco,
+                Usuario = user
+            };
 
             try
             {
@@ -59,7 +73,7 @@ namespace AulaRemota.Core.Entity.Parceiro.Criar
                     Nome = result.Nome,
                     Email = result.Email,
                     Cnpj = result.Cnpj,
-                    Telefone = result.Telefone,
+                    Telefones = result.Telefones,
                     CargoId = result.CargoId,
                     UsuarioId = result.UsuarioId,
                     EnderecoId = result.EnderecoId,

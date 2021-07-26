@@ -1,8 +1,10 @@
 ﻿using AulaRemota.Core.Entity;
+using AulaRemota.Core.Entity.Auto_Escola;
 using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -74,7 +76,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
             // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
             if (request.Nome != null)   entity.Nome     = request.Nome.ToUpper();
             if (request.Email != null)      entity.Email        = request.Email.ToUpper();
-            if (request.Telefone != null)   entity.Telefone     = request.Telefone.ToUpper();
+            if (request.Telefone != null)   entity.Telefones     = new List<TelefoneModel> { new TelefoneModel { Telefone = request.Telefone } };
             if (request.Cnpj != null)       entity.Cnpj         = request.Cnpj.ToUpper();
             if (request.Descricao != null)  entity.Descricao    = request.Descricao.ToUpper();
 
@@ -97,7 +99,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                     Nome = parceiroModel.Nome,
                     Email = parceiroModel.Email,
                     Cnpj = parceiroModel.Cnpj,
-                    Telefone = parceiroModel.Telefone,
+                    Telefones = parceiroModel.Telefones,
                     CargoId = parceiroModel.CargoId,
                     UsuarioId = parceiroModel.UsuarioId,
                     Cargo = parceiroModel.Cargo,

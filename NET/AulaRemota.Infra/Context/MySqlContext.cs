@@ -1,5 +1,7 @@
 ﻿using AulaRemota.Core.Entity;
 using AulaRemota.Core.Entity.Auth;
+using AulaRemota.Core.Entity.Auto_Escola;
+using AulaRemota.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Infra.Context
@@ -24,18 +26,14 @@ namespace AulaRemota.Infra.Context
                 new EdrivingCargoModel { Id = 3, Cargo = "ADMINISTRATIVO" }
                 );
 
-            modelBuilder.Entity<EdrivingModel>().HasOne(e => e.Cargo);
-            modelBuilder.Entity<EdrivingModel>().HasOne(e => e.Usuario);
-
-            modelBuilder.Entity<ParceiroModel>().HasOne(e => e.Cargo);
-            modelBuilder.Entity<ParceiroModel>().HasOne(e => e.Usuario);
         }
-
+        
         //AUTH
         public DbSet<AuthUserModel> AuthUser { get; set; }
 
         //USUARIO
         public DbSet<UsuarioModel> Usuario { get; set; }
+        public DbSet<TelefoneModel> Telefone { get; set; }
         public DbSet<EnderecoModel> Endereco { get; set; }
 
         // EDRIVING
@@ -45,6 +43,16 @@ namespace AulaRemota.Infra.Context
         // PARCEIRO
         public DbSet<ParceiroModel> Parceiro { get; set; }
         public DbSet<ParceiroCargoModel> ParceiroCargo { get; set; }
+
+        //AUTO ESCOLA
+        public DbSet<AdministrativoModel> Administrativo { get; set; }
+        public DbSet<AutoEscolaModel> AutoEscola { get; set; }
+        public DbSet<AlunoModel> Aluno { get; set; }
+        public DbSet<AutoEscolaCargoModel> AutoEscolaCargo { get; set; }
+        public DbSet<CursoModel> Curso { get; set; }
+        public DbSet<InstrutorModel> Instrutor { get; set; }
+        public DbSet<TurmaModel> Turma { get; set; }
+        public DbSet<ArquivoModel> Arquivo { get; set; }
 
 
     }

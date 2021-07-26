@@ -41,7 +41,7 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                     Nome = result.Nome,
                     Email = result.Email,
                     Cpf = result.Cpf,
-                    Telefone = result.Telefone,
+                    Telefones = result.Telefones.ToList(),
                     CargoId = result.CargoId,
                     Cargo = result.Cargo,
                     UsuarioId= result.UsuarioId,

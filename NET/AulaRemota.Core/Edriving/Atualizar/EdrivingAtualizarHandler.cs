@@ -1,8 +1,10 @@
 ﻿using AulaRemota.Core.Entity;
+using AulaRemota.Core.Entity.Auto_Escola;
 using AulaRemota.Core.Helpers;
 using AulaRemota.Core.Interfaces.Repository;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -61,7 +63,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
             // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
             if (request.Nome != null)   entity.Nome = request.Nome.ToUpper();
             if (request.Email != null)      entity.Email    = request.Email.ToUpper();
-            if (request.Telefone != null)   entity.Telefone = request.Telefone.ToUpper();
+            if (request.Telefone != null)   entity.Telefones = new List<TelefoneModel> { new TelefoneModel { Telefone = request.Telefone } };
             if (request.Cpf != null)        entity.Cpf      = request.Cpf.ToUpper();
 
             try
@@ -77,7 +79,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     Nome = edrivingModel.Nome,
                     Email = edrivingModel.Email,
                     Cpf = edrivingModel.Cpf,
-                    Telefone = edrivingModel.Telefone,
+                    Telefones = edrivingModel.Telefones,
                     CargoId = edrivingModel.CargoId,
                     UsuarioId = edrivingModel.UsuarioId,
                     Cargo = edrivingModel.Cargo,

@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using AulaRemota.Core.Entity.Auto_Escola;
+using MediatR;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Entity.Parceiro.Criar
@@ -47,9 +49,7 @@ namespace AulaRemota.Core.Entity.Parceiro.Criar
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(maximumLength: 11, MinimumLength = 11)]
-        public string Telefone { get; set; }
+        public List<TelefoneModel> Telefones { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
