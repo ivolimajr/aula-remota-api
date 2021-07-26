@@ -9,9 +9,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserListarPorIdHandler : IRequestHandler<AuthUserListarPorIdInput, AuthUserListarPorIdResponse>
     {
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public AuthUserListarPorIdHandler(IRepository<AuthUserModel> authUserRepository)
+        public AuthUserListarPorIdHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }

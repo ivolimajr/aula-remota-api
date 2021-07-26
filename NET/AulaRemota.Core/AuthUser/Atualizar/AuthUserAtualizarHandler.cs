@@ -10,9 +10,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserAtualizarHandler : IRequestHandler<AuthUserAtualizarInput,AuthUserAtualizarResponse>
     {
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public AuthUserAtualizarHandler(IRepository<AuthUserModel> authUserRepository)
+        public AuthUserAtualizarHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -31,7 +31,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
             try
             {
-                AuthUserModel result = await _authUserRepository.UpdateAsync(entity);
+                ApiUserModel result = await _authUserRepository.UpdateAsync(entity);
 
                 var AuthUser = new AuthUserAtualizarResponse();
                 AuthUser.Id         = result.Id; 

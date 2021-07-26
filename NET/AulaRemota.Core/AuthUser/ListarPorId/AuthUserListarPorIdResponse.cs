@@ -4,6 +4,6 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserListarPorIdResponse
     {
-        public AuthUserModel Item { get; set; }
+        public ApiUserModel Item { get; set; }
     }
 }

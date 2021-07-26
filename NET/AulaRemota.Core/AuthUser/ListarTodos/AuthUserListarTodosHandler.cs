@@ -10,9 +10,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserListarTodosHandler : IRequestHandler<AuthUserListarTodosInput, AuthUserListarTodosResponse>
     {
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public AuthUserListarTodosHandler(IRepository<AuthUserModel> authUserRepository)
+        public AuthUserListarTodosHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -21,7 +21,7 @@ namespace AulaRemota.Core.AuthUser.Criar
         {
             try
             {
-                var result = await _authUserRepository.Context.Set<AuthUserModel>()
+                var result = await _authUserRepository.Context.Set<ApiUserModel>()
                     .OrderBy(u => u.Id).ToListAsync();
 
                 return new AuthUserListarTodosResponse { Items = result };

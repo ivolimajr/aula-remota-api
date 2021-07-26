@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AulaRemota.Core.Entity
 {
@@ -7,13 +6,10 @@ namespace AulaRemota.Core.Entity
     {
         public int Id { get; set; }
 
-        [Column(TypeName = "varchar(100)")]
         public string Nome { get; set; }
 
-        [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
 
-        [Column(TypeName = "varchar(150)")]
         public string Password { get; set; }
 
         public int status { get; set; } // 0 -> DELETADO (DELETE) | 1 -> ATIVO | 2 ->INATIVADO

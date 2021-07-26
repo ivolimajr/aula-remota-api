@@ -9,9 +9,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserDeletarHandler : IRequestHandler<AuthUserDeletarInput, bool>
     {
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public AuthUserDeletarHandler(IRepository<AuthUserModel> authUserRepository)
+        public AuthUserDeletarHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -22,7 +22,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
             try
             {
-                AuthUserModel authUser = await _authUserRepository.GetByIdAsync(request.Id);
+                ApiUserModel authUser = await _authUserRepository.GetByIdAsync(request.Id);
                 if (authUser == null) throw new HttpClientCustomException("Não encontrado");
 
                 _authUserRepository.Delete(authUser);

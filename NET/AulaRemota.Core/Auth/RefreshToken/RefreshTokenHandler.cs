@@ -19,9 +19,9 @@ namespace AulaRemota.Core.Auth.RefreshToken
     {
         private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         private TokenConfiguration _configuration;
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public RefreshTokenHandler(IRepository<AuthUserModel> authUserRepository, TokenConfiguration configuration)
+        public RefreshTokenHandler(IRepository<ApiUserModel> authUserRepository, TokenConfiguration configuration)
         {
             _authUserRepository = authUserRepository;
             _configuration = configuration;

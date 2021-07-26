@@ -10,9 +10,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserCriarHandler : IRequestHandler<AuthUserCriarInput, AuthUserCriarResponse>
     {
-        private readonly IRepository<AuthUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public AuthUserCriarHandler(IRepository<AuthUserModel> authUserRepository)
+        public AuthUserCriarHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -26,14 +26,14 @@ namespace AulaRemota.Core.AuthUser.Criar
             request.UserName = request.UserName.ToUpper();
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            var AuthUserModel = new AuthUserModel();
+            var AuthUserModel = new ApiUserModel();
             AuthUserModel.Nome = request.Nome;
             AuthUserModel.UserName = request.UserName;
             AuthUserModel.Password = request.Password;
 
             try
             {
-                AuthUserModel authUser = await _authUserRepository.CreateAsync(AuthUserModel);
+                ApiUserModel authUser = await _authUserRepository.CreateAsync(AuthUserModel);
 
                 var authUserResult = new AuthUserCriarResponse
                 {
