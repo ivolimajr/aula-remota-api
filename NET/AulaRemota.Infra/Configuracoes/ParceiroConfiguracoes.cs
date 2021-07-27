@@ -4,23 +4,25 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes
 {
-    class EdrivingConfiguracoes : IEntityTypeConfiguration<EdrivingModel>
+    class ParceiroConfiguracoes : IEntityTypeConfiguration<ParceiroModel>
     {
-        public void Configure(EntityTypeBuilder<EdrivingModel> builder)
+        public void Configure(EntityTypeBuilder<ParceiroModel> builder)
         {
-            builder.ToTable("Edriving");
+            builder.ToTable("Parceiro");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
-            builder.Property(e => e.Cpf).HasColumnType("varchar").HasMaxLength(14).IsRequired();
             builder.Property(e => e.Email).HasColumnType("varchar").HasMaxLength(70).IsRequired();
+            builder.Property(e => e.Descricao).HasColumnType("varchar").HasMaxLength(150);
+            builder.Property(e => e.Cnpj).HasColumnType("varchar").HasMaxLength(14).IsRequired();
             builder.Property(e => e.CargoId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.EnderecoId).HasColumnType("int").IsRequired().IsRequired();
             builder.Property(e => e.UsuarioId).HasColumnType("int").IsRequired().IsRequired();
 
             builder.HasIndex(e => e.Nome);
 
-            builder.HasOne(e => e.Cargo).WithMany(e => e.Edriving).HasForeignKey(e => e.CargoId);
-            builder.HasOne(e => e.Usuario).WithOne(e => e.Edriving);
-            builder.HasMany(e => e.Telefones).WithOne(e => e.Edriving);
+            builder.HasOne(e => e.Cargo);
+            builder.HasOne(e => e.Usuario);
+            builder.HasMany(e => e.Telefones);
         }
     }
 }

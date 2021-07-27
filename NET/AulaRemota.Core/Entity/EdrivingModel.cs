@@ -22,6 +22,6 @@ namespace AulaRemota.Core.Entity
 
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
-        public virtual ICollection<TelefoneModel> Telefones { get; set; }
+        public virtual List<TelefoneModel> Telefones { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Entity
 {
@@ -10,5 +11,7 @@ namespace AulaRemota.Core.Entity
         [MaxLength(100)]
         [MinLength(3)]
         public string Cargo { get; set; }
+
+        public virtual List<EdrivingModel> Edriving { get; set; }
     }
 }

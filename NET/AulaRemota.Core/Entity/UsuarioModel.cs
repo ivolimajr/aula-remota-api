@@ -4,17 +4,15 @@ namespace AulaRemota.Core.Entity
 {
     public class UsuarioModel
     {
+
         public int Id { get; set; }
-
         public string Nome { get; set; }
-
         public string Email { get; set; }
-
         public string Password { get; set; }
-
         public int status { get; set; } // 0 -> DELETADO (DELETE) | 1 -> ATIVO | 2 ->INATIVADO
-
         public int NivelAcesso { get; set; } // 10 a 19 -> PLATAFORMA | 20 a 29 -> PARCEIRO | 30 a 39 -> CFC | 40 a 49 -> ALUNO 
+
+        public virtual EdrivingModel Edriving { get; set; }
 
         public string GerarSenhas()
         {
