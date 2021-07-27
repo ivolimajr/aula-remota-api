@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes
 {
-    class EdrivingCargoConfiguracoes : IEntityTypeConfiguration<EdrivingCargoModel>
+    public class EdrivingCargoConfiguracoes : IEntityTypeConfiguration<EdrivingCargoModel>
     {
         public void Configure(EntityTypeBuilder<EdrivingCargoModel> builder)
         {
@@ -12,13 +12,15 @@ namespace AulaRemota.Infra.Configuracoes
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Cargo).HasColumnType("varchar").HasMaxLength(100).IsRequired();
 
-            builder.HasIndex(e => e.Cargo);
-
             builder.HasData(
                 new EdrivingCargoModel { Id = 1, Cargo = "DIRETOR" },
                 new EdrivingCargoModel { Id = 2, Cargo = "ANALISTA" },
                 new EdrivingCargoModel { Id = 3, Cargo = "ADMINISTRATIVO" }
             );
+
+            builder.HasIndex(e => e.Cargo);
+
+            builder.HasMany(e => e.Edrivings).WithOne(e => e.Cargo).HasForeignKey(e => e.CargoId);
 
         }
     }

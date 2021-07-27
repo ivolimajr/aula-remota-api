@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace AulaRemota.Core.Entity.Auto_Escola
 {
     public class AutoEscolaCargoModel
     {
         public int Id { get; set; }
-
-        [Column(TypeName = "varchar(100)")]
         public string Cargo { get; set; }
+
+        public virtual List<AutoEscolaModel> AutoEscolas { get; set; }
+        public virtual List<InstrutorModel> Instrutores { get; set; }
+        public virtual List<AdministrativoModel> Administrativos { get; set; }
     }
 }

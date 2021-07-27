@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes
 {
-    class EnderecoConfiguracoes : IEntityTypeConfiguration<EnderecoModel>
+    public class EnderecoConfiguracoes : IEntityTypeConfiguration<EnderecoModel>
     {
         public void Configure(EntityTypeBuilder<EnderecoModel> builder)
         {
@@ -16,6 +16,12 @@ namespace AulaRemota.Infra.Configuracoes
             builder.Property(e => e.Bairro).HasColumnType("varchar").HasMaxLength(150);
             builder.Property(e => e.Cidade).HasColumnType("varchar").HasMaxLength(150);
             builder.Property(e => e.Numero).HasColumnType("varchar").HasMaxLength(50);
+
+            builder.HasOne(e => e.Instrutor).WithOne(e => e.Endereco);
+            builder.HasOne(e => e.Parceiro).WithOne(e => e.Endereco);
+            builder.HasOne(e => e.Administrativo).WithOne(e => e.Endereco);
+            builder.HasOne(e => e.AutoEscola).WithOne(e => e.Endereco);
+            builder.HasMany(e => e.Alunos).WithOne(e => e.Endereco).HasForeignKey(e => e.EnderecoId);
         }
     }
 }

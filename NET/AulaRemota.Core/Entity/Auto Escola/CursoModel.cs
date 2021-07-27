@@ -4,6 +4,11 @@ namespace AulaRemota.Core.Entity.Auto_Escola
 {
     public class CursoModel
     {
+        public CursoModel()
+        {
+            this.Turmas = new List<TurmaModel>();
+        }
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Codigo { get; set; }
@@ -13,10 +18,9 @@ namespace AulaRemota.Core.Entity.Auto_Escola
         public int InstrutorId { get; set; }
         public InstrutorModel Instrutor { get; set; }
 
-        public int TurmaId { get; set; }
-        public virtual List<TurmaModel> Turmas { get; set; }
-
         public int AutoEscolaId { get; set; }
-        public virtual List<AutoEscolaModel> AutoEscolas { get; set; }
+        public virtual AutoEscolaModel AutoEscolas { get; set; }
+
+        public virtual List<TurmaModel> Turmas { get; set; }
     }
 }

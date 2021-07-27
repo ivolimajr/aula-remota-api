@@ -3,6 +3,7 @@ using AulaRemota.Core.Entity.Auth;
 using AulaRemota.Core.Entity.Auto_Escola;
 using AulaRemota.Core.Models;
 using AulaRemota.Infra.Configuracoes;
+using AulaRemota.Infra.Configuracoes.Auto_Escola;
 using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Infra.Context
@@ -53,6 +54,16 @@ namespace AulaRemota.Infra.Context
             modelBuilder.ApplyConfiguration(new UsuarioConfiguracoes());
             modelBuilder.ApplyConfiguration(new TelefoneConfiguracoes());
             modelBuilder.ApplyConfiguration(new EnderecoConfiguracoes());
+
+            //AUTO ESCOLA
+            modelBuilder.ApplyConfiguration(new AutoEscolaConfiguracoes());
+            modelBuilder.ApplyConfiguration(new InstrutorConfiguracoes());
+            modelBuilder.ApplyConfiguration(new AdministrativoConfiguracoes());
+            modelBuilder.ApplyConfiguration(new TurmaConfiguracoes());
+            modelBuilder.ApplyConfiguration(new CursoConfiguracoes());
+            modelBuilder.ApplyConfiguration(new AlunoConfiguracoes());
+            modelBuilder.ApplyConfiguration(new ArquivoConfiguracoes());
+
         }
 
     }

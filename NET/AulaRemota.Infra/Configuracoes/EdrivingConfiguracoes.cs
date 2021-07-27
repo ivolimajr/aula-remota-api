@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes
 {
-    class EdrivingConfiguracoes : IEntityTypeConfiguration<EdrivingModel>
+    public class EdrivingConfiguracoes : IEntityTypeConfiguration<EdrivingModel>
     {
         public void Configure(EntityTypeBuilder<EdrivingModel> builder)
         {
@@ -18,7 +18,7 @@ namespace AulaRemota.Infra.Configuracoes
 
             builder.HasIndex(e => e.Nome);
 
-            builder.HasOne(e => e.Cargo).WithMany(e => e.Edriving).HasForeignKey(e => e.CargoId);
+            builder.HasOne(e => e.Cargo).WithMany(e => e.Edrivings).HasForeignKey(e => e.CargoId);
             builder.HasOne(e => e.Usuario).WithOne(e => e.Edriving);
             builder.HasMany(e => e.Telefones).WithOne(e => e.Edriving);
         }

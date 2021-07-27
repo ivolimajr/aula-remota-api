@@ -1,7 +1,14 @@
-﻿namespace AulaRemota.Core.Entity
+﻿using AulaRemota.Core.Entity.Auto_Escola;
+using System.Collections.Generic;
+
+namespace AulaRemota.Core.Entity
 {
     public class EnderecoModel
     {
+        public EnderecoModel()
+        {
+            this.Alunos = new List<AlunoModel>();
+        }
         public int Id { get; set; }
         public string Uf { get; set; }
         public string Cep { get; set; }
@@ -9,6 +16,12 @@
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Numero { get; set; }
-        
+
+        public virtual ParceiroModel Parceiro { get; set; }
+        public virtual AutoEscolaModel AutoEscola { get; set; }
+        public virtual AdministrativoModel Administrativo { get; set; }
+        public virtual InstrutorModel Instrutor { get; set; }
+        public virtual List<AlunoModel> Alunos { get; set; }
+
     }
 }

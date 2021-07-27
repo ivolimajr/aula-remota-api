@@ -60,6 +60,8 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e);
             }
         }
+
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(AuthUserCriarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

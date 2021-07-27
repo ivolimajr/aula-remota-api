@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes.Auto_Escola
 {
-    class CursoConfiguracoes : IEntityTypeConfiguration<CursoModel>
+    public class CursoConfiguracoes : IEntityTypeConfiguration<CursoModel>
     {
         public void Configure(EntityTypeBuilder<CursoModel> builder)
         {
@@ -16,14 +16,11 @@ namespace AulaRemota.Infra.Configuracoes.Auto_Escola
             builder.Property(e => e.CargaHoraria).HasColumnType("int").IsRequired();
             builder.Property(e => e.AutoEscolaId).HasColumnType("int").IsRequired();
             builder.Property(e => e.InstrutorId).HasColumnType("int").IsRequired();
-            builder.Property(e => e.TurmaId).HasColumnType("int").IsRequired();
 
             //RELACIONAMENTOS
+            builder.HasOne(e => e.AutoEscolas).WithMany(e => e.Cursos);
             builder.HasOne(e => e.Instrutor).WithMany(e => e.Cursos).HasForeignKey(e => e.InstrutorId);
             builder.HasMany(e => e.Turmas).WithMany(e => e.Cursos);
-            builder.HasMany(e => e.AutoEscolas).WithMany(e => e.Cursos);
-
-
         }
     }
 }

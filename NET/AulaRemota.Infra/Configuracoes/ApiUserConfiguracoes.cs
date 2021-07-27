@@ -1,11 +1,10 @@
-﻿using AulaRemota.Core.Entity;
-using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Core.Entity.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AulaRemota.Infra.Configuracoes
 {
-    class ApiUserConfiguracoes : IEntityTypeConfiguration<ApiUserModel>
+    public class ApiUserConfiguracoes : IEntityTypeConfiguration<ApiUserModel>
     {
         public void Configure(EntityTypeBuilder<ApiUserModel> builder)
         {

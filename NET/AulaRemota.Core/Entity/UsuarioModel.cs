@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AulaRemota.Core.Entity.Auto_Escola;
+using System;
 
 namespace AulaRemota.Core.Entity
 {
     public class UsuarioModel
     {
-
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
@@ -13,6 +13,11 @@ namespace AulaRemota.Core.Entity
         public int NivelAcesso { get; set; } // 10 a 19 -> PLATAFORMA | 20 a 29 -> PARCEIRO | 30 a 39 -> CFC | 40 a 49 -> ALUNO 
 
         public virtual EdrivingModel Edriving { get; set; }
+        public virtual ParceiroModel Parceiro { get; set; }
+        public virtual AutoEscolaModel AutoEscola { get; set; }
+        public virtual AdministrativoModel Administrativo { get; set; }
+        public virtual InstrutorModel Instrutor { get; set; }
+        public virtual AlunoModel Aluno { get; set; }
 
         public string GerarSenhas()
         {

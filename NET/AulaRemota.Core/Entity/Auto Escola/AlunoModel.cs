@@ -10,8 +10,6 @@ namespace AulaRemota.Core.Entity.Auto_Escola
 
         public AlunoModel()
         {
-            this.Endereco = new EnderecoModel();
-            this.Usuario = new UsuarioModel();
             this.Telefones = new List<TelefoneModel>();
         }
 
@@ -30,12 +28,14 @@ namespace AulaRemota.Core.Entity.Auto_Escola
         public string Identidade { get; set; }
 
         [Column(TypeName = "varchar(20)")]
-        public string Orgão { get; set; }
+        public string Orgao { get; set; }
         public DateTime Aniversario { get; set; }
-        public bool Status { get; set; }
 
-        public int TelefoneId { get; set; }
-        public ICollection<TelefoneModel> Telefones { get; set; }
+        public int TurmaId { get; set; }
+        public TurmaModel Turma { get; set; }
+
+        public int AutoEscolaId { get; set; }
+        public AutoEscolaModel AutoEscola { get; set; }
 
         public int EnderecoId { get; set; }
         public EnderecoModel Endereco { get; set; }
@@ -43,7 +43,6 @@ namespace AulaRemota.Core.Entity.Auto_Escola
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
 
-        public int AutoEscolaId { get; set; }
-        public AutoEscolaModel AutoEscola { get; set; }
+        public List<TelefoneModel> Telefones { get; set; }
     }
 }
