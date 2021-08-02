@@ -1,13 +1,14 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.Entity.Edriving.Criar
+namespace AulaRemota.Core.Edriving.Criar
 {
     public class EdrivingCriarResponse
     {
         public EdrivingCriarResponse()
         {
-            this.Telefones = new List<Telefone>();
+            this.Telefones = new List<TelefoneModel>();
         }
 
         public int Id { get; set; }
@@ -24,12 +25,6 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
 
-        public List<Telefone> Telefones { get; set; }
-    }
-
-     class Telefone
-    {
-        public int Id { get; set; }
-        public string Telefone { get; set; }
+        public List<TelefoneModel> Telefones { get; set; }
     }
 }

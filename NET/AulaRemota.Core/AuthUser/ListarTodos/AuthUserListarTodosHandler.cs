@@ -1,5 +1,5 @@
-﻿using AulaRemota.Core.Entity.Auth;
-using AulaRemota.Core.Interfaces.Repository;
+﻿using AulaRemota.Infra.Entity.Auth;
+using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

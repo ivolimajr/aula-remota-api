@@ -1,6 +1,6 @@
-﻿using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
 using System.Threading;
@@ -29,7 +29,7 @@ namespace AulaRemota.Core.Auth.RevokeToken
                 ApiUserModel usuario = await _authUserRepository.GetByIdAsync(authUser.Id);
 
                 usuario.RefreshToken = null;
-                await _authUserRepository.UpdateAsync(usuario);
+                _authUserRepository.Update(usuario);
                 return "Usuário da Api Removido";
 
             }

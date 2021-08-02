@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Infra.Entity.Auth;
 using System.Collections.Generic;
 
 namespace AulaRemota.Core.AuthUser.Criar

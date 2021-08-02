@@ -1,7 +1,6 @@
 using AulaRemota.Core.Configuration;
-using AulaRemota.Core.Interfaces.Repository;
-using AulaRemota.Infra.Context;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Infra.Context;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using AulaRemota.Api.Code;
+using Microsoft.AspNetCore.Http;
 
 namespace AulaRemota.Api
 {
@@ -31,6 +33,10 @@ namespace AulaRemota.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            UnitOfWork.ServiceCollection = services;
+            UnitOfWork.Configuration = Configuration;
+
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
 
@@ -42,6 +48,10 @@ namespace AulaRemota.Api
                 .Configure(tokenConfigurations);
 
             services.AddSingleton(tokenConfigurations);
+
+            //Configura instancia do UOW
+            //var provider = services.BuildServiceProvider();
+            AulaRemotaUnitOfWorkFactory<MySqlContext>.SetObjectContext(() => new MySqlContext(true));
 
             services.AddAuthentication(options =>
             {
@@ -76,9 +86,7 @@ namespace AulaRemota.Api
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
 
-
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddDependencyInjection();
 
             var assembly = AppDomain.CurrentDomain.Load("AulaRemota.Core");
             services.AddMediatR(assembly);

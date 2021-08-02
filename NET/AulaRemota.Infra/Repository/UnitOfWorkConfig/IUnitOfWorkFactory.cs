@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace AulaRemota.Infra.UnitOfWork
+namespace AulaRemota.Infra.Repository.UnitOfWorkConfig
 {
     public interface IUnitOfWorkFactory<TContext>
          where TContext : DbContext, new()
@@ -8,4 +8,3 @@ namespace AulaRemota.Infra.UnitOfWork
         IUnitOfWork<TContext> Create();
     }
 }
-

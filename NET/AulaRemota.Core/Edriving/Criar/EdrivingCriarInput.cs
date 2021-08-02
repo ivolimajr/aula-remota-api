@@ -1,10 +1,10 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity.Auto_Escola;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.Entity.Edriving.Criar
+namespace AulaRemota.Core.Edriving.Criar
 {
     public class EdrivingCriarInput : IRequest<EdrivingCriarResponse>
     {

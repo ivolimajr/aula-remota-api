@@ -1,17 +1,17 @@
-﻿using AulaRemota.Core.Interfaces.Repository;
-using AulaRemota.Infra.Context;
+﻿using AulaRemota.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 
 namespace AulaRemota.Infra.Repository
 {
     public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : class
     {
-        protected readonly MySqlContext _context;
+        private MySqlContext _context;
 
         public Repository(MySqlContext dbContext)
         {
@@ -31,15 +31,13 @@ namespace AulaRemota.Infra.Repository
         //INSERIR
         TEntity IRepository<TEntity>.Create(TEntity entity)
         {
-                _context.Set<TEntity>().Add(entity);
-                _context.SaveChanges();
-                return entity;
+            _context.Set<TEntity>().Add(entity);
+            return entity;
         }
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
             var result = await _context.Set<TEntity>().AddAsync(entity);
-            await _context.SaveChangesAsync();
             return result.Entity;
         }
 
@@ -50,28 +48,10 @@ namespace AulaRemota.Infra.Repository
 
             if (result != null)
             {
-                try
-                {
-                    _context.Entry(result).CurrentValues.SetValues(entity);
-                    _context.SaveChanges();
-                    return result;
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                _context.Entry(result).CurrentValues.SetValues(entity);
+                return result;
             }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<TEntity> UpdateAsync(TEntity entity)
-        {
-            var result = _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
-            return result.Entity;
+            return null;
         }
 
         //BUSCAR COM CLÁUSULA
@@ -94,7 +74,7 @@ namespace AulaRemota.Infra.Repository
         void IRepository<TEntity>.Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         //BUSCAR TODOS
@@ -111,6 +91,21 @@ namespace AulaRemota.Infra.Repository
         public async Task<TEntity> GetByIdAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
+        }
+
+        public TUnitOfWork GetCurrentUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork<MySqlContext>
+        {
+            return (TUnitOfWork)UnitOfWork.Current;
+        }
+
+        public void IgnoreUnitOfWork()
+        {
+            _context = UnitOfWork.GetContext(ignoreUnitOfWork: true);
+        }
+
+        public void EnableUnitOfWork()
+        {
+            _context = UnitOfWork.GetContext(ignoreUnitOfWork: false);
         }
 
         private bool disposed = false;

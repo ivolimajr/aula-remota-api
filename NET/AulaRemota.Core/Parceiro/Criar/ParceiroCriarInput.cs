@@ -1,10 +1,11 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Core.Parceiro.Criar;
+using AulaRemota.Infra.Entity.Auto_Escola;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.Entity.Parceiro.Criar
+namespace AulaRemota.Core.Parceiro.Criar
 {
     public class ParceiroCriarInput : IRequest<ParceiroCriarResponse>
     {

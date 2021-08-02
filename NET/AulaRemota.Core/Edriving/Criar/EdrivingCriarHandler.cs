@@ -1,16 +1,17 @@
 ﻿using AulaRemota.Core.Email.EnviarEmailRegistro;
-using AulaRemota.Core.Entity.Auto_Escola;
 using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Repository;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using MediatR;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.Entity.Edriving.Criar
+namespace AulaRemota.Core.Edriving.Criar
 {
-    public  class EdrivingCriarHandler : IRequestHandler<EdrivingCriarInput, EdrivingCriarResponse>
+    public class EdrivingCriarHandler : IRequestHandler<EdrivingCriarInput, EdrivingCriarResponse>
     {
         private readonly IRepository<EdrivingModel> _edrivingRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
@@ -18,9 +19,9 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
         private readonly IMediator _mediator;
 
         public EdrivingCriarHandler(
-            IRepository<EdrivingModel> edrivingRepository, 
-            IRepository<UsuarioModel> usuarioRepository, 
-            IRepository<EdrivingCargoModel> cargoRepository, 
+            IRepository<EdrivingModel> edrivingRepository,
+            IRepository<UsuarioModel> usuarioRepository,
+            IRepository<EdrivingCargoModel> cargoRepository,
             IMediator mediator
             )
         {
@@ -33,66 +34,71 @@ namespace AulaRemota.Core.Entity.Edriving.Criar
         public async Task<EdrivingCriarResponse> Handle(EdrivingCriarInput request, CancellationToken cancellationToken)
         {
 
-            //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-            var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
-            if (emailResult != null) throw new HttpClientCustomException("Email em uso");
-
-            //VERIFICA SE O CARGO INFORMADO EXISTE
-            var cargo = _cargoRepository.GetById(request.CargoId);
-            if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
-
-            //CRIA UM USUÁRIO
-            var user = new UsuarioModel();
-            user.Nome = request.Nome.ToUpper();
-            user.Email = request.Email.ToUpper();
-            user.NivelAcesso = 10;
-            user.status = request.Status;
-            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Senha);
-
-            //CRIA UM EDRIVING
-            var edriving = new EdrivingModel()
-            {
-                Nome = request.Nome.ToUpper(),
-                Cpf = request.Cpf.ToUpper(),
-                Email = request.Email.ToUpper(),
-                CargoId = request.CargoId,
-                Telefones = request.Telefones.ToList(),
-                Cargo = cargo,
-                Usuario = user
-            };
-
-            EdrivingCriarResponse edrivingResult = new EdrivingCriarResponse();
             try
             {
-                EdrivingModel edrivingModel = await _edrivingRepository.CreateAsync(edriving);
+                UnitOfWork.Current.CreateTransaction();
 
-                edrivingResult.Id           = edrivingModel.Id;
-                edrivingResult.Nome         = edrivingModel.Nome;
-                edrivingResult.Email        = edrivingModel.Email;
-                edrivingResult.Cpf          = edrivingModel.Cpf;
-                edrivingResult.Telefone     = edrivingModel.Telefones.ToList();
-                edrivingResult.CargoId      = edrivingModel.CargoId;
-                edrivingResult.UsuarioId    = edrivingModel.UsuarioId;
-                edrivingResult.Cargo        = edrivingModel.Cargo;
-                edrivingResult.Usuario      = edrivingModel.Usuario;
-                edriving.Usuario.Password   = "";
-                edrivingModel = null;
+
+                //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
+                var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
+                if (emailResult != null) throw new HttpClientCustomException("Email em uso");
+
+                //VERIFICA SE O CARGO INFORMADO EXISTE
+                var cargo = _cargoRepository.GetById(request.CargoId);
+                if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
+
+                //CRIA UM USUÁRIO
+                var user = new UsuarioModel()
+                {
+                    Nome = request.Nome.ToUpper(),
+                    Email = request.Email.ToUpper(),
+                    NivelAcesso = 10,
+                    status = request.Status,
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                };
+                user = _usuarioRepository.Create(user);
+                await _usuarioRepository.Context.SaveChangesAsync();
+
+                //CRIA UM EDRIVING
+                var edriving = new EdrivingModel()
+                {
+                    Nome = request.Nome.ToUpper(),
+                    Cpf = request.Cpf.ToUpper(),
+                    Email = request.Email.ToUpper(),
+                    CargoId = request.CargoId,
+                    Telefones = request.Telefones.ToList(),
+                    Cargo = cargo,
+                    Usuario = user
+                };
+                var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
+
+                await _edrivingRepository.Context.SaveChangesAsync();
 
                 //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 
-                return edrivingResult;
+                UnitOfWork.Current.Save();
+                UnitOfWork.Current.Commit();
+                return new EdrivingCriarResponse()
+                {
+                    Id = edrivingModel.Id,
+                    Nome = edrivingModel.Nome,
+                    Email = edrivingModel.Email,
+                    Cpf = edrivingModel.Cpf,
+                    Telefones = edrivingModel.Telefones.ToList(),
+                    CargoId = edrivingModel.CargoId,
+                    UsuarioId = edrivingModel.UsuarioId,
+                    Cargo = edrivingModel.Cargo,
+                    Usuario = edrivingModel.Usuario,
+                };
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                throw;
+                UnitOfWork.Current.Rollback();
+                throw new Exception(e.Message);
             }
             finally
             {
-                emailResult = null;
-                cargo = null;
-                user = null;
-                edriving = null;
-                edrivingResult = null;
+                UnitOfWork.Current.Dispose();
             }
         }
     }

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AulaRemota.Core", "AulaRemota.Core\AulaRemota.Core.csproj", "{043057E1-B364-47ED-8758-059DFBB285AA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4B3D70D4-F2B0-46A6-A127-2327EFA3205C} = {4B3D70D4-F2B0-46A6-A127-2327EFA3205C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AulaRemota.Infra", "AulaRemota.Infra\AulaRemota.Infra.csproj", "{4B3D70D4-F2B0-46A6-A127-2327EFA3205C}"
 EndProject

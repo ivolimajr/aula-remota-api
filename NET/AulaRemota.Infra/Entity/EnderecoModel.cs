@@ -1,7 +1,8 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace AulaRemota.Core.Entity
+namespace AulaRemota.Infra.Entity
 {
     public class EnderecoModel
     {
@@ -17,10 +18,16 @@ namespace AulaRemota.Core.Entity
         public string Cidade { get; set; }
         public string Numero { get; set; }
 
+
+        [JsonIgnore]
         public virtual ParceiroModel Parceiro { get; set; }
+        [JsonIgnore]
         public virtual AutoEscolaModel AutoEscola { get; set; }
+        [JsonIgnore]
         public virtual AdministrativoModel Administrativo { get; set; }
+        [JsonIgnore]
         public virtual InstrutorModel Instrutor { get; set; }
+        [JsonIgnore]
         public virtual List<AlunoModel> Alunos { get; set; }
 
     }

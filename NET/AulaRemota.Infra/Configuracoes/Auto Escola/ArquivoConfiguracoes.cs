@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Models;
+﻿using AulaRemota.Infra.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

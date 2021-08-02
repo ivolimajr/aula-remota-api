@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.Entity.Auto_Escola
+namespace AulaRemota.Infra.Entity.Auto_Escola
 {
     public class TurmaModel
     {

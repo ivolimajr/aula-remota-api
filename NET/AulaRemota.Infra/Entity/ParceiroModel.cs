@@ -1,7 +1,7 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.Entity
+namespace AulaRemota.Infra.Entity
 {
     public class ParceiroModel
     {

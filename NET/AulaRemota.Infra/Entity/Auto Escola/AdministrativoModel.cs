@@ -1,17 +1,14 @@
-﻿using AulaRemota.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AulaRemota.Core.Entity.Auto_Escola
+namespace AulaRemota.Infra.Entity.Auto_Escola
 {
-    public class InstrutorModel
+    public class AdministrativoModel
     {
-        public InstrutorModel()
+        public AdministrativoModel()
         {
             this.Telefones = new List<TelefoneModel>();
-            this.Cursos = new List<CursoModel>();
-            this.AutoEscolas = new List<AutoEscolaModel>();
         }
 
         public int Id { get; set; }
@@ -28,11 +25,9 @@ namespace AulaRemota.Core.Entity.Auto_Escola
         public AutoEscolaCargoModel Cargo { get; set; }
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
+        public int AutoEscolaId { get; set; }
+        public AutoEscolaModel AutoEscola { get; set; }
 
-
-        public virtual List<AutoEscolaModel> AutoEscolas { get; set; }
-        public List<CursoModel> Cursos { get; set; }
-        public List<TelefoneModel> Telefones { get; set; }
-        public virtual List<ArquivoModel> Arquivos { get; set; }
+        public ICollection<TelefoneModel> Telefones { get; set; }
     }
 }

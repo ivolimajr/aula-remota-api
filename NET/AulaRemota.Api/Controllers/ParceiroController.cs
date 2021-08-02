@@ -1,7 +1,7 @@
 ﻿using AulaRemota.Core.Parceiro.Atualizar;
 using AulaRemota.Core.Parceiro.Deletar;
 using AulaRemota.Core.Parceiro.ListarTodos;
-using AulaRemota.Core.Entity.Parceiro.Criar;
+using AulaRemota.Core.Parceiro.Criar;
 using AulaRemota.Core.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +39,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -60,7 +60,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -80,7 +80,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -117,7 +117,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 

@@ -1,13 +1,12 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
-using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+﻿using AulaRemota.Core.Helpers;
+using AulaRemota.Infra.Repository;
 using MediatR;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AulaRemota.Infra.Entity;
 
-namespace AulaRemota.Core.Entity.Parceiro.Criar
+namespace AulaRemota.Core.Parceiro.Criar
 {
     public  class ParceiroCriarHandler : IRequestHandler<ParceiroCriarInput, ParceiroCriarResponse>
     {

@@ -1,6 +1,6 @@
-﻿using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
 using System.Threading;
@@ -31,7 +31,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
             try
             {
-                ApiUserModel result = await _authUserRepository.UpdateAsync(entity);
+                ApiUserModel result = _authUserRepository.Update(entity);
 
                 var AuthUser = new AuthUserAtualizarResponse();
                 AuthUser.Id         = result.Id; 

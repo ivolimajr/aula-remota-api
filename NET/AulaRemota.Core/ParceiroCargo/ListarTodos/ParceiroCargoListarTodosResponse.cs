@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Entity;
+﻿using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 
 namespace AulaRemota.Core.ParceiroCargo.ListarTodos

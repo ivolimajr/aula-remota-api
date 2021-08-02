@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AulaRemota.Core.Entity.Auth
+namespace AulaRemota.Infra.Entity.Auth
 {
     public class ApiUserModel
     {

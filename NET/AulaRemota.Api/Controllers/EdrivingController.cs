@@ -1,7 +1,7 @@
 ﻿using AulaRemota.Core.Edriving.Atualizar;
 using AulaRemota.Core.Edriving.Deletar;
 using AulaRemota.Core.Edriving.ListarTodos;
-using AulaRemota.Core.Entity.Edriving.Criar;
+using AulaRemota.Core.Edriving.Criar;
 using AulaRemota.Core.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -39,7 +39,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -60,7 +60,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -80,7 +80,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
@@ -117,7 +117,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 

@@ -1,15 +1,44 @@
-﻿using AulaRemota.Core.Entity;
-using AulaRemota.Core.Entity.Auth;
-using AulaRemota.Core.Entity.Auto_Escola;
-using AulaRemota.Core.Models;
-using AulaRemota.Infra.Configuracoes;
-using AulaRemota.Infra.Configuracoes.Auto_Escola;
+﻿using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Entity.Auth;
+using AulaRemota.Infra.Entity.Auto_Escola;
+using AulaRemota.Infra.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 
 namespace AulaRemota.Infra.Context
 {
     public class MySqlContext : DbContext
     {
+        internal bool UseProvider { get; set; }
+        public IConfiguration Configuration { get; }
+
+        public MySqlContext(bool useProvider)
+        {
+            UseProvider = useProvider;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (UseProvider)
+            {
+                var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
+                optionsBuilder
+                    .UseMySql(UnitOfWork.Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) 
+                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion)
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors();
+            }
+            else
+            {
+            }
+        }
+        public MySqlContext()
+        {
+
+        }
+
         public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
 
         //GERAL
@@ -36,34 +65,9 @@ namespace AulaRemota.Infra.Context
         public DbSet<TurmaModel> Turma { get; set; }
         public DbSet<ArquivoModel> Arquivo { get; set; }
 
-        //CONFIGURAÇÕES DAS TABELAS
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //USUARIO DA API
-            modelBuilder.ApplyConfiguration(new ApiUserConfiguracoes());
-
-            //EDRIVING
-            modelBuilder.ApplyConfiguration(new EdrivingConfiguracoes());
-            modelBuilder.ApplyConfiguration(new EdrivingCargoConfiguracoes());
-
-            //PARCEIRO
-            modelBuilder.ApplyConfiguration(new ParceiroCargoConfiguracoes());
-            modelBuilder.ApplyConfiguration(new ParceiroConfiguracoes());
-
-            //GERAL
-            modelBuilder.ApplyConfiguration(new UsuarioConfiguracoes());
-            modelBuilder.ApplyConfiguration(new TelefoneConfiguracoes());
-            modelBuilder.ApplyConfiguration(new EnderecoConfiguracoes());
-
-            //AUTO ESCOLA
-            modelBuilder.ApplyConfiguration(new AutoEscolaConfiguracoes());
-            modelBuilder.ApplyConfiguration(new InstrutorConfiguracoes());
-            modelBuilder.ApplyConfiguration(new AdministrativoConfiguracoes());
-            modelBuilder.ApplyConfiguration(new TurmaConfiguracoes());
-            modelBuilder.ApplyConfiguration(new CursoConfiguracoes());
-            modelBuilder.ApplyConfiguration(new AlunoConfiguracoes());
-            modelBuilder.ApplyConfiguration(new ArquivoConfiguracoes());
-
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MySqlContext).GetType().Assembly);
         }
 
     }

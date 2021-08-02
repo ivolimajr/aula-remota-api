@@ -1,7 +1,7 @@
-﻿using AulaRemota.Core.Entity;
-using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -90,7 +90,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
 
             try
             {
-                ParceiroModel parceiroModel = await _parceiroRepository.UpdateAsync(entity);
+                ParceiroModel parceiroModel = _parceiroRepository.Update(entity);
                 if (parceiroModel == null) throw new HttpClientCustomException("Errro ao salvar dados usuário");
 
                 return new ParceiroAtualizarResponse

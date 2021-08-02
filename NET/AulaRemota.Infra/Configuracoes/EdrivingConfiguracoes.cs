@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Entity;
+﻿using AulaRemota.Infra.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +19,7 @@ namespace AulaRemota.Infra.Configuracoes
             builder.HasIndex(e => e.Nome);
 
             builder.HasOne(e => e.Cargo).WithMany(e => e.Edrivings).HasForeignKey(e => e.CargoId);
-            builder.HasOne(e => e.Usuario).WithOne(e => e.Edriving);
+            builder.HasOne(e => e.Usuario);
             builder.HasMany(e => e.Telefones).WithOne(e => e.Edriving);
         }
     }

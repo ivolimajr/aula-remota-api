@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Entity;
+﻿using AulaRemota.Infra.Entity;
 
 namespace AulaRemota.Core.Parceiro.ListarTodos
 {

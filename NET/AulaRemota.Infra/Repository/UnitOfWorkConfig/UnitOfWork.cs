@@ -1,17 +1,17 @@
 ﻿using AulaRemota.Infra.Context;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections;
 using System.Threading;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace AulaRemota.Infra.UnitOfWork
+namespace AulaRemota.Infra.Repository.UnitOfWorkConfig
 {
-    public class UnitOfWork
+    public static class UnitOfWork
     {
-        /*
         private const string HTTPCONTEXTKEY = "PrimaryObjects.Repository.Base.HttpContext.Key";
-        private static IServiceProvider _services;              
+        private static IServiceProvider _services;
         private static IUnitOfWorkFactory<MySqlContext> _unitOfWorkFactory;
         public static IConfiguration Configuration { get; set; }
 
@@ -74,7 +74,7 @@ namespace AulaRemota.Infra.UnitOfWork
         {
             _services = ServiceCollection.BuildServiceProvider();
         }
-
+        
         private static IUnitOfWork<MySqlContext> GetUnitOfWork()
         {
             if (HttpContext != null)
@@ -117,6 +117,5 @@ namespace AulaRemota.Infra.UnitOfWork
                 }
             }
         }
-        */
     }
 }

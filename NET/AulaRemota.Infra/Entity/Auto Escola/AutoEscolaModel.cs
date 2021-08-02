@@ -1,9 +1,9 @@
-﻿using AulaRemota.Core.Models;
+﻿using AulaRemota.Infra.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AulaRemota.Core.Entity.Auto_Escola
+namespace AulaRemota.Infra.Entity.Auto_Escola
 {
     public class AutoEscolaModel
     {

@@ -1,7 +1,8 @@
-﻿using AulaRemota.Core.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity.Auto_Escola;
 using System;
+using System.Text.Json.Serialization;
 
-namespace AulaRemota.Core.Entity
+namespace AulaRemota.Infra.Entity
 {
     public class UsuarioModel
     {
@@ -12,12 +13,18 @@ namespace AulaRemota.Core.Entity
         public int status { get; set; } // 0 -> DELETADO (DELETE) | 1 -> ATIVO | 2 ->INATIVADO
         public int NivelAcesso { get; set; } // 10 a 19 -> PLATAFORMA | 20 a 29 -> PARCEIRO | 30 a 39 -> CFC | 40 a 49 -> ALUNO 
 
-        public virtual EdrivingModel Edriving { get; set; }
-        public virtual ParceiroModel Parceiro { get; set; }
-        public virtual AutoEscolaModel AutoEscola { get; set; }
-        public virtual AdministrativoModel Administrativo { get; set; }
-        public virtual InstrutorModel Instrutor { get; set; }
+        [JsonIgnore]
         public virtual AlunoModel Aluno { get; set; }
+        [JsonIgnore]
+        public virtual AutoEscolaModel AutoEscola { get; set; }
+        [JsonIgnore]
+        public virtual InstrutorModel Instrutor { get; set; }
+        [JsonIgnore]
+        public virtual AdministrativoModel Administrativo { get; set; }
+        [JsonIgnore]
+        public virtual EdrivingModel Edriving { get; set; }
+        [JsonIgnore]
+        public virtual ParceiroModel Parceiro { get; set; }
 
         public string GerarSenhas()
         {

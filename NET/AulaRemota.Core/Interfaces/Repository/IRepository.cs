@@ -10,13 +10,11 @@ namespace AulaRemota.Core.Interfaces.Repository
     {
         public DbContext Context { get; }
 
-        TEntity Create(TEntity entity);
+        public TEntity Create(TEntity entity);
 
         public Task<TEntity> CreateAsync(TEntity entity);
 
         TEntity Update(TEntity entity);
-
-        public Task<TEntity> UpdateAsync(TEntity entity);
 
         IEnumerable<TEntity> GetAll();
         

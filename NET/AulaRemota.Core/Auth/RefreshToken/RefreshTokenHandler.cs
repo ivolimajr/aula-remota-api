@@ -1,7 +1,7 @@
 ﻿using AulaRemota.Core.Configuration;
-using AulaRemota.Core.Entity.Auth;
+using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Core.Helpers;
-using AulaRemota.Core.Interfaces.Repository;
+using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -48,7 +48,7 @@ namespace AulaRemota.Core.Auth.RefreshToken
 
             try
             {
-                await _authUserRepository.UpdateAsync(user);
+                _authUserRepository.Update(user);
 
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.Entity
+namespace AulaRemota.Infra.Entity
 {
-    public class EdrivingCargoModel
+    public class ParceiroCargoModel
     {
-        public EdrivingCargoModel()
+        public ParceiroCargoModel()
         {
-            this.Edrivings = new List<EdrivingModel>();
+            this.Parceiros = new List<ParceiroModel>();
         }
         public int Id { get; set; }
 
@@ -16,6 +16,6 @@ namespace AulaRemota.Core.Entity
         [MinLength(3)]
         public string Cargo { get; set; }
 
-        public virtual List<EdrivingModel> Edrivings { get; set; }
+        public virtual List<ParceiroModel> Parceiros { get; set; }
     }
 }

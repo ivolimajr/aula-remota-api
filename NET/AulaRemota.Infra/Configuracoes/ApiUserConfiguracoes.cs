@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Entity.Auth;
+﻿using AulaRemota.Infra.Entity.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
