@@ -1,8 +1,6 @@
-﻿using AulaRemota.Core.Email.EnviarEmailRegistro;
-using AulaRemota.Core.Helpers;
+﻿using AulaRemota.Core.Helpers;
 using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using MediatR;
 using System;
 using System.Linq;
@@ -36,7 +34,7 @@ namespace AulaRemota.Core.Edriving.Criar
 
             try
             {
-                UnitOfWork.Current.CreateTransaction();
+                _edrivingRepository.CreateTransaction();
 
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
@@ -57,7 +55,7 @@ namespace AulaRemota.Core.Edriving.Criar
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };
                 user = _usuarioRepository.Create(user);
-                await _usuarioRepository.Context.SaveChangesAsync();
+                _usuarioRepository.SaveChanges();
 
                 //CRIA UM EDRIVING
                 var edriving = new EdrivingModel()
@@ -71,13 +69,14 @@ namespace AulaRemota.Core.Edriving.Criar
                     Usuario = user
                 };
                 var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
+                _edrivingRepository.SaveChanges();
 
-                await _edrivingRepository.Context.SaveChangesAsync();
 
                 //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 
-                UnitOfWork.Current.Save();
-                UnitOfWork.Current.Commit();
+                _edrivingRepository.Commit();
+                _edrivingRepository.Save();
+
                 return new EdrivingCriarResponse()
                 {
                     Id = edrivingModel.Id,
@@ -93,12 +92,12 @@ namespace AulaRemota.Core.Edriving.Criar
             }
             catch (Exception e)
             {
-                UnitOfWork.Current.Rollback();
+                _edrivingRepository.Rollback();
                 throw new Exception(e.Message);
             }
             finally
             {
-                UnitOfWork.Current.Dispose();
+                _edrivingRepository.Context.Dispose();
             }
         }
     }

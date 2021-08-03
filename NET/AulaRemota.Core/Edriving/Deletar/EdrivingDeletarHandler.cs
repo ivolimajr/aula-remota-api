@@ -4,10 +4,8 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using System;
 using AulaRemota.Infra.Entity.Auto_Escola;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace AulaRemota.Core.Edriving.Deletar
@@ -30,7 +28,7 @@ namespace AulaRemota.Core.Edriving.Deletar
             if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
             try
             {
-                UnitOfWork.Current.CreateTransaction();
+                _edrivingRepository.CreateTransaction();
                 var edriving = await _edrivingRepository.GetByIdAsync(request.Id);
                 if (edriving == null) throw new HttpClientCustomException("Não encontrado");
 
@@ -41,30 +39,27 @@ namespace AulaRemota.Core.Edriving.Deletar
                 edriving.Usuario = usuario;
                 //REMOVE O OBJETO
                 _edrivingRepository.Delete(edriving);
-                _edrivingRepository.Context.SaveChanges();
 
                 _usuarioRepository.Delete(usuario);
-                _usuarioRepository.Context.SaveChanges();
 
                 foreach (var item in telefones)
                 {
                     item.Edriving = null;
                     _telefoneRepository.Delete(item);
                 }
-                _telefoneRepository.Context.SaveChanges();
-                               
-                UnitOfWork.Current.Save();
-                UnitOfWork.Current.Commit();
+
+                _edrivingRepository.Save();
+                _edrivingRepository.Commit();
                 return true;
             }
             catch (Exception e)
             {
-                UnitOfWork.Current.Rollback();
+                _edrivingRepository.Rollback();
                 throw new Exception(e.Message);
             }
             finally
             {
-                UnitOfWork.Current.Dispose();
+                _edrivingRepository.Context.Dispose();
             }
         }
     }

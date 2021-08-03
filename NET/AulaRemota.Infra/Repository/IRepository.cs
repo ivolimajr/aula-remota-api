@@ -29,10 +29,13 @@ namespace AulaRemota.Infra.Repository
 
         public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda);
 
-        public TUnitOfWork GetCurrentUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork<MySqlContext>;
-        public void IgnoreUnitOfWork();
-        public void EnableUnitOfWork();
+        public async Task SaveChangesAsync() => await Context.SaveChangesAsync();
+        public void SaveChanges() => Context.SaveChanges();
 
         void Delete(TEntity entity);
+        void CreateTransaction();
+        void Commit();
+        void Rollback();
+        void Save();
     }
 }

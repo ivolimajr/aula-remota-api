@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System.Linq;
 
 namespace AulaRemota.Core.Edriving.Atualizar
 {
@@ -31,7 +31,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
 
             try
             {
-                UnitOfWork.Current.CreateTransaction();
+                _edrivingRepository.CreateTransaction();
                 //BUSCA O OBJETO A SER ATUALIZADO
                 var entity = _edrivingRepository.GetById(request.Id);
                 if (entity == null) throw new HttpClientCustomException("Não Encontrado");
@@ -49,14 +49,14 @@ namespace AulaRemota.Core.Edriving.Atualizar
                 else
                 {
                     //SE O USUÁRIO NÃO INFORMAR UM CARGO, É SETADO O CARGO ANTERIOR
-                    var cargo = _cargoRepository.GetById(entity.CargoId);
+                    var cargo = await _cargoRepository.GetByIdAsync(entity.CargoId);
                     if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
 
                     entity.Cargo = cargo;
                 }
 
                 //BUSCA O OBJETO USUARIO PARA ATUALIZAR
-                var usuario = _usuarioRepository.GetById(entity.UsuarioId);
+                var usuario = await _usuarioRepository.GetByIdAsync(entity.UsuarioId);
                 if (usuario == null) throw new HttpClientCustomException("Errro ao carregar usuário");
 
                 //ATUALIZA O NOME E EMAIL
@@ -67,7 +67,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
                 if (request.Nome != null) entity.Nome = request.Nome.ToUpper();
                 if (request.Email != null) entity.Email = request.Email.ToUpper();
-                if (request.Telefone != null) entity.Telefones = new List<TelefoneModel> { new TelefoneModel { Telefone = request.Telefone } };
+                if (request.Telefones != null) entity.Telefones = request.Telefones;
                 if (request.Cpf != null) entity.Cpf = request.Cpf.ToUpper();
 
                 var resultUser = _usuarioRepository.Update(usuario);
@@ -88,18 +88,18 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     Usuario = edrivingModel.Usuario
                 };
 
-                UnitOfWork.Current.Save();
-                UnitOfWork.Current.Commit();
+                _edrivingRepository.Save();
+                _edrivingRepository.Commit();
                 return edrivingResult;
             }
             catch (Exception)
             {
-                UnitOfWork.Current.Rollback();
+                _edrivingRepository.Rollback();
                 throw;
             }
             finally
             {
-                UnitOfWork.Current.Dispose();
+                _edrivingRepository.Context.Dispose();
             }
         }
     }

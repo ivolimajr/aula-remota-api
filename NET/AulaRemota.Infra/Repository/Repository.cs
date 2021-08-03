@@ -6,12 +6,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AulaRemota.Infra.Repository
 {
     public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : class
     {
         private MySqlContext _context;
+        private IDbContextTransaction _transaction;
 
         public Repository(MySqlContext dbContext)
         {
@@ -93,21 +95,6 @@ namespace AulaRemota.Infra.Repository
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public TUnitOfWork GetCurrentUnitOfWork<TUnitOfWork>() where TUnitOfWork : IUnitOfWork<MySqlContext>
-        {
-            return (TUnitOfWork)UnitOfWork.Current;
-        }
-
-        public void IgnoreUnitOfWork()
-        {
-            _context = UnitOfWork.GetContext(ignoreUnitOfWork: true);
-        }
-
-        public void EnableUnitOfWork()
-        {
-            _context = UnitOfWork.GetContext(ignoreUnitOfWork: false);
-        }
-
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
@@ -128,5 +115,62 @@ namespace AulaRemota.Infra.Repository
             GC.SuppressFinalize(this);
         }
 
+        public virtual async Task SaveChangesAsync()
+        {
+            await Context.SaveChangesAsync();
+        }
+
+        public virtual void SaveChanges()
+        {
+            Context.SaveChanges();
+        }
+
+        public void CreateTransaction()
+        {
+            if (Context != null)
+            {
+                _transaction = Context.Database.BeginTransaction();
+            }
+            else
+            {
+                throw new ArgumentNullException("Context UnitOfWork é null");
+            }
+        }
+
+        public void Rollback()
+        {
+            if (Context != null)
+            {
+                _transaction.Rollback();
+                _transaction.Dispose();
+            }
+            else
+            {
+                throw new ArgumentNullException("Context UnitOfWork é null");
+            }
+        }
+
+        public void Commit()
+        {
+            if (Context != null)
+            {
+                _transaction.Commit();
+            }
+            else
+            {
+                throw new ArgumentNullException("Context UnitOfWork é null");
+            }
+        }
+        public void Save()
+        {
+            if (Context != null)
+            {
+                Context.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException("Context UnitOfWork é null");
+            }
+        }
     }
 }
