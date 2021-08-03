@@ -33,6 +33,10 @@ namespace AulaRemota.Core.Edriving.Atualizar
             {
                 _edrivingRepository.CreateTransaction();
                 //BUSCA O OBJETO A SER ATUALIZADO
+                //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
+                var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
+                if (emailResult != null) throw new HttpClientCustomException("Email em uso");
+
                 var entity = _edrivingRepository.GetById(request.Id);
                 if (entity == null) throw new HttpClientCustomException("Não Encontrado");
 

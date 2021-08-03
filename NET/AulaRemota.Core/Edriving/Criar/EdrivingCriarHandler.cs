@@ -36,7 +36,6 @@ namespace AulaRemota.Core.Edriving.Criar
             {
                 _edrivingRepository.CreateTransaction();
 
-
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
                 if (emailResult != null) throw new HttpClientCustomException("Email em uso");
