@@ -5,6 +5,9 @@ namespace AulaRemota.Core.AuthUser.Criar
 {
     public class AuthUserCriarInput : IRequest<AuthUserCriarResponse>
     {
+        /// <summary>
+        /// Formato de Email válido
+        /// </summary>
         [Required]
         [EmailAddress]
         [StringLength(maximumLength:150, MinimumLength =5)]

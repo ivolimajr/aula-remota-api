@@ -18,6 +18,8 @@ using System.Text;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using AulaRemota.Api.Code;
 using Microsoft.AspNetCore.Http;
+using System.Reflection;
+using System.IO;
 
 namespace AulaRemota.Api
 {
@@ -33,7 +35,7 @@ namespace AulaRemota.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             UnitOfWork.ServiceCollection = services;
             UnitOfWork.Configuration = Configuration;
 
@@ -82,7 +84,7 @@ namespace AulaRemota.Api
             services.AddDbContext<MySqlContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
-                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
+                                                                                                  //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors());
 
@@ -91,9 +93,13 @@ namespace AulaRemota.Api
             var assembly = AppDomain.CurrentDomain.Load("AulaRemota.Core");
             services.AddMediatR(assembly);
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(opt =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AulaRemota.Api", Version = "v1" });
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "AulaRemota.Api", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                opt.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
             });
         }
 
@@ -103,7 +109,11 @@ namespace AulaRemota.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1"));
+                app.UseSwaggerUI(opt =>
+                {
+                    opt.RoutePrefix = string.Empty;
+                    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1");
+                });
             }
 
             app.UseHttpsRedirection();

@@ -20,6 +20,12 @@ namespace AulaRemota.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Obter o token para consumo da API
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Retorna o Token bearer</response>
         [HttpPost]
         [Route("getToken")]
         [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
