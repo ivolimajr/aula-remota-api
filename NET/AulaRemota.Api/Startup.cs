@@ -20,6 +20,7 @@ using AulaRemota.Api.Code;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using System.IO;
+using System.Collections.Generic;
 
 namespace AulaRemota.Api
 {
@@ -100,6 +101,31 @@ namespace AulaRemota.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
                 opt.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Essa API usa autenticação JWT Bearer Token. Solicite acesso para fazer uso.",
+                });
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
+
+
             });
         }
 

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
+    /// <summary>
+    /// Endpoinst para objter acesso a API
+    /// </summary>
     [Route("api/[controller]")]
     [Authorize("Bearer")]
     [ApiController]
@@ -22,6 +25,10 @@ namespace AulaRemota.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Retorna todos os usuário com acesso a API
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(AuthUserListarTodosResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -41,6 +48,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna um usuário informando o ID como parâmetro
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AuthUserListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,6 +73,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastra um novo usuário para consumir a API
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(AuthUserCriarResponse), StatusCodes.Status200OK)]
@@ -81,6 +98,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza um usuário da API
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(AuthUserAtualizarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,6 +122,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove um usuário da API
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async ValueTask<ActionResult> Delete(int id)
         {
@@ -118,6 +145,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Endpoint para fazer login na plataforma
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Login")]
         [ProducesResponseType(typeof(AuthUserLoginResponse), StatusCodes.Status200OK)]

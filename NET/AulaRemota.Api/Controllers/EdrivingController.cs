@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
+    /// <summary>
+    /// Lista os EndPoints dos usuários do Edriving
+    /// </summary>
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]")]
@@ -24,6 +27,10 @@ namespace AulaRemota.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Retorna um Array de items com os usuários
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(EdrivingListarTodosResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,7 +50,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Retorna um item com o usuário solicitado por ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(EdrivingListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,7 +75,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Insere um novo usuário
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(EdrivingCriarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -84,6 +99,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza um usuário
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(EdrivingAtualizarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -103,6 +123,11 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove um usuário
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async ValueTask<ActionResult> Delete(int id)
         {

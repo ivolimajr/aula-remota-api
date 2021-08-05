@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
+    /// <summary>
+    /// Endpoints para obter o token e refreshToken
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -26,6 +29,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Retorna o Token bearer</response>
+        /// <response code="400">Provavelmente você não tem acesso a API</response>
         [HttpPost]
         [Route("getToken")]
         [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
@@ -46,6 +50,13 @@ namespace AulaRemota.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualizar o Token
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Atualiza o Token</response>
+        /// <response code="400">RefreshToken inválido</response>
         [HttpPost]
         [Route("refresh")]
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
