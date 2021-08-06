@@ -4,6 +4,10 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
 {
     public class TelefoneModel
     {
+        public TelefoneModel()
+        {
+            this.Edriving = new EdrivingModel();
+        }
         public int Id { get; set; }
         public string Telefone { get; set; }
 

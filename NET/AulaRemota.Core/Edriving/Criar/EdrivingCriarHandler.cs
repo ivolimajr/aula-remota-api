@@ -1,5 +1,6 @@
 ﻿using AulaRemota.Core.Helpers;
 using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
@@ -14,18 +15,22 @@ namespace AulaRemota.Core.Edriving.Criar
         private readonly IRepository<EdrivingModel> _edrivingRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<EdrivingCargoModel> _cargoRepository;
+        private readonly IRepository<TelefoneModel> _telefoneRepository;
         private readonly IMediator _mediator;
 
         public EdrivingCriarHandler(
             IRepository<EdrivingModel> edrivingRepository,
             IRepository<UsuarioModel> usuarioRepository,
             IRepository<EdrivingCargoModel> cargoRepository,
+            IRepository<TelefoneModel> telefoneRepository,
             IMediator mediator
             )
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
             _cargoRepository = cargoRepository;
+            _cargoRepository = cargoRepository;
+            _telefoneRepository = telefoneRepository;
             _mediator = mediator;
         }
 
@@ -38,7 +43,18 @@ namespace AulaRemota.Core.Edriving.Criar
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
-                if (emailResult != null) throw new HttpClientCustomException("Email em uso");
+                if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
+
+                //VERIFICA SE O CPF JÁ ESTÁ EM USO
+                var emailCpf = _edrivingRepository.Find(u => u.Cpf == request.Cpf);
+                if (emailCpf != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
+
+                //VERIFICA SE O CPF JÁ ESTÁ EM USO
+                foreach (var item in request.Telefones.ToList())
+                {
+                    var telefoneResult = _telefoneRepository.Find(u => u.Telefone == item.Telefone);
+                    if (telefoneResult != null) throw new HttpClientCustomException("Telefone: "+telefoneResult.Telefone+" já em uso");
+                }
 
                 //VERIFICA SE O CARGO INFORMADO EXISTE
                 var cargo = _cargoRepository.GetById(request.CargoId);

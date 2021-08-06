@@ -1,4 +1,5 @@
-﻿using AulaRemota.Infra.Entity.Auto_Escola;
+﻿using AulaRemota.Core.Helpers.Validadores;
+using AulaRemota.Infra.Entity.Auto_Escola;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace AulaRemota.Core.Edriving.Criar
         public string Nome { get; set; }
 
         [Required]
+        [CpfValidador(ErrorMessage ="Cpf é Inválido")]
         [StringLength(maximumLength: 11, MinimumLength = 11)]
         public string Cpf { get; set; }
 

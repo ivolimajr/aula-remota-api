@@ -1,13 +1,12 @@
 ﻿using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Repository;
 using AulaRemota.Core.Helpers;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using AulaRemota.Infra.Entity.Auto_Escola;
 
 namespace AulaRemota.Core.Edriving.Atualizar
 {
@@ -16,12 +15,19 @@ namespace AulaRemota.Core.Edriving.Atualizar
         private readonly IRepository<EdrivingModel> _edrivingRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<EdrivingCargoModel> _cargoRepository;
+        private readonly IRepository<TelefoneModel> _telefoneRepository;
 
-        public EdrivingAtualizarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository, IRepository<EdrivingCargoModel> cargoRepository)
+        public EdrivingAtualizarHandler(
+            IRepository<EdrivingModel> edrivingRepository,
+            IRepository<UsuarioModel> usuarioRepository,
+            IRepository<EdrivingCargoModel> cargoRepository,
+            IRepository<TelefoneModel> telefoneRepository
+            )
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
             _cargoRepository = cargoRepository;
+            _telefoneRepository = telefoneRepository;
         }
 
 
@@ -34,11 +40,23 @@ namespace AulaRemota.Core.Edriving.Atualizar
                 _edrivingRepository.CreateTransaction();
                 //BUSCA O OBJETO A SER ATUALIZADO
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
-                if (emailResult != null) throw new HttpClientCustomException("Email em uso");
+                var emailUnique = _usuarioRepository.Find(u => u.Email == request.Email);
+                if (emailUnique != null && emailUnique.Id != request.UsuarioId) throw new HttpClientCustomException("Email em uso");
+
+                //VERIFICA SE O CPF JÁ ESTÁ EM USO
+                var cpfUnique = _edrivingRepository.Find(u => u.Cpf == request.Cpf);
+                if (cpfUnique != null && cpfUnique.Id != request.Id) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
 
                 var entity = _edrivingRepository.GetById(request.Id);
                 if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+/*
+                //VERIFICA SE O CPF JÁ ESTÁ EM USO
+                foreach (var item in request.Telefones.ToList())
+                {
+                    var telefoneResult = _telefoneRepository.Find(u => u.Telefone == item.Telefone);
+                    if (telefoneResult != null && entity.Id != request.Id) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                }
+*/
 
                 //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
                 if (request.CargoId != 0)
@@ -79,7 +97,10 @@ namespace AulaRemota.Core.Edriving.Atualizar
 
                 EdrivingModel edrivingModel = _edrivingRepository.Update(entity);
 
-                var edrivingResult = new EdrivingAtualizarResponse
+                _edrivingRepository.Save();
+                _edrivingRepository.Commit();
+
+                return new EdrivingAtualizarResponse
                 {
                     Id = edrivingModel.Id,
                     Nome = edrivingModel.Nome,
@@ -91,10 +112,6 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     Cargo = edrivingModel.Cargo,
                     Usuario = edrivingModel.Usuario
                 };
-
-                _edrivingRepository.Save();
-                _edrivingRepository.Commit();
-                return edrivingResult;
             }
             catch (Exception)
             {
