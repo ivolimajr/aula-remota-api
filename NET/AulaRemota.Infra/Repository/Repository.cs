@@ -76,7 +76,6 @@ namespace AulaRemota.Infra.Repository
         void IRepository<TEntity>.Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
-            //_context.SaveChanges();
         }
 
         //BUSCAR TODOS

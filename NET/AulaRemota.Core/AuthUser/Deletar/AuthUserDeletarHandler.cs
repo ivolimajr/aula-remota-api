@@ -18,7 +18,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
         public async Task<bool> Handle(AuthUserDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             try
             {

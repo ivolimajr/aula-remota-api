@@ -19,7 +19,7 @@ namespace AulaRemota.Core.AuthUser.Criar
 
         public async Task<AuthUserAtualizarResponse> Handle(AuthUserAtualizarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválido");
 
             //BUSCA O OBJETO A SER ATUALIZADO
             var entity = _authUserRepository.GetById(request.Id);

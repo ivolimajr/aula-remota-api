@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using AulaRemota.Infra.Entity.Auto_Escola;
 
 namespace AulaRemota.Core.Edriving.ListarTodos
 {
@@ -20,7 +22,7 @@ namespace AulaRemota.Core.Edriving.ListarTodos
 
         public async Task<EdrivingListarPorIdResponse> Handle(EdrivingListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             try
             {

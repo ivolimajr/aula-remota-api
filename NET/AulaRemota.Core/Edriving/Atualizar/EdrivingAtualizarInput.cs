@@ -31,8 +31,5 @@ namespace AulaRemota.Core.Edriving.Atualizar
 
         [Range(0, 100)]
         public int CargoId { get; set; }
-
-        [Range(0, 99999)]
-        public int UsuarioId { get; set; }
     }
 }

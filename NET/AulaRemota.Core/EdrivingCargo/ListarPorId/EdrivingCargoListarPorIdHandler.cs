@@ -20,7 +20,7 @@ namespace AulaRemota.Core.EdrivingCargo.ListarPorId
 
         public async Task<EdrivingCargoListarPorIdResponse> Handle(EdrivingCargoListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             try
             {

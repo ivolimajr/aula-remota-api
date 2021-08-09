@@ -19,33 +19,39 @@ namespace AulaRemota.Core.AuthUser.Criar
 
         public async Task<AuthUserCriarResponse> Handle(AuthUserCriarInput request, CancellationToken cancellationToken)
         {
-            var userExists = _authUserRepository.Find(u => u.UserName == request.UserName);
-            if (userExists != null) throw new HttpClientCustomException("Usuário já cadastrado");
-
-            request.Nome = request.Nome.ToUpper();
-            request.UserName = request.UserName.ToUpper();
-            request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-            var AuthUserModel = new ApiUserModel();
-            AuthUserModel.Nome = request.Nome;
-            AuthUserModel.UserName = request.UserName;
-            AuthUserModel.Password = request.Password;
-
             try
             {
-                ApiUserModel authUser = await _authUserRepository.CreateAsync(AuthUserModel);
+                var userExists = _authUserRepository.Find(u => u.UserName == request.UserName);
+                if (userExists != null) throw new HttpClientCustomException("Usuário já cadastrado");
 
-                var authUserResult = new AuthUserCriarResponse
+                var AuthUserModel = new ApiUserModel()
+                {
+                    Nome = request.Nome.ToUpper(),
+                    UserName = request.UserName.ToUpper(),
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
+                };
+
+                _authUserRepository.CreateTransaction();
+                var authUser = await _authUserRepository.CreateAsync(AuthUserModel);
+
+                _authUserRepository.Commit();
+                _authUserRepository.Save();
+
+                return new AuthUserCriarResponse
                 {
                     Id = authUser.Id,
                     Nome = authUser.Nome,
                     UserName = authUser.UserName
                 };
-                return authUserResult;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                _authUserRepository.Rollback();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                _authUserRepository.Context.Dispose();
             }
         }
     }

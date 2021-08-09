@@ -25,7 +25,7 @@ namespace AulaRemota.Core.Edriving.Deletar
 
         public async Task<bool> Handle(EdrivingDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
             try
             {
                 _edrivingRepository.CreateTransaction();

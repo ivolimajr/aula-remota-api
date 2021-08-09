@@ -32,7 +32,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
 
         public async Task<ParceiroAtualizarResponse> Handle(ParceiroAtualizarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             //BUSCA O OBJETO A SER ATUALIZADO
             var entity = _parceiroRepository.GetById(request.Id);

@@ -22,7 +22,7 @@ namespace AulaRemota.Core.Parceiro.Deletar
 
         public async Task<bool> Handle(ParceiroDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Id Inválido");
+            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             ParceiroModel parceiro = await _parceiroRepository.GetByIdAsync(request.Id);
             if (parceiro == null) throw new HttpClientCustomException("Não encontrado");
