@@ -50,9 +50,9 @@ namespace AulaRemota.Core.Edriving.Criar
                 if (emailCpf != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                foreach (var item in request.Telefones.ToList())
+                foreach (var item in request.Telefones)
                 {
-                    var telefoneResult = _telefoneRepository.Find(u => u.Telefone == item.Telefone);
+                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
                     if (telefoneResult != null) throw new HttpClientCustomException("Telefone: "+telefoneResult.Telefone+" já em uso");
                 }
 
@@ -79,7 +79,7 @@ namespace AulaRemota.Core.Edriving.Criar
                     Cpf = request.Cpf.ToUpper(),
                     Email = request.Email.ToUpper(),
                     CargoId = request.CargoId,
-                    Telefones = request.Telefones.ToList(),
+                    Telefones = request.Telefones,
                     Cargo = cargo,
                     Usuario = user
                 };
@@ -98,7 +98,7 @@ namespace AulaRemota.Core.Edriving.Criar
                     Nome = edrivingModel.Nome,
                     Email = edrivingModel.Email,
                     Cpf = edrivingModel.Cpf,
-                    Telefones = edrivingModel.Telefones.ToList(),
+                    Telefones = edrivingModel.Telefones,
                     CargoId = edrivingModel.CargoId,
                     UsuarioId = edrivingModel.UsuarioId,
                     Cargo = edrivingModel.Cargo,

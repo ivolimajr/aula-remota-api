@@ -34,9 +34,9 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                         .Include(e => e.Usuario)
                         .Include(e => e.Cargo)
                         .Include(e => e.Telefones)
-                        .Where(e => e.Id == request.Id)
+                        .Where(e => e.Id == res.Id)
                         .Where(e => e.Usuario.status > 0)
-                        .FirstAsync();
+                        .FirstOrDefaultAsync();
 
                 return new EdrivingListarPorIdResponse { 
                 
