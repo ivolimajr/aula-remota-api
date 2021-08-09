@@ -144,30 +144,5 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        /// <summary>
-        /// Endpoint para fazer login na plataforma
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("Login")]
-        [ProducesResponseType(typeof(AuthUserLoginResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Login([FromBody] AuthUserLoginInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (HttpClientCustomException e)
-            {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
     }
 }

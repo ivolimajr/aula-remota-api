@@ -126,7 +126,7 @@ namespace AulaRemota.Api.Controllers
         /// <summary>
         /// Remove um usuário
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public async ValueTask<ActionResult> Delete(int id)

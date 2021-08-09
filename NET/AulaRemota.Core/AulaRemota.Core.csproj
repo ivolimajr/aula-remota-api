@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Usuario\Atualizar\" />
     <Folder Include="Usuario\Deletar\" />
     <Folder Include="Usuario\ListarPorId\" />
     <Folder Include="Usuario\ListarTodos\" />

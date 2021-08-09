@@ -6,24 +6,24 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.AuthUser.Login
+namespace AulaRemota.Core.Usuario.Login
 {
-    public class AuthUserLoginHandler : IRequestHandler<AuthUserLoginInput, AuthUserLoginResponse>
+    public class UsuarioLoginHandler : IRequestHandler<UsuarioLoginInput, UsuarioLoginResponse>
     {
-        private readonly IRepository<UsuarioModel> _authUserRepository;
+        private readonly IRepository<UsuarioModel> _UsuarioRepository;
 
-        public AuthUserLoginHandler(IRepository<UsuarioModel> authUserRepository)
+        public UsuarioLoginHandler(IRepository<UsuarioModel> UsuarioRepository)
         {
-            _authUserRepository = authUserRepository;
+            _UsuarioRepository = UsuarioRepository;
         }
 
-        public async Task<AuthUserLoginResponse> Handle(AuthUserLoginInput request, CancellationToken cancellationToken)
+        public async Task<UsuarioLoginResponse> Handle(UsuarioLoginInput request, CancellationToken cancellationToken)
         {
             if (request.Email == string.Empty) throw new HttpClientCustomException("Valores Inválidos");
 
             try
             {
-                var result = await _authUserRepository.FindAsync(u => u.Email == request.Email);
+                var result = await _UsuarioRepository.FindAsync(u => u.Email == request.Email);
                 if (result == null) throw new HttpClientCustomException("Não Encontrado");
 
                 if(result.status == 0) throw new HttpClientCustomException("Usuário Removido");
@@ -32,7 +32,7 @@ namespace AulaRemota.Core.AuthUser.Login
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
                 if (!checkPass) throw new HttpClientCustomException("Credenciais Inválidas");
 
-                return new AuthUserLoginResponse
+                return new UsuarioLoginResponse
                 {
                     Id = result.Id,
                     Nome = result.Nome,

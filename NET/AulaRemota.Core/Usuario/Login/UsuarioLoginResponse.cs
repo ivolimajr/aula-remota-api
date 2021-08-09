@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AulaRemota.Infra.Entity;
 
 namespace AulaRemota.Core.Usuario.Login
 {
-    public class UsuarioLoginResponse
+    public class UsuarioLoginResponse : UsuarioModel
     {
     }
 }
