@@ -47,7 +47,6 @@ namespace AulaRemota.Core.Edriving.Atualizar
                             .Include(e => e.Cargo)
                             .Include(e => e.Telefones)
                             .Where(e => e.Id == request.Id)
-                            .Where(e => e.Usuario.status > 0)
                             .FirstOrDefault();
 
                 //SE FOR NULO RETORNA NÃO ENCONTRADO

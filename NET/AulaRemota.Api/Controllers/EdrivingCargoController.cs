@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
+    /// <summary>g
+    /// Lista os EndPoints de retorno, lista apenas os cargos referente aos usuários responsáveis pelo Edriving
+    /// </summary>
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]")]
@@ -21,7 +24,10 @@ namespace AulaRemota.Api.Controllers
         {
             _mediator = mediator;
         }
-
+        /// <summary>
+        /// Retorna todos
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(EdrivingCargoListarTodosResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -40,8 +46,11 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-
+        /// <summary>
+        /// Retorna apenas um
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(EdrivingCargoListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,6 +70,5 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

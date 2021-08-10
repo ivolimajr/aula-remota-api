@@ -21,7 +21,7 @@ namespace AulaRemota.Core.Auth.GenerateToken
         private TokenConfiguration _configuration;
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public GenerateTokenHandler(IRepository<ApiUserModel> authUserRepository, TokenConfiguration configuration )
+        public GenerateTokenHandler(IRepository<ApiUserModel> authUserRepository, TokenConfiguration configuration)
         {
             _authUserRepository = authUserRepository;
             _configuration = configuration;
@@ -29,28 +29,30 @@ namespace AulaRemota.Core.Auth.GenerateToken
 
         public async Task<GenerateTokenResponse> Handle(GenerateTokenInput request, CancellationToken cancellationToken)
         {
-            if(request == null) throw new HttpClientCustomException("Dados Inválidos");
+            if (request == null) throw new HttpClientCustomException("Dados Inválidos");
 
-            var userDb = ValidateCredentials(request);
+            try
+            {
+                var userDb = ValidateCredentials(request);
 
-            var claims = new List<Claim>
+                var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("n")),
                 new Claim(JwtRegisteredClaimNames.UniqueName, userDb.UserName)
             };
 
-            var accessToken = GenerateAccessToken(claims);
-            var refreshToken = GenerateRefreshToken();
+                var accessToken = GenerateAccessToken(claims);
+                var refreshToken = GenerateRefreshToken();
 
-            userDb.RefreshToken = refreshToken;
-            userDb.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
+                userDb.RefreshToken = refreshToken;
+                userDb.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
 
-            try
-            {
                 _authUserRepository.Update(userDb);
 
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+                await _authUserRepository.SaveChangesAsync();
 
                 return new GenerateTokenResponse(
                     true,
@@ -60,9 +62,9 @@ namespace AulaRemota.Core.Auth.GenerateToken
                     refreshToken
                 );
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
         }
 

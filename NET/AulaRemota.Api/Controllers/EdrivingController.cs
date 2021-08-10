@@ -26,9 +26,8 @@ namespace AulaRemota.Api.Controllers
         {
             _mediator = mediator;
         }
-
         /// <summary>
-        /// Retorna um Array de items com os usuários
+        /// Retorna um Array de items com os usuários da plataforma
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -49,7 +48,6 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         /// <summary>
         /// Retorna um item com o usuário solicitado por ID
         /// </summary>
@@ -74,7 +72,6 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         /// <summary>
         /// Insere um novo usuário
         /// </summary>
@@ -98,7 +95,6 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         /// <summary>
         /// Atualiza um usuário
         /// </summary>
@@ -122,7 +118,6 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         /// <summary>
         /// Remove um usuário
         /// </summary>
@@ -145,6 +140,5 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

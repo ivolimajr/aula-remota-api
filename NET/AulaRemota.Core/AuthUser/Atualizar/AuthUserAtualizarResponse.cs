@@ -1,4 +1,4 @@
-﻿namespace AulaRemota.Core.AuthUser.Criar
+﻿namespace AulaRemota.Core.AuthUser.Atualizar
 {
     public class AuthUserAtualizarResponse
     {

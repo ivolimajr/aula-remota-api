@@ -21,21 +21,22 @@ namespace AulaRemota.Core.Auth.RevokeToken
         {
             if (request.UserName == string.Empty) throw new HttpClientCustomException("Parâmetros Inválidos");
 
-            ApiUserModel authUser = _authUserRepository.Find(u => u.UserName == request.UserName);
-            if (authUser == null) throw new HttpClientCustomException("Credenciais Não encontrada");
-
             try
             {
+                ApiUserModel authUser = _authUserRepository.Find(u => u.UserName == request.UserName);
+                if (authUser == null) throw new HttpClientCustomException("Credenciais Não encontrada");
+
                 ApiUserModel usuario = await _authUserRepository.GetByIdAsync(authUser.Id);
 
                 usuario.RefreshToken = null;
                 _authUserRepository.Update(usuario);
+                await _authUserRepository.SaveChangesAsync();
                 return "Usuário da Api Removido";
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
 
         }

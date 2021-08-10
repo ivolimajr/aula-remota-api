@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.AuthUser.Criar
+namespace AulaRemota.Core.AuthUser.Atualizar
 {
     public class AuthUserAtualizarInput : IRequest<AuthUserAtualizarResponse>
     {

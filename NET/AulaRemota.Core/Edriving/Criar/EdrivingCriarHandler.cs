@@ -4,7 +4,6 @@ using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +27,6 @@ namespace AulaRemota.Core.Edriving.Criar
         {
             _edrivingRepository = edrivingRepository;
             _usuarioRepository = usuarioRepository;
-            _cargoRepository = cargoRepository;
             _cargoRepository = cargoRepository;
             _telefoneRepository = telefoneRepository;
             _mediator = mediator;
@@ -81,7 +79,6 @@ namespace AulaRemota.Core.Edriving.Criar
                     Usuario = user
                 };
                 var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
-                _edrivingRepository.SaveChanges();
 
                 //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 

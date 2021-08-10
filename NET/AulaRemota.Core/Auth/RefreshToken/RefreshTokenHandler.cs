@@ -29,29 +29,32 @@ namespace AulaRemota.Core.Auth.RefreshToken
 
         public async Task<RefreshTokenResponse> Handle(RefreshTokenInput request, CancellationToken cancellationToken)
         {
-            var accessToken = request.AccessToken;
-            var refreshToken = request.RefreshToken;
-
-            var principal = GetClaimsPrincipalFromExpiredToken(accessToken);
-            var userName = principal.Identity.Name;
-
-            var user = _authUserRepository.Find(u => (u.UserName == userName));
-
-            //TODO: RETORNAR RESPOSTAS MELHORES
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now) throw new HttpClientCustomException("Usuário Não Encontrado");
-
-            accessToken = GenerateAccessToken(principal.Claims);
-
-            refreshToken = GenerateRefreshToken();
-
-            user.RefreshToken = refreshToken;
-
             try
             {
+                var accessToken = request.AccessToken;
+                var refreshToken = request.RefreshToken;
+
+                var principal = GetClaimsPrincipalFromExpiredToken(accessToken);
+                var userName = principal.Identity.Name;
+
+                var user = _authUserRepository.Find(u => (u.UserName == userName));
+
+                //TODO: RETORNAR RESPOSTAS MELHORES
+                if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now) throw new HttpClientCustomException("Usuário Não Encontrado");
+
+                accessToken = GenerateAccessToken(principal.Claims);
+
+                refreshToken = GenerateRefreshToken();
+
+                user.RefreshToken = refreshToken;
+
+
                 _authUserRepository.Update(user);
 
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+                await _authUserRepository.SaveChangesAsync();
 
                 return new RefreshTokenResponse(
                     true,
@@ -61,9 +64,9 @@ namespace AulaRemota.Core.Auth.RefreshToken
                     refreshToken
                 );
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
         }
 

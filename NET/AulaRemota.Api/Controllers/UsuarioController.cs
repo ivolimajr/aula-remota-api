@@ -25,7 +25,6 @@ namespace AulaRemota.Api.Controllers
         {
             _mediator = mediator;
         }
-
         /// <summary>
         /// Endpoint para fazer login na plataforma
         /// </summary>
@@ -50,7 +49,6 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
         /// <summary>
         /// Endpoint alterar a senha do usuario pelo ID
         /// </summary>

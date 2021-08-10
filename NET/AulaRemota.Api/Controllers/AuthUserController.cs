@@ -1,5 +1,5 @@
-﻿using AulaRemota.Core.AuthUser.Criar;
-using AulaRemota.Core.AuthUser.Login;
+﻿using AulaRemota.Core.AuthUser.Atualizar;
+using AulaRemota.Core.AuthUser.Criar;
 using AulaRemota.Core.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

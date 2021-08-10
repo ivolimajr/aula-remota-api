@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AulaRemota.Api.Controllers
 {
+    /// <summary>g
+    /// Lista os EndPoints para gerenciar os usuários dos Parceiros - DETRANS
+    /// </summary>
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]")]
@@ -23,7 +26,10 @@ namespace AulaRemota.Api.Controllers
         {
             _mediator = mediator;
         }
-
+        /// <summary>
+        /// Retorna um Array de items com os parceiros
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(ParceiroListarTodosResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -42,8 +48,11 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-
+        /// <summary>
+        /// Retorna um item com o parceiro solicitado por ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,8 +72,11 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-
+        /// <summary>
+        /// Insere um novo parceiro
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(ParceiroCriarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,7 +95,11 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        /// <summary>
+        /// Atualiza um parceiro
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(ParceiroAtualizarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -102,7 +118,11 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
+        /// <summary>
+        /// Remove um parceiro
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async ValueTask<ActionResult> Delete(int id)
         {
@@ -120,6 +140,5 @@ namespace AulaRemota.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
-
     }
 }

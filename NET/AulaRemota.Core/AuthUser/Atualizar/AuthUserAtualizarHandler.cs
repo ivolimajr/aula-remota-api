@@ -6,9 +6,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.AuthUser.Criar
+namespace AulaRemota.Core.AuthUser.Atualizar
 {
-    public class AuthUserAtualizarHandler : IRequestHandler<AuthUserAtualizarInput,AuthUserAtualizarResponse>
+    public class AuthUserAtualizarHandler : IRequestHandler<AuthUserAtualizarInput, AuthUserAtualizarResponse>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
@@ -21,28 +21,28 @@ namespace AulaRemota.Core.AuthUser.Criar
         {
             if (request.Id == 0) throw new HttpClientCustomException("Busca Inválido");
 
-            //BUSCA O OBJETO A SER ATUALIZADO
-            var entity = _authUserRepository.GetById(request.Id);
-            if (entity == null) throw new HttpClientCustomException("Não Encontrado");
-
-
-            if(request.Nome != null) entity.Nome = request.Nome.ToUpper();
-            if(request.UserName != null) entity.UserName = request.UserName.ToUpper();
-
             try
             {
+                //BUSCA O OBJETO A SER ATUALIZADO
+                var entity = await _authUserRepository.GetByIdAsync(request.Id);
+                if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+
+                if (request.Nome != null) entity.Nome = request.Nome.ToUpper();
+                if (request.UserName != null) entity.UserName = request.UserName.ToUpper();
+
                 ApiUserModel result = _authUserRepository.Update(entity);
+                await _authUserRepository.SaveChangesAsync();
 
-                var AuthUser = new AuthUserAtualizarResponse();
-                AuthUser.Id         = result.Id; 
-                AuthUser.Nome   = result.Nome;
-                AuthUser.UserName   = result.UserName;
-
-                return AuthUser;
+                return new AuthUserAtualizarResponse()
+                {
+                    Id = result.Id,
+                    Nome = result.Nome,
+                    UserName = result.UserName
+                };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
         }
     }
