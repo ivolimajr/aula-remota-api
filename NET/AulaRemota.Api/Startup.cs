@@ -80,6 +80,7 @@ namespace AulaRemota.Api
             });
 
             services.AddControllers();
+            services.AddApiVersioning();
 
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
             services.AddDbContext<MySqlContext>(

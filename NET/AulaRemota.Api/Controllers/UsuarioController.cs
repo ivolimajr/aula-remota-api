@@ -17,6 +17,8 @@ namespace AulaRemota.Api.Controllers
     [Route("api/[controller]")]
     [Authorize("Bearer")]
     [ApiController]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UsuarioController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,10 +32,12 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        /// <response code="200">Atualiza o Token</response>
+        /// <response code="401">RefreshToken inválido</response>
         [HttpPost]
         [Route("Login")]
         [ProducesResponseType(typeof(UsuarioLoginResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> Login([FromBody] UsuarioLoginInput request)
         {
             try
@@ -42,7 +46,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
             catch (Exception e)
             {
@@ -54,10 +58,12 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        /// <response code="200">Atualiza o Token</response>
+        /// <response code="401">RefreshToken inválido</response>
         [HttpPost]
         [Route("alterar-senha")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> AlterarSenha([FromBody] UsuarioAtualizarSenhaInput request)
         {
             try
@@ -66,7 +72,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
             catch (Exception e)
             {
@@ -81,7 +87,7 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         [Route("alterar-senha-por-email")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UsuarioAtualizarSenhaPorEmailInput request)
         {
             try
@@ -90,7 +96,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
             catch (Exception e)
             {

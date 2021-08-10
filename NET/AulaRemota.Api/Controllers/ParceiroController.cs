@@ -18,6 +18,8 @@ namespace AulaRemota.Api.Controllers
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ParceiroController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -32,7 +34,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(ParceiroListarTodosResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult> GetAll()
         {
             try
@@ -41,7 +43,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
             catch (Exception e)
             {
@@ -55,7 +57,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult> Get(int id)
         {
             try
@@ -65,7 +67,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
             catch (Exception e)
             {
@@ -133,7 +135,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
             }
             catch (Exception e)
             {

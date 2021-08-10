@@ -12,7 +12,8 @@ namespace AulaRemota.Api.Controllers
     /// <summary>
     /// Endpoints para obter o token e refreshToken
     /// </summary>
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -29,11 +30,11 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Retorna o Token bearer</response>
-        /// <response code="400">Provavelmente você não tem acesso a API</response>
+        /// <response code="401">Provavelmente você não tem acesso a API</response>
         [HttpPost]
         [Route("getToken")]
         [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> GetToken([FromBody] GenerateTokenInput request)
         {
             try
@@ -42,7 +43,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
             catch (Exception e)
             {
@@ -56,11 +57,11 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Atualiza o Token</response>
-        /// <response code="400">RefreshToken inválido</response>
+        /// <response code="401">RefreshToken inválido</response>
         [HttpPost]
         [Route("refresh")]
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> Refresh([FromBody] RefreshTokenInput request)
         {
             try
@@ -69,7 +70,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
             catch (Exception e)
             {

@@ -15,6 +15,8 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [Authorize("Bearer")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class AuthUserController : ControllerBase
     {
@@ -137,7 +139,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
             }
             catch (Exception e)
             {
