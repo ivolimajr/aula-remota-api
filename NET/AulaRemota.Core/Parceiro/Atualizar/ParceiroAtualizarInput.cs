@@ -1,11 +1,18 @@
-﻿using MediatR;
+﻿using AulaRemota.Infra.Entity.Auto_Escola;
+using MediatR;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Parceiro.Atualizar
 {
     public class ParceiroAtualizarInput : IRequest<ParceiroAtualizarResponse>
     {
+        public ParceiroAtualizarInput()
+        {
+            this.Telefones = new List<TelefoneModel>();
+        }
+
         [Required]
         [Range(1, 99999)]
         public int Id { get; set; }
@@ -41,15 +48,9 @@ namespace AulaRemota.Core.Parceiro.Atualizar
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(maximumLength: 11, MinimumLength = 11)]
-        public string Telefone { get; set; }
+        public List<TelefoneModel> Telefones { get; set; }
 
-        [Range(0, 1)]
-        public int Status { get; set; }
-
-        [Required]
-        [Range(1, 100)]
+        [Range(0, 100)]
         public int CargoId { get; set; }
     }
 }

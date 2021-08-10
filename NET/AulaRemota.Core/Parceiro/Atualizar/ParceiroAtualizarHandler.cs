@@ -4,9 +4,10 @@ using AulaRemota.Core.Helpers;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AulaRemota.Core.Parceiro.Atualizar
 {
@@ -15,83 +16,103 @@ namespace AulaRemota.Core.Parceiro.Atualizar
         private readonly IRepository<ParceiroModel> _parceiroRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<ParceiroCargoModel> _cargoRepository;
-        private readonly IRepository<EnderecoModel> _enderecoRepository;
+        private readonly IRepository<TelefoneModel> _telefoneRepository;
 
-        public ParceiroAtualizarHandler(IRepository<ParceiroModel> parceiroRepository,
+        public ParceiroAtualizarHandler(
+                IRepository<ParceiroModel> parceiroRepository,
                 IRepository<UsuarioModel> usuarioRepository,
                 IRepository<ParceiroCargoModel> cargoRepository,
-                IRepository<EnderecoModel> enderecoRepository
-            )
+                IRepository<TelefoneModel> telefoneRepository
+         )
         {
             _parceiroRepository = parceiroRepository;
             _usuarioRepository = usuarioRepository;
             _cargoRepository = cargoRepository;
-            _enderecoRepository = enderecoRepository;
+            _telefoneRepository = telefoneRepository;
         }
-
 
         public async Task<ParceiroAtualizarResponse> Handle(ParceiroAtualizarInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
-            //BUSCA O OBJETO A SER ATUALIZADO
-            var entity = _parceiroRepository.GetById(request.Id);
-            if (entity == null) throw new HttpClientCustomException("Não Encontrado");
-
-            //BUSCA O OBJETO ENDEREÇO A SER ATUALIZADO
-            var endereco = _enderecoRepository.GetById(entity.EnderecoId);
-            if (endereco == null) throw new HttpClientCustomException("Errro ao carregar endereço");
-
-            entity.Endereco = endereco;
-
-            //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
-            if (request.CargoId != 0)
-            {
-                var cargo = _cargoRepository.GetById(request.CargoId);
-                if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
-
-                //SE O CARGO EXISTE, O OBJETO SERÁ ATUALIZADO
-                entity.CargoId = cargo.Id;
-                entity.Cargo = cargo;
-            }
-            else
-            {
-                //SE O USUÁRIO NÃO INFORMAR UM CARGO, É SETADO O CARGO ANTERIOR
-                var cargo = _cargoRepository.GetById(entity.CargoId);
-                if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
-
-                entity.Cargo = cargo;
-            }
-
-
-            //BUSCA O OBJETO USUARIO PARA ATUALIZAR
-            var usuario = _usuarioRepository.GetById(entity.UsuarioId);
-            if (usuario == null) throw new HttpClientCustomException("Errro ao carregar usuário");
-
-            //ATUALIZA O NOME E EMAIL
-            if (request.Nome != null) usuario.Nome = request.Nome.ToUpper();
-            if (request.Email != null) usuario.Email = request.Email.ToUpper();
-
-
-            // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
-            if (request.Nome != null)   entity.Nome     = request.Nome.ToUpper();
-            if (request.Email != null)      entity.Email        = request.Email.ToUpper();
-            if (request.Telefone != null)   entity.Telefones     = new List<TelefoneModel> { new TelefoneModel { Telefone = request.Telefone } };
-            if (request.Cnpj != null)       entity.Cnpj         = request.Cnpj.ToUpper();
-            if (request.Descricao != null)  entity.Descricao    = request.Descricao.ToUpper();
-
-            // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
-            if (request.Uf != null)                     entity.Endereco.Uf                  = request.Uf.ToUpper();
-            if (request.Cep != null)                    entity.Endereco.Cep                 = request.Cep.ToUpper();
-            if (request.EnderecoLogradouro != null)     entity.Endereco.EnderecoLogradouro  = request.EnderecoLogradouro.ToUpper();
-            if (request.Bairro != null)                 entity.Endereco.Bairro              = request.Bairro.ToUpper();
-            if (request.Cidade != null)                 entity.Endereco.Cidade              = request.Cidade.ToUpper();
-            if (request.Numero != null)                 entity.Endereco.Numero              = request.Numero.ToUpper();
-
             try
             {
-                ParceiroModel parceiroModel = _parceiroRepository.Update(entity);
-                if (parceiroModel == null) throw new HttpClientCustomException("Errro ao salvar dados usuário");
+                _parceiroRepository.CreateTransaction();
+                //BUSCA O OBJETO A SER ATUALIZADO
+                var entity = await _parceiroRepository.Context
+                        .Set<ParceiroModel>()
+                        .Include(e => e.Cargo)
+                        .Include(e => e.Usuario)
+                        .Include(e => e.Endereco)
+                        .Include(e => e.Telefones)
+                        .Where(e => e.Id == request.Id)
+                        .FirstOrDefaultAsync();
+
+                if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+
+                //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
+                if (request.CargoId > 0 && request.CargoId != entity.CargoId)
+                {
+                    //VERIFICA SE O CARGO INFORMADO EXISTE
+                    var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
+                    if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
+
+                    //SE O CARGO EXISTE, O OBJETO SERÁ ATUALIZADO
+                    entity.CargoId = cargo.Id;
+                    entity.Cargo = cargo;
+                }
+
+                //ATUALIZA O TELEFONE SE VIER NA LISTA DO REQUEST
+                if (request.Telefones.Count > 0)
+                {
+                    foreach (var item in request.Telefones)
+                    {
+                        //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
+                        if (!entity.Telefones.Any(e => e.Telefone == item.Telefone))
+                        {
+                            //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
+                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
+
+                            //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
+                            if (item.Id == 0)
+                            {
+                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                entity.Telefones.Add(item);
+                            }
+                            else
+                            {
+                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                _telefoneRepository.Update(item);
+                            }
+                        }
+                    }
+                }
+
+                //FAZ O SET DO USUARIO
+                if (request.Nome != null) entity.Usuario.Nome = request.Nome.ToUpper();
+                if (request.Email != null) entity.Usuario.Email = request.Email.ToUpper();
+
+
+                // FAZ O SET DO PARCEIRO
+                if (request.Nome != null) entity.Nome = request.Nome.ToUpper();
+                if (request.Email != null) entity.Email = request.Email.ToUpper();
+                if (request.Cnpj != null) entity.Cnpj = request.Cnpj.ToUpper();
+                if (request.Descricao != null) entity.Descricao = request.Descricao.ToUpper();
+
+                // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
+                if (request.Uf != null) entity.Endereco.Uf = request.Uf.ToUpper();
+                if (request.Cep != null) entity.Endereco.Cep = request.Cep.ToUpper();
+                if (request.EnderecoLogradouro != null) entity.Endereco.EnderecoLogradouro = request.EnderecoLogradouro.ToUpper();
+                if (request.Bairro != null) entity.Endereco.Bairro = request.Bairro.ToUpper();
+                if (request.Cidade != null) entity.Endereco.Cidade = request.Cidade.ToUpper();
+                if (request.Numero != null) entity.Endereco.Numero = request.Numero.ToUpper();
+
+                var parceiroModel = _parceiroRepository.Update(entity);
+
+                _parceiroRepository.Save();
+                _parceiroRepository.Commit();
 
                 return new ParceiroAtualizarResponse
                 {
@@ -99,6 +120,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                     Nome = parceiroModel.Nome,
                     Email = parceiroModel.Email,
                     Cnpj = parceiroModel.Cnpj,
+                    Descricao = parceiroModel.Descricao,
                     Telefones = parceiroModel.Telefones,
                     CargoId = parceiroModel.CargoId,
                     UsuarioId = parceiroModel.UsuarioId,
@@ -107,11 +129,15 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                     EnderecoId = parceiroModel.EnderecoId,
                     Endereco = parceiroModel.Endereco
                 };
-
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                _parceiroRepository.Rollback();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                _parceiroRepository.Context.Dispose();
             }
         }
     }

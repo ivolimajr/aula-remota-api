@@ -36,7 +36,6 @@ namespace AulaRemota.Core.Edriving.Criar
 
         public async Task<EdrivingCriarResponse> Handle(EdrivingCriarInput request, CancellationToken cancellationToken)
         {
-
             try
             {
                 _edrivingRepository.CreateTransaction();
@@ -69,8 +68,6 @@ namespace AulaRemota.Core.Edriving.Criar
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };
-                user = _usuarioRepository.Create(user);
-                _usuarioRepository.SaveChanges();
 
                 //CRIA UM EDRIVING
                 var edriving = new EdrivingModel()
@@ -85,7 +82,6 @@ namespace AulaRemota.Core.Edriving.Criar
                 };
                 var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
                 _edrivingRepository.SaveChanges();
-
 
                 //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 

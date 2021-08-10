@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Core.Edriving.Deletar
 {
@@ -16,7 +17,11 @@ namespace AulaRemota.Core.Edriving.Deletar
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<TelefoneModel> _telefoneRepository;
 
-        public EdrivingDeletarHandler(IRepository<EdrivingModel> edrivingRepository, IRepository<UsuarioModel> usuarioRepository, IRepository<TelefoneModel> telefoneRepository)
+        public EdrivingDeletarHandler(
+            IRepository<EdrivingModel> edrivingRepository, 
+            IRepository<UsuarioModel> usuarioRepository, 
+            IRepository<TelefoneModel> telefoneRepository
+            )
         {
             _edrivingRepository = edrivingRepository;
             _telefoneRepository = telefoneRepository;
@@ -29,20 +34,18 @@ namespace AulaRemota.Core.Edriving.Deletar
             try
             {
                 _edrivingRepository.CreateTransaction();
-                var edriving = await _edrivingRepository.GetByIdAsync(request.Id);
+                var edriving = await _edrivingRepository.Context
+                                        .Set<EdrivingModel>()
+                                        .Include(e => e.Usuario)
+                                        .Include(e => e.Telefones)
+                                        .Where(e => e.Id == request.Id)
+                                        .FirstOrDefaultAsync();
                 if (edriving == null) throw new HttpClientCustomException("Não encontrado");
 
-                var usuario = await _usuarioRepository.GetByIdAsync(edriving.UsuarioId);
-                var telefones = _telefoneRepository.GetWhere(e => e.Edriving.Id == request.Id).ToList();
-
-                edriving.Telefones = telefones;
-                edriving.Usuario = usuario;
-                //REMOVE O OBJETO
                 _edrivingRepository.Delete(edriving);
+                _usuarioRepository.Delete(edriving.Usuario);
 
-                _usuarioRepository.Delete(usuario);
-
-                foreach (var item in telefones)
+                foreach (var item in edriving.Telefones)
                 {
                     item.Edriving = null;
                     _telefoneRepository.Delete(item);
