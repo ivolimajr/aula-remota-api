@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using AulaRemota.Infra.Entity.Auto_Escola;
 
 namespace AulaRemota.Core.Edriving.ListarTodos
 {
@@ -44,7 +42,7 @@ namespace AulaRemota.Core.Edriving.ListarTodos
                     Nome = result.Nome,
                     Email = result.Email,
                     Cpf = result.Cpf,
-                    Telefones = result.Telefones.ToList(),
+                    Telefones = result.Telefones,
                     CargoId = result.CargoId,
                     Cargo = result.Cargo,
                     UsuarioId= result.UsuarioId,

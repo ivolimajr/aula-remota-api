@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
 {
-    /// <summary>
-    /// Lista os EndPoints dos usuários do Edriving
+    /// <summary>g
+    /// Lista os EndPoints para gerenciar os usuários do Edriving
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]

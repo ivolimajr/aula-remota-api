@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace AulaRemota.Api.Controllers
 {
     /// <summary>
-    /// Endpoinst para tratar do usuário
+    /// Lista os EndPoints para gerenciar o usuário, tanto Edriving, auto escola, parceiro
     /// </summary>
     [Route("api/[controller]")]
     [Authorize("Bearer")]

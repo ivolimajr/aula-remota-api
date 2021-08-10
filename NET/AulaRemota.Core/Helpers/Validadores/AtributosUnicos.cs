@@ -16,17 +16,17 @@ namespace AulaRemota.Core.Helpers.Validadores
             _telefoneRepository = telefoneRepository;
         }
 
-        public async Task<bool> EmailUnico(string email)
+        public async Task<UsuarioModel> EmailUnico(string email)
         {
             var result = await _usuarioRepository.FindAsync(e => e.Email == email);
-            if (result == null) return true;
-            return false;
+            if (result == null) return null;
+            return result;
         }
-        public async Task<bool> TelefoneUnico(string telefone)
+        public async Task<TelefoneModel> TelefoneUnico(string telefone)
         {
             var result = await _telefoneRepository.FindAsync(e => e.Telefone == telefone);
-            if (result == null) return true;
-            return false;
+            if (result == null) return null;
+            return result;
         }
     }
 }

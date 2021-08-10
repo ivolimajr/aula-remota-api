@@ -42,12 +42,12 @@ namespace AulaRemota.Core.Edriving.Criar
                 _edrivingRepository.CreateTransaction();
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                var emailResult = _usuarioRepository.Find(u => u.Email == request.Email);
+                var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
                 if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                var emailCpf = _edrivingRepository.Find(u => u.Cpf == request.Cpf);
-                if (emailCpf != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
+                var cpfResult = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
+                if (cpfResult != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.Telefones)
@@ -66,7 +66,7 @@ namespace AulaRemota.Core.Edriving.Criar
                     Nome = request.Nome.ToUpper(),
                     Email = request.Email.ToUpper(),
                     NivelAcesso = 10,
-                    status = request.Status,
+                    status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };
                 user = _usuarioRepository.Create(user);

@@ -29,9 +29,6 @@ namespace AulaRemota.Core.Edriving.Criar
         [StringLength(maximumLength: 150, MinimumLength = 5)]
         public string Senha { get; set; }
 
-        [Range(0, 1)]
-        public int Status { get; set; }
-
         [Required]
         [Range(1, 100)]
         public int CargoId { get; set; }

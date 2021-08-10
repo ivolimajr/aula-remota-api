@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AulaRemota.Api.Controllers
 {
     /// <summary>
-    /// Endpoinst para objter acesso a API
+    /// Lista os EndPoints para obter acesso a API.
     /// </summary>
     [Route("api/[controller]")]
     [Authorize("Bearer")]
