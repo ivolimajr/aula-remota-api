@@ -1,6 +1,6 @@
-﻿using AulaRemota.Core.Interfaces.Repository;
-using AulaRemota.Infra.Entity;
+﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Entity.Auto_Escola;
+using AulaRemota.Infra.Repository;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Core.Helpers.Validadores
