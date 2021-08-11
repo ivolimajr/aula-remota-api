@@ -14,12 +14,27 @@ namespace AulaRemota.Core.Parceiro.Criar
         public string Nome { get; set; }
 
         [Required]
+        [StringLength(maximumLength: 70, MinimumLength = 5)]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
         [StringLength(maximumLength: 14, MinimumLength = 14)]
         public string Cnpj { get; set; }
 
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string Descricao { get; set; }
+
+        public List<TelefoneModel> Telefones { get; set; }
+
+        [Required]
+        [StringLength(maximumLength: 150, MinimumLength = 5)]
+        public string Senha { get; set; }
+
+        [Required]
+        [Range(1, 100)]
+        public int CargoId { get; set; }
 
         [Required]
         [StringLength(maximumLength: 2, MinimumLength = 2)]
@@ -44,20 +59,5 @@ namespace AulaRemota.Core.Parceiro.Criar
         [Required]
         [StringLength(maximumLength: 50, MinimumLength = 1)]
         public string Numero { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 70, MinimumLength = 5)]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        public List<TelefoneModel> Telefones { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Senha { get; set; }
-
-        [Required]
-        [Range(1, 100)]
-        public int CargoId { get; set; }
     }
 }

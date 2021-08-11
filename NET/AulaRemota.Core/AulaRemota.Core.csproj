@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UploadDir\" />
     <Folder Include="Usuario\Deletar\" />
     <Folder Include="Usuario\ListarPorId\" />
     <Folder Include="Usuario\ListarTodos\" />
