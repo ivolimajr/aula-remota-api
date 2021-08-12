@@ -24,8 +24,6 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
 
         public int EnderecoId { get; set; }
         public EnderecoModel Endereco { get; set; }
-        public int CargoId { get; set; }
-        public AutoEscolaCargoModel Cargo { get; set; }
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Entity.Auto_Escola;
+using AulaRemota.Infra.Models;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public AutoEscolaCriarResponse()
         {
             this.Telefones = new List<TelefoneModel>();
+            this.Arquivos = new List<ArquivoModel>();
         }
         public int Id { get; set; }
         public string RazaoSocial { get; set; }
@@ -22,14 +24,12 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public string Site { get; set; }
         public string Cnpj { get; set; }
 
-        public int CargoId { get; set; }
-        public AutoEscolaCargoModel Cargo { get; set; }
-
         public int EnderecoId { get; set; }
         public EnderecoModel Endereco { get; set; }
 
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
         public virtual List<TelefoneModel> Telefones { get; set; }
+        public virtual List<ArquivoModel> Arquivos { get; set; }
     }
 }

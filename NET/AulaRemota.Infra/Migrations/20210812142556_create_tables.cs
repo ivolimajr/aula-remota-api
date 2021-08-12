@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AulaRemota.Infra.Migrations
 {
-    public partial class primeiraMigration : Migration
+    public partial class create_tables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,39 +12,24 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "apiUser",
+                name: "ApiUser",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    UserName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Password = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RefreshToken = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
+                    RefreshToken = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime", nullable: false)
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_apiUser", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "AutoEscolaCargo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cargo = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AutoEscolaCargo", x => x.Id);
+                    table.PrimaryKey("PK_ApiUser", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -54,7 +39,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cargo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Cargo = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -64,27 +49,27 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "endereco",
+                name: "Endereco",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Uf = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: true)
+                    Uf = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cep = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true)
+                    Cep = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoLogradouro = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
+                    EnderecoLogradouro = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Bairro = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
+                    Bairro = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cidade = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
+                    Cidade = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Numero = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    Numero = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_endereco", x => x.Id);
+                    table.PrimaryKey("PK_Endereco", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -94,7 +79,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cargo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Cargo = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -104,23 +89,23 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "usuario",
+                name: "Usuario",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Password = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     status = table.Column<int>(type: "int", nullable: false),
                     NivelAcesso = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_usuario", x => x.Id);
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -130,22 +115,21 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RazaoSocial = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    RazaoSocial = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NomeFantasia = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    NomeFantasia = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    InscricaoEstadual = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    InscricaoEstadual = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataFundacao = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    DataFundacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Descricao = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Site = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Site = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cnpj = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CargoId = table.Column<int>(type: "int", nullable: false),
                     EnderecoId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -153,21 +137,15 @@ namespace AulaRemota.Infra.Migrations
                 {
                     table.PrimaryKey("PK_AutoEscola", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AutoEscola_AutoEscolaCargo_CargoId",
-                        column: x => x.CargoId,
-                        principalTable: "AutoEscolaCargo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AutoEscola_endereco_EnderecoId",
+                        name: "FK_AutoEscola_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "endereco",
+                        principalTable: "Endereco",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AutoEscola_usuario_UsuarioId",
+                        name: "FK_AutoEscola_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -179,11 +157,11 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cpf = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CargoId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
@@ -198,9 +176,9 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Edriving_usuario_UsuarioId",
+                        name: "FK_Edriving_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -212,40 +190,33 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cpf = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Identidade = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgão = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Orgão = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    CargoId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Instrutor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Instrutor_AutoEscolaCargo_CargoId",
-                        column: x => x.CargoId,
-                        principalTable: "AutoEscolaCargo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Instrutor_endereco_EnderecoId",
+                        name: "FK_Instrutor_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "endereco",
+                        principalTable: "Endereco",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Instrutor_usuario_UsuarioId",
+                        name: "FK_Instrutor_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -257,13 +228,13 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
+                    Descricao = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cnpj = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CargoId = table.Column<int>(type: "int", nullable: false),
                     EnderecoId = table.Column<int>(type: "int", nullable: false),
@@ -273,9 +244,9 @@ namespace AulaRemota.Infra.Migrations
                 {
                     table.PrimaryKey("PK_Parceiro", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Parceiro_endereco_EnderecoId",
+                        name: "FK_Parceiro_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "endereco",
+                        principalTable: "Endereco",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -285,9 +256,9 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Parceiro_usuario_UsuarioId",
+                        name: "FK_Parceiro_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -299,19 +270,18 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cpf = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Identidade = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgão = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Orgão = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    CargoId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     AutoEscolaId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -325,21 +295,15 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Administrativo_AutoEscolaCargo_CargoId",
-                        column: x => x.CargoId,
-                        principalTable: "AutoEscolaCargo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Administrativo_endereco_EnderecoId",
+                        name: "FK_Administrativo_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "endereco",
+                        principalTable: "Endereco",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Administrativo_usuario_UsuarioId",
+                        name: "FK_Administrativo_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -351,11 +315,11 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Formato = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    Formato = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Destino = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Destino = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AutoEscolaId = table.Column<int>(type: "int", nullable: true),
                     InstrutorId = table.Column<int>(type: "int", nullable: true)
@@ -409,12 +373,12 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Codigo = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Codigo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CargaHoraria = table.Column<int>(type: "int", nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Descricao = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     InstrutorId = table.Column<int>(type: "int", nullable: false),
                     AutoEscolaId = table.Column<int>(type: "int", nullable: false),
@@ -444,10 +408,10 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Codigo = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Codigo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataInicio = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DataFim = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DataInicio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DataFim = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     AutoEscolaId = table.Column<int>(type: "int", nullable: false),
                     InstrutorId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -475,17 +439,17 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
+                    Cpf = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Identidade = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgao = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Orgao = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     TurmaId = table.Column<int>(type: "int", nullable: false),
                     AutoEscolaId = table.Column<int>(type: "int", nullable: false),
                     EnderecoId = table.Column<int>(type: "int", nullable: false),
@@ -501,9 +465,9 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Aluno_endereco_EnderecoId",
+                        name: "FK_Aluno_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
-                        principalTable: "endereco",
+                        principalTable: "Endereco",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -513,9 +477,9 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Aluno_usuario_UsuarioId",
+                        name: "FK_Aluno_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuario",
+                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -547,12 +511,12 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "telefone",
+                name: "Telefone",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Telefone = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Telefone = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     EdrivingId = table.Column<int>(type: "int", nullable: true),
                     ParceiroId = table.Column<int>(type: "int", nullable: true),
@@ -563,39 +527,39 @@ namespace AulaRemota.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_telefone", x => x.Id);
+                    table.PrimaryKey("PK_Telefone", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_telefone_Administrativo_AdministrativoId",
+                        name: "FK_Telefone_Administrativo_AdministrativoId",
                         column: x => x.AdministrativoId,
                         principalTable: "Administrativo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_telefone_Aluno_AlunoId",
+                        name: "FK_Telefone_Aluno_AlunoId",
                         column: x => x.AlunoId,
                         principalTable: "Aluno",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_telefone_AutoEscola_AutoEscolaId",
+                        name: "FK_Telefone_AutoEscola_AutoEscolaId",
                         column: x => x.AutoEscolaId,
                         principalTable: "AutoEscola",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_telefone_Edriving_EdrivingId",
+                        name: "FK_Telefone_Edriving_EdrivingId",
                         column: x => x.EdrivingId,
                         principalTable: "Edriving",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_telefone_Instrutor_InstrutorId",
+                        name: "FK_Telefone_Instrutor_InstrutorId",
                         column: x => x.InstrutorId,
                         principalTable: "Instrutor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_telefone_Parceiro_ParceiroId",
+                        name: "FK_Telefone_Parceiro_ParceiroId",
                         column: x => x.ParceiroId,
                         principalTable: "Parceiro",
                         principalColumn: "Id",
@@ -603,35 +567,10 @@ namespace AulaRemota.Infra.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "EdrivingCargo",
-                columns: new[] { "Id", "Cargo" },
-                values: new object[,]
-                {
-                    { 1, "DIRETOR" },
-                    { 2, "ANALISTA" },
-                    { 3, "ADMINISTRATIVO" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ParceiroCargo",
-                columns: new[] { "Id", "Cargo" },
-                values: new object[,]
-                {
-                    { 1, "DIRETOR" },
-                    { 2, "ANALISTA" },
-                    { 3, "ADMINISTRATIVO" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Administrativo_AutoEscolaId",
                 table: "Administrativo",
                 column: "AutoEscolaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Administrativo_CargoId",
-                table: "Administrativo",
-                column: "CargoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Administrativo_EnderecoId",
@@ -677,11 +616,6 @@ namespace AulaRemota.Infra.Migrations
                 column: "InstrutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutoEscola_CargoId",
-                table: "AutoEscola",
-                column: "CargoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AutoEscola_EnderecoId",
                 table: "AutoEscola",
                 column: "EnderecoId",
@@ -719,25 +653,10 @@ namespace AulaRemota.Infra.Migrations
                 column: "CargoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Edriving_Nome",
-                table: "Edriving",
-                column: "Nome");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Edriving_UsuarioId",
                 table: "Edriving",
                 column: "UsuarioId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EdrivingCargo_Cargo",
-                table: "EdrivingCargo",
-                column: "Cargo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Instrutor_CargoId",
-                table: "Instrutor",
-                column: "CargoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Instrutor_EnderecoId",
@@ -763,49 +682,39 @@ namespace AulaRemota.Infra.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parceiro_Nome",
-                table: "Parceiro",
-                column: "Nome");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Parceiro_UsuarioId",
                 table: "Parceiro",
                 column: "UsuarioId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParceiroCargo_Cargo",
-                table: "ParceiroCargo",
-                column: "Cargo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_telefone_AdministrativoId",
-                table: "telefone",
+                name: "IX_Telefone_AdministrativoId",
+                table: "Telefone",
                 column: "AdministrativoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefone_AlunoId",
-                table: "telefone",
+                name: "IX_Telefone_AlunoId",
+                table: "Telefone",
                 column: "AlunoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefone_AutoEscolaId",
-                table: "telefone",
+                name: "IX_Telefone_AutoEscolaId",
+                table: "Telefone",
                 column: "AutoEscolaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefone_EdrivingId",
-                table: "telefone",
+                name: "IX_Telefone_EdrivingId",
+                table: "Telefone",
                 column: "EdrivingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefone_InstrutorId",
-                table: "telefone",
+                name: "IX_Telefone_InstrutorId",
+                table: "Telefone",
                 column: "InstrutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefone_ParceiroId",
-                table: "telefone",
+                name: "IX_Telefone_ParceiroId",
+                table: "Telefone",
                 column: "ParceiroId");
 
             migrationBuilder.CreateIndex(
@@ -817,17 +726,12 @@ namespace AulaRemota.Infra.Migrations
                 name: "IX_Turma_InstrutorId",
                 table: "Turma",
                 column: "InstrutorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_usuario_Nome",
-                table: "usuario",
-                column: "Nome");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "apiUser");
+                name: "ApiUser");
 
             migrationBuilder.DropTable(
                 name: "Arquivo");
@@ -839,7 +743,7 @@ namespace AulaRemota.Infra.Migrations
                 name: "CursoModelTurmaModel");
 
             migrationBuilder.DropTable(
-                name: "telefone");
+                name: "Telefone");
 
             migrationBuilder.DropTable(
                 name: "Curso");
@@ -872,13 +776,10 @@ namespace AulaRemota.Infra.Migrations
                 name: "Instrutor");
 
             migrationBuilder.DropTable(
-                name: "AutoEscolaCargo");
+                name: "Endereco");
 
             migrationBuilder.DropTable(
-                name: "endereco");
-
-            migrationBuilder.DropTable(
-                name: "usuario");
+                name: "Usuario");
         }
     }
 }

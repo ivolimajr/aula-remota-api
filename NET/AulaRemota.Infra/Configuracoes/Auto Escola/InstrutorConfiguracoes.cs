@@ -17,13 +17,11 @@ namespace AulaRemota.Infra.Configuracoes.Auto_Escola
             builder.Property(e => e.Orgão).HasColumnType("varchar").HasMaxLength(70).IsRequired();
             builder.Property(e => e.Aniversario).HasColumnType("datetime");
             builder.Property(e => e.EnderecoId).HasColumnType("int").IsRequired();
-            builder.Property(e => e.CargoId).HasColumnType("int").IsRequired();
             builder.Property(e => e.UsuarioId).HasColumnType("int").IsRequired();
 
             //RELACIONAMENTOS
             builder.HasOne(e => e.Usuario).WithOne(e => e.Instrutor);
             builder.HasOne(e => e.Endereco).WithOne(e => e.Instrutor);
-            builder.HasOne(e => e.Cargo).WithMany(e => e.Instrutores).HasForeignKey(e => e.CargoId);
             builder.HasMany(e => e.AutoEscolas).WithMany(e => e.Instrutores);
         }
     }

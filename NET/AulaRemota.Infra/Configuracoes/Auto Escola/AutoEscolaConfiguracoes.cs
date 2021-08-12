@@ -20,12 +20,10 @@ namespace AulaRemota.Infra.Configuracoes.Auto_Escola
             builder.Property(e => e.DataFundacao).HasColumnType("datetime");
             builder.Property(e => e.EnderecoId).HasColumnType("int").IsRequired();
             builder.Property(e => e.UsuarioId).HasColumnType("int").IsRequired();
-            builder.Property(e => e.CargoId).HasColumnType("int").IsRequired();
 
             //RELACIONAMENTOS
             builder.HasOne(e => e.Usuario).WithOne(e => e.AutoEscola);
             builder.HasOne(e => e.Endereco).WithOne(e => e.AutoEscola);
-            builder.HasOne(e => e.Cargo).WithMany(e => e.AutoEscolas).HasForeignKey(e => e.CargoId);
             builder.HasMany(e => e.Administrativos).WithOne(e => e.AutoEscola).HasForeignKey(e => e.AutoEscolaId);
             builder.HasMany(e => e.Instrutores).WithMany(e => e.AutoEscolas);
             builder.HasMany(e => e.Turmas).WithOne(e => e.AutoEscola).HasForeignKey(e => e.AutoEscolaId);

@@ -13,7 +13,7 @@ namespace AulaRemota.Infra.Entity
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(70)]
         [MinLength(3)]
         public string Cargo { get; set; }
 

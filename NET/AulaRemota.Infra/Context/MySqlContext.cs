@@ -46,6 +46,7 @@ namespace AulaRemota.Infra.Context
         public DbSet<UsuarioModel> Usuario { get; set; }
         public DbSet<EnderecoModel> Endereco { get; set; }
         public DbSet<TelefoneModel> Telefone { get; set; }
+        public DbSet<ArquivoModel> Arquivo { get; set; }
 
         //EDRIVING
         public DbSet<EdrivingModel> Edriving { get; set; }
@@ -56,14 +57,13 @@ namespace AulaRemota.Infra.Context
         public DbSet<ParceiroCargoModel> ParceiroCargo { get; set; }
 
         //AUTO ESCOLA
-        public DbSet<AdministrativoModel> Administrativo { get; set; }
         public DbSet<AutoEscolaModel> AutoEscola { get; set; }
-        public DbSet<AlunoModel> Aluno { get; set; }
-        public DbSet<AutoEscolaCargoModel> AutoEscolaCargo { get; set; }
-        public DbSet<CursoModel> Curso { get; set; }
+        public DbSet<AdministrativoModel> Administrativo { get; set; }
         public DbSet<InstrutorModel> Instrutor { get; set; }
+
+        public DbSet<AlunoModel> Aluno { get; set; }
+        public DbSet<CursoModel> Curso { get; set; }
         public DbSet<TurmaModel> Turma { get; set; }
-        public DbSet<ArquivoModel> Arquivo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

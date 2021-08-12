@@ -5,9 +5,10 @@ using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Models;
 using AulaRemota.Infra.Repository;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +18,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
     {
         private readonly IRepository<AutoEscolaModel> _autoEscolaRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
-        private readonly IRepository<AutoEscolaCargoModel> _cargoRepository;
         private readonly IRepository<TelefoneModel> _telefoneRepository;
         private readonly IRepository<ArquivoModel> _arquivoRepository;
         private readonly IMediator _mediator;
@@ -25,7 +25,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public AutoEscolaCriarHandler(
             IRepository<AutoEscolaModel> autoEscolaRepository,
             IRepository<UsuarioModel> usuarioRepository,
-            IRepository<AutoEscolaCargoModel> cargoRepository,
             IRepository<TelefoneModel> telefoneRepository,
             IRepository<ArquivoModel> arquivoRepository,
             IMediator mediator
@@ -33,7 +32,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
         {
             _autoEscolaRepository = autoEscolaRepository;
             _usuarioRepository = usuarioRepository;
-            _cargoRepository = cargoRepository;
             _telefoneRepository = telefoneRepository;
             _arquivoRepository = arquivoRepository;
             _mediator = mediator;
@@ -44,7 +42,9 @@ namespace AulaRemota.Core.AutoEscola.Criar
             {
                 _autoEscolaRepository.CreateTransaction();
 
-                var arquivoResult = await _mediator.Send(new ArquivoUploadInput { Arquivo = request.Arquivo });
+
+
+                await _arquivoRepository.SaveChangesAsync();
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
                 if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
@@ -59,10 +59,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
                     if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                 }
-
-                //VERIFICA SE O CARGO INFORMADO EXISTE
-                var cargo = _cargoRepository.GetById(request.CargoId);
-                if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
 
                 //CRIA UM USUÁRIO
                 var user = new UsuarioModel()
@@ -85,8 +81,19 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Uf = request.Uf.ToUpper(),
                 };
 
-                var arquivo = await _arquivoRepository.CreateAsync(arquivoResult);
-                await _arquivoRepository.SaveChangesAsync();
+                var listaArquivos = new List<ArquivoModel>();
+
+                var arquivoResult = await _mediator.Send(new ArquivoUploadInput
+                {
+                    Arquivos = request.Arquivos,
+                    NomeAutoEscola = request.RazaoSocial.ToLower()
+                });
+
+                foreach (var item in arquivoResult.Arquivos)
+                {
+                    var arquivo = await _arquivoRepository.CreateAsync(item);
+                    listaArquivos.Add(item);
+                }
 
                 //CRIA UM EDRIVING
                 var autoEscola = new AutoEscolaModel()
@@ -94,16 +101,15 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     RazaoSocial = request.RazaoSocial.ToUpper(),
                     Cnpj = request.Cnpj.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    CargoId = request.CargoId,
                     Telefones = request.Telefones,
                     DataFundacao = request.DataFundacao,
+                    Descricao = request.Descricao,
                     InscricaoEstadual = request.InscricaoEstadual,
                     NomeFantasia = request.NomeFantasia,
                     Site = request.Site,
-                    Cargo = cargo,
                     Usuario = user,
                     Endereco = endereco,
-                    Arquivos = new List<ArquivoModel>() { arquivo }
+                    Arquivos = listaArquivos
                 };
 
 
@@ -121,15 +127,14 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Cnpj = autoEscolaModel.Cnpj.ToUpper(),
                     Email = autoEscolaModel.Email.ToUpper(),
                     Descricao = autoEscolaModel.Descricao,
-                    CargoId = autoEscolaModel.CargoId,
                     Telefones = autoEscolaModel.Telefones,
                     DataFundacao = autoEscolaModel.DataFundacao,
                     InscricaoEstadual = autoEscolaModel.InscricaoEstadual,
                     NomeFantasia = autoEscolaModel.NomeFantasia,
                     Site = autoEscolaModel.Site,
-                    Cargo = autoEscolaModel.Cargo,
                     Usuario = autoEscolaModel.Usuario,
                     Endereco = autoEscolaModel.Endereco,
+                    Arquivos = autoEscolaModel.Arquivos
                 };
             }
             catch (Exception e)

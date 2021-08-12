@@ -10,7 +10,7 @@ namespace AulaRemota.Infra.Configuracoes
         {
             builder.ToTable("EdrivingCargo");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Cargo).HasColumnType("varchar").HasMaxLength(100).IsRequired();
+            builder.Property(e => e.Cargo).HasColumnType("varchar").HasMaxLength(70).IsRequired();
 
             builder.HasData(
                 new EdrivingCargoModel { Id = 1, Cargo = "DIRETOR" },

@@ -45,11 +45,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public string Senha { get; set; }
 
         [Required]
-        [Range(1,100)]
-        public int CargoId { get; set; }
-
-
-        [Required]
         [StringLength(maximumLength: 2, MinimumLength = 2)]
         public string Uf { get; set; }
 
@@ -73,10 +68,10 @@ namespace AulaRemota.Core.AutoEscola.Criar
         [StringLength(maximumLength: 50, MinimumLength = 1)]
         public string Numero { get; set; }
 
+        [Required]
         public List<TelefoneModel> Telefones { get; set; }
 
         [Required]
-        public IFormFile Arquivo { get; set; }
-
+        public List<IFormFile> Arquivos { get; set; }
     }
 }
