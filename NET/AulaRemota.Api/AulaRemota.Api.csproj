@@ -25,6 +25,10 @@
     <ProjectReference Include="..\AulaRemota.Infra\AulaRemota.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UploadDir\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

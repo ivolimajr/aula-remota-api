@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UploadDir\**" />
+    <EmbeddedResource Remove="UploadDir\**" />
+    <None Remove="UploadDir\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="Castle.Windsor" Version="5.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -17,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UploadDir\" />
     <Folder Include="Usuario\Deletar\" />
     <Folder Include="Usuario\ListarPorId\" />
     <Folder Include="Usuario\ListarTodos\" />

@@ -45,7 +45,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public string Senha { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
+        [Range(1,100)]
         public int CargoId { get; set; }
 
 
