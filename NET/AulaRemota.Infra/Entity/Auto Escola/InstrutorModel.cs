@@ -27,10 +27,9 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
         public int UsuarioId { get; set; }
         public UsuarioModel Usuario { get; set; }
 
-
         public virtual List<AutoEscolaModel> AutoEscolas { get; set; }
-        public List<CursoModel> Cursos { get; set; }
-        public List<TelefoneModel> Telefones { get; set; }
+        public virtual List<CursoModel> Cursos { get; set; }
+        public virtual List<TelefoneModel> Telefones { get; set; }
         public virtual List<ArquivoModel> Arquivos { get; set; }
     }
 }

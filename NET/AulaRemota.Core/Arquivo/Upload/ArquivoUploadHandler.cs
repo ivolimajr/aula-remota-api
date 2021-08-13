@@ -1,8 +1,11 @@
 ﻿using AulaRemota.Core.Helpers;
 using AulaRemota.Infra.Models;
 using AulaRemota.Infra.Repository;
+using Azure.Storage.Blobs;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +21,7 @@ namespace AulaRemota.Core.Arquivo.Upload
         private readonly string _basePath;
         private readonly IRepository<ArquivoModel> _arquivoRepository;
         private readonly IHttpContextAccessor _context;
+        CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=aularemotablob;AccountKey=OBPERY2qeFupdEalWpLTXXlNmEWvQVKljJWkYgrr1dTOalbL/R/KxF82qEdk+4rVD2mx2CR28KqS8vkxvn5jkg==;EndpointSuffix=core.windows.net");
 
         public ArquivoUploadHandler(IRepository<ArquivoModel> arquivoRepository, IHttpContextAccessor context)
         {
@@ -47,6 +51,7 @@ namespace AulaRemota.Core.Arquivo.Upload
                         Destino = Path.Combine(baseUrl + "/api/v1/autoescola/" + docName)
                     };
 
+                    await SalvarNoAzure(item);
                     using var stream = new FileStream(destino, FileMode.Create);
                     await item.CopyToAsync(stream);
 
@@ -59,6 +64,25 @@ namespace AulaRemota.Core.Arquivo.Upload
             }
 
             return new ArquivoUploadResponse() { Arquivos = listaArquivos };
+        }
+
+        private async Task SalvarNoAzure(IFormFile arquivo)
+        {
+            var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+
+            var cloudBlobContainer = cloudBlobClient.GetContainerReference("pdfs");
+
+            if(await cloudBlobContainer.CreateIfNotExistsAsync())
+            {
+                await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions
+                {
+                    PublicAccess = BlobContainerPublicAccessType.Off
+                });
+            }
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(arquivo.FileName);
+            cloudBlockBlob.Properties.ContentType = arquivo.ContentType;
+
+            await cloudBlockBlob.UploadFromStreamAsync(arquivo.OpenReadStream());
         }
     }
 }
