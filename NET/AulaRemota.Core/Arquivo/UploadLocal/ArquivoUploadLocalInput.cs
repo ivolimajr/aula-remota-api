@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.Arquivo.Upload
+namespace AulaRemota.Core.Arquivo.UploadLocal
 {
-    public class ArquivoUploadInput : IRequest<ArquivoUploadResponse>
+    public class ArquivoUploadLocalInput : IRequest<ArquivoUploadLocalResponse>
     {
         
         public List<IFormFile> Arquivos { get; set; }

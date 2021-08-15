@@ -1,14 +1,12 @@
-﻿using AulaRemota.Core.Arquivo.Upload;
+﻿using AulaRemota.Core.Arquivo.UploadAzure;
 using AulaRemota.Core.Helpers;
 using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Models;
 using AulaRemota.Infra.Repository;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -83,7 +81,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
 
                 var listaArquivos = new List<ArquivoModel>();
 
-                var arquivoResult = await _mediator.Send(new ArquivoUploadInput
+                var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
                 {
                     Arquivos = request.Arquivos,
                     NomeAutoEscola = request.RazaoSocial.ToLower()

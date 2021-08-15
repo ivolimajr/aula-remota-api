@@ -10,6 +10,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using AulaRemota.Core.AutoEscola.Criar;
+using AulaRemota.Core.Arquivo.Download;
+using System.IO;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -142,6 +144,21 @@ namespace AulaRemota.Api.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+        /// <summary>
+        /// Remove um parceiro
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ArquivoDownload")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<string> ArquivoDownload(ArquivoDownloadInput request)
+        {
+                var result = await _mediator.Send(new ArquivoDownloadInput { NomeArquivo = request.NomeArquivo });
+                return result;
         }
     }
 }

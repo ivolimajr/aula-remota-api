@@ -1,9 +1,9 @@
 ﻿using AulaRemota.Infra.Models;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.Arquivo.Upload
+namespace AulaRemota.Core.Arquivo.UploadAzure
 {
-    public class ArquivoUploadResponse
+    public class ArquivoUploadAzureResponse
     {
         public List<ArquivoModel> Arquivos { get; set; }
     }
