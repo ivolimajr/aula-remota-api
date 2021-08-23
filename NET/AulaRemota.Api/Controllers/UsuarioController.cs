@@ -2,6 +2,7 @@
 using AulaRemota.Core.Usuario.AtualizarSenha;
 using AulaRemota.Core.Usuario.AtualizarSenhaPorEmail;
 using AulaRemota.Core.Usuario.Login;
+using AulaRemota.Core.Usuario.RemoveTelefone;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -97,6 +98,29 @@ namespace AulaRemota.Api.Controllers
             catch (HttpClientCustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        /// <summary>
+        /// Remove um usuário
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("Telefone/{id?}")]
+        [HttpDelete("{id}")]
+        public async ValueTask<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new RemoveTelefoneInput { Id = id });
+                return Ok(result);
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
             }
             catch (Exception e)
             {

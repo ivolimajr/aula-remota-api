@@ -16,6 +16,8 @@ namespace AulaRemota.Api.Controllers
     [ApiController]
     [Authorize("Bearer")]
     [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class EdrivingCargoController : ControllerBase
     {
         private readonly IMediator _mediator;

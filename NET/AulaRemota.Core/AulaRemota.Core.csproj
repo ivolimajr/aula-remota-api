@@ -6,8 +6,17 @@
 
   <ItemGroup>
     <Compile Remove="UploadDir\**" />
+    <Compile Remove="Usuario\Deletar\**" />
+    <Compile Remove="Usuario\ListarPorId\**" />
+    <Compile Remove="Usuario\ListarTodos\**" />
     <EmbeddedResource Remove="UploadDir\**" />
+    <EmbeddedResource Remove="Usuario\Deletar\**" />
+    <EmbeddedResource Remove="Usuario\ListarPorId\**" />
+    <EmbeddedResource Remove="Usuario\ListarTodos\**" />
     <None Remove="UploadDir\**" />
+    <None Remove="Usuario\Deletar\**" />
+    <None Remove="Usuario\ListarPorId\**" />
+    <None Remove="Usuario\ListarTodos\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,12 +32,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
     <PackageReference Include="Uno.UI" Version="3.9.7" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Usuario\Deletar\" />
-    <Folder Include="Usuario\ListarPorId\" />
-    <Folder Include="Usuario\ListarTodos\" />
   </ItemGroup>
 
   <ItemGroup>
