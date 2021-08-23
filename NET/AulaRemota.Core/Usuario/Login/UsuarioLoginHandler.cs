@@ -5,25 +5,30 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AulaRemota.Core.Usuario.Login
 {
     public class UsuarioLoginHandler : IRequestHandler<UsuarioLoginInput, UsuarioLoginResponse>
     {
-        private readonly IRepository<UsuarioModel> _UsuarioRepository;
+        private readonly IRepository<UsuarioModel> _usuarioRepository;
 
-        public UsuarioLoginHandler(IRepository<UsuarioModel> UsuarioRepository)
+        public UsuarioLoginHandler(IRepository<UsuarioModel> usuarioRepository)
         {
-            _UsuarioRepository = UsuarioRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
+        /**
+         * Método responsável por efetuar o login do usuário na plataforma.
+         * Diante do nível de acesso do usuário é retornado o ID do tipo de usuário logado.
+         */
         public async Task<UsuarioLoginResponse> Handle(UsuarioLoginInput request, CancellationToken cancellationToken)
         {
             if (request.Email == string.Empty) throw new HttpClientCustomException("Valores Inválidos");
 
             try
             {
-                var result = await _UsuarioRepository.FindAsync(u => u.Email == request.Email);
+                var result = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
                 if (result == null) throw new HttpClientCustomException("Não Encontrado");
 
                 if(result.status == 0) throw new HttpClientCustomException("Usuário Removido");
@@ -31,6 +36,11 @@ namespace AulaRemota.Core.Usuario.Login
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
                 if (!checkPass) throw new HttpClientCustomException("Credenciais Inválidas");
+
+                if(result.NivelAcesso >= 10 && result.NivelAcesso <20)
+                {
+                    result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                }
 
                 return new UsuarioLoginResponse
                 {
