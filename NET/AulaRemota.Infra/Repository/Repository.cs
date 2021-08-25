@@ -44,16 +44,10 @@ namespace AulaRemota.Infra.Repository
         }
 
         //ATUALIZAR
-        TEntity IRepository<TEntity>.Update(TEntity entity)
+        void IRepository<TEntity>.Update(TEntity entity)
         {
             var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
-
-            if (result != null)
-            {
-                _context.Entry(result).CurrentValues.SetValues(entity);
-                return result;
-            }
-            return null;
+            if (result != null) _context.Entry(result).CurrentValues.SetValues(entity);
         }
 
         //BUSCAR COM CLÁUSULA

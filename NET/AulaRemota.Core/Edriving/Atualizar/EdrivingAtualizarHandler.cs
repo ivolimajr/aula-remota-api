@@ -98,44 +98,45 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     foreach (var item in request.Telefones)
                     {
                         //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
-                        if (!entity.Telefones.Any(e => e.Telefone == item.Telefone))
+                        if (entity.Telefones.Any(e => e.Telefone == item.Telefone))
                         {
-                            //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
+                            throw new Exception("Telefone: " + item.Telefone + " já em uso");
+                        }
+                        //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
+                        var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
 
-                            //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
-                            if (item.Id == 0)
-                            {
-                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                                entity.Telefones.Add(item);
-                            }
-                            else
-                            {
-                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                                _telefoneRepository.Update(item);
-                            }
+                        //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
+                        if (item.Id == 0)
+                        {
+                            //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                            if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                            entity.Telefones.Add(item);
+                        }
+                        else
+                        {
+                            //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                            if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                            _telefoneRepository.Update(item);
                         }
                     }
                 }
 
-                var edrivingModel = _edrivingRepository.Update(entity);
+                _edrivingRepository.Update(entity);
 
                 _edrivingRepository.Save();
                 _edrivingRepository.Commit();
 
                 return new EdrivingAtualizarResponse
                 {
-                    Id = edrivingModel.Id,
-                    Nome = edrivingModel.Nome,
-                    Email = edrivingModel.Email,
-                    Cpf = edrivingModel.Cpf,
-                    Telefones = edrivingModel.Telefones,
-                    CargoId = edrivingModel.CargoId,
-                    UsuarioId = edrivingModel.UsuarioId,
-                    Cargo = edrivingModel.Cargo,
-                    Usuario = edrivingModel.Usuario
+                    Id = entity.Id,
+                    Nome = entity.Nome,
+                    Email = entity.Email,
+                    Cpf = entity.Cpf,
+                    Telefones = entity.Telefones,
+                    CargoId = entity.CargoId,
+                    UsuarioId = entity.UsuarioId,
+                    Cargo = entity.Cargo,
+                    Usuario = entity.Usuario
                 };
             }
             catch (Exception e)

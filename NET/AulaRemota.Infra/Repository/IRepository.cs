@@ -16,7 +16,7 @@ namespace AulaRemota.Infra.Repository
 
         public Task<TEntity> CreateAsync(TEntity entity);
 
-        TEntity Update(TEntity entity);
+        void Update(TEntity entity);
 
         IEnumerable<TEntity> GetAll();
 

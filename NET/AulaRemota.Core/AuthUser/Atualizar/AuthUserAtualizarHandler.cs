@@ -30,14 +30,14 @@ namespace AulaRemota.Core.AuthUser.Atualizar
                 if (request.Nome != null) entity.Nome = request.Nome.ToUpper();
                 if (request.UserName != null) entity.UserName = request.UserName.ToUpper();
 
-                ApiUserModel result = _authUserRepository.Update(entity);
+                _authUserRepository.Update(entity);
                 await _authUserRepository.SaveChangesAsync();
 
                 return new AuthUserAtualizarResponse()
                 {
-                    Id = result.Id,
-                    Nome = result.Nome,
-                    UserName = result.UserName
+                    Id = entity.Id,
+                    Nome = entity.Nome,
+                    UserName = entity.UserName
                 };
             }
             catch (Exception e)

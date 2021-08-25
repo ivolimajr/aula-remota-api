@@ -109,25 +109,25 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                 if (request.Cidade != null) entity.Endereco.Cidade = request.Cidade.ToUpper();
                 if (request.Numero != null) entity.Endereco.Numero = request.Numero.ToUpper();
 
-                var parceiroModel = _parceiroRepository.Update(entity);
+                _parceiroRepository.Update(entity);
 
                 _parceiroRepository.Save();
                 _parceiroRepository.Commit();
 
                 return new ParceiroAtualizarResponse
                 {
-                    Id = parceiroModel.Id,
-                    Nome = parceiroModel.Nome,
-                    Email = parceiroModel.Email,
-                    Cnpj = parceiroModel.Cnpj,
-                    Descricao = parceiroModel.Descricao,
-                    Telefones = parceiroModel.Telefones,
-                    CargoId = parceiroModel.CargoId,
-                    UsuarioId = parceiroModel.UsuarioId,
-                    Cargo = parceiroModel.Cargo,
-                    Usuario = parceiroModel.Usuario,
-                    EnderecoId = parceiroModel.EnderecoId,
-                    Endereco = parceiroModel.Endereco
+                    Id = entity.Id,
+                    Nome = entity.Nome,
+                    Email = entity.Email,
+                    Cnpj = entity.Cnpj,
+                    Descricao = entity.Descricao,
+                    Telefones = entity.Telefones,
+                    CargoId = entity.CargoId,
+                    UsuarioId = entity.UsuarioId,
+                    Cargo = entity.Cargo,
+                    Usuario = entity.Usuario,
+                    EnderecoId = entity.EnderecoId,
+                    Endereco = entity.Endereco
                 };
             }
             catch (Exception e)
