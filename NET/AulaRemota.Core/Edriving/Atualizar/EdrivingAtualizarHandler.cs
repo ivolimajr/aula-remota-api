@@ -98,25 +98,26 @@ namespace AulaRemota.Core.Edriving.Atualizar
                     foreach (var item in request.Telefones)
                     {
                         //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
-                        if (entity.Telefones.Any(e => e.Telefone == item.Telefone))
+                        if (!entity.Telefones.Any(e => e.Telefone == item.Telefone))
                         {
-                            throw new Exception("Telefone: " + item.Telefone + " já em uso");
-                        }
-                        //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                        var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
 
-                        //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
-                        if (item.Id == 0)
-                        {
-                            //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                            if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                            entity.Telefones.Add(item);
-                        }
-                        else
-                        {
-                            //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                            if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                            _telefoneRepository.Update(item);
+
+                            //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
+                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
+
+                            //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
+                            if (item.Id == 0)
+                            {
+                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                entity.Telefones.Add(item);
+                            }
+                            else
+                            {
+                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
+                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                _telefoneRepository.Update(item);
+                            }
                         }
                     }
                 }
