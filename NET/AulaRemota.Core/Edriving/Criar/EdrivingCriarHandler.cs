@@ -46,12 +46,16 @@ namespace AulaRemota.Core.Edriving.Criar
                 var cpfResult = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
                 if (cpfResult != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
 
-                //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                foreach (var item in request.Telefones)
+                //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
+                if(request.Telefones != null)
                 {
-                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                    if (telefoneResult != null) throw new HttpClientCustomException("Telefone: "+telefoneResult.Telefone+" já em uso");
+                    foreach (var item in request.Telefones)
+                    {
+                        var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
+                        if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                    }
                 }
+             
 
                 //VERIFICA SE O CARGO INFORMADO EXISTE
                 var cargo = _cargoRepository.GetById(request.CargoId);

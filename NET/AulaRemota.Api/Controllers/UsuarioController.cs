@@ -15,9 +15,9 @@ namespace AulaRemota.Api.Controllers
     /// <summary>
     /// Lista os EndPoints para gerenciar o usuário, tanto Edriving, auto escola, parceiro
     /// </summary>
-    [Route("api/[controller]")]
-    [Authorize("Bearer")]
     [ApiController]
+    [Authorize("Bearer")]
+    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class UsuarioController : ControllerBase
@@ -105,12 +105,12 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Remove um usuário
+        /// Remove o telefone de um usuário
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("Telefone/{id?}")]
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async ValueTask<ActionResult> Delete(int id)
         {
             try
