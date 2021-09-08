@@ -29,11 +29,12 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
 
                 var result = await _parceiroRepository.Context
                         .Set<ParceiroModel>()
-                        .Include(u => u.Usuario)
-                        .Include(c => c.Cargo)
+                        .Include(e => e.Usuario)
+                        .Include(e => e.Cargo)
                         .Include(e => e.Endereco)
-                        .Where(u => u.Id == request.Id)
-                        .Where(u => u.Usuario.status > 0)
+                        .Include(e => e.Telefones)
+                        .Where(e => e.Id == request.Id)
+                        .Where(e => e.Usuario.status > 0)
                         .FirstAsync();
 
                 return new ParceiroListarPorIdResponse {

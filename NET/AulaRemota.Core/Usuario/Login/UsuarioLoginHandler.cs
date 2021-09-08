@@ -41,6 +41,10 @@ namespace AulaRemota.Core.Usuario.Login
                 {
                     result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
                 }
+                if(result.NivelAcesso >= 20 && result.NivelAcesso <30)
+                {
+                    result.Id = _usuarioRepository.Context.Set<ParceiroModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                }
 
                 return new UsuarioLoginResponse
                 {

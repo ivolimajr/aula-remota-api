@@ -1,10 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace AulaRemota.Infra.Entity.Auto_Escola
 {
     public class TelefoneModel
     {
         public int Id { get; set; }
+
+        [Required]
+        [StringLength(maximumLength: 11, MinimumLength =11)]
         public string Telefone { get; set; }
 
         [JsonIgnore]
