@@ -1,8 +1,10 @@
 ﻿using AulaRemota.Core.Helpers;
+using AulaRemota.Core.Usuario.AtualizarEndereco;
 using AulaRemota.Core.Usuario.AtualizarSenha;
 using AulaRemota.Core.Usuario.AtualizarSenhaPorEmail;
 using AulaRemota.Core.Usuario.Login;
 using AulaRemota.Core.Usuario.RemoveTelefone;
+using AulaRemota.Infra.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -121,6 +123,30 @@ namespace AulaRemota.Api.Controllers
             catch (HttpClientCustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        /// <summary>
+        /// Atualizar endereço de um usuário
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Route("atualizar-endereco")]
+        [HttpPut]
+        [ProducesResponseType(typeof(EnderecoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UsuarioAtualizarEnderecoInput request)
+        {
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+            }
+            catch (HttpClientCustomException e)
+            {
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }
             catch (Exception e)
             {
