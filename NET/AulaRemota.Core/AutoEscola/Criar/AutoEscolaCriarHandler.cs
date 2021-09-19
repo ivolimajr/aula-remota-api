@@ -40,16 +40,13 @@ namespace AulaRemota.Core.AutoEscola.Criar
             {
                 _autoEscolaRepository.CreateTransaction();
 
-
-
-                await _arquivoRepository.SaveChangesAsync();
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
                 if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                var cpfResult = await _autoEscolaRepository.FindAsync(u => u.Cnpj == request.Cnpj);
-                if (cpfResult != null) throw new HttpClientCustomException("Cnpj já existe em nossa base de dados");
+                var cnpjResult = await _autoEscolaRepository.FindAsync(u => u.Cnpj == request.Cnpj);
+                if (cnpjResult != null) throw new HttpClientCustomException("Cnpj já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.Telefones)
@@ -63,7 +60,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
                 {
                     Nome = request.RazaoSocial.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    NivelAcesso = 20,
+                    NivelAcesso = 30,
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };
@@ -79,19 +76,26 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Uf = request.Uf.ToUpper(),
                 };
 
+                //Cria uma lista para receber os arquivos
                 var listaArquivos = new List<ArquivoModel>();
 
+                /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
+                 * @return nome, formato e destino
+                 */
                 var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
                 {
                     Arquivos = request.Arquivos,
-                    NomeAutoEscola = request.RazaoSocial.ToLower()
+                    NivelAcesso = 20
                 });
 
+                //Salva no banco todas as informações dos arquivos do upload
                 foreach (var item in arquivoResult.Arquivos)
                 {
                     var arquivo = await _arquivoRepository.CreateAsync(item);
                     listaArquivos.Add(item);
                 }
+
+                await _arquivoRepository.SaveChangesAsync();
 
                 //CRIA UM EDRIVING
                 var autoEscola = new AutoEscolaModel()
@@ -109,7 +113,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Endereco = endereco,
                     Arquivos = listaArquivos
                 };
-
 
                 var autoEscolaModel = await _autoEscolaRepository.CreateAsync(autoEscola);
 

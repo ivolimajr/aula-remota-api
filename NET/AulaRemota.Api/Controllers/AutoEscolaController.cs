@@ -12,11 +12,12 @@ using Microsoft.AspNetCore.Authorization;
 using AulaRemota.Core.AutoEscola.Criar;
 using AulaRemota.Core.Arquivo.Download;
 using System.IO;
+using AulaRemota.Core.AutoEscola.ListarTodos;
 
 namespace AulaRemota.Api.Controllers
 {
     /// <summary>g
-    /// Lista os EndPoints para gerenciar os usuários dos Parceiros - DETRANS
+    /// Lista os EndPoints para gerenciar os usuários dos Auto Escola - DETRANS
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
@@ -32,17 +33,17 @@ namespace AulaRemota.Api.Controllers
             _mediator = mediator;
         }
         /// <summary>
-        /// Retorna um Array de items com os parceiros
+        /// Retorna um Array de items com os usuários do tipo Auto Escola
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(ParceiroListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AutoEscolaListarTodosResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult> GetAll()
         {
             try
             {
-                return Ok(await _mediator.Send(new ParceiroListarTodosInput()));
+                return Ok(await _mediator.Send(new AutoEscolaListarTodosInput()));
             }
             catch (HttpClientCustomException e)
             {

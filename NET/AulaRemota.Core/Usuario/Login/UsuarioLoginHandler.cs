@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using AulaRemota.Infra.Entity.Auto_Escola;
 
 namespace AulaRemota.Core.Usuario.Login
 {
@@ -44,6 +45,10 @@ namespace AulaRemota.Core.Usuario.Login
                 if(result.NivelAcesso >= 20 && result.NivelAcesso <30)
                 {
                     result.Id = _usuarioRepository.Context.Set<ParceiroModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                }
+                if(result.NivelAcesso >= 30 && result.NivelAcesso <40)
+                {
+                    result.Id = _usuarioRepository.Context.Set<AutoEscolaModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
                 }
 
                 return new UsuarioLoginResponse
