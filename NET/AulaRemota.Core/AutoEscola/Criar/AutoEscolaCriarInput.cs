@@ -19,7 +19,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
         public string NomeFantasia { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 20, MinimumLength = 20)]
+        [StringLength(maximumLength: 20, MinimumLength = 12)]
         public string InscricaoEstadual { get; set; }
 
         [Required]
@@ -71,7 +71,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
         [Required]
         public List<TelefoneModel> Telefones { get; set; }
 
-        [Required]
+        
         public List<IFormFile> Arquivos { get; set; }
     }
 }

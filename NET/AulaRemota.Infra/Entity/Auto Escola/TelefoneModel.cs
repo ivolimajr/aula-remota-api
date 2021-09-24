@@ -8,7 +8,7 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
         public int Id { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 11, MinimumLength =11)]
+        [StringLength(maximumLength: 11, MinimumLength = 10)]
         public string Telefone { get; set; }
 
         [JsonIgnore]
