@@ -13,6 +13,7 @@ using AulaRemota.Core.AutoEscola.Criar;
 using AulaRemota.Core.Arquivo.Download;
 using System.IO;
 using AulaRemota.Core.AutoEscola.ListarTodos;
+using AulaRemota.Core.AutoEscola.Deletar;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -79,7 +80,7 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Insere um novo parceiro
+        /// Insere um novo usuário do tipo Auto Escola
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -125,7 +126,7 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Remove um parceiro
+        /// Remove um usuário do tipo Auto Escola
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -134,7 +135,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new ParceiroDeletarInput { Id = id });
+                var result = await _mediator.Send(new AutoEscolaDeletarInput { Id = id });
                 return Ok(result);
             }
             catch (HttpClientCustomException e)
