@@ -14,6 +14,7 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
             this.Telefones = new List<TelefoneModel>();
             this.Turmas = new List<TurmaModel>();
         }
+
         public int Id { get; set; }
         public string RazaoSocial { get; set; }
         public string NomeFantasia { get; set; }
@@ -41,9 +42,9 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
         public virtual List<TurmaModel> Turmas { get; set; }
         [JsonIgnore]
         public virtual List<AlunoModel> Alunos { get; set; }
-        [JsonIgnore]
+
         public virtual List<TelefoneModel> Telefones { get; set; }
-        [JsonIgnore]
+
         public virtual List<ArquivoModel> Arquivos { get; set; }
     }
 }

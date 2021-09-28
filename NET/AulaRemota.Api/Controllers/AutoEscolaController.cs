@@ -14,6 +14,7 @@ using AulaRemota.Core.Arquivo.Download;
 using System.IO;
 using AulaRemota.Core.AutoEscola.ListarTodos;
 using AulaRemota.Core.AutoEscola.Deletar;
+using AulaRemota.Core.AutoEscola.ListarPorId;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -67,7 +68,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new ParceiroListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new AutoEscolaListarPorIdInput { Id = id});
                 return Ok(result);
             }
             catch (HttpClientCustomException e)

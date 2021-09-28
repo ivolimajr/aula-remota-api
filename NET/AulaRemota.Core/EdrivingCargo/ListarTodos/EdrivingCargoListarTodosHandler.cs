@@ -2,6 +2,7 @@
 using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +27,9 @@ namespace AulaRemota.Core.EdrivingCargo.ListarTodos
 
                 return new EdrivingCargoListarTodosResponse { Items = result };
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
 
         }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace AulaRemota.Core.Parceiro.ListarTodos
 {
@@ -52,11 +53,11 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
                     Usuario = result.Usuario,
                 };
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
-            
+
         }
     }
 }

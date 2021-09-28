@@ -43,9 +43,9 @@ namespace AulaRemota.Core.Usuario.Criar
                 };
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
         }
     }

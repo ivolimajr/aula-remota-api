@@ -5,6 +5,12 @@ namespace AulaRemota.Core.AutoEscola.ListarTodos
 {
     public class AutoEscolaListarTodosResponse
     {
-        public List<AutoEscolaModel> Items { get; set; }
+        public int Id { get; set; }
+        public string RazaoSocial { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class AutoEscolaOutput
+    {
     }
 }

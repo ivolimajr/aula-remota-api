@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace AulaRemota.Core.ParceiroCargo.ListarPorId
 {
@@ -34,11 +35,11 @@ namespace AulaRemota.Core.ParceiroCargo.ListarPorId
 
                 return new ParceiroCargoListarPorIdResponse { Item = result };
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
-            
+
         }
     }
 }

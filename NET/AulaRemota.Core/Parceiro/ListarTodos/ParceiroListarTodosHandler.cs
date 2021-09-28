@@ -2,6 +2,7 @@
 using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,11 +33,11 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
 
                 return new ParceiroListarTodosResponse { Items = result };
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
-            
+
         }
     }
 }
