@@ -57,11 +57,11 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         /// <response code="200">Atualiza o Token</response>
-        /// <response code="401">RefreshToken inválido</response>
+        /// <response code="404">RefreshToken inválido</response>
         [HttpPost]
         [Route("refresh")]
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult> Refresh([FromBody] RefreshTokenInput request)
         {
             try
@@ -70,7 +70,7 @@ namespace AulaRemota.Api.Controllers
             }
             catch (HttpClientCustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
+                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
             catch (Exception e)
             {

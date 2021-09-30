@@ -33,21 +33,21 @@ namespace AulaRemota.Core.Auth.GenerateToken
 
             try
             {
-                var userDb = ValidateCredentials(request);
+                var user = ValidateCredentials(request);
 
                 var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("n")),
-                new Claim(JwtRegisteredClaimNames.UniqueName, userDb.UserName)
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
                 var accessToken = GenerateAccessToken(claims);
                 var refreshToken = GenerateRefreshToken();
 
-                userDb.RefreshToken = refreshToken;
-                userDb.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
 
-                _authUserRepository.Update(userDb);
+                _authUserRepository.Update(user);
 
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);

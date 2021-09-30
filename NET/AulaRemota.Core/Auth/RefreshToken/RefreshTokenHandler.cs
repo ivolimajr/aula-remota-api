@@ -39,18 +39,16 @@ namespace AulaRemota.Core.Auth.RefreshToken
 
                 var user = _authUserRepository.Find(u => (u.UserName == userName));
 
-                //TODO: RETORNAR RESPOSTAS MELHORES
-                if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now) throw new HttpClientCustomException("Usuário Não Encontrado");
+                if (user == null) throw new HttpClientCustomException("Credenciais de Serviço Não Encontrada");
+                if (user.RefreshToken != refreshToken) throw new HttpClientCustomException("Credenciais de Serviço Inválida");
+                if (user.RefreshTokenExpiryTime < DateTime.Now) throw new HttpClientCustomException("Credenciais de Serviço Expirada");
 
                 accessToken = GenerateAccessToken(principal.Claims);
-
                 refreshToken = GenerateRefreshToken();
 
                 user.RefreshToken = refreshToken;
-
-
                 _authUserRepository.Update(user);
-
+                
                 DateTime createDate = DateTime.Now;
                 DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
 
