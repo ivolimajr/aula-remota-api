@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using AulaRemota.Infra.Entity;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -17,7 +19,6 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
-    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ParceiroController : ControllerBase
@@ -33,9 +34,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(ParceiroListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ParceiroModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<ParceiroModel>>> GetAll()
         {
             try
             {
@@ -58,7 +59,7 @@ namespace AulaRemota.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<ParceiroListarPorIdResponse>> Get(int id)
         {
             try
             {

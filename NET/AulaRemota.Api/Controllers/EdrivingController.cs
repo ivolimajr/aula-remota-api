@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AulaRemota.Infra.Entity;
+using System.Collections.Generic;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -32,9 +34,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(EdrivingListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<EdrivingModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<EdrivingModel>>> GetAll()
         {
             try
             {
@@ -57,7 +59,7 @@ namespace AulaRemota.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(EdrivingListarPorIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<EdrivingListarPorIdResponse>> Get(int id)
         {
             try
             {

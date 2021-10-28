@@ -1,11 +1,13 @@
 ﻿using AulaRemota.Core.AuthUser.Atualizar;
 using AulaRemota.Core.AuthUser.Criar;
 using AulaRemota.Core.Helpers;
+using AulaRemota.Infra.Entity.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
@@ -13,11 +15,10 @@ namespace AulaRemota.Api.Controllers
     /// <summary>
     /// Lista os EndPoints para obter acesso a API.
     /// </summary>
-    [Route("api/[controller]")]
+    [ApiController]
     [Authorize("Bearer")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiController]
     public class AuthUserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -32,9 +33,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(AuthUserListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ApiUserModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<ApiUserModel>>> GetAll()
         {
             try
             {
@@ -56,9 +57,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(AuthUserListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiUserModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<ApiUserModel>> Get(int id)
         {
             try
             {

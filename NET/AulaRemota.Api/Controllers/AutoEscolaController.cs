@@ -15,6 +15,8 @@ using System.IO;
 using AulaRemota.Core.AutoEscola.ListarTodos;
 using AulaRemota.Core.AutoEscola.Deletar;
 using AulaRemota.Core.AutoEscola.ListarPorId;
+using AulaRemota.Infra.Entity.Auto_Escola;
+using System.Collections.Generic;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -23,7 +25,6 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
-    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class AutoEscolaController : ControllerBase
@@ -39,9 +40,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(AutoEscolaListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<AutoEscolaModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<AutoEscolaModel>>> GetAll()
         {
             try
             {
@@ -62,9 +63,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AutoEscolaListarPorIdInput), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<AutoEscolaListarPorIdInput>> Get(int id)
         {
             try
             {

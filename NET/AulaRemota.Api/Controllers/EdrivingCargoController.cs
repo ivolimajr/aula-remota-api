@@ -1,11 +1,13 @@
 ﻿using AulaRemota.Core.EdrivingCargo.ListarPorId;
 using AulaRemota.Core.EdrivingCargo.ListarTodos;
 using AulaRemota.Core.Helpers;
+using AulaRemota.Infra.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
@@ -15,7 +17,6 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
-    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class EdrivingCargoController : ControllerBase
@@ -31,9 +32,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(EdrivingCargoListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<EdrivingCargoModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<EdrivingCargoModel>>> GetAll()
         {
             try
             {
@@ -54,9 +55,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(EdrivingCargoListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingCargoModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<EdrivingCargoModel>> Get(int id)
         {
             try
             {

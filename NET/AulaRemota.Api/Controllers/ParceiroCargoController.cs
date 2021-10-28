@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using AulaRemota.Infra.Entity;
+using System.Collections.Generic;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -15,7 +17,6 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
-    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ParceiroCargoController : ControllerBase
@@ -31,9 +32,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(ParceiroCargoListarTodosResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<ParceiroCargoModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> GetAll()
+        public async ValueTask<ActionResult<List<ParceiroCargoModel>>> GetAll()
         {
             try
             {
@@ -54,9 +55,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ParceiroCargoListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ParceiroCargoModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Get(int id)
+        public async ValueTask<ActionResult<ParceiroCargoModel>> Get(int id)
         {
             try
             {
