@@ -19,7 +19,6 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
-    [Route("api/[controller]")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class UsuarioController : ControllerBase
@@ -111,9 +110,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Route("Telefone/{id?}")]
         [HttpDelete]
-        public async ValueTask<ActionResult> Delete(int id)
+        [Route("Telefone/{id?}")]
+        public async ValueTask<ActionResult> Telefone(int id)
         {
             try
             {

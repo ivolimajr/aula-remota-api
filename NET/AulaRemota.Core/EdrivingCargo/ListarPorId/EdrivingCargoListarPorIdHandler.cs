@@ -10,7 +10,7 @@ using System;
 
 namespace AulaRemota.Core.EdrivingCargo.ListarPorId
 {
-    public class EdrivingCargoListarPorIdHandler : IRequestHandler<EdrivingCargoListarPorIdInput, EdrivingCargoListarPorIdResponse>
+    public class EdrivingCargoListarPorIdHandler : IRequestHandler<EdrivingCargoListarPorIdInput, EdrivingCargoModel>
     {
         private readonly IRepository<EdrivingCargoModel> _edrivingCargoRepository;
 
@@ -19,21 +19,16 @@ namespace AulaRemota.Core.EdrivingCargo.ListarPorId
             _edrivingCargoRepository = edrivingCargoRepository;
         }
 
-        public async Task<EdrivingCargoListarPorIdResponse> Handle(EdrivingCargoListarPorIdInput request, CancellationToken cancellationToken)
+        public async Task<EdrivingCargoModel> Handle(EdrivingCargoListarPorIdInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
             try
             {
-                var res = await _edrivingCargoRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new HttpClientCustomException("Não Encontrado");
+                var result = await _edrivingCargoRepository.GetByIdAsync(request.Id);
+                if (result == null) throw new HttpClientCustomException("Não Encontrado");
 
-                var result = await _edrivingCargoRepository.Context
-                        .Set<EdrivingCargoModel>()
-                        .Where(u => u.Id == request.Id)
-                        .FirstAsync();
-
-                return new EdrivingCargoListarPorIdResponse { Item = result };
+                return result;
             }
             catch (Exception e)
             {

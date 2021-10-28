@@ -1,15 +1,15 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Core.EdrivingCargo.ListarTodos
 {
-    public class EdrivingCargoListarTodosHandler : IRequestHandler<EdrivingCargoListarTodosInput, EdrivingCargoListarTodosResponse>
+    public class EdrivingCargoListarTodosHandler : IRequestHandler<EdrivingCargoListarTodosInput, List<EdrivingCargoModel>>
     {
         private readonly IRepository<EdrivingCargoModel> _edrivingCargoRepository;
 
@@ -18,14 +18,11 @@ namespace AulaRemota.Core.EdrivingCargo.ListarTodos
             _edrivingCargoRepository = edrivingRepository;
         }
 
-        public async Task<EdrivingCargoListarTodosResponse> Handle(EdrivingCargoListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<EdrivingCargoModel>> Handle(EdrivingCargoListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _edrivingCargoRepository.Context.Set<EdrivingCargoModel>()
-                    .OrderBy(u => u.Cargo).ToListAsync();
-
-                return new EdrivingCargoListarTodosResponse { Items = result };
+                return _edrivingCargoRepository.GetAll().OrderBy(u => u.Cargo).ToList();
             }
             catch (Exception e)
             {

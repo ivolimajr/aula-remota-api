@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Core.AutoEscola.ListarTodos
 {
-    public class AutoEscolaListarTodosHandler : IRequestHandler<AutoEscolaListarTodosInput, List<AutoEscolaListarTodosResponse>>
+    public class AutoEscolaListarTodosHandler : IRequestHandler<AutoEscolaListarTodosInput, List<AutoEscolaModel>>
     {
         private readonly IRepository<AutoEscolaModel> _autoEscolaRepository;
 
@@ -18,34 +18,11 @@ namespace AulaRemota.Core.AutoEscola.ListarTodos
             _autoEscolaRepository = autoEscolaRepository;
         }
 
-        public async Task<List<AutoEscolaListarTodosResponse>> Handle(AutoEscolaListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<AutoEscolaModel>> Handle(AutoEscolaListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = _autoEscolaRepository.GetAll()
-                                         .Select(e => new
-                                         {
-                                             e.Id,
-                                             e.Email,
-                                             e.RazaoSocial
-                                         })
-                                         .ToList();
-
-                var autoEscolaList = new List<AutoEscolaListarTodosResponse>();
-
-                foreach (var item in result)
-                {
-                    var res = new AutoEscolaListarTodosResponse
-                    {
-                        Id = item.Id,
-                        Email = item.Email,
-                        RazaoSocial = item.RazaoSocial
-                    };
-                    autoEscolaList.Add(res);
-                }
-
-
-                return autoEscolaList;
+                return _autoEscolaRepository.GetAll().ToList();
             }
             catch (Exception e)
             {

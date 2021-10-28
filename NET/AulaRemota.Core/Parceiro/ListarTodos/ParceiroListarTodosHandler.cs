@@ -3,13 +3,14 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Core.Parceiro.ListarTodos
 {
-    public class ParceiroListarTodosHandler : IRequestHandler<ParceiroListarTodosInput, ParceiroListarTodosResponse>
+    public class ParceiroListarTodosHandler : IRequestHandler<ParceiroListarTodosInput, List<ParceiroModel>>
     {
         private readonly IRepository<ParceiroModel> _parceiroRepository;
 
@@ -18,20 +19,18 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
             _parceiroRepository = parceiroRepository;
         }
 
-        public async Task<ParceiroListarTodosResponse> Handle(ParceiroListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<ParceiroModel>> Handle(ParceiroListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _parceiroRepository.Context
+                return await _parceiroRepository.Context
                     .Set<ParceiroModel>()
                     .Include(e => e.Usuario)
                     .Include(e => e.Cargo)
                     .Include(e => e.Endereco)
                     .Include(e => e.Telefones)
                     .Where(e => e.Usuario.status > 0)
-                    .OrderBy(e => e.Id).ToListAsync();
-
-                return new ParceiroListarTodosResponse { Items = result };
+                    .ToListAsync(); ;
             }
             catch (Exception e)
             {

@@ -1,14 +1,14 @@
 ﻿using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Infra.Repository;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Core.AuthUser.Criar
 {
-    public class AuthUserListarTodosHandler : IRequestHandler<AuthUserListarTodosInput, AuthUserListarTodosResponse>
+    public class AuthUserListarTodosHandler : IRequestHandler<AuthUserListarTodosInput, List<ApiUserModel>>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
@@ -17,14 +17,11 @@ namespace AulaRemota.Core.AuthUser.Criar
             _authUserRepository = authUserRepository;
         }
 
-        public async Task<AuthUserListarTodosResponse> Handle(AuthUserListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<ApiUserModel>> Handle(AuthUserListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _authUserRepository.Context.Set<ApiUserModel>()
-                    .OrderBy(u => u.Id).ToListAsync();
-
-                return new AuthUserListarTodosResponse { Items = result };
+                return _authUserRepository.GetAll().ToList();
             }
             catch (System.Exception)
             {

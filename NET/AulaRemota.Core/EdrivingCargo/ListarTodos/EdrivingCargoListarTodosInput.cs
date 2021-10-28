@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using AulaRemota.Infra.Entity;
+using MediatR;
+using System.Collections.Generic;
 
 namespace AulaRemota.Core.EdrivingCargo.ListarTodos
 {
-    public class EdrivingCargoListarTodosInput : IRequest<EdrivingCargoListarTodosResponse>
+    public class EdrivingCargoListarTodosInput : IRequest<List<EdrivingCargoModel>>
     {
     }
 }

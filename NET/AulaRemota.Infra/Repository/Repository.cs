@@ -48,22 +48,23 @@ namespace AulaRemota.Infra.Repository
         {
             var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
             if (result != null) _context.Entry(result).CurrentValues.SetValues(entity);
+            //if (result != null) _context.Entry(result).State = EntityState.Modified;
         }
 
         //BUSCAR COM CLÁUSULA
         IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> queryLambda)
         {
-            return _context.Set<TEntity>().Where(queryLambda).AsEnumerable();
+            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).AsEnumerable();
         }
 
         public TEntity Find(Expression<Func<TEntity, bool>> queryLambda)
         {
-            return _context.Set<TEntity>().Where(queryLambda).FirstOrDefault();
+            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefault();
         }
 
         public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda)
         {
-            return await _context.Set<TEntity>().Where(queryLambda).FirstOrDefaultAsync();
+            return await _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefaultAsync();
         }
 
         //REMOVER
@@ -75,7 +76,7 @@ namespace AulaRemota.Infra.Repository
         //BUSCAR TODOS
         IEnumerable<TEntity> IRepository<TEntity>.GetAll()
         {
-            return _context.Set<TEntity>().AsEnumerable();
+            return _context.Set<TEntity>().AsNoTracking().AsEnumerable();
         }
 
         //BUSCAR POR ID

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AulaRemota.Core.AuthUser.Criar
 {
-    public class AuthUserListarPorIdHandler : IRequestHandler<AuthUserListarPorIdInput, AuthUserListarPorIdResponse>
+    public class AuthUserListarPorIdHandler : IRequestHandler<AuthUserListarPorIdInput, ApiUserModel>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
@@ -16,7 +16,7 @@ namespace AulaRemota.Core.AuthUser.Criar
             _authUserRepository = authUserRepository;
         }
 
-        public async Task<AuthUserListarPorIdResponse> Handle(AuthUserListarPorIdInput request, CancellationToken cancellationToken)
+        public async Task<ApiUserModel> Handle(AuthUserListarPorIdInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
 
@@ -24,7 +24,7 @@ namespace AulaRemota.Core.AuthUser.Criar
             {
                 var result = await _authUserRepository.GetByIdAsync(request.Id); 
                 if (result == null) throw new HttpClientCustomException("Não Encontrado");
-                return new AuthUserListarPorIdResponse { Item = result };
+                return result;
             }
             catch (System.Exception)
             {
