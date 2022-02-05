@@ -1,7 +1,4 @@
-﻿using AulaRemota.Core.Configuration;
-using AulaRemota.Infra.Entity;
-using AulaRemota.Core.Helpers;
-using AulaRemota.Infra.Repository;
+﻿using AulaRemota.Shared.Configuration;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MediatR;

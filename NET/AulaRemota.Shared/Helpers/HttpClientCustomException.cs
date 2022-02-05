@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AulaRemota.Core.Helpers
+namespace AulaRemota.Shared.Helpers
 {
     public class HttpClientCustomException : Exception
     {

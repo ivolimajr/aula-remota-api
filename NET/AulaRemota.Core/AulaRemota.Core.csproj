@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AulaRemota.Infra\AulaRemota.Infra.csproj" />
+    <ProjectReference Include="..\AulaRemota.Shared\AulaRemota.Shared.csproj" />
   </ItemGroup>
 
 </Project>

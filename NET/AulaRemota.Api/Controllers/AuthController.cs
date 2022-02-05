@@ -1,6 +1,6 @@
 ﻿using AulaRemota.Core.Auth.GenerateToken;
 using AulaRemota.Core.Auth.RefreshToken;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

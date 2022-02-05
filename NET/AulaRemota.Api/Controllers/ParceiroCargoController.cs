@@ -1,6 +1,6 @@
 ﻿using AulaRemota.Core.ParceiroCargo.ListarPorId;
 using AulaRemota.Core.ParceiroCargo.ListarTodos;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

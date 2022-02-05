@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Helpers;
+﻿using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;

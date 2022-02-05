@@ -25,11 +25,6 @@
     <ProjectReference Include="..\AulaRemota.Infra\AulaRemota.Infra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UploadDir\AutoEscola\" />
-    <Folder Include="UploadDir\AutoEscola\" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using System;
 using System.Threading;

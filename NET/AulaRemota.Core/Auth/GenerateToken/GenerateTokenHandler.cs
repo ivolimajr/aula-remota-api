@@ -1,6 +1,6 @@
-﻿using AulaRemota.Core.Configuration;
+﻿using AulaRemota.Shared.Configuration;
 using AulaRemota.Infra.Entity.Auth;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;

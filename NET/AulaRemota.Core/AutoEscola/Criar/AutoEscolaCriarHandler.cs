@@ -1,5 +1,5 @@
 ﻿using AulaRemota.Core.Arquivo.UploadAzure;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Models;

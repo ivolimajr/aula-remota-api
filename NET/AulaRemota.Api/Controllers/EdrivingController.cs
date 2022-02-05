@@ -2,7 +2,7 @@
 using AulaRemota.Core.Edriving.Deletar;
 using AulaRemota.Core.Edriving.ListarTodos;
 using AulaRemota.Core.Edriving.Criar;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

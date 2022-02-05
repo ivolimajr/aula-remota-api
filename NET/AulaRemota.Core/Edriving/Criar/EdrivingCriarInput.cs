@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Helpers.Validadores;
+﻿using AulaRemota.Shared.Helpers.Validadores;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using MediatR;
 using System;

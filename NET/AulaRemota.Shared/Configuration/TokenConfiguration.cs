@@ -1,4 +1,4 @@
-﻿namespace AulaRemota.Core.Configuration
+﻿namespace AulaRemota.Shared.Configuration
 {
     public class TokenConfiguration
     {

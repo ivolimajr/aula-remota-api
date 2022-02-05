@@ -1,6 +1,6 @@
 ﻿using AulaRemota.Core.EdrivingCargo.ListarPorId;
 using AulaRemota.Core.EdrivingCargo.ListarTodos;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

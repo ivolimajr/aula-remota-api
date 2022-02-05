@@ -1,4 +1,4 @@
-﻿using AulaRemota.Core.Helpers;
+﻿using AulaRemota.Shared.Helpers;
 using AulaRemota.Core.Usuario.AtualizarEndereco;
 using AulaRemota.Core.Usuario.AtualizarSenha;
 using AulaRemota.Core.Usuario.AtualizarSenhaPorEmail;

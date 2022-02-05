@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.Helpers.Validadores
+namespace AulaRemota.Shared.Helpers.Validadores
 {
     class CpfValidador : ValidationAttribute
     {

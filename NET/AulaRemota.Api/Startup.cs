@@ -1,5 +1,4 @@
-using AulaRemota.Core.Configuration;
-using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Configuration;
 using AulaRemota.Infra.Context;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,10 +16,8 @@ using System;
 using System.Text;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using AulaRemota.Api.Code;
-using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using System.IO;
-using System.Collections.Generic;
 
 namespace AulaRemota.Api
 {

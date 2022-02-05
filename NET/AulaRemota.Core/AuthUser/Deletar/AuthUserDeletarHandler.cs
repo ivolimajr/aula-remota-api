@@ -1,9 +1,10 @@
 ﻿using AulaRemota.Infra.Entity.Auth;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace AulaRemota.Core.AuthUser.Criar
 {
@@ -28,7 +29,7 @@ namespace AulaRemota.Core.AuthUser.Criar
                 _authUserRepository.Delete(authUser);
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }

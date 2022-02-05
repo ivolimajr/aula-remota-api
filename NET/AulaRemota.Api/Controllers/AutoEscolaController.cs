@@ -2,7 +2,7 @@
 using AulaRemota.Core.Parceiro.Deletar;
 using AulaRemota.Core.Parceiro.ListarTodos;
 using AulaRemota.Core.Parceiro.Criar;
-using AulaRemota.Core.Helpers;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
