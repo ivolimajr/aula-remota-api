@@ -13,10 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AulaRemota.Infra", "AulaRem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AulaRemota.Api", "AulaRemota.Api\AulaRemota.Api.csproj", "{65CCA455-5B73-451C-B74B-9A94C23BD856}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AulaRemota.Shared", "AulaRemota.Shared\AulaRemota.Shared.csproj", "{DE020707-970E-42E3-BCE0-30F1691A1396}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4B3D70D4-F2B0-46A6-A127-2327EFA3205C} = {4B3D70D4-F2B0-46A6-A127-2327EFA3205C}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AulaRemota.Shared", "AulaRemota.Shared\AulaRemota.Shared.csproj", "{DE020707-970E-42E3-BCE0-30F1691A1396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

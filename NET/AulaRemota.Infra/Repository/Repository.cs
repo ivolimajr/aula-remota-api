@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AulaRemota.Infra.Repository

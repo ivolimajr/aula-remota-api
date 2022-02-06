@@ -58,7 +58,6 @@ namespace AulaRemota.Core.Parceiro.Criar
                 {
                     Nome = request.Nome.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    NivelAcesso = 20,
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };

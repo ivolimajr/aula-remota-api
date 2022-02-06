@@ -2,7 +2,7 @@
 
 namespace AulaRemota.Shared.Helpers.Validadores
 {
-    class CpfValidador : ValidationAttribute
+    public class CpfValidador : ValidationAttribute
     {
 
         public override bool IsValid(object value)

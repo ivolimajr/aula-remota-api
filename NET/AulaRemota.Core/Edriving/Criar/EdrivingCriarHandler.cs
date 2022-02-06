@@ -6,6 +6,9 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using AulaRemota.Shared.Helpers.Constants;
+using AulaRemota.Core.Services;
 
 namespace AulaRemota.Core.Edriving.Criar
 {
@@ -15,6 +18,7 @@ namespace AulaRemota.Core.Edriving.Criar
         private readonly IRepository<UsuarioModel> _usuarioRepository;
         private readonly IRepository<EdrivingCargoModel> _cargoRepository;
         private readonly IRepository<TelefoneModel> _telefoneRepository;
+        private readonly IValidatorServices _validator;
         private readonly IMediator _mediator;
 
         public EdrivingCriarHandler(
@@ -22,6 +26,7 @@ namespace AulaRemota.Core.Edriving.Criar
             IRepository<UsuarioModel> usuarioRepository,
             IRepository<EdrivingCargoModel> cargoRepository,
             IRepository<TelefoneModel> telefoneRepository,
+            IValidatorServices validator,
             IMediator mediator
             )
         {
@@ -29,6 +34,7 @@ namespace AulaRemota.Core.Edriving.Criar
             _usuarioRepository = usuarioRepository;
             _cargoRepository = cargoRepository;
             _telefoneRepository = telefoneRepository;
+            _validator = validator;
             _mediator = mediator;
         }
 
@@ -55,7 +61,6 @@ namespace AulaRemota.Core.Edriving.Criar
                         if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                     }
                 }
-             
 
                 //VERIFICA SE O CARGO INFORMADO EXISTE
                 var cargo = _cargoRepository.GetById(request.CargoId);
@@ -66,9 +71,14 @@ namespace AulaRemota.Core.Edriving.Criar
                 {
                     Nome = request.Nome.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    NivelAcesso = 10,
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Roles = new List<RolesModel>()
+                    {
+                        new RolesModel(){
+                        Role = Constants.Roles.EDRIVING
+                        }
+                    }
                 };
 
                 //CRIA UM EDRIVING

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\AulaRemota.Shared\AulaRemota.Shared.csproj" />
   </ItemGroup>
 
 </Project>

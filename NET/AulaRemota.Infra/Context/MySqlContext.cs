@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using AulaRemota.Infra.Configuracoes;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Infra.Context
 {
@@ -25,24 +27,21 @@ namespace AulaRemota.Infra.Context
             {
                 var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
                 optionsBuilder
-                    .UseMySql(UnitOfWork.Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) 
+                    .UseMySql(UnitOfWork.Configuration.GetConnectionString("MySQLConnLocal"), serverVersion)
                     //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion)
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors();
             }
-            else
-            {
-            }
         }
         public MySqlContext()
         {
-
         }
 
         public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
 
         //GERAL
         public DbSet<ApiUserModel> ApiUser { get; set; }
+        public DbSet<RolesModel> Roles { get; set; }
         public DbSet<UsuarioModel> Usuario { get; set; }
         public DbSet<EnderecoModel> Endereco { get; set; }
         public DbSet<TelefoneModel> Telefone { get; set; }
@@ -68,6 +67,16 @@ namespace AulaRemota.Infra.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MySqlContext).GetType().Assembly);
+            modelBuilder.Entity<ParceiroCargoModel>().HasData(
+                new ParceiroCargoModel { Id = 1, Cargo = Constants.ParceiroCargos.ADMINISTRATIVO },
+                new ParceiroCargoModel { Id = 2, Cargo = Constants.ParceiroCargos.ANALISTA },
+                new ParceiroCargoModel { Id = 3, Cargo = Constants.ParceiroCargos.DIRETOR}
+            );
+            modelBuilder.Entity<EdrivingCargoModel>().HasData(
+                new EdrivingCargoModel { Id = 1, Cargo = Constants.EdrivingCargos.ADMINISTRATIVO },
+                new EdrivingCargoModel { Id = 2, Cargo = Constants.EdrivingCargos.ANALISTA },
+                new EdrivingCargoModel { Id = 3, Cargo = Constants.EdrivingCargos.DIRETOR }
+            );
         }
 
     }

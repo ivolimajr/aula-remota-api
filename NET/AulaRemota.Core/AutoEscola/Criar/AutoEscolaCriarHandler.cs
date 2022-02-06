@@ -60,7 +60,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
                 {
                     Nome = request.RazaoSocial.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    NivelAcesso = 30,
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };

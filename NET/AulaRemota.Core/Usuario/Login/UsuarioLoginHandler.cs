@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using AulaRemota.Infra.Entity.Auto_Escola;
+using Microsoft.EntityFrameworkCore;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Core.Usuario.Login
 {
@@ -29,7 +31,7 @@ namespace AulaRemota.Core.Usuario.Login
 
             try
             {
-                var result = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
+                var result = await _usuarioRepository.Context.Set<UsuarioModel>().Include(e => e.Roles).FirstOrDefaultAsync();
                 if (result == null) throw new HttpClientCustomException("Não Encontrado");
 
                 if(result.status == 0) throw new HttpClientCustomException("Usuário Removido");
@@ -38,25 +40,18 @@ namespace AulaRemota.Core.Usuario.Login
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
                 if (!checkPass) throw new HttpClientCustomException("Credenciais Inválidas");
 
-                if(result.NivelAcesso >= 10 && result.NivelAcesso <20)
-                {
+                if(result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
                     result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
-                }
-                if(result.NivelAcesso >= 20 && result.NivelAcesso <30)
-                {
+                if(result.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
                     result.Id = _usuarioRepository.Context.Set<ParceiroModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
-                }
-                if(result.NivelAcesso >= 30 && result.NivelAcesso <40)
-                {
+                if(result.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
                     result.Id = _usuarioRepository.Context.Set<AutoEscolaModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
-                }
 
                 return new UsuarioLoginResponse
                 {
                     Id = result.Id,
                     Nome = result.Nome,
                     Email = result.Email,
-                    NivelAcesso = result.NivelAcesso,
                     status = result.status,
                 };
 

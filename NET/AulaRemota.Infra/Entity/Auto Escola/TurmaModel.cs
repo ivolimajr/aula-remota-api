@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AulaRemota.Infra.Entity.Auto_Escola
 {
@@ -11,6 +12,7 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
             this.Cursos = new List<CursoModel>();
         }
         public int Id { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string Codigo { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }

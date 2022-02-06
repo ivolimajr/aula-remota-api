@@ -12,10 +12,15 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
         }
 
         public int Id { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string Nome { get; set; }
+        [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
+        [Column(TypeName = "varchar(14)")]
         public string Cpf { get; set; }
+        [Column(TypeName = "varchar(20)")]
         public string Identidade { get; set; }
+        [Column(TypeName = "varchar(70)")]
         public string Orgão { get; set; }
         public DateTime Aniversario { get; set; }
 

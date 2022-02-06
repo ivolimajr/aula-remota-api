@@ -16,14 +16,21 @@ namespace AulaRemota.Infra.Entity.Auto_Escola
         }
 
         public int Id { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string RazaoSocial { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string NomeFantasia { get; set; }
+        [Column(TypeName = "varchar(20)")]
         public string InscricaoEstadual { get; set; }
 
         public DateTime DataFundacao { get; set; }
+        [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
+        [Column(TypeName = "varchar(150)")]
         public string Descricao { get; set; }
+        [Column(TypeName = "varchar(100)")]
         public string Site { get; set; }
+        [Column(TypeName = "varchar(14)")]
         public string Cnpj { get; set; }
 
         public int EnderecoId { get; set; }

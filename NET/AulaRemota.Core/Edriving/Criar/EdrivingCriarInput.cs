@@ -4,6 +4,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace AulaRemota.Core.Edriving.Criar
 {
@@ -14,7 +15,7 @@ namespace AulaRemota.Core.Edriving.Criar
         public string Nome { get; set; }
 
         [Required]
-        //[CpfValidador(ErrorMessage ="Cpf é Inválido")]
+        //[CpfValidador(ErrorMessage = "Cpf é Inválido")]
         [StringLength(maximumLength: 11, MinimumLength = 11)]
         public string Cpf { get; set; }
 
