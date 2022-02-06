@@ -9,20 +9,20 @@ using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.Create
 {
-    public class ApiUserCriarHandler : IRequestHandler<ApiUserCriarInput, ApiUserCriarResponse>
+    public class ApiUserCreateHandler : IRequestHandler<ApiUserCreateInput, ApiUserCreateResponse>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
         private readonly IRepository<RolesModel> _rolesRepository;
 
-        public ApiUserCriarHandler(IRepository<ApiUserModel> authUserRepository, IRepository<RolesModel> rolesRepository)
+        public ApiUserCreateHandler(IRepository<ApiUserModel> authUserRepository, IRepository<RolesModel> rolesRepository)
         {
             _authUserRepository = authUserRepository;
             _rolesRepository = rolesRepository;
         }
 
-        public async Task<ApiUserCriarResponse> Handle(ApiUserCriarInput request, CancellationToken cancellationToken)
+        public async Task<ApiUserCreateResponse> Handle(ApiUserCreateInput request, CancellationToken cancellationToken)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace AulaRemota.Core.ApiUser.Criar
                 _authUserRepository.Commit();
                 _authUserRepository.Save();
 
-                return new ApiUserCriarResponse
+                return new ApiUserCreateResponse
                 {
                     Id = userResult.Id,
                     Nome = userResult.Nome,

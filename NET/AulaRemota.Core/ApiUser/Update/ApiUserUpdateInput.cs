@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.ApiUser.Atualizar
+namespace AulaRemota.Core.ApiUser.Update
 {
-    public class ApiUserAtualizarInput : IRequest<ApiUserAtualizarResponse>
+    public class ApiUserUpdateInput : IRequest<ApiUserUpdateResponse>
     {
         [Required]
         [Range(1,99999)]
@@ -15,6 +15,6 @@ namespace AulaRemota.Core.ApiUser.Atualizar
         public string UserName { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
     }
 }

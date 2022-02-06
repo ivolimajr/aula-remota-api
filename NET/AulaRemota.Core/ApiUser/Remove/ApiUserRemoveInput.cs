@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.Remove
 {
-    public class ApiUserDeletarInput : IRequest<bool>
+    public class ApiUserRemoveInput : IRequest<bool>
     {
         [Required]
         [Range(1, 99999)]

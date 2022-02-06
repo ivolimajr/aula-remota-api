@@ -1,5 +1,5 @@
-﻿using AulaRemota.Core.ApiUser.Atualizar;
-using AulaRemota.Core.ApiUser.Criar;
+﻿using AulaRemota.Core.ApiUser.Update;
+using AulaRemota.Core.ApiUser.Create;
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity.Auth;
 using MediatR;
@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AulaRemota.Core.ApiUser.ListarTodos;
+using AulaRemota.Core.ApiUser.GetAll;
+using AulaRemota.Core.ApiUser.GetOne;
+using AulaRemota.Core.ApiUser.Remove;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -40,7 +42,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                return Ok(await _mediator.Send(new ApiUserListarTodosInput()));
+                return Ok(await _mediator.Send(new ApiUserGetAllInput()));
             }
             catch (HttpClientCustomException e)
             {
@@ -64,7 +66,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new ApiUserListarPorIdInput { Id = id });
+                var result = await _mediator.Send(new ApiUserGetOneInput { Id = id });
                 return Ok(result);
             }
             catch (HttpClientCustomException e)
@@ -84,9 +86,9 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        [ProducesResponseType(typeof(ApiUserCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiUserCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Post([FromBody] ApiUserCriarInput request)
+        public async ValueTask<ActionResult> Post([FromBody] ApiUserCreateInput request)
         {
             try
             {
@@ -108,9 +110,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(ApiUserAtualizarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiUserUpdateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<IActionResult> Put([FromBody] ApiUserAtualizarInput request)
+        public async ValueTask<IActionResult> Put([FromBody] ApiUserUpdateInput request)
         {
             try
             {
@@ -136,7 +138,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new ApiUserDeletarInput { Id = id });
+                var result = await _mediator.Send(new ApiUserRemoveInput { Id = id });
                 return Ok(result);
             }
             catch (HttpClientCustomException e)

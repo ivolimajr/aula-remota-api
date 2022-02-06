@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.Create
 {
-    public class ApiUserCriarInput : IRequest<ApiUserCriarResponse>
+    public class ApiUserCreateInput : IRequest<ApiUserCreateResponse>
     {
         [Required]
         [EmailAddress]

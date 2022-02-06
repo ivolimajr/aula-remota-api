@@ -2,9 +2,9 @@
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.GetOne
 {
-    public class ApiUserListarPorIdInput : IRequest<ApiUserModel>
+    public class ApiUserGetOneInput : IRequest<ApiUserModel>
     {
         [Required]
         [Range(1, 99999)]

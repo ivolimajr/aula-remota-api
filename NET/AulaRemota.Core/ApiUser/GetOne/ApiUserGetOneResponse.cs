@@ -1,8 +1,8 @@
 ﻿using AulaRemota.Infra.Entity.Auth;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.GetOne
 {
-    public class ApiUserListarPorIdResponse
+    public class ApiUserGetOneResponse
     {
         public ApiUserModel Item { get; set; }
     }

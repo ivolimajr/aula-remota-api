@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.GetOne
 {
-    public class ApiUserListarPorIdHandler : IRequestHandler<ApiUserListarPorIdInput, ApiUserModel>
+    public class ApiUserGetOneHandler : IRequestHandler<ApiUserGetOneInput, ApiUserModel>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public ApiUserListarPorIdHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserGetOneHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
 
-        public async Task<ApiUserModel> Handle(ApiUserListarPorIdInput request, CancellationToken cancellationToken)
+        public async Task<ApiUserModel> Handle(ApiUserGetOneInput request, CancellationToken cancellationToken)
         {
             try
             {

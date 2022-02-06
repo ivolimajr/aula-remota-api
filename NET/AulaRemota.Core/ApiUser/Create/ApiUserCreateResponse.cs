@@ -1,11 +1,11 @@
 ﻿using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.ApiUser.Criar
+namespace AulaRemota.Core.ApiUser.Create
 {
-    public class ApiUserCriarResponse
+    public class ApiUserCreateResponse
     {
-        public ApiUserCriarResponse()
+        public ApiUserCreateResponse()
         {
             Roles = new List<RolesModel>();
         }

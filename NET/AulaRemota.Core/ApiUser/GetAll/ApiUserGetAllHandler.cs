@@ -7,19 +7,19 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.ApiUser.ListarTodos
+namespace AulaRemota.Core.ApiUser.GetAll
 
 {
-    public class ApiUserListarTodosHandler : IRequestHandler<ApiUserListarTodosInput, List<ApiUserModel>>
+    public class ApiUserGetAllHandler : IRequestHandler<ApiUserGetAllInput, List<ApiUserModel>>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
 
-        public ApiUserListarTodosHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserGetAllHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
 
-        public async Task<List<ApiUserModel>> Handle(ApiUserListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<ApiUserModel>> Handle(ApiUserGetAllInput request, CancellationToken cancellationToken)
         {
             try
             {
