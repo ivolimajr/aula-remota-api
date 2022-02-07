@@ -22,7 +22,7 @@ namespace AulaRemota.Core.ApiUser.Update
             try
             {
                 var result = await _authUserRepository.GetByIdAsync(request.Id);
-                if (result == null) throw new HttpClientCustomException("Não Encontrado");
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 if (!String.IsNullOrEmpty(request.Name)) result.Nome = request.Name.ToUpper();
                 if (!String.IsNullOrEmpty(request.UserName)) result.UserName = request.UserName.ToUpper();

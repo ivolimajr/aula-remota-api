@@ -21,12 +21,12 @@ namespace AulaRemota.Core.Usuario.RemoveTelefone
 
         public async Task<bool> Handle(RemoveTelefoneInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
                 var result = _telefoneRepository.GetById(request.Id);
-                if (result == null) throw new HttpClientCustomException("Não Encontrado");
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 _telefoneRepository.Delete(result);
                 await _telefoneRepository.SaveChangesAsync();

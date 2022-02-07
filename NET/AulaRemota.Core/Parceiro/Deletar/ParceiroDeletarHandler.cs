@@ -33,7 +33,7 @@ namespace AulaRemota.Core.Parceiro.Deletar
 
         public async Task<bool> Handle(ParceiroDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
             try
             {
                 _parceiroRepository.CreateTransaction();
@@ -45,7 +45,7 @@ namespace AulaRemota.Core.Parceiro.Deletar
                                         .Where(e => e.Id == request.Id)
                                         .FirstOrDefaultAsync();
 
-                if (parceiro == null) throw new HttpClientCustomException("Não encontrado");
+                if (parceiro == null) throw new CustomException("Não encontrado");
 
                 _parceiroRepository.Delete(parceiro);
                 _usuarioRepository.Delete(parceiro.Usuario);

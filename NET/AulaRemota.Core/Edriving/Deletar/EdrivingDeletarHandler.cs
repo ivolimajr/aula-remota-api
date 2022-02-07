@@ -30,7 +30,7 @@ namespace AulaRemota.Core.Edriving.Deletar
 
         public async Task<bool> Handle(EdrivingDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
             try
             {
                 _edrivingRepository.CreateTransaction();
@@ -40,7 +40,7 @@ namespace AulaRemota.Core.Edriving.Deletar
                                         .Include(e => e.Telefones)
                                         .Where(e => e.Id == request.Id)
                                         .FirstOrDefaultAsync();
-                if (edriving == null) throw new HttpClientCustomException("Não encontrado");
+                if (edriving == null) throw new CustomException("Não encontrado");
 
                 _edrivingRepository.Delete(edriving);
                 _usuarioRepository.Delete(edriving.Usuario);

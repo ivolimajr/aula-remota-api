@@ -29,7 +29,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
 
         public async Task<GenerateTokenResponse> Handle(GenerateTokenInput request, CancellationToken cancellationToken)
         {
-            if (request == null) throw new HttpClientCustomException("Dados Inválidos");
+            if (request == null) throw new CustomException("Dados Inválidos");
 
             try
             {
@@ -73,10 +73,10 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
             var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
 
             var userDb = _authUserRepository.Find(u => u.UserName == user.UserName);
-            if (userDb == null) throw new HttpClientCustomException("Usuário Não Encontrado");
+            if (userDb == null) throw new CustomException("Usuário Não Encontrado");
 
             bool checkPass = BCrypt.Net.BCrypt.Verify(user.Password, userDb.Password);
-            if (!checkPass) throw new HttpClientCustomException("Credenciais Inválidas");
+            if (!checkPass) throw new CustomException("Credenciais Inválidas");
 
             return userDb;
         }

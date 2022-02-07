@@ -42,17 +42,17 @@ namespace AulaRemota.Core.AutoEscola.Criar
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
-                if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
+                if (emailResult != null) throw new CustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 var cnpjResult = await _autoEscolaRepository.FindAsync(u => u.Cnpj == request.Cnpj);
-                if (cnpjResult != null) throw new HttpClientCustomException("Cnpj já existe em nossa base de dados");
+                if (cnpjResult != null) throw new CustomException("Cnpj já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.Telefones)
                 {
                     var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                    if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                    if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                 }
 
                 //CRIA UM USUÁRIO

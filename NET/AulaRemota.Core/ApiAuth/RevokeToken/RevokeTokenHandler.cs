@@ -19,12 +19,12 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
 
         public async Task<string> Handle(RevokeTokenInput request, CancellationToken cancellationToken)
         {
-            if (request.UserName == string.Empty) throw new HttpClientCustomException("Parâmetros Inválidos");
+            if (request.UserName == string.Empty) throw new CustomException("Parâmetros Inválidos");
 
             try
             {
                 ApiUserModel authUser = _authUserRepository.Find(u => u.UserName == request.UserName);
-                if (authUser == null) throw new HttpClientCustomException("Credenciais Não encontrada");
+                if (authUser == null) throw new CustomException("Credenciais Não encontrada");
 
                 ApiUserModel usuario = await _authUserRepository.GetByIdAsync(authUser.Id);
 

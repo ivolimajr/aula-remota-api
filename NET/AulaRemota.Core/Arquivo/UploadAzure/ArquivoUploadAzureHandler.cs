@@ -31,7 +31,7 @@ namespace AulaRemota.Core.Arquivo.UploadAzure
                 }
                 else
                 {
-                    throw new HttpClientCustomException("Formato de arquivo inválido");
+                    throw new CustomException("Formato de arquivo inválido");
                 }
             }
             return new ArquivoUploadAzureResponse() { Arquivos = listaArquivos };

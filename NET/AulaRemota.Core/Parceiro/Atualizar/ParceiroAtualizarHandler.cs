@@ -33,7 +33,7 @@ namespace AulaRemota.Core.Parceiro.Atualizar
 
         public async Task<ParceiroAtualizarResponse> Handle(ParceiroAtualizarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
@@ -48,14 +48,14 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
-                if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+                if (entity == null) throw new CustomException("Não Encontrado");
 
                 //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
                 if (request.CargoId > 0 && request.CargoId != entity.CargoId)
                 {
                     //VERIFICA SE O CARGO INFORMADO EXISTE
                     var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
-                    if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
+                    if (cargo == null) throw new CustomException("Cargo Não Encontrado");
 
                     //SE O CARGO EXISTE, O OBJETO SERÁ ATUALIZADO
                     entity.CargoId = cargo.Id;
@@ -77,13 +77,13 @@ namespace AulaRemota.Core.Parceiro.Atualizar
                             if (item.Id == 0)
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                                 entity.Telefones.Add(item);
                             }
                             else
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                                 _telefoneRepository.Update(item);
                             }
                         }

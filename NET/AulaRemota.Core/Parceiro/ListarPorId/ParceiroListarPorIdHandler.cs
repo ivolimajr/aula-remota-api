@@ -21,12 +21,12 @@ namespace AulaRemota.Core.Parceiro.ListarTodos
 
         public async Task<ParceiroListarPorIdResponse> Handle(ParceiroListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
                 var res = await _parceiroRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new HttpClientCustomException("Não Encontrado");
+                if (res == null) throw new CustomException("Não Encontrado");
 
                 var result = await _parceiroRepository.Context
                         .Set<ParceiroModel>()

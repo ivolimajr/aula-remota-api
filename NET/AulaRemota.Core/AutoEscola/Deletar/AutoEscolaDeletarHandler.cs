@@ -41,7 +41,7 @@ namespace AulaRemota.Core.AutoEscola.Deletar
 
         public async Task<bool> Handle(AutoEscolaDeletarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
             try
             {
                 _autoEscolaRepository.CreateTransaction();
@@ -54,7 +54,7 @@ namespace AulaRemota.Core.AutoEscola.Deletar
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if (autoEscola == null) throw new HttpClientCustomException("Não encontrado");
+                if (autoEscola == null) throw new CustomException("Não encontrado");
 
                 _autoEscolaRepository.Delete(autoEscola);
                 _usuarioRepository.Delete(autoEscola.Usuario);
@@ -71,7 +71,7 @@ namespace AulaRemota.Core.AutoEscola.Deletar
                                 NomeArquivo = item.Nome,
                                 NivelAcesso = 20
                             });
-                            if (!result) throw new HttpClientCustomException("Problema ao remover arquivos de contrato.");
+                            if (!result) throw new CustomException("Problema ao remover arquivos de contrato.");
                         }
 
                     }

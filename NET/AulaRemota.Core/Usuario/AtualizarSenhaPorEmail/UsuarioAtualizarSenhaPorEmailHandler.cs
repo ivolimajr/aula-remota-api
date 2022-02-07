@@ -19,15 +19,15 @@ namespace AulaRemota.Core.Usuario.AtualizarSenhaPorEmail
 
         public async Task<bool> Handle(UsuarioAtualizarSenhaPorEmailInput request, CancellationToken cancellationToken)
         {
-            if (request.Email == null) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Email == null) throw new CustomException("Busca Inválida");
 
             try
             {
                 var user = await _usuarioRepository.FindAsync(e => e.Email == request.Email);
-                if (user == null) throw new HttpClientCustomException("Não Encontrado");
+                if (user == null) throw new CustomException("Não Encontrado");
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.SenhaAtual, user.Password);
-                if (!checkPass) throw new HttpClientCustomException("Senha atual inválida");
+                if (!checkPass) throw new CustomException("Senha atual inválida");
 
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NovaSenha);
                 _usuarioRepository.Update(user);

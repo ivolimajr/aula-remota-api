@@ -22,7 +22,7 @@ namespace AulaRemota.Core.ApiUser.Remove
             try
             {
                 var result = await _authUserRepository.GetByIdAsync(request.Id);
-                if (result == null) throw new HttpClientCustomException("Não encontrado");
+                if (result == null) throw new CustomException("Não encontrado");
 
                 _authUserRepository.Delete(result);
                 return true;

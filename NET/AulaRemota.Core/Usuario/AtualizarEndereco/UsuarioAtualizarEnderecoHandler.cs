@@ -19,12 +19,12 @@ namespace AulaRemota.Core.Usuario.AtualizarEndereco
 
         public async Task<EnderecoModel> Handle(UsuarioAtualizarEnderecoInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
                 var entity = await _enderecoRepository.GetByIdAsync(request.Id);
-                if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+                if (entity == null) throw new CustomException("Não Encontrado");
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
                 if (request.Uf != null) entity.Uf = request.Uf.ToUpper();

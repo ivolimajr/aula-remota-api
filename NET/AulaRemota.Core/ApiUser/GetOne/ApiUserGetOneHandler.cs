@@ -23,7 +23,7 @@ namespace AulaRemota.Core.ApiUser.GetOne
             try
             {
                 var result = await _authUserRepository.Context.Set<ApiUserModel>().Include(e => e.Roles).Where(e => e.Id == request.Id).FirstOrDefaultAsync(); 
-                if (result == null) throw new HttpClientCustomException("Não Encontrado");
+                if (result == null) throw new CustomException("Não Encontrado");
                 result.Password = default;
                 result.RefreshToken = default;
                 return result;

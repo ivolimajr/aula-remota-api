@@ -46,11 +46,11 @@ namespace AulaRemota.Core.Edriving.Criar
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
                 var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
-                if (emailResult != null) throw new HttpClientCustomException("Email já em uso");
+                if (emailResult != null) throw new CustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 var cpfResult = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
-                if (cpfResult != null) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
+                if (cpfResult != null) throw new CustomException("Cpf já existe em nossa base de dados");
 
                 //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
                 if(request.Telefones != null)
@@ -58,13 +58,13 @@ namespace AulaRemota.Core.Edriving.Criar
                     foreach (var item in request.Telefones)
                     {
                         var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                        if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                        if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                     }
                 }
 
                 //VERIFICA SE O CARGO INFORMADO EXISTE
                 var cargo = _cargoRepository.GetById(request.CargoId);
-                if (cargo == null) throw new HttpClientCustomException("Cargo informado não existe");
+                if (cargo == null) throw new CustomException("Cargo informado não existe");
 
                 //CRIA UM USUÁRIO
                 var user = new UsuarioModel()

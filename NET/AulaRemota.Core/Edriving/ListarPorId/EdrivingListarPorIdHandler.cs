@@ -21,12 +21,12 @@ namespace AulaRemota.Core.Edriving.ListarTodos
 
         public async Task<EdrivingListarPorIdResponse> Handle(EdrivingListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
                 var res = await _edrivingRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new HttpClientCustomException("Não Encontrado");
+                if (res == null) throw new CustomException("Não Encontrado");
 
                 var result = await _edrivingRepository.Context
                         .Set<EdrivingModel>()

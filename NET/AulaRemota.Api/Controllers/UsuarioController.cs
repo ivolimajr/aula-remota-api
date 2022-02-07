@@ -46,13 +46,11 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -72,7 +70,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
@@ -96,7 +94,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
@@ -119,7 +117,7 @@ namespace AulaRemota.Api.Controllers
                 var result = await _mediator.Send(new RemoveTelefoneInput { Id = id });
                 return Ok(result);
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
             }
@@ -143,7 +141,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }

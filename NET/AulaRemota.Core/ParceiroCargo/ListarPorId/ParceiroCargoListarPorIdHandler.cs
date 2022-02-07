@@ -19,12 +19,12 @@ namespace AulaRemota.Core.ParceiroCargo.ListarPorId
 
         public async Task<ParceiroCargoModel> Handle(ParceiroCargoListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
                 var result = await _edrivingCargoRepository.GetByIdAsync(request.Id);
-                if (result == null) throw new HttpClientCustomException("Não Encontrado");
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 return result;
             }

@@ -33,7 +33,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
 
         public async Task<EdrivingAtualizarResponse> Handle(EdrivingAtualizarInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
@@ -50,14 +50,14 @@ namespace AulaRemota.Core.Edriving.Atualizar
                             .FirstOrDefault();
 
                 //SE FOR NULO RETORNA NÃO ENCONTRADO
-                if (entity == null) throw new HttpClientCustomException("Não Encontrado");
+                if (entity == null) throw new CustomException("Não Encontrado");
 
                 //ATUALIZA EMAIL SE INFORMADO - TANTO DO USUÁRIO COMO DO EDRIVING
                 if (request.Email != null && request.Email != entity.Email)
                 {
                     //VERIFICA SE O EMAIL JÁ ESTÁ EM USO POR OUTRO USUÁRIO
                     var emailUnique = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
-                    if (emailUnique != null && emailUnique.Id != request.Id) throw new HttpClientCustomException("Email em uso");
+                    if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
 
                     //SE NÃO ESTPA EM USO SET OS ATRIBUTOS
                     entity.Usuario.Email = request.Email.ToUpper();
@@ -75,7 +75,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
                 {
                     //VERIFICA SE O CPF JÁ ESTÁ EM USO
                     var cpfUnique = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
-                    if (cpfUnique != null && cpfUnique.Id != request.Id) throw new HttpClientCustomException("Cpf já existe em nossa base de dados");
+                    if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
 
                     //SE FOR NULO ELE ATUALIZA O CPF
                     entity.Cpf = request.Cpf.ToUpper();
@@ -85,7 +85,7 @@ namespace AulaRemota.Core.Edriving.Atualizar
                 {
                     //VERIFICA SE O CARGO INFORMADO EXISTE
                     var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
-                    if (cargo == null) throw new HttpClientCustomException("Cargo Não Encontrado");
+                    if (cargo == null) throw new CustomException("Cargo Não Encontrado");
 
                     //SE O CARGO EXISTE, O CARGO SERÁ ATUALIZADO
                     entity.CargoId = cargo.Id;
@@ -109,13 +109,13 @@ namespace AulaRemota.Core.Edriving.Atualizar
                             if (item.Id == 0)
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                                 entity.Telefones.Add(item);
                             }
                             else
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new HttpClientCustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
                                 _telefoneRepository.Update(item);
                             }
                         }

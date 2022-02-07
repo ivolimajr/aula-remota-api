@@ -9,6 +9,7 @@ using System.Linq;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using Microsoft.EntityFrameworkCore;
 using AulaRemota.Shared.Helpers.Constants;
+using System.Net;
 
 namespace AulaRemota.Core.Usuario.Login
 {
@@ -27,24 +28,26 @@ namespace AulaRemota.Core.Usuario.Login
          */
         public async Task<UsuarioLoginResponse> Handle(UsuarioLoginInput request, CancellationToken cancellationToken)
         {
-            if (request.Email == string.Empty) throw new HttpClientCustomException("Valores Inválidos");
+            if (request.Email == string.Empty) throw new CustomException("Valores Inválidos", HttpStatusCode.BadRequest);
 
             try
             {
                 var result = await _usuarioRepository.Context.Set<UsuarioModel>().Include(e => e.Roles).FirstOrDefaultAsync();
-                if (result == null) throw new HttpClientCustomException("Não Encontrado");
 
-                if(result.status == 0) throw new HttpClientCustomException("Usuário Removido");
-                if(result.status == 2) throw new HttpClientCustomException("Usuário Inativo");
+                if (result == null || !result.Email.Equals(request.Email))
+                    throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
+
+                if (result.status == 0) throw new CustomException("Usuário Removido", HttpStatusCode.Unauthorized);
+                if (result.status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Unauthorized);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
-                if (!checkPass) throw new HttpClientCustomException("Credenciais Inválidas");
+                if (!checkPass) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
-                if(result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
+                if (result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
                     result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
-                if(result.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
+                if (result.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
                     result.Id = _usuarioRepository.Context.Set<ParceiroModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
-                if(result.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
+                if (result.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
                     result.Id = _usuarioRepository.Context.Set<AutoEscolaModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
 
                 return new UsuarioLoginResponse
@@ -56,9 +59,16 @@ namespace AulaRemota.Core.Usuario.Login
                 };
 
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(UsuarioLoginHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
         }
     }

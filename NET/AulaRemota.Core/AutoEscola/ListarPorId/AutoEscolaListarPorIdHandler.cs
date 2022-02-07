@@ -23,7 +23,7 @@ namespace AulaRemota.Core.AutoEscola.ListarPorId
 
         public async Task<AutoEscolaListarPorIdResponse> Handle(AutoEscolaListarPorIdInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new HttpClientCustomException("Busca Inválida");
+            if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
@@ -35,7 +35,7 @@ namespace AulaRemota.Core.AutoEscola.ListarPorId
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if(result == null) throw new HttpClientCustomException("Não encontrado");
+                if(result == null) throw new CustomException("Não encontrado");
 
 
                 return new AutoEscolaListarPorIdResponse

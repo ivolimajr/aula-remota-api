@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
+using System.Net;
 
 namespace AulaRemota.Core.ApiUser.Create
 {
     public class ApiUserCreateHandler : IRequestHandler<ApiUserCreateInput, ApiUserCreateResponse>
     {
         private readonly IRepository<ApiUserModel> _authUserRepository;
-        private readonly IRepository<RolesModel> _rolesRepository;
 
-        public ApiUserCreateHandler(IRepository<ApiUserModel> authUserRepository, IRepository<RolesModel> rolesRepository)
+        public ApiUserCreateHandler(IRepository<ApiUserModel> authUserRepository)
         {
             _authUserRepository = authUserRepository;
-            _rolesRepository = rolesRepository;
         }
 
         public async Task<ApiUserCreateResponse> Handle(ApiUserCreateInput request, CancellationToken cancellationToken)
@@ -28,7 +27,7 @@ namespace AulaRemota.Core.ApiUser.Create
             {
                 _authUserRepository.CreateTransaction();
                 var userValidate = _authUserRepository.Find(u => u.UserName == request.UserName);
-                if (userValidate != null) throw new HttpClientCustomException("Usuário já cadastrado", 400);
+                if (userValidate != null) throw new CustomException("Usuário já cadastrado", HttpStatusCode.Unauthorized);
 
                 var user = new ApiUserModel()
                 {

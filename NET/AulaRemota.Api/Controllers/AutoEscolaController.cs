@@ -48,7 +48,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return Ok(await _mediator.Send(new AutoEscolaListarTodosInput()));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
@@ -72,7 +72,7 @@ namespace AulaRemota.Api.Controllers
                 var result = await _mediator.Send(new AutoEscolaListarPorIdInput { Id = id});
                 return Ok(result);
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
@@ -95,7 +95,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }
@@ -118,7 +118,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }
@@ -140,7 +140,7 @@ namespace AulaRemota.Api.Controllers
                 var result = await _mediator.Send(new AutoEscolaDeletarInput { Id = id });
                 return Ok(result);
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
             }

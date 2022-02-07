@@ -40,7 +40,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return Ok(await _mediator.Send(new EdrivingCargoListarTodosInput()));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }
@@ -64,7 +64,7 @@ namespace AulaRemota.Api.Controllers
                 var result = await _mediator.Send(new EdrivingCargoListarPorIdInput { Id = id});
                 return Ok(result);
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }

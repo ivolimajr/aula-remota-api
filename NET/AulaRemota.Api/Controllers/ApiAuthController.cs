@@ -41,7 +41,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
             }
@@ -68,7 +68,7 @@ namespace AulaRemota.Api.Controllers
             {
                 return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
             }
-            catch (HttpClientCustomException e)
+            catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }

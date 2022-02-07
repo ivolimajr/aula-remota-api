@@ -18,10 +18,10 @@ namespace AulaRemota.Core.Usuario.Criar
         }
         public async Task<UsuarioCriarResponse> Handle(UsuarioCriarInput request, CancellationToken cancellationToken)
         {
-            if (request.Email == string.Empty) throw new HttpClientCustomException("Valores Inválidos");
+            if (request.Email == string.Empty) throw new CustomException("Valores Inválidos");
 
             var userExists = _usuarioRepository.Find(u => u.Email == request.Email);
-            if (userExists != null) throw new HttpClientCustomException("Email já em uso");
+            if (userExists != null) throw new CustomException("Email já em uso");
 
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 

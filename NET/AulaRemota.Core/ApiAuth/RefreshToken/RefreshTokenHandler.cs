@@ -39,9 +39,9 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
 
                 var user = _authUserRepository.Find(u => (u.UserName == userName));
 
-                if (user == null) throw new HttpClientCustomException("Credenciais de Serviço Não Encontrada");
-                if (user.RefreshToken != refreshToken) throw new HttpClientCustomException("Credenciais de Serviço Inválida");
-                if (user.RefreshTokenExpiryTime < DateTime.Now) throw new HttpClientCustomException("Credenciais de Serviço Expirada");
+                if (user == null) throw new CustomException("Credenciais de Serviço Não Encontrada");
+                if (user.RefreshToken != refreshToken) throw new CustomException("Credenciais de Serviço Inválida");
+                if (user.RefreshTokenExpiryTime < DateTime.Now) throw new CustomException("Credenciais de Serviço Expirada");
 
                 accessToken = GenerateAccessToken(principal.Claims);
                 refreshToken = GenerateRefreshToken();
