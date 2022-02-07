@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace AulaRemota.Core.ApiAuth.RevokeToken
 {
@@ -19,12 +20,12 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
 
         public async Task<string> Handle(RevokeTokenInput request, CancellationToken cancellationToken)
         {
-            if (request.UserName == string.Empty) throw new CustomException("Parâmetros Inválidos");
+            if (request.UserName == string.Empty) throw new CustomException("Parâmetros Inválidos", HttpStatusCode.BadRequest);
 
             try
             {
                 ApiUserModel authUser = _authUserRepository.Find(u => u.UserName == request.UserName);
-                if (authUser == null) throw new CustomException("Credenciais Não encontrada");
+                if (authUser == null) throw new CustomException("Credenciais Não encontrada", HttpStatusCode.Unauthorized);
 
                 ApiUserModel usuario = await _authUserRepository.GetByIdAsync(authUser.Id);
 
@@ -34,9 +35,16 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
                 return "Usuário da Api Removido";
 
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(RevokeTokenHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
 
         }

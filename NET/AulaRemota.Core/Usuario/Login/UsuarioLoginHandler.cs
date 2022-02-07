@@ -34,11 +34,11 @@ namespace AulaRemota.Core.Usuario.Login
             {
                 var result = await _usuarioRepository.Context.Set<UsuarioModel>().Include(e => e.Roles).FirstOrDefaultAsync();
 
-                if (result == null || !result.Email.Equals(request.Email))
+                if (result == null || !result.Email.Equals(request.Email.ToUpper()))
                     throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
                 if (result.status == 0) throw new CustomException("Usuário Removido", HttpStatusCode.Unauthorized);
-                if (result.status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Unauthorized);
+                if (result.status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Forbidden);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
                 if (!checkPass) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);

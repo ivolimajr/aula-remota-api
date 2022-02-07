@@ -4,7 +4,6 @@ using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Api.Controllers
@@ -43,11 +42,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status401Unauthorized);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
 
@@ -70,11 +67,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
     }

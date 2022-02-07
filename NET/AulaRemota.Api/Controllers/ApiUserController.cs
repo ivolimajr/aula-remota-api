@@ -6,12 +6,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AulaRemota.Core.ApiUser.GetAll;
 using AulaRemota.Core.ApiUser.GetOne;
 using AulaRemota.Core.ApiUser.Remove;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -20,6 +20,7 @@ namespace AulaRemota.Api.Controllers
     /// </summary>
     [ApiController]
     [Authorize("Bearer")]
+    [Authorize(Roles = Constants.Roles.APIUSER)]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ApiUserController : ControllerBase
@@ -46,11 +47,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
 
@@ -71,11 +70,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
 
@@ -96,11 +93,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
 
@@ -120,11 +115,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
 
@@ -143,11 +136,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
     }

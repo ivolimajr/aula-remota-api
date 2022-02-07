@@ -1,9 +1,9 @@
 ﻿using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,11 +32,17 @@ namespace AulaRemota.Core.ApiUser.GetAll
                 }
                 return result;
             }
-            catch (System.Exception)
+            catch (CustomException e)
             {
-                throw;
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(ApiUserGetAllHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
-            
         }
     }
 }

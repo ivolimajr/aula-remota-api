@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System;
+using System.Net;
 
 namespace AulaRemota.Core.ApiUser.Remove
 {
@@ -22,15 +23,23 @@ namespace AulaRemota.Core.ApiUser.Remove
             try
             {
                 var result = await _authUserRepository.GetByIdAsync(request.Id);
-                if (result == null) throw new CustomException("Não encontrado");
+                if (result == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
 
                 _authUserRepository.Delete(result);
+                _authUserRepository.SaveChanges();
                 return true;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw e;
-            }            
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(ApiUserRemoveHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
+            }
         }
     }
 }

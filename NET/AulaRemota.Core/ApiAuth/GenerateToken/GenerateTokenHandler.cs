@@ -12,6 +12,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Net;
 
 namespace AulaRemota.Core.ApiAuth.GenerateToken
 {
@@ -29,7 +32,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
 
         public async Task<GenerateTokenResponse> Handle(GenerateTokenInput request, CancellationToken cancellationToken)
         {
-            if (request == null) throw new CustomException("Dados Inválidos");
+            if (request == null) throw new CustomException("Dados Inválidos", HttpStatusCode.BadRequest);
 
             try
             {
@@ -40,6 +43,9 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("n")),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
+
+                foreach (var item in user.Roles)
+                    claims.Add(new Claim(ClaimTypes.Role, item.Role));
 
                 var accessToken = GenerateAccessToken(claims);
                 var refreshToken = GenerateRefreshToken();
@@ -62,23 +68,30 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
                     refreshToken
                 );
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(GenerateTokenHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
         }
 
-        private ApiUserModel ValidateCredentials(GenerateTokenInput user)
+        private ApiUserModel ValidateCredentials(GenerateTokenInput item)
         {
-            var pass = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
+            var password = ComputeHash(item.Password, new SHA256CryptoServiceProvider());
 
-            var userDb = _authUserRepository.Find(u => u.UserName == user.UserName);
-            if (userDb == null) throw new CustomException("Usuário Não Encontrado");
+            var user = _authUserRepository.Context.Set<ApiUserModel>().Include(e => e.Roles).Where(e => e.UserName.Equals(item.UserName)).FirstOrDefault();
+            if (user == null) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
-            bool checkPass = BCrypt.Net.BCrypt.Verify(user.Password, userDb.Password);
-            if (!checkPass) throw new CustomException("Credenciais Inválidas");
+            bool passwordResult = BCrypt.Net.BCrypt.Verify(item.Password, user.Password);
+            if (!passwordResult) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
-            return userDb;
+            return user;
         }
         private string GenerateAccessToken(IEnumerable<Claim> claims)
         {

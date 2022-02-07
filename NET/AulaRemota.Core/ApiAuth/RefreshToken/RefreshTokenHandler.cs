@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace AulaRemota.Core.ApiAuth.RefreshToken
 {
@@ -39,7 +40,7 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
 
                 var user = _authUserRepository.Find(u => (u.UserName == userName));
 
-                if (user == null) throw new CustomException("Credenciais de Serviço Não Encontrada");
+                if (user == null) throw new CustomException("Credenciais Não Encontrada");
                 if (user.RefreshToken != refreshToken) throw new CustomException("Credenciais de Serviço Inválida");
                 if (user.RefreshTokenExpiryTime < DateTime.Now) throw new CustomException("Credenciais de Serviço Expirada");
 
@@ -62,9 +63,16 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
                     refreshToken
                 );
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(RefreshTokenResponse),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.Unauthorized
+                });
             }
         }
 
