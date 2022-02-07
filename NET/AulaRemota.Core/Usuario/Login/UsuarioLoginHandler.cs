@@ -56,6 +56,7 @@ namespace AulaRemota.Core.Usuario.Login
                     Nome = result.Nome,
                     Email = result.Email,
                     status = result.status,
+                    Roles = result.Roles
                 };
 
             }
