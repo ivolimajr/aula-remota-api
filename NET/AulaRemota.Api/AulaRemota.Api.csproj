@@ -14,6 +14,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="VisioForge.DotNet.Core.TRIAL" Version="15.1.12" />
   </ItemGroup>
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -23,6 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\AulaRemota.Core\AulaRemota.Core.csproj" />
     <ProjectReference Include="..\AulaRemota.Infra\AulaRemota.Infra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UploadDir\Log\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

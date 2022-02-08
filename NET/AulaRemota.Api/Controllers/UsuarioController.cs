@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -36,10 +37,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         /// <response code="200">Atualiza o Token</response>
         /// <response code="401">RefreshToken inválido</response>
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Login")]
         [ProducesResponseType(typeof(UsuarioLoginResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async ValueTask<ActionResult> Login([FromBody] UsuarioLoginInput request)
         {
             try

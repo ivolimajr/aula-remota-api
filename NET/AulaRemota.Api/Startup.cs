@@ -18,6 +18,8 @@ using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using AulaRemota.Api.Code;
 using System.Reflection;
 using System.IO;
+using AulaRemota.Api.Code.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace AulaRemota.Api
 {
@@ -127,7 +129,7 @@ namespace AulaRemota.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -139,6 +141,11 @@ namespace AulaRemota.Api
                     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1");
                 });
             }
+
+            loggerFactory.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+            {
+                LogLevel = LogLevel.Information
+            }));
 
             app.UseHttpsRedirection();
 
