@@ -1,7 +1,4 @@
 ﻿using AulaRemota.Core.Parceiro.Atualizar;
-using AulaRemota.Core.Parceiro.Deletar;
-using AulaRemota.Core.Parceiro.ListarTodos;
-using AulaRemota.Core.Parceiro.Criar;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,12 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using AulaRemota.Core.AutoEscola.Criar;
 using AulaRemota.Core.Arquivo.Download;
-using System.IO;
 using AulaRemota.Core.AutoEscola.ListarTodos;
 using AulaRemota.Core.AutoEscola.Deletar;
 using AulaRemota.Core.AutoEscola.ListarPorId;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Collections.Generic;
+using AulaRemota.Core.AutoEscola.Atualizar;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -112,7 +109,7 @@ namespace AulaRemota.Api.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(ParceiroAtualizarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Put([FromBody] ParceiroAtualizarInput request)
+        public async ValueTask<ActionResult> Put([FromForm] AutoEscolaAtualizarInput request)
         {
             try
             {
