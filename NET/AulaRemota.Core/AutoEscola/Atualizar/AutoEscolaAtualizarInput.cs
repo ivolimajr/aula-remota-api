@@ -1,4 +1,5 @@
 ﻿using AulaRemota.Infra.Entity.Auto_Escola;
+using AulaRemota.Infra.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -36,9 +37,6 @@ namespace AulaRemota.Core.AutoEscola.Atualizar
 
         [StringLength(maximumLength: 14, MinimumLength = 14)]
         public string Cnpj { get; set; }
-
-        [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Senha { get; set; }
 
         [StringLength(maximumLength: 2, MinimumLength = 2)]
         public string Uf { get; set; }

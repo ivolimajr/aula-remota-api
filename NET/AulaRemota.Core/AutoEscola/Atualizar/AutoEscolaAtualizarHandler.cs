@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Core.AutoEscola.Atualizar
 {
@@ -41,8 +43,45 @@ namespace AulaRemota.Core.AutoEscola.Atualizar
                 _autoEscolaRepository.CreateTransaction();
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
-                if (emailResult != null) throw new CustomException("Email já em uso");
+                var userResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
+                var autoEscolaResult = _autoEscolaRepository.GetById(request.Id);
+                if (userResult == null || autoEscolaResult == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+
+                if (!String.IsNullOrWhiteSpace(request.RazaoSocial)) autoEscolaResult.RazaoSocial = request.RazaoSocial;
+                if (!String.IsNullOrWhiteSpace(request.NomeFantasia)) autoEscolaResult.NomeFantasia = request.NomeFantasia;
+                if (!String.IsNullOrWhiteSpace(request.InscricaoEstadual)) autoEscolaResult.InscricaoEstadual = request.InscricaoEstadual;
+                if (!String.IsNullOrWhiteSpace(request.Descricao)) autoEscolaResult.Descricao = request.Descricao;
+                if (!String.IsNullOrWhiteSpace(request.Site)) autoEscolaResult.Site = request.Site;
+                if (!String.IsNullOrWhiteSpace(request.Cnpj)) autoEscolaResult.Cnpj = request.Cnpj;
+                if (!String.IsNullOrWhiteSpace(request.Uf)) autoEscolaResult.Endereco.Uf = request.Uf;
+                if (!String.IsNullOrWhiteSpace(request.Cep)) autoEscolaResult.Endereco.Cep = request.Cep;
+                if (!String.IsNullOrWhiteSpace(request.Uf)) autoEscolaResult.Endereco.Uf = request.Uf;
+                if (!String.IsNullOrWhiteSpace(request.EnderecoLogradouro)) autoEscolaResult.Endereco.EnderecoLogradouro = request.EnderecoLogradouro;
+                if (!String.IsNullOrWhiteSpace(request.Bairro)) autoEscolaResult.Endereco.Bairro = request.Bairro;
+                if (!String.IsNullOrWhiteSpace(request.Cidade)) autoEscolaResult.Endereco.Cidade = request.Cidade;
+                if (!String.IsNullOrWhiteSpace(request.Numero)) autoEscolaResult.Endereco.Numero = request.Numero;
+                autoEscolaResult.DataFundacao = request.DataFundacao;
+
+                //Cria uma lista para receber os arquivos
+                var listaArquivos = new List<ArquivoModel>();
+
+                /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
+                 * @return nome, formato e destino
+                 */
+                var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
+                {
+                    Arquivos = request.Arquivos,
+                     TipoUsuario = Constants.Roles.AUTOESCOLA
+                });
+
+                //Salva no banco todas as informações dos arquivos do upload
+                foreach (var item in arquivoResult.Arquivos)
+                {
+                    var arquivo = await _arquivoRepository.CreateAsync(item);
+                    listaArquivos.Add(item);
+                }
+
+                await _arquivoRepository.SaveChangesAsync();
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 var cnpjResult = await _autoEscolaRepository.FindAsync(u => u.Cnpj == request.Cnpj);
@@ -60,8 +99,7 @@ namespace AulaRemota.Core.AutoEscola.Atualizar
                 {
                     Nome = request.RazaoSocial.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    status = 1,
-                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    status = 1
                 };
 
                 //CRIA UM ENDEREÇO
@@ -74,27 +112,6 @@ namespace AulaRemota.Core.AutoEscola.Atualizar
                     Numero = request.Numero.ToUpper(),
                     Uf = request.Uf.ToUpper(),
                 };
-
-                //Cria uma lista para receber os arquivos
-                var listaArquivos = new List<ArquivoModel>();
-
-                /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
-                 * @return nome, formato e destino
-                 */
-                var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
-                {
-                    Arquivos = request.Arquivos,
-                    NivelAcesso = 20
-                });
-
-                //Salva no banco todas as informações dos arquivos do upload
-                foreach (var item in arquivoResult.Arquivos)
-                {
-                    var arquivo = await _arquivoRepository.CreateAsync(item);
-                    listaArquivos.Add(item);
-                }
-
-                await _arquivoRepository.SaveChangesAsync();
 
                 //CRIA UM EDRIVING
                 var autoEscola = new AutoEscolaModel()

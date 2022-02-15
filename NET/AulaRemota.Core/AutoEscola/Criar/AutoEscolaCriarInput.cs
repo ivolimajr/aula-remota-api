@@ -71,7 +71,6 @@ namespace AulaRemota.Core.AutoEscola.Criar
         [Required]
         public List<TelefoneModel> Telefones { get; set; }
 
-        
         public List<IFormFile> Arquivos { get; set; }
     }
 }

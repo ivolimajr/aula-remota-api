@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Core.AutoEscola.Criar
 {
@@ -84,7 +85,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
                 var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
                 {
                     Arquivos = request.Arquivos,
-                    NivelAcesso = 20
+                    TipoUsuario = Constants.Roles.AUTOESCOLA
                 });
 
                 //Salva no banco todas as informações dos arquivos do upload

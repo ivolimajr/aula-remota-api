@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Core.Arquivo.UploadAzure
 {
@@ -25,7 +26,7 @@ namespace AulaRemota.Core.Arquivo.UploadAzure
                 var fileType = Path.GetExtension(item.FileName);
                 if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".jpeg")
                 {
-                    var fileResult = await SalvarNoAzure(item,request.NivelAcesso);
+                    var fileResult = await SalvarNoAzure(item,request.TipoUsuario);
                     fileResult.Formato = fileType;
                     listaArquivos.Add(fileResult);
                 }
@@ -37,13 +38,18 @@ namespace AulaRemota.Core.Arquivo.UploadAzure
             return new ArquivoUploadAzureResponse() { Arquivos = listaArquivos };
         }
 
-        private async Task<ArquivoModel> SalvarNoAzure(IFormFile arquivo, int nivelAcesso)
+        private async Task<ArquivoModel> SalvarNoAzure(IFormFile arquivo, string tipoUsuario)
         {
             var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
             
             //Separa o upload por container no AzureBlob
             var cloudBlobContainer = cloudBlobClient.GetContainerReference("files");
-            if (nivelAcesso >= 20 && nivelAcesso < 30) cloudBlobContainer = cloudBlobClient.GetContainerReference("autoescola");
+            if (tipoUsuario.Equals(Constants.Roles.AUTOESCOLA)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.AUTOESCOLA));
+            if (tipoUsuario.Equals(Constants.Roles.ADMINISTRATIVO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ADMINISTRATIVO));
+            if (tipoUsuario.Equals(Constants.Roles.ALUNO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ALUNO));
+            if (tipoUsuario.Equals(Constants.Roles.EDRIVING)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.EDRIVING));
+            if (tipoUsuario.Equals(Constants.Roles.INSTRUTOR)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.INSTRUTOR));
+            if (tipoUsuario.Equals(Constants.Roles.PARCEIRO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.PARCEIRO));
 
             if (await cloudBlobContainer.CreateIfNotExistsAsync())
             {

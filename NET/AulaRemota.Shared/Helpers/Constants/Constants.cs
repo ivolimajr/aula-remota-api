@@ -2,6 +2,7 @@
 {
     public static class Constants
     {
+        //As roles também são utilizadas para nomear o container no azure blobs. Ao alterar o nome de uma role, alterar também o nome do container no azure (lá no azure mesmo).
         public static class Roles
         {
             public const string APIUSER = nameof(APIUSER);
