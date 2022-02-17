@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 using AulaRemota.Infra.Entity.Auto_Escola;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace AulaRemota.Core.Usuario.RemoveTelefone
 {

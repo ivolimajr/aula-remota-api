@@ -101,9 +101,10 @@ namespace AulaRemota.Core.AutoEscola.Update
                         var arquivo = await _arquivoRepository.CreateAsync(item);
                         fileList.Add(item);
                     }
-
-                    await _arquivoRepository.SaveChangesAsync();
-                    autoEscolaDb.Arquivos = fileList;
+                    foreach (var item in fileList)
+                    {
+                        autoEscolaDb.Arquivos.Add(item);
+                    }
                 }
 
                 //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO

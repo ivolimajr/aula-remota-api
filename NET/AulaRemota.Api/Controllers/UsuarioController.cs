@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using AulaRemota.Core.Usuario.RemoveFile;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -100,6 +101,26 @@ namespace AulaRemota.Api.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+        /// <summary>
+        /// Remove um arquivo de um usuário
+        /// </summary>
+        /// <param idArquivo="id do arquivo"></param>
+        /// <returns></returns>
+        [HttpDelete("RemoveArquivo/{id}")]
+        public async ValueTask<ActionResult> RemoveArquivo(int idArquivo)
+        {
+            try
+            {
+                var result = await _mediator.Send(new RemoveFileInput { IdArquivo = idArquivo });
+                return Ok(result);
+            }
+            catch (CustomException e)
+            {
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
