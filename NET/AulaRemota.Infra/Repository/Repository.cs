@@ -61,6 +61,11 @@ namespace AulaRemota.Infra.Repository
             return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefault();
         }
 
+        public bool Exists(Expression<Func<TEntity, bool>> queryLambda)
+        {
+            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).Any();
+        }
+
         public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda)
         {
             return await _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefaultAsync();

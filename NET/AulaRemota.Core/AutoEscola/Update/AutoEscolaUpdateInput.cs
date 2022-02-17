@@ -1,14 +1,13 @@
 ﻿using AulaRemota.Infra.Entity.Auto_Escola;
-using AulaRemota.Infra.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.AutoEscola.Atualizar
+namespace AulaRemota.Core.AutoEscola.Update
 {
-    public class AutoEscolaAtualizarInput : IRequest<AutoEscolaAtualizarResponse>
+    public class AutoEscolaUpdateInput : IRequest<AutoEscolaModel>
     {
         [Required]
         [Range(1, 99999)]

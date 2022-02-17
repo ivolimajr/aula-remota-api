@@ -24,6 +24,7 @@ namespace AulaRemota.Infra.Repository
         IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> queryLambda);
 
         TEntity Find(Expression<Func<TEntity, bool>> queryLambda);
+        bool Exists(Expression<Func<TEntity, bool>> queryLambda);
 
         public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda);
 

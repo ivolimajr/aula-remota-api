@@ -10,10 +10,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Shared.Helpers.Constants;
+using AulaRemota.Core.Arquivo.Deletar;
 
-namespace AulaRemota.Core.AutoEscola.Criar
+namespace AulaRemota.Core.AutoEscola.Create
 {
-    public class AutoEscolaCriarHandler : IRequestHandler<AutoEscolaCriarInput, AutoEscolaCriarResponse>
+    public class AutoEscolaCreateHandler : IRequestHandler<AutoEscolaCreateInput, AutoEscolaCreateResponse>
     {
         private readonly IRepository<AutoEscolaModel> _autoEscolaRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
@@ -21,7 +22,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
         private readonly IRepository<ArquivoModel> _arquivoRepository;
         private readonly IMediator _mediator;
 
-        public AutoEscolaCriarHandler(
+        public AutoEscolaCreateHandler(
             IRepository<AutoEscolaModel> autoEscolaRepository,
             IRepository<UsuarioModel> usuarioRepository,
             IRepository<TelefoneModel> telefoneRepository,
@@ -35,38 +36,35 @@ namespace AulaRemota.Core.AutoEscola.Criar
             _arquivoRepository = arquivoRepository;
             _mediator = mediator;
         }
-        public async Task<AutoEscolaCriarResponse> Handle(AutoEscolaCriarInput request, CancellationToken cancellationToken)
+        public async Task<AutoEscolaCreateResponse> Handle(AutoEscolaCreateInput request, CancellationToken cancellationToken)
         {
+            //Cria uma lista para receber os arquivos
+            var fileList = new List<ArquivoModel>();
             try
             {
                 _autoEscolaRepository.CreateTransaction();
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
-                if (emailResult != null) throw new CustomException("Email já em uso");
+                if (_usuarioRepository.Exists(u => u.Email == request.Email)) throw new CustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                var cnpjResult = await _autoEscolaRepository.FindAsync(u => u.Cnpj == request.Cnpj);
-                if (cnpjResult != null) throw new CustomException("Cnpj já existe em nossa base de dados");
+                if (_autoEscolaRepository.Exists(u => u.Cnpj == request.Cnpj)) throw new CustomException("Cnpj já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.Telefones)
-                {
-                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                    if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                }
+                    if (_telefoneRepository.Exists(u => u.Telefone == item.Telefone)) throw new CustomException("Telefone: " + item.Telefone + " já em uso");
 
                 //CRIA UM USUÁRIO
                 var user = new UsuarioModel()
                 {
-                    Nome = request.RazaoSocial.ToUpper(),
+                    Nome = request.NomeFantasia.ToUpper(),
                     Email = request.Email.ToUpper(),
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
                 };
 
                 //CRIA UM ENDEREÇO
-                var endereco = new EnderecoModel()
+                var address = new EnderecoModel()
                 {
                     Bairro = request.Bairro.ToUpper(),
                     Cep = request.Cep.ToUpper(),
@@ -76,23 +74,20 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Uf = request.Uf.ToUpper(),
                 };
 
-                //Cria uma lista para receber os arquivos
-                var listaArquivos = new List<ArquivoModel>();
-
                 /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
                  * @return nome, formato e destino
                  */
-                var arquivoResult = await _mediator.Send(new ArquivoUploadAzureInput
+                var fileResult = await _mediator.Send(new ArquivoUploadAzureInput
                 {
                     Arquivos = request.Arquivos,
                     TipoUsuario = Constants.Roles.AUTOESCOLA
                 });
 
                 //Salva no banco todas as informações dos arquivos do upload
-                foreach (var item in arquivoResult.Arquivos)
+                foreach (var item in fileResult.Arquivos)
                 {
                     var arquivo = await _arquivoRepository.CreateAsync(item);
-                    listaArquivos.Add(item);
+                    fileList.Add(arquivo);
                 }
 
                 await _arquivoRepository.SaveChangesAsync();
@@ -107,11 +102,11 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     DataFundacao = request.DataFundacao,
                     Descricao = request.Descricao,
                     InscricaoEstadual = request.InscricaoEstadual,
-                    NomeFantasia = request.NomeFantasia,
-                    Site = request.Site,
+                    NomeFantasia = request.NomeFantasia.ToUpper(),
+                    Site = request.Site.ToUpper(),
                     Usuario = user,
-                    Endereco = endereco,
-                    Arquivos = listaArquivos
+                    Endereco = address,
+                    Arquivos = fileList
                 };
 
                 var autoEscolaModel = await _autoEscolaRepository.CreateAsync(autoEscola);
@@ -121,7 +116,7 @@ namespace AulaRemota.Core.AutoEscola.Criar
                 _autoEscolaRepository.Commit();
                 _autoEscolaRepository.Save();
 
-                return new AutoEscolaCriarResponse()
+                return new AutoEscolaCreateResponse()
                 {
                     Id = autoEscolaModel.Id,
                     RazaoSocial = autoEscolaModel.RazaoSocial.ToUpper(),
@@ -138,10 +133,23 @@ namespace AulaRemota.Core.AutoEscola.Criar
                     Arquivos = autoEscolaModel.Arquivos
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _autoEscolaRepository.Rollback();
-                throw new Exception(e.Message);
+                await _mediator.Send(new ArquivoDeletarInput()
+                {
+                    TipoUsuario = Constants.Roles.AUTOESCOLA,
+                    Arquivos = fileList
+                });
+
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(AutoEscolaCreateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

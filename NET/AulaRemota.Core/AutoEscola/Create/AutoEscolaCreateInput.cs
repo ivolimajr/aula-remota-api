@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace AulaRemota.Core.AutoEscola.Criar
+namespace AulaRemota.Core.AutoEscola.Create
 {
-    public class AutoEscolaCriarInput : IRequest<AutoEscolaCriarResponse>
+    public class AutoEscolaCreateInput : IRequest<AutoEscolaCreateResponse>
     {
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]

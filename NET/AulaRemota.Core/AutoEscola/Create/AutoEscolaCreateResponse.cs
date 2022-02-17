@@ -4,11 +4,11 @@ using AulaRemota.Infra.Models;
 using System;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.AutoEscola.Atualizar
+namespace AulaRemota.Core.AutoEscola.Create
 {
-    public class AutoEscolaAtualizarResponse
+    public class AutoEscolaCreateResponse
     {
-        public AutoEscolaAtualizarResponse()
+        public AutoEscolaCreateResponse()
         {
             this.Telefones = new List<TelefoneModel>();
             this.Arquivos = new List<ArquivoModel>();

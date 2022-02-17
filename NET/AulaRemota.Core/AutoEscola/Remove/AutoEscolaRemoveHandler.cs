@@ -10,10 +10,11 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AulaRemota.Shared.Helpers.Constants;
 
-namespace AulaRemota.Core.AutoEscola.Deletar
+namespace AulaRemota.Core.AutoEscola.Remove
 {
-    public class AutoEscolaDeletarHandler : IRequestHandler<AutoEscolaDeletarInput, bool>
+    public class AutoEscolaRemoveHandler : IRequestHandler<AutoEscolaRemoveInput, bool>
     {
         private readonly IRepository<AutoEscolaModel> _autoEscolaRepository;
         private readonly IRepository<UsuarioModel> _usuarioRepository;
@@ -22,7 +23,7 @@ namespace AulaRemota.Core.AutoEscola.Deletar
         private readonly IRepository<ArquivoModel> _arquivoRepository;
         private readonly IMediator _mediator;
 
-        public AutoEscolaDeletarHandler(
+        public AutoEscolaRemoveHandler(
             IRepository<AutoEscolaModel> autoEscolaRepository,
             IRepository<UsuarioModel> usuarioRepository,
             IRepository<TelefoneModel> telefoneRepository,
@@ -39,7 +40,7 @@ namespace AulaRemota.Core.AutoEscola.Deletar
             _mediator = mediator;
         }
 
-        public async Task<bool> Handle(AutoEscolaDeletarInput request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AutoEscolaRemoveInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
             try
@@ -62,19 +63,18 @@ namespace AulaRemota.Core.AutoEscola.Deletar
 
                 if (autoEscola.Arquivos.Count > 0)
                 {
-                    foreach (var item in autoEscola.Arquivos)
+                    var result = await _mediator.Send(new ArquivoDeletarInput
                     {
-                        if (item != null)
-                        {
-                            var result = await _mediator.Send(new ArquivoDeletarInput
-                            {
-                                NomeArquivo = item.Nome,
-                                NivelAcesso = 20
-                            });
-                            if (!result) throw new CustomException("Problema ao remover arquivos de contrato.");
-                        }
+                        Arquivos = autoEscola.Arquivos,
+                        TipoUsuario = Constants.Roles.AUTOESCOLA
+                    });
+                    if (!result) throw new CustomException("Problema ao remover arquivos de contrato.");
+                }
 
-                    }
+                foreach (var item in autoEscola.Arquivos)
+                {
+                    item.AutoEscola = null;
+                    _arquivoRepository.Delete(item);
                 }
 
                 foreach (var item in autoEscola.Telefones)
@@ -91,12 +91,18 @@ namespace AulaRemota.Core.AutoEscola.Deletar
                 _autoEscolaRepository.Save();
                 _autoEscolaRepository.Commit();
                 return true;
-
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _autoEscolaRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(AutoEscolaRemoveHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

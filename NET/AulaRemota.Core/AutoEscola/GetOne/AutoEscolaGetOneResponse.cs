@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AulaRemota.Core.AutoEscola.ListarPorId
+namespace AulaRemota.Core.AutoEscola.GetOne
 {
-    public class AutoEscolaListarPorIdResponse : AutoEscolaModel
+    public class AutoEscolaGetOneResponse : AutoEscolaModel
     {
     }
 }

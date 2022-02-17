@@ -10,18 +10,18 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.AutoEscola.ListarPorId
+namespace AulaRemota.Core.AutoEscola.GetOne
 {
-    public class AutoEscolaListarPorIdHandler : IRequestHandler<AutoEscolaListarPorIdInput, AutoEscolaListarPorIdResponse>
+    public class AutoEscolaGetOneHandler : IRequestHandler<AutoEscolaGetOneInput, AutoEscolaGetOneResponse>
     {
         private readonly IRepository<AutoEscolaModel> _autoEscolaRepository;
 
-        public AutoEscolaListarPorIdHandler(IRepository<AutoEscolaModel> autoEscolaRepository)
+        public AutoEscolaGetOneHandler(IRepository<AutoEscolaModel> autoEscolaRepository)
         {
             _autoEscolaRepository = autoEscolaRepository;
         }
 
-        public async Task<AutoEscolaListarPorIdResponse> Handle(AutoEscolaListarPorIdInput request, CancellationToken cancellationToken)
+        public async Task<AutoEscolaGetOneResponse> Handle(AutoEscolaGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
@@ -35,10 +35,10 @@ namespace AulaRemota.Core.AutoEscola.ListarPorId
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if(result == null) throw new CustomException("Não encontrado");
+                if (result == null) throw new CustomException("Não encontrado");
 
 
-                return new AutoEscolaListarPorIdResponse
+                return new AutoEscolaGetOneResponse
                 {
                     Id = result.Id,
                     RazaoSocial = result.RazaoSocial,
@@ -57,9 +57,17 @@ namespace AulaRemota.Core.AutoEscola.ListarPorId
                     Telefones = result.Telefones
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                _autoEscolaRepository.Rollback();
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(AutoEscolaGetOneHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
         }
     }

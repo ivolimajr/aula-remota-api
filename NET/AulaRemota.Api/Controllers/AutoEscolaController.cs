@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using AulaRemota.Core.AutoEscola.Criar;
+using AulaRemota.Core.AutoEscola.Create;
 using AulaRemota.Core.Arquivo.Download;
-using AulaRemota.Core.AutoEscola.ListarTodos;
-using AulaRemota.Core.AutoEscola.Deletar;
-using AulaRemota.Core.AutoEscola.ListarPorId;
+using AulaRemota.Core.AutoEscola.GetAll;
+using AulaRemota.Core.AutoEscola.Remove;
+using AulaRemota.Core.AutoEscola.GetOne;
 using AulaRemota.Infra.Entity.Auto_Escola;
 using System.Collections.Generic;
-using AulaRemota.Core.AutoEscola.Atualizar;
+using AulaRemota.Core.AutoEscola.Update;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -43,7 +43,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                return Ok(await _mediator.Send(new AutoEscolaListarTodosInput()));
+                return Ok(await _mediator.Send(new AutoEscolaGetAllInput()));
             }
             catch (CustomException e)
             {
@@ -60,13 +60,13 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(AutoEscolaListarPorIdInput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AutoEscolaGetOneInput), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult<AutoEscolaListarPorIdInput>> Get(int id)
+        public async ValueTask<ActionResult<AutoEscolaGetOneInput>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new AutoEscolaListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new AutoEscolaGetOneInput { Id = id});
                 return Ok(result);
             }
             catch (CustomException e)
@@ -84,9 +84,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(AutoEscolaCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AutoEscolaCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Post([FromForm] AutoEscolaCriarInput request)
+        public async ValueTask<ActionResult> Post([FromForm] AutoEscolaCreateInput request)
         {
             try
             {
@@ -102,14 +102,14 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Atualiza um parceiro
+        /// Atualiza uma auto escola
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(ParceiroAtualizarResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Put([FromForm] AutoEscolaAtualizarInput request)
+        public async ValueTask<ActionResult> Put([FromForm] AutoEscolaUpdateInput request)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new AutoEscolaDeletarInput { Id = id });
+                var result = await _mediator.Send(new AutoEscolaRemoveInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)

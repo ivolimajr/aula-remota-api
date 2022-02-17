@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 
-namespace AulaRemota.Core.AutoEscola.ListarPorId
+namespace AulaRemota.Core.AutoEscola.GetOne
 {
-    public class AutoEscolaListarPorIdInput : IRequest<AutoEscolaListarPorIdResponse>
+    public class AutoEscolaGetOneInput : IRequest<AutoEscolaGetOneResponse>
     {
         [Required]
         [StringLength(maximumLength: 99999, MinimumLength = 1)]

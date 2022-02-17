@@ -1,5 +1,4 @@
-﻿using AulaRemota.Shared.Helpers.Constants;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
