@@ -29,6 +29,7 @@ namespace AulaRemota.Core.Usuario.RemoveFile
         {
             try
             {
+                if (request.IdArquivo == 0) throw new CustomException("Parâmetro inválido", HttpStatusCode.BadRequest);
                 var fileResult = await _arquivoRepository.Context.Set<ArquivoModel>()
                     .Include(e => e.AutoEscola)
                     .Include(e => e.Instrutor)

@@ -32,7 +32,7 @@ namespace AulaRemota.Core.Usuario.Login
 
             try
             {
-                var result = await _usuarioRepository.Context.Set<UsuarioModel>().Include(e => e.Roles).FirstOrDefaultAsync();
+                var result = await _usuarioRepository.Context.Set<UsuarioModel>().Include(e => e.Roles).Where(e => e.Email.Equals(request.Email)).FirstOrDefaultAsync();
 
                 if (result == null || !result.Email.Equals(request.Email.ToUpper()))
                     throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System;
 using AulaRemota.Infra.Entity.Auto_Escola;
+using System.Collections.Generic;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Core.Parceiro.Criar
 {
@@ -60,6 +62,13 @@ namespace AulaRemota.Core.Parceiro.Criar
                     Email = request.Email.ToUpper(),
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Roles = new List<RolesModel>()
+                    {
+                        new RolesModel()
+                        {
+                            Role = Constants.Roles.PARCEIRO
+                        }
+                    }
                 };
                 user = _usuarioRepository.Create(user);
                 _usuarioRepository.SaveChanges();

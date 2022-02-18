@@ -61,6 +61,13 @@ namespace AulaRemota.Core.AutoEscola.Create
                     Email = request.Email.ToUpper(),
                     status = 1,
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Roles = new List<RolesModel>()
+                    {
+                        new RolesModel()
+                        {
+                            Role = Constants.Roles.AUTOESCOLA
+                        }
+                    }
                 };
 
                 //CRIA UM ENDEREÇO
@@ -106,7 +113,7 @@ namespace AulaRemota.Core.AutoEscola.Create
                     Site = request.Site.ToUpper(),
                     Usuario = user,
                     Endereco = address,
-                    Arquivos = fileList
+                    Arquivos = fileList,
                 };
 
                 var autoEscolaModel = await _autoEscolaRepository.CreateAsync(autoEscola);

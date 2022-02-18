@@ -109,11 +109,11 @@ namespace AulaRemota.Api.Controllers
         /// <param idArquivo="id do arquivo"></param>
         /// <returns></returns>
         [HttpDelete("RemoveArquivo/{id}")]
-        public async ValueTask<ActionResult> RemoveArquivo(int idArquivo)
+        public async ValueTask<ActionResult> RemoveArquivo(int id)
         {
             try
             {
-                var result = await _mediator.Send(new RemoveFileInput { IdArquivo = idArquivo });
+                var result = await _mediator.Send(new RemoveFileInput { IdArquivo = id });
                 return Ok(result);
             }
             catch (CustomException e)

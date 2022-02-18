@@ -117,6 +117,7 @@ namespace AulaRemota.Core.AutoEscola.Update
                         {
                             var phoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
                             if (phoneResult != null) throw new CustomException("Telefone: " + phoneResult.Telefone + " já em uso");
+                            autoEscolaDb.Telefones.Add(item);
                         }
                     }
                 }
