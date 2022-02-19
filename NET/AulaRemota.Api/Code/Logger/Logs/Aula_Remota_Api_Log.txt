@@ -133,3 +133,257 @@ Information: 0 - Application started. Press Ctrl+C to shut down.
 Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
 Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Error: 20102 - Failed executing DbCommand (13ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 875
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 20102 - Failed executing DbCommand (4ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 877
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 20102 - Failed executing DbCommand (7ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 877
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 20102 - Failed executing DbCommand (8ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 877
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 20102 - Failed executing DbCommand (50ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 877
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Error: 20102 - Failed executing DbCommand (20ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ServerSession.ReceiveReplyAsyncAwaited(ValueTask`1 task) in /_/src/MySqlConnector/Core/ServerSession.cs:line 877
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Error: 20102 - Failed executing DbCommand (52ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Error: 20102 - Failed executing DbCommand (54ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
+    FROM `Usuario` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsuariosId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsuariosId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Table 'aula_remota_db.rolesmodelusermodel' doesn't exist
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.

@@ -1,7 +1,7 @@
-﻿using AulaRemota.Core.Edriving.Atualizar;
-using AulaRemota.Core.Edriving.Deletar;
-using AulaRemota.Core.Edriving.ListarTodos;
-using AulaRemota.Core.Edriving.Criar;
+﻿using AulaRemota.Core.Edriving.Update;
+using AulaRemota.Core.Edriving.Remove;
+using AulaRemota.Core.Edriving.GetOne;
+using AulaRemota.Core.Edriving.Create;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
+using AulaRemota.Core.Edriving.GetAll;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -40,7 +41,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                return Ok(await _mediator.Send(new EdrivingListarTodosInput()));
+                return Ok(await _mediator.Send(new EdrivingGetAllInput()));
             }
             catch (CustomException e)
             {
@@ -57,13 +58,13 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(EdrivingListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingGetOneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult<EdrivingListarPorIdResponse>> Get(int id)
+        public async ValueTask<ActionResult<EdrivingGetOneResponse>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new EdrivingListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new EdrivingGetOneInput { Id = id});
                 return Ok(result);
             }
             catch (CustomException e)
@@ -81,9 +82,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(EdrivingCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingCreateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Post([FromBody] EdrivingCriarInput request)
+        public async ValueTask<ActionResult> Post([FromBody] EdrivingCreateInput request)
         {
             try
             {
@@ -104,9 +105,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(EdrivingAtualizarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingUpdateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Put([FromBody] EdrivingAtualizarInput request)
+        public async ValueTask<ActionResult> Put([FromBody] EdrivingUpdateInput request)
         {
             try
             {
@@ -131,7 +132,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new EdrivingDeletarInput { Id = id });
+                var result = await _mediator.Send(new EdrivingRemoveInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)

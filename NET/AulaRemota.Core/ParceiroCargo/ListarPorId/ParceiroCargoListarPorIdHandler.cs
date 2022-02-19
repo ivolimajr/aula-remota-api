@@ -6,18 +6,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 
-namespace AulaRemota.Core.ParceiroCargo.ListarPorId
+namespace AulaRemota.Core.PartnnerCargo.ListarPorId
 {
-    public class ParceiroCargoListarPorIdHandler : IRequestHandler<ParceiroCargoListarPorIdInput, ParceiroCargoModel>
+    public class ParceiroCargoListarPorIdHandler : IRequestHandler<ParceiroCargoListarPorIdInput, PartnnerLevelModel>
     {
-        private readonly IRepository<ParceiroCargoModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
 
-        public ParceiroCargoListarPorIdHandler(IRepository<ParceiroCargoModel> edrivingCargoRepository)
+        public ParceiroCargoListarPorIdHandler(IRepository<PartnnerLevelModel> edrivingCargoRepository)
         {
             _edrivingCargoRepository = edrivingCargoRepository;
         }
 
-        public async Task<ParceiroCargoModel> Handle(ParceiroCargoListarPorIdInput request, CancellationToken cancellationToken)
+        public async Task<PartnnerLevelModel> Handle(ParceiroCargoListarPorIdInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 

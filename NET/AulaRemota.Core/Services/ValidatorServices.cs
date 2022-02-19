@@ -1,5 +1,4 @@
 ﻿using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Entity.Auto_Escola;
 using AulaRemota.Infra.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,10 @@ namespace AulaRemota.Core.Services
 {
     public class ValidatorServices : IValidatorServices
     {
-        private readonly IRepository<UsuarioModel> _usuarioRepository;
-        private readonly IRepository<TelefoneModel> _telefoneRepository;
+        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<PhoneModel> _telefoneRepository;
 
-        public ValidatorServices(IRepository<UsuarioModel> usuarioRepository, IRepository<TelefoneModel> telefoneRepository)
+        public ValidatorServices(IRepository<UserModel> usuarioRepository, IRepository<PhoneModel> telefoneRepository)
         {
             _usuarioRepository = usuarioRepository;
             _telefoneRepository = telefoneRepository;
@@ -24,7 +23,7 @@ namespace AulaRemota.Core.Services
             return true;
         }
 
-        public bool PhoneValidator(List<TelefoneModel> phoneList)
+        public bool PhoneValidator(List<PhoneModel> phoneList)
         {
             foreach (var item in phoneList)
             {

@@ -2,9 +2,9 @@
 using MediatR;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.ParceiroCargo.ListarTodos
+namespace AulaRemota.Core.PartnnerCargo.ListarTodos
 {
-    public class ParceiroCargoListarTodosInput : IRequest<List<ParceiroCargoModel>>
+    public class ParceiroCargoListarTodosInput : IRequest<List<PartnnerLevelModel>>
     {
     }
 }

@@ -7,18 +7,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.ParceiroCargo.ListarTodos
+namespace AulaRemota.Core.PartnnerCargo.ListarTodos
 {
-    public class ParceiroCargoListarTodosHandler : IRequestHandler<ParceiroCargoListarTodosInput, List<ParceiroCargoModel>>
+    public class ParceiroCargoListarTodosHandler : IRequestHandler<ParceiroCargoListarTodosInput, List<PartnnerLevelModel>>
     {
-        private readonly IRepository<ParceiroCargoModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
 
-        public ParceiroCargoListarTodosHandler(IRepository<ParceiroCargoModel> edrivingRepository)
+        public ParceiroCargoListarTodosHandler(IRepository<PartnnerLevelModel> edrivingRepository)
         {
             _edrivingCargoRepository = edrivingRepository;
         }
 
-        public async Task<List<ParceiroCargoModel>> Handle(ParceiroCargoListarTodosInput request, CancellationToken cancellationToken)
+        public async Task<List<PartnnerLevelModel>> Handle(ParceiroCargoListarTodosInput request, CancellationToken cancellationToken)
         {
             try
             {   

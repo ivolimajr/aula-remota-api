@@ -32,6 +32,35 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("ApiUserModelRolesModel");
                 });
 
+            modelBuilder.Entity("AulaRemota.Infra.Entity.AddressModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Cep")
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("EnderecoLogradouro")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Numero")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Uf")
+                        .HasColumnType("varchar(2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Endereco");
+                });
+
             modelBuilder.Entity("AulaRemota.Infra.Entity.Auth.ApiUserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -58,7 +87,7 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("ApiUser");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +133,131 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Administrativo");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AlunoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.CourseModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AutoEscolaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AutoEscolasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CargaHoraria")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Codigo")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("InstrutorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AutoEscolasId");
+
+                    b.HasIndex("InstrutorId");
+
+                    b.ToTable("Curso");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cnpj")
+                        .HasColumnType("varchar(14)");
+
+                    b.Property<DateTime>("DataFundacao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(70)");
+
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InscricaoEstadual")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("NomeFantasia")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("RazaoSocial")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("AutoEscola");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Aniversario")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Cpf")
+                        .HasColumnType("varchar(14)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(70)");
+
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Identidade")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("Orgão")
+                        .HasColumnType("varchar(70)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("Instrutor");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,177 +307,7 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Aluno");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Cnpj")
-                        .HasColumnType("varchar(14)");
-
-                    b.Property<DateTime>("DataFundacao")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("varchar(70)");
-
-                    b.Property<int>("EnderecoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InscricaoEstadual")
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("NomeFantasia")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("RazaoSocial")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Site")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
-
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
-
-                    b.ToTable("AutoEscola");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.CursoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AutoEscolaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AutoEscolasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CargaHoraria")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Codigo")
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<int>("InstrutorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("varchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AutoEscolasId");
-
-                    b.HasIndex("InstrutorId");
-
-                    b.ToTable("Curso");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Aniversario")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("varchar(14)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("varchar(70)");
-
-                    b.Property<int>("EnderecoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Identidade")
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("Orgão")
-                        .HasColumnType("varchar(70)");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
-
-                    b.HasIndex("UsuarioId")
-                        .IsUnique();
-
-                    b.ToTable("Instrutor");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.TelefoneModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AdministrativoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AutoEscolaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EdrivingId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InstrutorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ParceiroId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdministrativoId");
-
-                    b.HasIndex("AlunoId");
-
-                    b.HasIndex("AutoEscolaId");
-
-                    b.HasIndex("EdrivingId");
-
-                    b.HasIndex("InstrutorId");
-
-                    b.HasIndex("ParceiroId");
-
-                    b.ToTable("Telefone");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.TurmaModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.TurmaModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -354,7 +337,7 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Turma");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingCargoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingLevelModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -418,36 +401,37 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Edriving");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.EnderecoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.FileModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Bairro")
-                        .HasColumnType("varchar(150)");
+                    b.Property<int?>("AutoEscolaId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Cep")
-                        .HasColumnType("varchar(12)");
+                    b.Property<string>("Destino")
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("Cidade")
-                        .HasColumnType("varchar(150)");
+                    b.Property<string>("Formato")
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("EnderecoLogradouro")
-                        .HasColumnType("varchar(150)");
+                    b.Property<int?>("InstrutorId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Numero")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Uf")
-                        .HasColumnType("varchar(2)");
+                    b.Property<string>("Nome")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Endereco");
+                    b.HasIndex("AutoEscolaId");
+
+                    b.HasIndex("InstrutorId");
+
+                    b.ToTable("Arquivo");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.ParceiroCargoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerLevelModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -480,7 +464,7 @@ namespace AulaRemota.Infra.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.ParceiroModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -520,6 +504,52 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Parceiro");
                 });
 
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PhoneModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AdministrativoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AutoEscolaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EdrivingId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("InstrutorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ParceiroId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdministrativoId");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("AutoEscolaId");
+
+                    b.HasIndex("EdrivingId");
+
+                    b.HasIndex("InstrutorId");
+
+                    b.HasIndex("ParceiroId");
+
+                    b.ToTable("Telefone");
+                });
+
             modelBuilder.Entity("AulaRemota.Infra.Entity.RolesModel", b =>
                 {
                     b.Property<int>("Id")
@@ -534,7 +564,7 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.UsuarioModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.UserModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -563,52 +593,7 @@ namespace AulaRemota.Infra.Migrations
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Models.ArquivoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AutoEscolaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Destino")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Formato")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("InstrutorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AutoEscolaId");
-
-                    b.HasIndex("InstrutorId");
-
-                    b.ToTable("Arquivo");
-                });
-
-            modelBuilder.Entity("AutoEscolaModelInstrutorModel", b =>
-                {
-                    b.Property<int>("AutoEscolasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstrutoresId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AutoEscolasId", "InstrutoresId");
-
-                    b.HasIndex("InstrutoresId");
-
-                    b.ToTable("AutoEscolaModelInstrutorModel");
-                });
-
-            modelBuilder.Entity("CursoModelTurmaModel", b =>
+            modelBuilder.Entity("CourseModelTurmaModel", b =>
                 {
                     b.Property<int>("CursosId")
                         .HasColumnType("int");
@@ -620,10 +605,25 @@ namespace AulaRemota.Infra.Migrations
 
                     b.HasIndex("TurmasId");
 
-                    b.ToTable("CursoModelTurmaModel");
+                    b.ToTable("CourseModelTurmaModel");
                 });
 
-            modelBuilder.Entity("RolesModelUsuarioModel", b =>
+            modelBuilder.Entity("DrivingSchoolModelInstructorModel", b =>
+                {
+                    b.Property<int>("AutoEscolasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InstrutoresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AutoEscolasId", "InstrutoresId");
+
+                    b.HasIndex("InstrutoresId");
+
+                    b.ToTable("DrivingSchoolModelInstructorModel");
+                });
+
+            modelBuilder.Entity("RolesModelUserModel", b =>
                 {
                     b.Property<int>("RolesId")
                         .HasColumnType("int");
@@ -635,7 +635,7 @@ namespace AulaRemota.Infra.Migrations
 
                     b.HasIndex("UsuariosId");
 
-                    b.ToTable("RolesModelUsuarioModel");
+                    b.ToTable("RolesModelUserModel");
                 });
 
             modelBuilder.Entity("ApiUserModelRolesModel", b =>
@@ -653,23 +653,23 @@ namespace AulaRemota.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscola")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscola")
                         .WithMany("Administrativos")
                         .HasForeignKey("AutoEscolaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.EnderecoModel", "Endereco")
+                    b.HasOne("AulaRemota.Infra.Entity.AddressModel", "Endereco")
                         .WithOne("Administrativo")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", "EnderecoId")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", "EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
                         .WithOne("Administrativo")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", "UsuarioId")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -680,29 +680,84 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AlunoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.CourseModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscola")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscolas")
+                        .WithMany("Cursos")
+                        .HasForeignKey("AutoEscolasId");
+
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "Instrutor")
+                        .WithMany("Cursos")
+                        .HasForeignKey("InstrutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AutoEscolas");
+
+                    b.Navigation("Instrutor");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.AddressModel", "Endereco")
+                        .WithOne("AutoEscola")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
+                        .WithOne("AutoEscola")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.AddressModel", "Endereco")
+                        .WithOne("Instrutor")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
+                        .WithOne("Instrutor")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Endereco");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscola")
                         .WithMany("Alunos")
                         .HasForeignKey("AutoEscolaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.EnderecoModel", "Endereco")
+                    b.HasOne("AulaRemota.Infra.Entity.AddressModel", "Endereco")
                         .WithMany("Alunos")
                         .HasForeignKey("EnderecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.TurmaModel", "Turma")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.TurmaModel", "Turma")
                         .WithMany("Alunos")
                         .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
                         .WithOne("Aluno")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.AlunoModel", "UsuarioId")
+                        .HasForeignKey("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -715,72 +770,97 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.TurmaModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.EnderecoModel", "Endereco")
-                        .WithOne("AutoEscola")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "EnderecoId")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscola")
+                        .WithMany("Turmas")
+                        .HasForeignKey("AutoEscolaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
-                        .WithOne("AutoEscola")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Endereco");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.CursoModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscolas")
-                        .WithMany("Cursos")
-                        .HasForeignKey("AutoEscolasId");
-
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "Instrutor")
-                        .WithMany("Cursos")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "Instrutor")
+                        .WithMany()
                         .HasForeignKey("InstrutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AutoEscolas");
+                    b.Navigation("AutoEscola");
 
                     b.Navigation("Instrutor");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.EnderecoModel", "Endereco")
-                        .WithOne("Instrutor")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "EnderecoId")
+                    b.HasOne("AulaRemota.Infra.Entity.EdrivingLevelModel", "Cargo")
+                        .WithMany("Edrivings")
+                        .HasForeignKey("CargoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
-                        .WithOne("Instrutor")
-                        .HasForeignKey("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "UsuarioId")
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
+                        .WithOne("Edriving")
+                        .HasForeignKey("AulaRemota.Infra.Entity.EdrivingModel", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cargo");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.FileModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscola")
+                        .WithMany("Arquivos")
+                        .HasForeignKey("AutoEscolaId");
+
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "Instrutor")
+                        .WithMany("Arquivos")
+                        .HasForeignKey("InstrutorId");
+
+                    b.Navigation("AutoEscola");
+
+                    b.Navigation("Instrutor");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.PartnnerLevelModel", "Cargo")
+                        .WithMany("Parceiros")
+                        .HasForeignKey("CargoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AulaRemota.Infra.Entity.AddressModel", "Endereco")
+                        .WithOne("Parceiro")
+                        .HasForeignKey("AulaRemota.Infra.Entity.PartnnerModel", "EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", "Usuario")
+                        .WithOne("Parceiro")
+                        .HasForeignKey("AulaRemota.Infra.Entity.PartnnerModel", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cargo");
 
                     b.Navigation("Endereco");
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.TelefoneModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PhoneModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", "Administrativo")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", "Administrativo")
                         .WithMany("Telefones")
                         .HasForeignKey("AdministrativoId");
 
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AlunoModel", "Aluno")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", "Aluno")
                         .WithMany("Telefones")
                         .HasForeignKey("AlunoId");
 
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscola")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "AutoEscola")
                         .WithMany("Telefones")
                         .HasForeignKey("AutoEscolaId");
 
@@ -788,11 +868,11 @@ namespace AulaRemota.Infra.Migrations
                         .WithMany("Telefones")
                         .HasForeignKey("EdrivingId");
 
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "Instrutor")
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "Instrutor")
                         .WithMany("Telefones")
                         .HasForeignKey("InstrutorId");
 
-                    b.HasOne("AulaRemota.Infra.Entity.ParceiroModel", "Parceiro")
+                    b.HasOne("AulaRemota.Infra.Entity.PartnnerModel", "Parceiro")
                         .WithMany("Telefones")
                         .HasForeignKey("ParceiroId");
 
@@ -809,117 +889,37 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Parceiro");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.TurmaModel", b =>
+            modelBuilder.Entity("CourseModelTurmaModel", b =>
                 {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscola")
-                        .WithMany("Turmas")
-                        .HasForeignKey("AutoEscolaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "Instrutor")
-                        .WithMany()
-                        .HasForeignKey("InstrutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AutoEscola");
-
-                    b.Navigation("Instrutor");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.EdrivingCargoModel", "Cargo")
-                        .WithMany("Edrivings")
-                        .HasForeignKey("CargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
-                        .WithOne("Edriving")
-                        .HasForeignKey("AulaRemota.Infra.Entity.EdrivingModel", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cargo");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.ParceiroModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.ParceiroCargoModel", "Cargo")
-                        .WithMany("Parceiros")
-                        .HasForeignKey("CargoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AulaRemota.Infra.Entity.EnderecoModel", "Endereco")
-                        .WithOne("Parceiro")
-                        .HasForeignKey("AulaRemota.Infra.Entity.ParceiroModel", "EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", "Usuario")
-                        .WithOne("Parceiro")
-                        .HasForeignKey("AulaRemota.Infra.Entity.ParceiroModel", "UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cargo");
-
-                    b.Navigation("Endereco");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Models.ArquivoModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", "AutoEscola")
-                        .WithMany("Arquivos")
-                        .HasForeignKey("AutoEscolaId");
-
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", "Instrutor")
-                        .WithMany("Arquivos")
-                        .HasForeignKey("InstrutorId");
-
-                    b.Navigation("AutoEscola");
-
-                    b.Navigation("Instrutor");
-                });
-
-            modelBuilder.Entity("AutoEscolaModelInstrutorModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", null)
-                        .WithMany()
-                        .HasForeignKey("AutoEscolasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", null)
-                        .WithMany()
-                        .HasForeignKey("InstrutoresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CursoModelTurmaModel", b =>
-                {
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.CursoModel", null)
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.CourseModel", null)
                         .WithMany()
                         .HasForeignKey("CursosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.Auto_Escola.TurmaModel", null)
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.TurmaModel", null)
                         .WithMany()
                         .HasForeignKey("TurmasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RolesModelUsuarioModel", b =>
+            modelBuilder.Entity("DrivingSchoolModelInstructorModel", b =>
+                {
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", null)
+                        .WithMany()
+                        .HasForeignKey("AutoEscolasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", null)
+                        .WithMany()
+                        .HasForeignKey("InstrutoresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RolesModelUserModel", b =>
                 {
                     b.HasOne("AulaRemota.Infra.Entity.RolesModel", null)
                         .WithMany()
@@ -927,24 +927,32 @@ namespace AulaRemota.Infra.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AulaRemota.Infra.Entity.UsuarioModel", null)
+                    b.HasOne("AulaRemota.Infra.Entity.UserModel", null)
                         .WithMany()
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AdministrativoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.AddressModel", b =>
+                {
+                    b.Navigation("Administrativo");
+
+                    b.Navigation("Alunos");
+
+                    b.Navigation("AutoEscola");
+
+                    b.Navigation("Instrutor");
+
+                    b.Navigation("Parceiro");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", b =>
                 {
                     b.Navigation("Telefones");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AlunoModel", b =>
-                {
-                    b.Navigation("Telefones");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.AutoEscolaModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", b =>
                 {
                     b.Navigation("Administrativos");
 
@@ -959,7 +967,7 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Turmas");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.InstrutorModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", b =>
                 {
                     b.Navigation("Arquivos");
 
@@ -968,12 +976,17 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Telefones");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.Auto_Escola.TurmaModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", b =>
+                {
+                    b.Navigation("Telefones");
+                });
+
+            modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.TurmaModel", b =>
                 {
                     b.Navigation("Alunos");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingCargoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingLevelModel", b =>
                 {
                     b.Navigation("Edrivings");
                 });
@@ -983,30 +996,17 @@ namespace AulaRemota.Infra.Migrations
                     b.Navigation("Telefones");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.EnderecoModel", b =>
-                {
-                    b.Navigation("Administrativo");
-
-                    b.Navigation("Alunos");
-
-                    b.Navigation("AutoEscola");
-
-                    b.Navigation("Instrutor");
-
-                    b.Navigation("Parceiro");
-                });
-
-            modelBuilder.Entity("AulaRemota.Infra.Entity.ParceiroCargoModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerLevelModel", b =>
                 {
                     b.Navigation("Parceiros");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.ParceiroModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerModel", b =>
                 {
                     b.Navigation("Telefones");
                 });
 
-            modelBuilder.Entity("AulaRemota.Infra.Entity.UsuarioModel", b =>
+            modelBuilder.Entity("AulaRemota.Infra.Entity.UserModel", b =>
                 {
                     b.Navigation("Administrativo");
 

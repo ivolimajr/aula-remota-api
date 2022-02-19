@@ -1,5 +1,5 @@
-﻿using AulaRemota.Core.ParceiroCargo.ListarPorId;
-using AulaRemota.Core.ParceiroCargo.ListarTodos;
+﻿using AulaRemota.Core.PartnnerCargo.ListarPorId;
+using AulaRemota.Core.PartnnerCargo.ListarTodos;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,9 +32,9 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<ParceiroCargoModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<PartnnerLevelModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<List<ParceiroCargoModel>>> GetAll()
+        public async ValueTask<ActionResult<List<PartnnerLevelModel>>> GetAll()
         {
             try
             {
@@ -55,9 +55,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ParceiroCargoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PartnnerLevelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<ParceiroCargoModel>> Get(int id)
+        public async ValueTask<ActionResult<PartnnerLevelModel>> Get(int id)
         {
             try
             {

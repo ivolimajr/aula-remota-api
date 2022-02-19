@@ -1,4 +1,4 @@
-﻿using AulaRemota.Infra.Entity.Auto_Escola;
+﻿using AulaRemota.Infra.Entity.DrivingSchool;
 using System.Collections.Generic;
 
 namespace AulaRemota.Infra.Entity
@@ -7,7 +7,7 @@ namespace AulaRemota.Infra.Entity
     {
         public EdrivingModel()
         {
-            this.Telefones = new List<TelefoneModel>();
+            this.Telefones = new List<PhoneModel>();
         }
         public int Id { get; set; }
 
@@ -18,10 +18,10 @@ namespace AulaRemota.Infra.Entity
         public string Email { get; set; }
 
         public int CargoId { get; set; }
-        public EdrivingCargoModel Cargo { get; set; }
+        public EdrivingLevelModel Cargo { get; set; }
 
         public int UsuarioId { get; set; }
-        public UsuarioModel Usuario { get; set; }
-        public virtual List<TelefoneModel> Telefones { get; set; }
+        public UserModel Usuario { get; set; }
+        public virtual List<PhoneModel> Telefones { get; set; }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using AulaRemota.Shared.Helpers;
-using AulaRemota.Core.Usuario.AtualizarEndereco;
-using AulaRemota.Core.Usuario.AtualizarSenha;
-using AulaRemota.Core.Usuario.AtualizarSenhaPorEmail;
-using AulaRemota.Core.Usuario.Login;
-using AulaRemota.Core.Usuario.RemoveTelefone;
+using AulaRemota.Core.User.UpdateAddress;
+using AulaRemota.Core.User.UpdatePassword;
+using AulaRemota.Core.User.UpdatePasswordByEmail;
+using AulaRemota.Core.User.Login;
 using AulaRemota.Infra.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,8 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using AulaRemota.Core.Usuario.RemoveFile;
+using AulaRemota.Core.File.RemoveFile;
+using AulaRemota.Core.User.RemovePhone;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -39,8 +38,8 @@ namespace AulaRemota.Api.Controllers
         /// <response code="200">Atualiza o Token</response>
         /// <response code="401">RefreshToken inválido</response>
         [HttpPost("Login")]
-        [ProducesResponseType(typeof(UsuarioLoginResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Login([FromBody] UsuarioLoginInput request)
+        [ProducesResponseType(typeof(UserLoginResponse), StatusCodes.Status200OK)]
+        public async ValueTask<ActionResult> Login([FromBody] UserLoginInput request)
         {
             try
             {
@@ -64,7 +63,7 @@ namespace AulaRemota.Api.Controllers
         [Route("alterar-senha")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async ValueTask<ActionResult> AlterarSenha([FromBody] UsuarioAtualizarSenhaInput request)
+        public async ValueTask<ActionResult> AlterarSenha([FromBody] UpdatePasswordInput request)
         {
             try
             {
@@ -88,7 +87,7 @@ namespace AulaRemota.Api.Controllers
         [Route("alterar-senha-por-email")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UsuarioAtualizarSenhaPorEmailInput request)
+        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UpdatePasswordByEmailInput request)
         {
             try
             {
@@ -134,7 +133,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new RemoveTelefoneInput { Id = id });
+                var result = await _mediator.Send(new RemovePhoneInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)
@@ -153,9 +152,9 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [Route("atualizar-endereco")]
         [HttpPut]
-        [ProducesResponseType(typeof(EnderecoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AddressModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UsuarioAtualizarEnderecoInput request)
+        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request)
         {
             try
             {

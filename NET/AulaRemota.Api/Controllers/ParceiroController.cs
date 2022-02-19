@@ -1,7 +1,7 @@
-﻿using AulaRemota.Core.Parceiro.Atualizar;
-using AulaRemota.Core.Parceiro.Deletar;
-using AulaRemota.Core.Parceiro.ListarTodos;
-using AulaRemota.Core.Parceiro.Criar;
+﻿using AulaRemota.Core.Partnner.Update;
+using AulaRemota.Core.Partnner.Remove;
+using AulaRemota.Core.Partnner.GetAll;
+using AulaRemota.Core.Partnner.Create;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using AulaRemota.Infra.Entity;
+using AulaRemota.Core.Partnner.GetOne;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -34,13 +35,13 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<ParceiroModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<PartnnerModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult<List<ParceiroModel>>> GetAll()
+        public async ValueTask<ActionResult<List<PartnnerModel>>> GetAll()
         {
             try
             {
-                return Ok(await _mediator.Send(new ParceiroListarTodosInput()));
+                return Ok(await _mediator.Send(new GetAllPartnnerInput()));
             }
             catch (CustomException e)
             {
@@ -57,13 +58,13 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ParceiroListarPorIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetOnePartnnerResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async ValueTask<ActionResult<ParceiroListarPorIdResponse>> Get(int id)
+        public async ValueTask<ActionResult<GetOnePartnnerResponse>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new ParceiroListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new GetOnePartnnerInput { Id = id});
                 return Ok(result);
             }
             catch (CustomException e)
@@ -81,9 +82,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ParceiroCriarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreatePartnnerResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Post([FromBody] ParceiroCriarInput request)
+        public async ValueTask<ActionResult> Post([FromBody] CreatePartnnerInput request)
         {
             try
             {
@@ -104,9 +105,9 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(ParceiroAtualizarResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PartnnerUpdateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult> Put([FromBody] ParceiroAtualizarInput request)
+        public async ValueTask<ActionResult> Put([FromBody] PartnnerUpdateInput request)
         {
             try
             {
@@ -131,7 +132,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new ParceiroDeletarInput { Id = id });
+                var result = await _mediator.Send(new RemovePartnnerInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)

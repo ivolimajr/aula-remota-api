@@ -1,5 +1,5 @@
-﻿using AulaRemota.Core.EdrivingCargo.ListarPorId;
-using AulaRemota.Core.EdrivingCargo.ListarTodos;
+﻿using AulaRemota.Core.EdrivingLevel.GetOne;
+using AulaRemota.Core.EdrivingLevel.GetAll;
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
 using MediatR;
@@ -32,13 +32,13 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(List<EdrivingCargoModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<EdrivingLevelModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<List<EdrivingCargoModel>>> GetAll()
+        public async ValueTask<ActionResult<List<EdrivingLevelModel>>> GetAll()
         {
             try
             {
-                return Ok(await _mediator.Send(new EdrivingCargoListarTodosInput()));
+                return Ok(await _mediator.Send(new EdrivingLevelGetAllInput()));
             }
             catch (CustomException e)
             {
@@ -55,13 +55,13 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(EdrivingCargoModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingLevelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<EdrivingCargoModel>> Get(int id)
+        public async ValueTask<ActionResult<EdrivingLevelModel>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new EdrivingCargoListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new EdrivingLevelGetOneInput { Id = id});
                 return Ok(result);
             }
             catch (CustomException e)

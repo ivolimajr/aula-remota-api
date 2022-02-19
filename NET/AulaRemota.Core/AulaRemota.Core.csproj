@@ -6,17 +6,17 @@
 
   <ItemGroup>
     <Compile Remove="UploadDir\**" />
-    <Compile Remove="Usuario\Deletar\**" />
-    <Compile Remove="Usuario\ListarPorId\**" />
-    <Compile Remove="Usuario\ListarTodos\**" />
+    <Compile Remove="User\Deletar\**" />
+    <Compile Remove="User\ListarPorId\**" />
+    <Compile Remove="User\ListarTodos\**" />
     <EmbeddedResource Remove="UploadDir\**" />
-    <EmbeddedResource Remove="Usuario\Deletar\**" />
-    <EmbeddedResource Remove="Usuario\ListarPorId\**" />
-    <EmbeddedResource Remove="Usuario\ListarTodos\**" />
+    <EmbeddedResource Remove="User\Deletar\**" />
+    <EmbeddedResource Remove="User\ListarPorId\**" />
+    <EmbeddedResource Remove="User\ListarTodos\**" />
     <None Remove="UploadDir\**" />
-    <None Remove="Usuario\Deletar\**" />
-    <None Remove="Usuario\ListarPorId\**" />
-    <None Remove="Usuario\ListarTodos\**" />
+    <None Remove="User\Deletar\**" />
+    <None Remove="User\ListarPorId\**" />
+    <None Remove="User\ListarTodos\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,10 @@
 ﻿using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 
-namespace AulaRemota.Core.ParceiroCargo.ListarTodos
+namespace AulaRemota.Core.PartnnerCargo.ListarTodos
 {
     public class ParceiroCargoListarTodosResponse
     {
-        public List<ParceiroCargoModel> Items { get; set; }
+        public List<PartnnerLevelModel> Items { get; set; }
     }
 }

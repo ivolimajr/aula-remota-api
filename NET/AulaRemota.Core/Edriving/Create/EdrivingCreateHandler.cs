@@ -1,0 +1,126 @@
+﻿using AulaRemota.Shared.Helpers;
+using AulaRemota.Infra.Entity;
+using AulaRemota.Infra.Entity.DrivingSchool;
+using AulaRemota.Infra.Repository;
+using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using AulaRemota.Shared.Helpers.Constants;
+using AulaRemota.Core.Services;
+
+namespace AulaRemota.Core.Edriving.Create
+{
+    public class EdrivingCreateHandler : IRequestHandler<EdrivingCreateInput, EdrivingCreateResponse>
+    {
+        private readonly IRepository<EdrivingModel> _edrivingRepository;
+        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<EdrivingLevelModel> _cargoRepository;
+        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IValidatorServices _validator;
+        private readonly IMediator _mediator;
+
+        public EdrivingCreateHandler(
+            IRepository<EdrivingModel> edrivingRepository,
+            IRepository<UserModel> usuarioRepository,
+            IRepository<EdrivingLevelModel> cargoRepository,
+            IRepository<PhoneModel> telefoneRepository,
+            IValidatorServices validator,
+            IMediator mediator
+            )
+        {
+            _edrivingRepository = edrivingRepository;
+            _usuarioRepository = usuarioRepository;
+            _cargoRepository = cargoRepository;
+            _telefoneRepository = telefoneRepository;
+            _validator = validator;
+            _mediator = mediator;
+        }
+
+        public async Task<EdrivingCreateResponse> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _edrivingRepository.CreateTransaction();
+
+                //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
+                var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
+                if (emailResult != null) throw new CustomException("Email já em uso");
+
+                //VERIFICA SE O CPF JÁ ESTÁ EM USO
+                var cpfResult = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
+                if (cpfResult != null) throw new CustomException("Cpf já existe em nossa base de dados");
+
+                //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
+                if(request.Telefones != null)
+                {
+                    foreach (var item in request.Telefones)
+                    {
+                        var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
+                        if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                    }
+                }
+
+                //VERIFICA SE O CARGO INFORMADO EXISTE
+                var cargo = _cargoRepository.GetById(request.CargoId);
+                if (cargo == null) throw new CustomException("Cargo informado não existe");
+
+                //CRIA UM USUÁRIO
+                var user = new UserModel()
+                {
+                    Nome = request.Nome.ToUpper(),
+                    Email = request.Email.ToUpper(),
+                    status = 1,
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Roles = new List<RolesModel>()
+                    {
+                        new RolesModel(){
+                        Role = Constants.Roles.EDRIVING
+                        }
+                    }
+                };
+
+                //CRIA UM EDRIVING
+                var edriving = new EdrivingModel()
+                {
+                    Nome = request.Nome.ToUpper(),
+                    Cpf = request.Cpf.ToUpper(),
+                    Email = request.Email.ToUpper(),
+                    CargoId = request.CargoId,
+                    Telefones = request.Telefones,
+                    Cargo = cargo,
+                    Usuario = user
+                };
+                var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
+
+                //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
+
+                _edrivingRepository.Commit();
+                _edrivingRepository.Save();
+
+                return new EdrivingCreateResponse()
+                {
+                    Id = edrivingModel.Id,
+                    Nome = edrivingModel.Nome,
+                    Email = edrivingModel.Email,
+                    Cpf = edrivingModel.Cpf,
+                    Telefones = edrivingModel.Telefones,
+                    CargoId = edrivingModel.CargoId,
+                    UsuarioId = edrivingModel.UsuarioId,
+                    Cargo = edrivingModel.Cargo,
+                    Usuario = edrivingModel.Usuario,
+                };
+            }
+            catch (Exception e)
+            {
+                _edrivingRepository.Rollback();
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                _edrivingRepository.Context.Dispose();
+            }
+        }
+    }
+}
