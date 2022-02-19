@@ -5,8 +5,6 @@ using AulaRemota.Infra.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
-using AulaRemota.Infra.Configuracoes;
 using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Infra.Context
@@ -27,7 +25,6 @@ namespace AulaRemota.Infra.Context
             {
                 var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
                 optionsBuilder
-                    .UseMySql(UnitOfWork.Configuration.GetConnectionString("MySQLConnLocal"), serverVersion)
                     //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion)
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors();

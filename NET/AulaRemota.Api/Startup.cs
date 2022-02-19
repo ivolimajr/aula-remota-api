@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
-using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using AulaRemota.Api.Code;
 using System.Reflection;
 using System.IO;
@@ -36,9 +35,6 @@ namespace AulaRemota.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            UnitOfWork.ServiceCollection = services;
-            UnitOfWork.Configuration = Configuration;
-
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
 
@@ -50,10 +46,6 @@ namespace AulaRemota.Api
                 .Configure(tokenConfigurations);
 
             services.AddSingleton(tokenConfigurations);
-
-            //Configura instancia do UOW
-            //var provider = services.BuildServiceProvider();
-            AulaRemotaUnitOfWorkFactory<MySqlContext>.SetObjectContext(() => new MySqlContext(true));
 
             services.AddAuthentication(options =>
             {

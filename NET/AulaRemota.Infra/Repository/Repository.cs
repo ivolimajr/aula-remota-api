@@ -47,7 +47,6 @@ namespace AulaRemota.Infra.Repository
         {
             var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
             if (result != null) _context.Entry(result).CurrentValues.SetValues(entity);
-            //if (result != null) _context.Entry(result).State = EntityState.Modified;
         }
 
         //BUSCAR COM CLÁUSULA

@@ -11,7 +11,7 @@ namespace AulaRemota.Api.Code.Logger
         private readonly string _basePath;
         public CustomLogger(string name, CustomLoggerProviderConfiguration config)
         {
-            _basePath = Directory.GetCurrentDirectory() + "\\UploadDir\\Log\\";
+            _basePath = Directory.GetCurrentDirectory() + "\\Code\\Logger\\Logs\\";
             this.loggerName = name;
             loggerConfig = config;
         }
