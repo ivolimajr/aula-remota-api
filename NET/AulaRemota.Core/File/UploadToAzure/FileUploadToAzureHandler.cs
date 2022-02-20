@@ -20,17 +20,17 @@ namespace AulaRemota.Core.File.UploadToAzure
 
         public async Task<FileUploadToAzureResponse> Handle(FileUploadToAzureInput request, CancellationToken cancellationToken)
         {
-            if (request.Arquivos.Count > 0)
+            if (request.Files.Count > 0)
             {
                 var listaArquivos = new List<FileModel>();
 
-                foreach (var item in request.Arquivos)
+                foreach (var item in request.Files)
                 {
                     var fileType = Path.GetExtension(item.FileName);
                     if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".jpeg")
                     {
-                        var fileResult = await SalvarNoAzure(item, request.TipoUsuario);
-                        fileResult.Formato = fileType;
+                        var fileResult = await SalvarNoAzure(item, request.TypeUser);
+                        fileResult.Extension = fileType;
                         listaArquivos.Add(fileResult);
                     }
                     else
@@ -38,7 +38,7 @@ namespace AulaRemota.Core.File.UploadToAzure
                         throw new CustomException("Formato de arquivo inválido");
                     }
                 }
-                return new FileUploadToAzureResponse() { Arquivos = listaArquivos };
+                return new FileUploadToAzureResponse() { Files = listaArquivos };
             }
             return null;
         }
@@ -70,9 +70,9 @@ namespace AulaRemota.Core.File.UploadToAzure
 
             var fileResult = new FileModel()
             {
-                Nome = cloudBlockBlob.Name,
-                Formato = "",
-                Destino = cloudBlockBlob.Uri.ToString()
+                FileName = cloudBlockBlob.Name,
+                Extension = "",
+                Destiny = cloudBlockBlob.Uri.ToString()
             };
             return fileResult;
         }

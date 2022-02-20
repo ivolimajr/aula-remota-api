@@ -15,34 +15,34 @@ namespace AulaRemota.Infra.Entity
 
         public int Id { get; set; }
         [Column(TypeName = "varchar(150)")]
-        public string Nome { get; set; }
+        public string Name { get; set; }
         [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
 
         [JsonIgnore]
         [Column(TypeName = "varchar(150)")]
         public string Password { get; set; }
-        public int status { get; set; } // 0 -> DELETADO (DELETE) | 1 -> ATIVO | 2 ->INATIVADO
+        public int Status { get; set; } // 0 -> DELETADO (DELETE) | 1 -> ATIVO | 2 ->INATIVADO
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public virtual ICollection<RolesModel> Roles { get; set; }
 
         [JsonIgnore]
-        public virtual StudentModel Aluno { get; set; }
+        public virtual StudentModel Student { get; set; }
         [JsonIgnore]
-        public virtual DrivingSchoolModel AutoEscola { get; set; }
+        public virtual DrivingSchoolModel DrivingSchool { get; set; }
         [JsonIgnore]
-        public virtual InstructorModel Instrutor { get; set; }
+        public virtual InstructorModel Instructor { get; set; }
         [JsonIgnore]
-        public virtual AdministrativeModel Administrativo { get; set; }
+        public virtual AdministrativeModel Administrative { get; set; }
         [JsonIgnore]
         public virtual EdrivingModel Edriving { get; set; }
         [JsonIgnore]
-        public virtual PartnnerModel Parceiro { get; set; }
+        public virtual PartnnerModel Partnner { get; set; }
 
         public string GerarSenhas()
         {
-            int Tamanho = 10; // Numero de digitos da senha
+            int Tamanho = 10; // Number de digitos da senha
             string senha = "Edriv@";
             for (int i = senha.Length; i < Tamanho; i++)
             {

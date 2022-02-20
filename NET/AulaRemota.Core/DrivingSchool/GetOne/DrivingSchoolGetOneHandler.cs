@@ -25,10 +25,10 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
             try
             {
                 var result = await _autoEscolaRepository.Context.Set<DrivingSchoolModel>()
-                    .Include(e => e.Telefones)
-                    .Include(e => e.Endereco)
-                    .Include(e => e.Arquivos)
-                    .Include(e => e.Usuario)
+                    .Include(e => e.PhonesNumbers)
+                    .Include(e => e.Address)
+                    .Include(e => e.Files)
+                    .Include(e => e.User)
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
@@ -38,20 +38,20 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                 return new DrivingSchoolGetOneResponse
                 {
                     Id = result.Id,
-                    RazaoSocial = result.RazaoSocial,
-                    NomeFantasia = result.NomeFantasia,
-                    InscricaoEstadual = result.InscricaoEstadual,
-                    DataFundacao = result.DataFundacao,
+                    CorporateName = result.CorporateName,
+                    FantasyName = result.FantasyName,
+                    StateRegistration = result.StateRegistration,
+                    FoundingDate = result.FoundingDate,
                     Email = result.Email,
-                    Descricao = result.Descricao,
+                    Description = result.Description,
                     Site = result.Site,
                     Cnpj = result.Cnpj,
-                    EnderecoId = result.EnderecoId,
-                    Endereco = result.Endereco,
-                    UsuarioId = result.UsuarioId,
-                    Usuario = result.Usuario,
-                    Arquivos = result.Arquivos,
-                    Telefones = result.Telefones
+                    AddressId = result.AddressId,
+                    Address = result.Address,
+                    UserId = result.UserId,
+                    User = result.User,
+                    Files = result.Files,
+                    PhonesNumbers = result.PhonesNumbers
                 };
             }
             catch (CustomException e)

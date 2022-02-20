@@ -9,13 +9,13 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<EdrivingLevelModel> builder)
         {
-            builder.ToTable("EdrivingCargo");
+            builder.ToTable("edrivingLevel");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Cargo).HasColumnType("varchar").HasMaxLength(70).IsRequired();
+            builder.Property(e => e.Level).HasColumnType("varchar").HasMaxLength(70).IsRequired();
 
-            builder.HasIndex(e => e.Cargo);
+            builder.HasIndex(e => e.Level);
 
-            builder.HasMany(e => e.Edrivings).WithOne(e => e.Cargo).HasForeignKey(e => e.CargoId);
+            builder.HasMany(e => e.Edrivings).WithOne(e => e.Level).HasForeignKey(e => e.LevelId);
 
         }
     }

@@ -9,24 +9,24 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<UserModel> builder)
         {
-            builder.ToTable("usuario");
+            builder.ToTable("user");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Name).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Password).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Email).HasColumnType("varchar").HasMaxLength(70).IsRequired();
-            builder.Property(e => e.status).HasColumnType("int").IsRequired();
+            builder.Property(e => e.Status).HasColumnType("int").IsRequired();
             builder.Property(e => e.CreatedAt).HasColumnType("datetime").HasDefaultValue(DateTime.Now).IsRequired();
             builder.Property(e => e.UpdateAt).HasColumnType("datetime");
 
-            builder.HasOne(e => e.AutoEscola).WithOne(e => e.Usuario);
-            builder.HasOne(e => e.Administrativo).WithOne(e => e.Usuario);
-            builder.HasOne(e => e.Aluno).WithOne(e => e.Usuario);
-            builder.HasOne(e => e.Edriving).WithOne(e => e.Usuario);
-            builder.HasOne(e => e.Parceiro).WithOne(e => e.Usuario);
-            builder.HasOne(e => e.Instrutor).WithOne(e => e.Usuario);
+            builder.HasOne(e => e.DrivingSchool).WithOne(e => e.User);
+            builder.HasOne(e => e.Administrative).WithOne(e => e.User);
+            builder.HasOne(e => e.Student).WithOne(e => e.User);
+            builder.HasOne(e => e.Edriving).WithOne(e => e.User);
+            builder.HasOne(e => e.Partnner).WithOne(e => e.User);
+            builder.HasOne(e => e.Instructor).WithOne(e => e.User);
             builder.HasMany(e => e.Roles);
 
-            builder.HasIndex(e => e.Nome);
+            builder.HasIndex(e => e.Name);
         }
     }
 }

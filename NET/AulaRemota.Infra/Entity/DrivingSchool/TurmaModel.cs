@@ -8,22 +8,22 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
     {
         public TurmaModel()
         {
-            this.Alunos = new List<StudentModel>();
-            this.Cursos = new List<CourseModel>();
+            this.Students = new List<StudentModel>();
+            this.Courses = new List<CourseModel>();
         }
         public int Id { get; set; }
         [Column(TypeName = "varchar(150)")]
-        public string Codigo { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
+        public string Code { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public int AutoEscolaId { get; set; }
-        public DrivingSchoolModel AutoEscola { get; set; }
+        public int DrivingSchoolId { get; set; }
+        public DrivingSchoolModel DrivingSchool { get; set; }
 
-        public int InstrutorId { get; set; }
-        public InstructorModel Instrutor { get; set; }
+        public int InstructorId { get; set; }
+        public InstructorModel Instructor { get; set; }
 
-        public virtual List<StudentModel> Alunos { get; set; }
-        public virtual List<CourseModel> Cursos { get; set; }
+        public virtual ICollection<StudentModel> Students { get; set; }
+        public virtual ICollection<CourseModel> Courses { get; set; }
     }
 }

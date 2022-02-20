@@ -30,24 +30,24 @@ namespace AulaRemota.Core.Edriving.GetOne
 
                 var result = await _edrivingRepository.Context
                         .Set<EdrivingModel>()
-                        .Include(e => e.Usuario)
-                        .Include(e => e.Cargo)
-                        .Include(e => e.Telefones)
+                        .Include(e => e.User)
+                        .Include(e => e.Level)
+                        .Include(e => e.PhonesNumbers)
                         .Where(e => e.Id == res.Id)
-                        .Where(e => e.Usuario.status > 0)
+                        .Where(e => e.User.Status > 0)
                         .FirstOrDefaultAsync();
 
                 return new EdrivingGetOneResponse { 
                 
                     Id = result.Id,
-                    Nome = result.Nome,
+                    Name = result.Name,
                     Email = result.Email,
                     Cpf = result.Cpf,
-                    Telefones = result.Telefones,
-                    CargoId = result.CargoId,
-                    Cargo = result.Cargo,
-                    UsuarioId= result.UsuarioId,
-                    Usuario= result.Usuario
+                    PhonesNumbers = result.PhonesNumbers,
+                    LevelId = result.LevelId,
+                    Level = result.Level,
+                    UserId= result.UserId,
+                    User= result.User
                 };
             }
             catch (Exception e)

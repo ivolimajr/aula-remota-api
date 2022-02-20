@@ -8,20 +8,20 @@ namespace AulaRemota.Core.Partnner.Create
     {
         public CreatePartnnerResponse()
         {
-            this.Telefones = new List<PhoneModel>();
+            this.PhonesNumbers = new List<PhoneModel>();
         }
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public string Descricao { get; set; }
+        public string Description { get; set; }
         public string Cnpj { get; set; }
 
-        public int CargoId { get; set; }
-        public PartnnerLevelModel Cargo { get; set; }
-        public int EnderecoId { get; set; }
-        public AddressModel Endereco { get; set; }
-        public int UsuarioId { get; set; }
-        public UserModel Usuario { get; set; }
-        public virtual List<PhoneModel> Telefones { get; set; }
+        public int LevelId { get; set; }
+        public PartnnerLevelModel Level { get; set; }
+        public int AddressId { get; set; }
+        public AddressModel Address { get; set; }
+        public int UserId { get; set; }
+        public UserModel User { get; set; }
+        public virtual ICollection<PhoneModel> PhonesNumbers { get; set; }
     }
 }

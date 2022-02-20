@@ -15,13 +15,13 @@ namespace AulaRemota.Core.DrivingSchool.Update
         public int Id { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string RazaoSocial { get; set; }
+        public string CorporateName { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string NomeFantasia { get; set; }
+        public string FantasyName { get; set; }
 
         [StringLength(maximumLength: 20, MinimumLength = 12)]
-        public string InscricaoEstadual { get; set; }
+        public string StateRegistration { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DataFundacao { get; set; }
@@ -30,7 +30,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
         public string Email { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 0)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 0)]
         public string Site { get; set; }
@@ -45,19 +45,19 @@ namespace AulaRemota.Core.DrivingSchool.Update
         public string Cep { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string EnderecoLogradouro { get; set; }
+        public string Address { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Bairro { get; set; }
+        public string District { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Cidade { get; set; }
+        public string City { get; set; }
 
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Numero { get; set; }
+        public string Number { get; set; }
 
-        public List<PhoneModel> Telefones { get; set; }
+        public ICollection<PhoneModel> PhonesNumbers { get; set; }
         
-        public List<IFormFile> Arquivos { get; set; }
+        public ICollection<IFormFile> Files { get; set; }
     }
 }

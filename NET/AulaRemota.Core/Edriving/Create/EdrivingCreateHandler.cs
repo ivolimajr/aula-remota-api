@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Entity.DrivingSchool;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
@@ -53,26 +52,26 @@ namespace AulaRemota.Core.Edriving.Create
                 if (cpfResult != null) throw new CustomException("Cpf já existe em nossa base de dados");
 
                 //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                if(request.Telefones != null)
+                if(request.PhonesNumbers != null)
                 {
-                    foreach (var item in request.Telefones)
+                    foreach (var item in request.PhonesNumbers)
                     {
-                        var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                        if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                        var telefoneResult = await _telefoneRepository.FindAsync(u => u.PhoneNumber == item.PhoneNumber);
+                        if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
                     }
                 }
 
-                //VERIFICA SE O CARGO INFORMADO EXISTE
-                var cargo = _cargoRepository.GetById(request.CargoId);
-                if (cargo == null) throw new CustomException("Cargo informado não existe");
+                //VERIFICA SE O Level INFORMADO EXISTE
+                var Level = _cargoRepository.GetById(request.LevelId);
+                if (Level == null) throw new CustomException("Level informado não existe");
 
                 //CRIA UM USUÁRIO
                 var user = new UserModel()
                 {
-                    Nome = request.Nome.ToUpper(),
+                    Name = request.Name.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    status = 1,
-                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Status = 1,
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                     Roles = new List<RolesModel>()
                     {
                         new RolesModel(){
@@ -84,13 +83,13 @@ namespace AulaRemota.Core.Edriving.Create
                 //CRIA UM EDRIVING
                 var edriving = new EdrivingModel()
                 {
-                    Nome = request.Nome.ToUpper(),
+                    Name = request.Name.ToUpper(),
                     Cpf = request.Cpf.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    CargoId = request.CargoId,
-                    Telefones = request.Telefones,
-                    Cargo = cargo,
-                    Usuario = user
+                    LevelId = request.LevelId,
+                    PhonesNumbers = request.PhonesNumbers,
+                    Level = Level,
+                    User = user
                 };
                 var edrivingModel = await _edrivingRepository.CreateAsync(edriving);
 
@@ -102,14 +101,14 @@ namespace AulaRemota.Core.Edriving.Create
                 return new EdrivingCreateResponse()
                 {
                     Id = edrivingModel.Id,
-                    Nome = edrivingModel.Nome,
+                    Name = edrivingModel.Name,
                     Email = edrivingModel.Email,
                     Cpf = edrivingModel.Cpf,
-                    Telefones = edrivingModel.Telefones,
-                    CargoId = edrivingModel.CargoId,
-                    UsuarioId = edrivingModel.UsuarioId,
-                    Cargo = edrivingModel.Cargo,
-                    Usuario = edrivingModel.Usuario,
+                    PhonesNumbers = edrivingModel.PhonesNumbers,
+                    LevelId = edrivingModel.LevelId,
+                    UserId = edrivingModel.UserId,
+                    Level = edrivingModel.Level,
+                    User = edrivingModel.User,
                 };
             }
             catch (Exception e)

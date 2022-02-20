@@ -41,73 +41,73 @@ namespace AulaRemota.Core.Partnner.Update
                 //BUSCA O OBJETO A SER ATUALIZADO
                 var entity = await _parceiroRepository.Context
                         .Set<PartnnerModel>()
-                        .Include(e => e.Cargo)
-                        .Include(e => e.Usuario)
-                        .Include(e => e.Endereco)
-                        .Include(e => e.Telefones)
+                        .Include(e => e.Level)
+                        .Include(e => e.User)
+                        .Include(e => e.Address)
+                        .Include(e => e.PhonesNumbers)
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
                 if (entity == null) throw new CustomException("Não Encontrado");
 
-                //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
-                if (request.CargoId > 0 && request.CargoId != entity.CargoId)
+                //SE FOR INFORMADO UM NOVO Level, O Level ATUAL SERÁ ATUALIZADO
+                if (request.LevelId > 0 && request.LevelId != entity.LevelId)
                 {
-                    //VERIFICA SE O CARGO INFORMADO EXISTE
-                    var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
-                    if (cargo == null) throw new CustomException("Cargo Não Encontrado");
+                    //VERIFICA SE O Level INFORMADO EXISTE
+                    var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                    if (Level == null) throw new CustomException("Level Não Encontrado");
 
-                    //SE O CARGO EXISTE, O OBJETO SERÁ ATUALIZADO
-                    entity.CargoId = cargo.Id;
-                    entity.Cargo = cargo;
+                    //SE O Level EXISTE, O OBJETO SERÁ ATUALIZADO
+                    entity.LevelId = Level.Id;
+                    entity.Level = Level;
                 }
 
                 //ATUALIZA O TELEFONE SE VIER NA LISTA DO REQUEST
-                if (request.Telefones.Count > 0)
+                if (request.PhonesNumbers.Count > 0)
                 {
-                    foreach (var item in request.Telefones)
+                    foreach (var item in request.PhonesNumbers)
                     {
                         //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
-                        if (!entity.Telefones.Any(e => e.Telefone == item.Telefone))
+                        if (!entity.PhonesNumbers.Any(e => e.PhoneNumber == item.PhoneNumber))
                         {
                             //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
+                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.PhoneNumber == item.PhoneNumber);
 
                             //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
                             if (item.Id == 0)
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                                entity.Telefones.Add(item);
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
+                                entity.PhonesNumbers.Add(item);
                             }
                             else
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
                                 _telefoneRepository.Update(item);
                             }
                         }
                     }
                 }
 
-                //FAZ O SET DO USUARIO
-                if (request.Nome != null) entity.Usuario.Nome = request.Nome.ToUpper();
-                if (request.Email != null) entity.Usuario.Email = request.Email.ToUpper();
+                //FAZ O SET DO User
+                if (request.Name != null) entity.User.Name = request.Name.ToUpper();
+                if (request.Email != null) entity.User.Email = request.Email.ToUpper();
 
 
                 // FAZ O SET DO PARCEIRO
-                if (request.Nome != null) entity.Nome = request.Nome.ToUpper();
+                if (request.Name != null) entity.Name = request.Name.ToUpper();
                 if (request.Email != null) entity.Email = request.Email.ToUpper();
                 if (request.Cnpj != null) entity.Cnpj = request.Cnpj.ToUpper();
-                if (request.Descricao != null) entity.Descricao = request.Descricao.ToUpper();
+                if (request.Description != null) entity.Description = request.Description.ToUpper();
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
-                if (request.Uf != null) entity.Endereco.Uf = request.Uf.ToUpper();
-                if (request.Cep != null) entity.Endereco.Cep = request.Cep.ToUpper();
-                if (request.EnderecoLogradouro != null) entity.Endereco.EnderecoLogradouro = request.EnderecoLogradouro.ToUpper();
-                if (request.Bairro != null) entity.Endereco.Bairro = request.Bairro.ToUpper();
-                if (request.Cidade != null) entity.Endereco.Cidade = request.Cidade.ToUpper();
-                if (request.Numero != null) entity.Endereco.Numero = request.Numero.ToUpper();
+                if (request.Uf != null) entity.Address.Uf = request.Uf.ToUpper();
+                if (request.Cep != null) entity.Address.Cep = request.Cep.ToUpper();
+                if (request.Address != null) entity.Address.Address = request.Address.ToUpper();
+                if (request.District != null) entity.Address.District = request.District.ToUpper();
+                if (request.City != null) entity.Address.City = request.City.ToUpper();
+                if (request.Number != null) entity.Address.Number = request.Number.ToUpper();
 
                 _parceiroRepository.Update(entity);
 
@@ -117,17 +117,17 @@ namespace AulaRemota.Core.Partnner.Update
                 return new PartnnerUpdateResponse
                 {
                     Id = entity.Id,
-                    Nome = entity.Nome,
+                    Name = entity.Name,
                     Email = entity.Email,
                     Cnpj = entity.Cnpj,
-                    Descricao = entity.Descricao,
-                    Telefones = entity.Telefones,
-                    CargoId = entity.CargoId,
-                    UsuarioId = entity.UsuarioId,
-                    Cargo = entity.Cargo,
-                    Usuario = entity.Usuario,
-                    EnderecoId = entity.EnderecoId,
-                    Endereco = entity.Endereco
+                    Description = entity.Description,
+                    PhonesNumbers = entity.PhonesNumbers,
+                    LevelId = entity.LevelId,
+                    UserId = entity.UserId,
+                    Level = entity.Level,
+                    User = entity.User,
+                    AddressId = entity.AddressId,
+                    Address = entity.Address
                 };
             }
             catch (Exception e)

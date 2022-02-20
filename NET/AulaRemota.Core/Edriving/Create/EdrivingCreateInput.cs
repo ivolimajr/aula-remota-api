@@ -10,7 +10,7 @@ namespace AulaRemota.Core.Edriving.Create
     {
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [Required]
         //[CpfValidador(ErrorMessage = "Cpf é Inválido")]
@@ -22,14 +22,14 @@ namespace AulaRemota.Core.Edriving.Create
         [EmailAddress]
         public string Email { get; set; }
 
-        public List<PhoneModel> Telefones { get; set; }
+        public List<PhoneModel> PhonesNumbers { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Senha { get; set; }
+        public string Password { get; set; }
 
         [Required]
         [Range(1, 100)]
-        public int CargoId { get; set; }
+        public int LevelId { get; set; }
     }
 }

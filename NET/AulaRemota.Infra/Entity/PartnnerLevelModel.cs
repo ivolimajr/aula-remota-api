@@ -8,16 +8,16 @@ namespace AulaRemota.Infra.Entity
     {
         public PartnnerLevelModel()
         {
-            this.Parceiros = new List<PartnnerModel>();
+            this.Partnners = new List<PartnnerModel>();
         }
         public int Id { get; set; }
 
         [Required]
         [MaxLength(70)]
         [MinLength(3)]
-        public string Cargo { get; set; }
+        public string Level { get; set; }
 
         [JsonIgnore]
-        public virtual List<PartnnerModel> Parceiros { get; set; }
+        public virtual ICollection<PartnnerModel> Partnners { get; set; }
     }
 }

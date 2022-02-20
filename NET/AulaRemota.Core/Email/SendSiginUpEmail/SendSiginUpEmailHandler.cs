@@ -21,11 +21,11 @@ namespace AulaRemota.Core.Email.SendSiginUpEmail
         public async Task<bool> Handle(SendSiginUpEmailInput request, CancellationToken cancellationToken)
         {
             string assunto = "Bem Vindo ao E-Driving";
-            string corpoEmail = "Você já pode acessar nossa plataforma com seu email e a senha: " + request.Senha;
+            string corpoEmail = "Você já pode acessar nossa plataforma com seu email e a senha: " + request.Password;
             // cria a mensagem
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(_emailConfiguration.EmailFrom));
-            email.To.Add(MailboxAddress.Parse(request.Para));
+            email.To.Add(MailboxAddress.Parse(request.To));
             email.Subject = assunto;
             email.Body = new TextPart(TextFormat.Html) { Text = corpoEmail };
 

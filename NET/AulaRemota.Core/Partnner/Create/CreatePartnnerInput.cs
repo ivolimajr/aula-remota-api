@@ -10,7 +10,7 @@ namespace AulaRemota.Core.Partnner.Create
     {
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(maximumLength: 70, MinimumLength = 5)]
@@ -23,17 +23,17 @@ namespace AulaRemota.Core.Partnner.Create
 
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
 
-        public List<PhoneModel> Telefones { get; set; }
+        public List<PhoneModel> PhonesNumbers { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Senha { get; set; }
+        public string Password { get; set; }
 
         [Required]
         [Range(1, 100)]
-        public int CargoId { get; set; }
+        public int LevelId { get; set; }
 
         [Required]
         [StringLength(maximumLength: 2, MinimumLength = 2)]
@@ -45,18 +45,18 @@ namespace AulaRemota.Core.Partnner.Create
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string EnderecoLogradouro { get; set; }
+        public string Address { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Bairro { get; set; }
+        public string District { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Cidade { get; set; }
+        public string City { get; set; }
 
         [Required]
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Numero { get; set; }
+        public string Number { get; set; }
     }
 }

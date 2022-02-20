@@ -9,15 +9,15 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<FileModel> builder)
         {
-            builder.ToTable("Arquivo");
+            builder.ToTable("file");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
-            builder.Property(e => e.Destino).HasColumnType("varchar").HasMaxLength(100).IsRequired();
-            builder.Property(e => e.Formato).HasColumnType("varchar").HasMaxLength(10).IsRequired();
+            builder.Property(e => e.FileName).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Destiny).HasColumnType("varchar").HasMaxLength(100).IsRequired();
+            builder.Property(e => e.Extension).HasColumnType("varchar").HasMaxLength(10).IsRequired();
 
             //RELACIONAMENTOS
-            builder.HasOne(e => e.AutoEscola).WithMany(e => e.Arquivos);
-            builder.HasOne(e => e.Instrutor).WithMany(e => e.Arquivos);
+            builder.HasOne(e => e.DrivingSchool).WithMany(e => e.Files);
+            builder.HasOne(e => e.Instructor).WithMany(e => e.Files);
         }
     }
 }

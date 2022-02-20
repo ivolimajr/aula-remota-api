@@ -44,24 +44,24 @@ namespace AulaRemota.Core.Partnner.Create
                 var cpfResult = await _parceiroRepository.FindAsync(u => u.Cnpj == request.Cnpj);
                 if (cpfResult != null) throw new CustomException("Cnpj já existe em nossa base de dados");
 
-                //VERIFICA SE O CARGO INFORMADO EXISTE
-                var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
-                if (cargo == null) throw new CustomException("Cargo informado não existe");
+                //VERIFICA SE O Level INFORMADO EXISTE
+                var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                if (Level == null) throw new CustomException("Level informado não existe");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                foreach (var item in request.Telefones)
+                foreach (var item in request.PhonesNumbers)
                 {
-                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                    if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.PhoneNumber == item.PhoneNumber);
+                    if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
                 }
 
                 //CRIA UM USUÁRIO
                 var user = new UserModel()
                 {
-                    Nome = request.Nome.ToUpper(),
+                    Name = request.Name.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    status = 1,
-                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Status = 1,
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                     Roles = new List<RolesModel>()
                     {
                         new RolesModel()
@@ -74,28 +74,28 @@ namespace AulaRemota.Core.Partnner.Create
                 _usuarioRepository.SaveChanges();
 
                 //CRIA UM ENDEREÇO
-                var endereco = new AddressModel()
+                var Address = new AddressModel()
                 {
-                    Bairro = request.Bairro.ToUpper(),
+                    District = request.District.ToUpper(),
                     Cep = request.Cep.ToUpper(),
-                    Cidade = request.Cidade.ToUpper(),
-                    EnderecoLogradouro = request.EnderecoLogradouro.ToUpper(),
-                    Numero = request.Numero.ToUpper(),
+                    City = request.City.ToUpper(),
+                    Address = request.Address.ToUpper(),
+                    Number = request.Number.ToUpper(),
                     Uf = request.Uf.ToUpper(),
                 };
 
                 //CRIA UM PARCEIRO
                 var parceiro = new PartnnerModel()
                 {
-                    Nome = request.Nome.ToUpper(),
+                    Name = request.Name.ToUpper(),
                     Cnpj = request.Cnpj.ToUpper(),
-                    Descricao = request.Descricao.ToUpper(),
+                    Description = request.Description.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    Telefones = request.Telefones,
-                    CargoId = request.CargoId,
-                    Cargo = cargo,
-                    Endereco = endereco,
-                    Usuario = user
+                    PhonesNumbers = request.PhonesNumbers,
+                    LevelId = request.LevelId,
+                    Level = Level,
+                    Address = Address,
+                    User = user
                 };
 
                 var parceiroModel = await _parceiroRepository.CreateAsync(parceiro);
@@ -106,17 +106,17 @@ namespace AulaRemota.Core.Partnner.Create
                 return new CreatePartnnerResponse
                 {
                     Id = parceiroModel.Id,
-                    Nome = parceiroModel.Nome,
+                    Name = parceiroModel.Name,
                     Email = parceiroModel.Email,
                     Cnpj = parceiroModel.Cnpj,
-                    Descricao = parceiroModel.Descricao,
-                    Telefones = parceiroModel.Telefones,
-                    CargoId = parceiroModel.CargoId,
-                    UsuarioId = parceiroModel.UsuarioId,
-                    EnderecoId = parceiroModel.EnderecoId,
-                    Endereco = parceiroModel.Endereco,
-                    Cargo = parceiroModel.Cargo,
-                    Usuario = parceiroModel.Usuario
+                    Description = parceiroModel.Description,
+                    PhonesNumbers = parceiroModel.PhonesNumbers,
+                    LevelId = parceiroModel.LevelId,
+                    UserId = parceiroModel.UserId,
+                    AddressId = parceiroModel.AddressId,
+                    Address = parceiroModel.Address,
+                    Level = parceiroModel.Level,
+                    User = parceiroModel.User
                 };
 
             }

@@ -47,43 +47,43 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                 _autoEscolaRepository.CreateTransaction();
                 var autoEscola = await _autoEscolaRepository.Context
                     .Set<DrivingSchoolModel>()
-                    .Include(e => e.Usuario)
-                    .Include(e => e.Telefones)
-                    .Include(e => e.Endereco)
-                    .Include(e => e.Arquivos)
+                    .Include(e => e.User)
+                    .Include(e => e.PhonesNumbers)
+                    .Include(e => e.Address)
+                    .Include(e => e.Files)
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
                 if (autoEscola == null) throw new CustomException("Não encontrado");
 
                 _autoEscolaRepository.Delete(autoEscola);
-                _usuarioRepository.Delete(autoEscola.Usuario);
-                _enderecoRepository.Delete(autoEscola.Endereco);
+                _usuarioRepository.Delete(autoEscola.User);
+                _enderecoRepository.Delete(autoEscola.Address);
 
-                if (autoEscola.Arquivos.Count > 0)
+                if (autoEscola.Files.Count > 0)
                 {
                     var result = await _mediator.Send(new RemoveFromAzureInput
                     {
-                        Arquivos = autoEscola.Arquivos,
-                        TipoUsuario = Constants.Roles.AUTOESCOLA
+                        Files = autoEscola.Files,
+                        TypeUser = Constants.Roles.AUTOESCOLA
                     });
-                    if (!result) throw new CustomException("Problema ao remover arquivos de contrato.");
+                    if (!result) throw new CustomException("Problema ao remover Files de contrato.");
                 }
 
-                foreach (var item in autoEscola.Arquivos)
+                foreach (var item in autoEscola.Files)
                 {
-                    item.AutoEscola = null;
+                    item.DrivingSchool = null;
                     _arquivoRepository.Delete(item);
                 }
 
-                foreach (var item in autoEscola.Telefones)
+                foreach (var item in autoEscola.PhonesNumbers)
                 {
                     item.Edriving = null;
                     _telefoneRepository.Delete(item);
                 }
-                foreach (var item in autoEscola.Arquivos)
+                foreach (var item in autoEscola.Files)
                 {
-                    item.AutoEscola = null;
+                    item.DrivingSchool = null;
                     _arquivoRepository.Delete(item);
                 }
 

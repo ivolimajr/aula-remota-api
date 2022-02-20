@@ -15,7 +15,7 @@ namespace AulaRemota.Infra.Configurations
             builder.Property(e => e.Role).HasColumnType("varchar").HasMaxLength(20).IsRequired();
 
             builder.HasMany(e => e.ApiUsers);
-            builder.HasMany(e => e.Usuarios);
+            builder.HasMany(e => e.Users);
         }
     }
 }

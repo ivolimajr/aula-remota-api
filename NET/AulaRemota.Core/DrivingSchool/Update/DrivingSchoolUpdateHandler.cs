@@ -41,37 +41,37 @@ namespace AulaRemota.Core.DrivingSchool.Update
         }
         public async Task<DrivingSchoolModel> Handle(DrivingSchoolUpdateInput request, CancellationToken cancellationToken)
         {
-            //Cria uma lista para receber os arquivos
+            //Cria uma lista para receber os Files
             var fileList = new List<FileModel>();
             try
             {
                 _autoEscolaRepository.CreateTransaction();
 
                 var autoEscolaDb = _autoEscolaRepository.Context.Set<DrivingSchoolModel>().Where(e => e.Id.Equals(request.Id))
-                                                .Include(e => e.Telefones).Include(e => e.Arquivos).Include(e => e.Usuario).Include(e => e.Endereco).FirstOrDefault();
+                                                .Include(e => e.PhonesNumbers).Include(e => e.Files).Include(e => e.User).Include(e => e.Address).FirstOrDefault();
 
                 if (autoEscolaDb == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
-                if (!String.IsNullOrWhiteSpace(request.RazaoSocial)) autoEscolaDb.RazaoSocial = request.RazaoSocial;
-                if (!String.IsNullOrWhiteSpace(request.NomeFantasia))
+                if (!String.IsNullOrWhiteSpace(request.CorporateName)) autoEscolaDb.CorporateName = request.CorporateName;
+                if (!String.IsNullOrWhiteSpace(request.FantasyName))
                 {
-                    autoEscolaDb.NomeFantasia = request.NomeFantasia;
-                    autoEscolaDb.Usuario.Nome = request.NomeFantasia;
+                    autoEscolaDb.FantasyName = request.FantasyName;
+                    autoEscolaDb.User.Name = request.FantasyName;
                 }
-                if (!String.IsNullOrWhiteSpace(request.Descricao)) autoEscolaDb.Descricao = request.Descricao;
+                if (!String.IsNullOrWhiteSpace(request.Description)) autoEscolaDb.Description = request.Description;
                 if (!String.IsNullOrWhiteSpace(request.Site)) autoEscolaDb.Site = request.Site;
-                if (!String.IsNullOrWhiteSpace(request.Cep)) autoEscolaDb.Endereco.Cep = request.Cep;
-                if (!String.IsNullOrWhiteSpace(request.Uf)) autoEscolaDb.Endereco.Uf = request.Uf;
-                if (!String.IsNullOrWhiteSpace(request.EnderecoLogradouro)) autoEscolaDb.Endereco.EnderecoLogradouro = request.EnderecoLogradouro;
-                if (!String.IsNullOrWhiteSpace(request.Bairro)) autoEscolaDb.Endereco.Bairro = request.Bairro;
-                if (!String.IsNullOrWhiteSpace(request.Cidade)) autoEscolaDb.Endereco.Cidade = request.Cidade;
-                if (!String.IsNullOrWhiteSpace(request.Numero)) autoEscolaDb.Endereco.Numero = request.Numero;
+                if (!String.IsNullOrWhiteSpace(request.Cep)) autoEscolaDb.Address.Cep = request.Cep;
+                if (!String.IsNullOrWhiteSpace(request.Uf)) autoEscolaDb.Address.Uf = request.Uf;
+                if (!String.IsNullOrWhiteSpace(request.Address)) autoEscolaDb.Address.Address = request.Address;
+                if (!String.IsNullOrWhiteSpace(request.District)) autoEscolaDb.Address.District = request.District;
+                if (!String.IsNullOrWhiteSpace(request.City)) autoEscolaDb.Address.City = request.City;
+                if (!String.IsNullOrWhiteSpace(request.Number)) autoEscolaDb.Address.Number = request.Number;
                 if (request.DataFundacao >= DateTime.Today) throw new CustomException("Data da fundação inválida", HttpStatusCode.BadRequest);
-                if (request.DataFundacao.Year > 1700) autoEscolaDb.DataFundacao = request.DataFundacao;
+                if (request.DataFundacao.Year > 1700) autoEscolaDb.FoundingDate = request.DataFundacao;
 
 
-                if (!String.IsNullOrWhiteSpace(request.InscricaoEstadual) && !request.InscricaoEstadual.Equals(autoEscolaDb.InscricaoEstadual))
-                    if (_autoEscolaRepository.Exists(e => e.InscricaoEstadual == request.InscricaoEstadual))
+                if (!String.IsNullOrWhiteSpace(request.StateRegistration) && !request.StateRegistration.Equals(autoEscolaDb.StateRegistration))
+                    if (_autoEscolaRepository.Exists(e => e.StateRegistration == request.StateRegistration))
                         throw new CustomException("Inscrição estadual já em uso.", HttpStatusCode.BadRequest);
                 if (!String.IsNullOrWhiteSpace(request.Cnpj) && !request.Cnpj.Equals(autoEscolaDb.Cnpj))
                     if (_autoEscolaRepository.Exists(e => e.Cnpj == request.Cnpj))
@@ -80,44 +80,44 @@ namespace AulaRemota.Core.DrivingSchool.Update
                     if (_autoEscolaRepository.Exists(e => e.Email == request.Email))
                         throw new CustomException("Email estadual já em uso.", HttpStatusCode.BadRequest);
 
-                if (!String.IsNullOrWhiteSpace(request.InscricaoEstadual)) autoEscolaDb.InscricaoEstadual = request.InscricaoEstadual;
+                if (!String.IsNullOrWhiteSpace(request.StateRegistration)) autoEscolaDb.StateRegistration = request.StateRegistration;
                 if (!String.IsNullOrWhiteSpace(request.Cnpj)) autoEscolaDb.Cnpj = request.Cnpj;
                 if (!String.IsNullOrWhiteSpace(request.Email)) autoEscolaDb.Email = request.Email;
 
-                /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
+                /*Faz o upload dos Files no azure e tem como retorno uma lista com os dados do upload
                  * @return nome, formato e destino
                  */
 
-                if (request.Arquivos != null)
+                if (request.Files != null)
                 {
                     var fileResult = await _mediator.Send(new FileUploadToAzureInput
                     {
-                        Arquivos = request.Arquivos,
-                        TipoUsuario = Constants.Roles.AUTOESCOLA
+                        Files = request.Files,
+                        TypeUser = Constants.Roles.AUTOESCOLA
                     });
-                    //Salva no banco todas as informações dos arquivos do upload
-                    foreach (var item in fileResult.Arquivos)
+                    //Salva no banco todas as informações dos Files do upload
+                    foreach (var item in fileResult.Files)
                     {
                         var arquivo = await _arquivoRepository.CreateAsync(item);
                         fileList.Add(item);
                     }
                     foreach (var item in fileList)
                     {
-                        autoEscolaDb.Arquivos.Add(item);
+                        autoEscolaDb.Files.Add(item);
                     }
                 }
 
                 //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                if (request.Telefones != null && request.Telefones.Count > 0)
+                if (request.PhonesNumbers != null && request.PhonesNumbers.Count > 0)
                 {
-                    foreach (var item in request.Telefones)
+                    foreach (var item in request.PhonesNumbers)
                     {
-                        var result = autoEscolaDb.Telefones.Where(e => e.Telefone.Equals(item.Telefone)).FirstOrDefault();
+                        var result = autoEscolaDb.PhonesNumbers.Where(e => e.PhoneNumber.Equals(item.PhoneNumber)).FirstOrDefault();
                         if (result == null)
                         {
-                            var phoneResult = await _telefoneRepository.FindAsync(u => u.Telefone == item.Telefone);
-                            if (phoneResult != null) throw new CustomException("Telefone: " + phoneResult.Telefone + " já em uso");
-                            autoEscolaDb.Telefones.Add(item);
+                            var phoneResult = await _telefoneRepository.FindAsync(u => u.PhoneNumber == item.PhoneNumber);
+                            if (phoneResult != null) throw new CustomException("Telefone: " + phoneResult.PhoneNumber + " já em uso");
+                            autoEscolaDb.PhonesNumbers.Add(item);
                         }
                     }
                 }
@@ -133,8 +133,8 @@ namespace AulaRemota.Core.DrivingSchool.Update
                 _autoEscolaRepository.Rollback();
                 await _mediator.Send(new RemoveFromAzureInput()
                 {
-                    TipoUsuario = Constants.Roles.AUTOESCOLA,
-                    Arquivos = fileList
+                    TypeUser = Constants.Roles.AUTOESCOLA,
+                    Files = fileList
                 });
                 throw new CustomException(new ResponseModel
                 {

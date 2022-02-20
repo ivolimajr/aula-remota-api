@@ -8,6 +8,6 @@ namespace AulaRemota.Infra.Entity
         public int RoleId { get; set; }
         public int UserId { get; set; }
 
-        public virtual List<ApiUserModel> Users {get; set;}
+        public virtual ICollection<ApiUserModel> Users {get; set;}
     }
 }

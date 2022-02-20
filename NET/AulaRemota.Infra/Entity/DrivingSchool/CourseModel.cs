@@ -7,24 +7,24 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
     {
         public CourseModel()
         {
-            this.Turmas = new List<TurmaModel>();
+            this.Classes = new List<TurmaModel>();
         }
 
         public int Id { get; set; }
         [Column(TypeName = "varchar(150)")]
-        public string Nome { get; set; }
+        public string Name { get; set; }
         [Column(TypeName = "varchar(20)")]
-        public string Codigo { get; set; }
-        public int CargaHoraria { get; set; }
+        public string Code { get; set; }
+        public int Workload { get; set; }
         [Column(TypeName = "varchar(150)")]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
         
-        public int InstrutorId { get; set; }
-        public InstructorModel Instrutor { get; set; }
+        public int InstructorId { get; set; }
+        public InstructorModel Instructor { get; set; }
 
-        public int AutoEscolaId { get; set; }
-        public virtual DrivingSchoolModel AutoEscolas { get; set; }
+        public int DrivingSchoolId { get; set; }
+        public virtual DrivingSchoolModel DrivingSchool { get; set; }
 
-        public virtual List<TurmaModel> Turmas { get; set; }
+        public virtual ICollection<TurmaModel> Classes { get; set; }
     }
 }

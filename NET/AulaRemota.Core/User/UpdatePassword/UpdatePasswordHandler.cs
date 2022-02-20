@@ -26,10 +26,10 @@ namespace AulaRemota.Core.User.UpdatePassword
                 var user = await _usuarioRepository.GetByIdAsync(request.Id);
                 if (user == null) throw new CustomException("Não Encontrado");
 
-                bool checkPass = BCrypt.Net.BCrypt.Verify(request.SenhaAtual, user.Password);
+                bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
                 if (!checkPass) throw new CustomException("Senha atual inválida");
 
-                user.Password = BCrypt.Net.BCrypt.HashPassword(request.NovaSenha);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 _usuarioRepository.Update(user);
                 await _usuarioRepository.SaveChangesAsync();
 

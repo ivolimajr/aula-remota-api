@@ -29,10 +29,10 @@ Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
 Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
 Error: 20102 - Failed executing DbCommand (6ms) [Parameters=[@p0='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p1='PARCEIROAM1PARCEIROAM1@EDRIVING.COMparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.comparceiroam1parceiroam1@edriving.com' (Size = -1), @p2='DETRAN-AM' (Size = 150), @p3='$2b$10$pozkW1mz6lW.X0PrqqSDLurx1PImjbkpKg8G0y44r49OBIK9sSB4y' (Size = 150), @p4='0001-01-01T00:00:00.0000000' (DbType = DateTime), @p5='1'], CommandType='Text', CommandTimeout='30']
-INSERT INTO `Usuario` (`CreatedAt`, `Email`, `Nome`, `Password`, `UpdateAt`, `status`)
+INSERT INTO `User` (`CreatedAt`, `Email`, `Nome`, `Password`, `UpdateAt`, `status`)
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
 SELECT `Id`
-FROM `Usuario`
+FROM `User`
 WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
 Error: 10000 - An exception occurred in the database while saving changes for context type 'AulaRemota.Infra.Context.MySqlContext'.
 Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
@@ -60,10 +60,10 @@ Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
 Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
 Error: 20102 - Failed executing DbCommand (3ms) [Parameters=[@p0='CEILANDIA SUL' (Size = 150), @p1='72235621722356217223562172235621722356217223562172235621' (Size = -1), @p2='BRASÍLIA' (Size = 150), @p3='QNP 26 CONJUNTO U' (Size = 150), @p4='16' (Size = 50), @p5='DF' (Size = 2)], CommandType='Text', CommandTimeout='30']
-INSERT INTO `Endereco` (`Bairro`, `Cep`, `Cidade`, `EnderecoLogradouro`, `Numero`, `Uf`)
+INSERT INTO `Address` (`District`, `Cep`, `City`, `Address`, `Number`, `Uf`)
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
 SELECT `Id`
-FROM `Endereco`
+FROM `Address`
 WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
 Error: 10000 - An exception occurred in the database while saving changes for context type 'AulaRemota.Infra.Context.MySqlContext'.
 Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
@@ -87,10 +87,10 @@ Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updatin
    at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
 Error: 20102 - Failed executing DbCommand (1ms) [Parameters=[@p0='CEILANDIA SUL' (Size = 150), @p1='72235621722356217223562172235621722356217223562172235621' (Size = -1), @p2='BRASÍLIA' (Size = 150), @p3='QNP 26 CONJUNTO U' (Size = 150), @p4='16' (Size = 50), @p5='DF' (Size = 2)], CommandType='Text', CommandTimeout='30']
-INSERT INTO `Endereco` (`Bairro`, `Cep`, `Cidade`, `EnderecoLogradouro`, `Numero`, `Uf`)
+INSERT INTO `Address` (`District`, `Cep`, `City`, `Address`, `Number`, `Uf`)
 VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
 SELECT `Id`
-FROM `Endereco`
+FROM `Address`
 WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
 Error: 10000 - An exception occurred in the database while saving changes for context type 'AulaRemota.Infra.Context.MySqlContext'.
 Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details.
@@ -145,7 +145,7 @@ Error: 20102 - Failed executing DbCommand (13ms) [Parameters=[@__request_Email_0
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -174,7 +174,7 @@ Error: 20102 - Failed executing DbCommand (4ms) [Parameters=[@__request_Email_0=
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -203,7 +203,7 @@ Error: 20102 - Failed executing DbCommand (7ms) [Parameters=[@__request_Email_0=
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -232,7 +232,7 @@ Error: 20102 - Failed executing DbCommand (8ms) [Parameters=[@__request_Email_0=
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -261,7 +261,7 @@ Error: 20102 - Failed executing DbCommand (50ms) [Parameters=[@__request_Email_0
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -290,7 +290,7 @@ Error: 20102 - Failed executing DbCommand (20ms) [Parameters=[@__request_Email_0
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -323,7 +323,7 @@ Error: 20102 - Failed executing DbCommand (52ms) [Parameters=[@__request_Email_0
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -355,7 +355,7 @@ Error: 20102 - Failed executing DbCommand (54ms) [Parameters=[@__request_Email_0
 SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Nome`, `t`.`Password`, `t`.`UpdateAt`, `t`.`status`, `t0`.`RolesId`, `t0`.`UsuariosId`, `t0`.`Id`, `t0`.`Role`
 FROM (
     SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Nome`, `u`.`Password`, `u`.`UpdateAt`, `u`.`status`
-    FROM `Usuario` AS `u`
+    FROM `User` AS `u`
     WHERE `u`.`Email` = @__request_Email_0
     LIMIT 1
 ) AS `t`
@@ -383,6 +383,91 @@ Information: 0 - Application started. Press Ctrl+C to shut down.
 Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
 Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Error: 20102 - Failed executing DbCommand (51ms) [Parameters=[@__request_Email_0='IVO@EDRIVING.COM' (Size = 70)], CommandType='Text', CommandTimeout='30']
+SELECT `t`.`Id`, `t`.`CreatedAt`, `t`.`Email`, `t`.`Name`, `t`.`Password`, `t`.`Status`, `t`.`UpdateAt`, `t0`.`RolesId`, `t0`.`UsersId`, `t0`.`Id`, `t0`.`Role`
+FROM (
+    SELECT `u`.`Id`, `u`.`CreatedAt`, `u`.`Email`, `u`.`Name`, `u`.`Password`, `u`.`Status`, `u`.`UpdateAt`
+    FROM `User` AS `u`
+    WHERE `u`.`Email` = @__request_Email_0
+    LIMIT 1
+) AS `t`
+LEFT JOIN (
+    SELECT `r`.`RolesId`, `r`.`UsersId`, `r0`.`Id`, `r0`.`Role`
+    FROM `RolesModelUserModel` AS `r`
+    INNER JOIN `Roles` AS `r0` ON `r`.`RolesId` = `r0`.`Id`
+) AS `t0` ON `t`.`Id` = `t0`.`UsersId`
+ORDER BY `t`.`Id`, `t0`.`RolesId`, `t0`.`UsersId`, `t0`.`Id`
+Error: 10100 - An exception occurred while iterating over the results of a query for context type 'AulaRemota.Infra.Context.MySqlContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'u.Name' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 50
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 135
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 444
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 60
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 314
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 307
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(DbContext _, Boolean result, CancellationToken cancellationToken)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
+Warning: 20504 - Compiling a query which loads related collections for more than one collection navigation either via 'Include' or through projection but no 'QuerySplittingBehavior' has been configured. By default Entity Framework will use 'QuerySplittingBehavior.SingleQuery' which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'
 Information: 0 - Application started. Press Ctrl+C to shut down.
 Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api

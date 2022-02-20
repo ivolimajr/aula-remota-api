@@ -8,16 +8,16 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<PhoneModel> builder)
         {
-            builder.ToTable("telefone");
+            builder.ToTable("phones");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Telefone).HasColumnType("varchar").HasMaxLength(20).IsRequired();
+            builder.Property(e => e.PhoneNumber).HasColumnType("varchar").HasMaxLength(20).IsRequired();
 
-            builder.HasOne(e => e.Administrativo).WithMany(e => e.Telefones);
-            builder.HasOne(e => e.Parceiro).WithMany(e => e.Telefones);
-            builder.HasOne(e => e.Instrutor).WithMany(e => e.Telefones);
-            builder.HasOne(e => e.Edriving).WithMany(e => e.Telefones);
-            builder.HasOne(e => e.AutoEscola).WithMany(e => e.Telefones);
-            builder.HasOne(e => e.Aluno).WithMany(e => e.Telefones);
+            builder.HasOne(e => e.Administrative).WithMany(e => e.PhonesNumbers);
+            builder.HasOne(e => e.Partnner).WithMany(e => e.PhonesNumbers);
+            builder.HasOne(e => e.Instructor).WithMany(e => e.PhonesNumbers);
+            builder.HasOne(e => e.Edriving).WithMany(e => e.PhonesNumbers);
+            builder.HasOne(e => e.DrivingSchool).WithMany(e => e.PhonesNumbers);
+            builder.HasOne(e => e.Student).WithMany(e => e.PhonesNumbers);
 
         }
     }

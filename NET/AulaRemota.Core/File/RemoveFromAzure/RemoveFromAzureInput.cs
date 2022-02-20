@@ -6,7 +6,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
 {
     class RemoveFromAzureInput : IRequest<bool>
     {
-        public string TipoUsuario { get; set; }
-        public List<FileModel> Arquivos { get; set; }
+        public string TypeUser { get; set; }
+        public ICollection<FileModel> Files { get; set; }
     }
 }

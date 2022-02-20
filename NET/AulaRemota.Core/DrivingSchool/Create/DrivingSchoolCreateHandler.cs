@@ -38,7 +38,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
         }
         public async Task<DrivingSchoolCreateResponse> Handle(DrivingSchoolCreateInput request, CancellationToken cancellationToken)
         {
-            //Cria uma lista para receber os arquivos
+            //Cria uma lista para receber os Files
             var fileList = new List<FileModel>();
             try
             {
@@ -51,16 +51,16 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 if (_autoEscolaRepository.Exists(u => u.Cnpj == request.Cnpj)) throw new CustomException("Cnpj já existe em nossa base de dados");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                foreach (var item in request.Telefones)
-                    if (_telefoneRepository.Exists(u => u.Telefone == item.Telefone)) throw new CustomException("Telefone: " + item.Telefone + " já em uso");
+                foreach (var item in request.PhonesNumbers)
+                    if (_telefoneRepository.Exists(u => u.PhoneNumber == item.PhoneNumber)) throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
 
                 //CRIA UM USUÁRIO
                 var user = new UserModel()
                 {
-                    Nome = request.NomeFantasia.ToUpper(),
+                    Name = request.FantasyName.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    status = 1,
-                    Password = BCrypt.Net.BCrypt.HashPassword(request.Senha),
+                    Status = 1,
+                    Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                     Roles = new List<RolesModel>()
                     {
                         new RolesModel()
@@ -73,25 +73,25 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 //CRIA UM ENDEREÇO
                 var address = new AddressModel()
                 {
-                    Bairro = request.Bairro.ToUpper(),
+                    District = request.District.ToUpper(),
                     Cep = request.Cep.ToUpper(),
-                    Cidade = request.Cidade.ToUpper(),
-                    EnderecoLogradouro = request.EnderecoLogradouro.ToUpper(),
-                    Numero = request.Numero.ToUpper(),
+                    City = request.City.ToUpper(),
+                    Address = request.Address.ToUpper(),
+                    Number = request.Number.ToUpper(),
                     Uf = request.Uf.ToUpper(),
                 };
 
-                /*Faz o upload dos arquivos no azure e tem como retorno uma lista com os dados do upload
+                /*Faz o upload dos Files no azure e tem como retorno uma lista com os dados do upload
                  * @return nome, formato e destino
                  */
                 var fileResult = await _mediator.Send(new FileUploadToAzureInput
                 {
-                    Arquivos = request.Arquivos,
-                    TipoUsuario = Constants.Roles.AUTOESCOLA
+                    Files = request.Files,
+                    TypeUser = Constants.Roles.AUTOESCOLA
                 });
 
-                //Salva no banco todas as informações dos arquivos do upload
-                foreach (var item in fileResult.Arquivos)
+                //Salva no banco todas as informações dos Files do upload
+                foreach (var item in fileResult.Files)
                 {
                     var arquivo = await _arquivoRepository.CreateAsync(item);
                     fileList.Add(arquivo);
@@ -102,18 +102,18 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 //CRIA UM EDRIVING
                 var autoEscola = new DrivingSchoolModel()
                 {
-                    RazaoSocial = request.RazaoSocial.ToUpper(),
+                    CorporateName = request.CorporateName.ToUpper(),
                     Cnpj = request.Cnpj.ToUpper(),
                     Email = request.Email.ToUpper(),
-                    Telefones = request.Telefones,
-                    DataFundacao = request.DataFundacao,
-                    Descricao = request.Descricao,
-                    InscricaoEstadual = request.InscricaoEstadual,
-                    NomeFantasia = request.NomeFantasia.ToUpper(),
+                    PhonesNumbers = request.PhonesNumbers,
+                    FoundingDate = request.FoundingDate,
+                    Description = request.Description,
+                    StateRegistration = request.StateRegistration,
+                    FantasyName = request.FantasyName.ToUpper(),
                     Site = request.Site.ToUpper(),
-                    Usuario = user,
-                    Endereco = address,
-                    Arquivos = fileList,
+                    User = user,
+                    Address = address,
+                    Files = fileList,
                 };
 
                 var autoEscolaModel = await _autoEscolaRepository.CreateAsync(autoEscola);
@@ -126,18 +126,18 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 return new DrivingSchoolCreateResponse()
                 {
                     Id = autoEscolaModel.Id,
-                    RazaoSocial = autoEscolaModel.RazaoSocial.ToUpper(),
+                    CorporateName = autoEscolaModel.CorporateName.ToUpper(),
                     Cnpj = autoEscolaModel.Cnpj.ToUpper(),
                     Email = autoEscolaModel.Email.ToUpper(),
-                    Descricao = autoEscolaModel.Descricao,
-                    Telefones = autoEscolaModel.Telefones,
-                    DataFundacao = autoEscolaModel.DataFundacao,
-                    InscricaoEstadual = autoEscolaModel.InscricaoEstadual,
-                    NomeFantasia = autoEscolaModel.NomeFantasia,
+                    Description = autoEscolaModel.Description,
+                    PhonesNumbers = autoEscolaModel.PhonesNumbers,
+                    DataFundacao = autoEscolaModel.FoundingDate,
+                    InscricaoEstadual = autoEscolaModel.StateRegistration,
+                    FantasyName = autoEscolaModel.FantasyName,
                     Site = autoEscolaModel.Site,
-                    Usuario = autoEscolaModel.Usuario,
-                    Endereco = autoEscolaModel.Endereco,
-                    Arquivos = autoEscolaModel.Arquivos
+                    User = autoEscolaModel.User,
+                    Address = autoEscolaModel.Address,
+                    Files = autoEscolaModel.Files
                 };
             }
             catch (CustomException e)
@@ -145,8 +145,8 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 _autoEscolaRepository.Rollback();
                 await _mediator.Send(new RemoveFromAzureInput()
                 {
-                    TipoUsuario = Constants.Roles.AUTOESCOLA,
-                    Arquivos = fileList
+                    TypeUser = Constants.Roles.AUTOESCOLA,
+                    Files = fileList
                 });
 
                 throw new CustomException(new ResponseModel

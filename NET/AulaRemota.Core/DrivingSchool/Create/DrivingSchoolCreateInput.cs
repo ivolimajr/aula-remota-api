@@ -11,26 +11,26 @@ namespace AulaRemota.Core.DrivingSchool.Create
     {
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string RazaoSocial { get; set; }
+        public string CorporateName { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string NomeFantasia { get; set; }
+        public string FantasyName { get; set; }
 
         [Required]
         [StringLength(maximumLength: 20, MinimumLength = 12)]
-        public string InscricaoEstadual { get; set; }
+        public string StateRegistration { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime DataFundacao { get; set; }
+        public DateTime FoundingDate { get; set; }
 
         [Required]
         [StringLength(maximumLength: 70, MinimumLength = 5)]
         public string Email { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 0)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 0)]
         public string Site { get; set; }
@@ -41,7 +41,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Senha { get; set; }
+        public string Password { get; set; }
 
         [Required]
         [StringLength(maximumLength: 2, MinimumLength = 2)]
@@ -53,23 +53,23 @@ namespace AulaRemota.Core.DrivingSchool.Create
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string EnderecoLogradouro { get; set; }
+        public string Address { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Bairro { get; set; }
+        public string District { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Cidade { get; set; }
+        public string City { get; set; }
 
         [Required]
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Numero { get; set; }
+        public string Number { get; set; }
 
         [Required]
-        public List<PhoneModel> Telefones { get; set; }
+        public ICollection<PhoneModel> PhonesNumbers { get; set; }
 
-        public List<IFormFile> Arquivos { get; set; }
+        public ICollection<IFormFile> Files { get; set; }
     }
 }

@@ -37,25 +37,25 @@ namespace AulaRemota.Core.User.Login
                 if (result == null || !result.Email.Equals(request.Email.ToUpper()))
                     throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
-                if (result.status == 0) throw new CustomException("Usuário Removido", HttpStatusCode.Unauthorized);
-                if (result.status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Forbidden);
+                if (result.Status == 0) throw new CustomException("Usuário Removido", HttpStatusCode.Unauthorized);
+                if (result.Status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Forbidden);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
                 if (!checkPass) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
 
                 if (result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
-                    result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                    result.Id = _usuarioRepository.Context.Set<EdrivingModel>().Where(e => e.UserId == result.Id).FirstOrDefault().Id;
                 if (result.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
-                    result.Id = _usuarioRepository.Context.Set<PartnnerModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                    result.Id = _usuarioRepository.Context.Set<PartnnerModel>().Where(e => e.UserId == result.Id).FirstOrDefault().Id;
                 if (result.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
-                    result.Id = _usuarioRepository.Context.Set<DrivingSchoolModel>().Where(e => e.UsuarioId == result.Id).FirstOrDefault().Id;
+                    result.Id = _usuarioRepository.Context.Set<DrivingSchoolModel>().Where(e => e.UserId == result.Id).FirstOrDefault().Id;
 
                 return new UserLoginResponse
                 {
                     Id = result.Id,
-                    Nome = result.Nome,
+                    Name = result.Name,
                     Email = result.Email,
-                    status = result.status,
+                    Status = result.Status,
                     Roles = result.Roles
                 };
 

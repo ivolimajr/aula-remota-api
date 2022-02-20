@@ -22,7 +22,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
         {
             try
             {
-                return _edrivingCargoRepository.GetAll().OrderBy(u => u.Cargo).ToList();
+                return _edrivingCargoRepository.GetAll().OrderBy(u => u.Level).ToList();
             }
             catch (Exception e)
             {

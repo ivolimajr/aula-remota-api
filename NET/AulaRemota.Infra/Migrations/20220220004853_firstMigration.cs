@@ -12,6 +12,31 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Uf = table.Column<string>(type: "varchar(2)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Cep = table.Column<string>(type: "varchar(12)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Address = table.Column<string>(type: "varchar(150)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    District = table.Column<string>(type: "varchar(150)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    City = table.Column<string>(type: "varchar(150)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Number = table.Column<string>(type: "varchar(50)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ApiUser",
                 columns: table => new
                 {
@@ -19,7 +44,7 @@ namespace AulaRemota.Infra.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -34,57 +59,32 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EdrivingCargo",
+                name: "EdrivingLevel",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cargo = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
+                    Level = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EdrivingCargo", x => x.Id);
+                    table.PrimaryKey("PK_EdrivingLevel", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Endereco",
+                name: "PartnnerLevel",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Uf = table.Column<string>(type: "varchar(2)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cep = table.Column<string>(type: "varchar(12)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoLogradouro = table.Column<string>(type: "varchar(150)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Bairro = table.Column<string>(type: "varchar(150)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cidade = table.Column<string>(type: "varchar(150)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Numero = table.Column<string>(type: "varchar(50)", nullable: true)
+                    Level = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Endereco", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ParceiroCargo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cargo = table.Column<string>(type: "varchar(70)", maxLength: 70, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ParceiroCargo", x => x.Id);
+                    table.PrimaryKey("PK_PartnnerLevel", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -104,24 +104,24 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -151,42 +151,42 @@ namespace AulaRemota.Infra.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AutoEscola",
+                name: "DrivingSchool",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    RazaoSocial = table.Column<string>(type: "varchar(150)", nullable: true)
+                    CorporateName = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NomeFantasia = table.Column<string>(type: "varchar(150)", nullable: true)
+                    FantasyName = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    InscricaoEstadual = table.Column<string>(type: "varchar(20)", nullable: true)
+                    StateRegistration = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataFundacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FoundingDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Description = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Site = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cnpj = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AutoEscola", x => x.Id);
+                    table.PrimaryKey("PK_DrivingSchool", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AutoEscola_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
+                        name: "FK_DrivingSchool_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AutoEscola_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_DrivingSchool_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -198,108 +198,108 @@ namespace AulaRemota.Infra.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cpf = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CargoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    LevelId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Edriving", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Edriving_EdrivingCargo_CargoId",
-                        column: x => x.CargoId,
-                        principalTable: "EdrivingCargo",
+                        name: "FK_Edriving_EdrivingLevel_LevelId",
+                        column: x => x.LevelId,
+                        principalTable: "EdrivingLevel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Edriving_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_Edriving_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Instrutor",
+                name: "Instructor",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cpf = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", nullable: true)
+                    Identity = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgão = table.Column<string>(type: "varchar(70)", nullable: true)
+                    Origin = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    Birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Instrutor", x => x.Id);
+                    table.PrimaryKey("PK_Instructor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Instrutor_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
+                        name: "FK_Instructor_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Instrutor_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_Instructor_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Parceiro",
+                name: "Partnner",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Description = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cnpj = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CargoId = table.Column<int>(type: "int", nullable: false),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    LevelId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parceiro", x => x.Id);
+                    table.PrimaryKey("PK_Partnner", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Parceiro_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
+                        name: "FK_Partnner_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Parceiro_ParceiroCargo_CargoId",
-                        column: x => x.CargoId,
-                        principalTable: "ParceiroCargo",
+                        name: "FK_Partnner_PartnnerLevel_LevelId",
+                        column: x => x.LevelId,
+                        principalTable: "PartnnerLevel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Parceiro_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_Partnner_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -310,11 +310,11 @@ namespace AulaRemota.Infra.Migrations
                 columns: table => new
                 {
                     RolesId = table.Column<int>(type: "int", nullable: false),
-                    UsuariosId = table.Column<int>(type: "int", nullable: false)
+                    UsersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolesModelUserModel", x => new { x.RolesId, x.UsuariosId });
+                    table.PrimaryKey("PK_RolesModelUserModel", x => new { x.RolesId, x.UsersId });
                     table.ForeignKey(
                         name: "FK_RolesModelUserModel_Roles_RolesId",
                         column: x => x.RolesId,
@@ -322,122 +322,119 @@ namespace AulaRemota.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolesModelUserModel_Usuario_UsuariosId",
-                        column: x => x.UsuariosId,
-                        principalTable: "Usuario",
+                        name: "FK_RolesModelUserModel_User_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Administrativo",
+                name: "Administrative",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cpf = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", nullable: true)
+                    Identity = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgão = table.Column<string>(type: "varchar(70)", nullable: true)
+                    Origin = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: false)
+                    Birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Administrativo", x => x.Id);
+                    table.PrimaryKey("PK_Administrative", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Administrativo_AutoEscola_AutoEscolaId",
-                        column: x => x.AutoEscolaId,
-                        principalTable: "AutoEscola",
+                        name: "FK_Administrative_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Administrativo_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
+                        name: "FK_Administrative_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Administrativo_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_Administrative_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Arquivo",
+                name: "Class",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "longtext", nullable: true)
+                    Code = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Formato = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Destino = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: true),
-                    InstrutorId = table.Column<int>(type: "int", nullable: true)
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: false),
+                    InstructorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Arquivo", x => x.Id);
+                    table.PrimaryKey("PK_Class", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Arquivo_AutoEscola_AutoEscolaId",
-                        column: x => x.AutoEscolaId,
-                        principalTable: "AutoEscola",
+                        name: "FK_Class_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Arquivo_Instrutor_InstrutorId",
-                        column: x => x.InstrutorId,
-                        principalTable: "Instrutor",
+                        name: "FK_Class_Instructor_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Instructor",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Curso",
+                name: "Course",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Codigo = table.Column<string>(type: "varchar(20)", nullable: true)
+                    Code = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CargaHoraria = table.Column<int>(type: "int", nullable: false),
-                    Descricao = table.Column<string>(type: "varchar(150)", nullable: true)
+                    Workload = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "varchar(150)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    InstrutorId = table.Column<int>(type: "int", nullable: false),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: false),
-                    AutoEscolasId = table.Column<int>(type: "int", nullable: true)
+                    InstructorId = table.Column<int>(type: "int", nullable: false),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Curso", x => x.Id);
+                    table.PrimaryKey("PK_Course", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Curso_AutoEscola_AutoEscolasId",
-                        column: x => x.AutoEscolasId,
-                        principalTable: "AutoEscola",
+                        name: "FK_Course_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Curso_Instrutor_InstrutorId",
-                        column: x => x.InstrutorId,
-                        principalTable: "Instrutor",
+                        name: "FK_Course_Instructor_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Instructor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -447,105 +444,107 @@ namespace AulaRemota.Infra.Migrations
                 name: "DrivingSchoolModelInstructorModel",
                 columns: table => new
                 {
-                    AutoEscolasId = table.Column<int>(type: "int", nullable: false),
-                    InstrutoresId = table.Column<int>(type: "int", nullable: false)
+                    DrivingScoolsId = table.Column<int>(type: "int", nullable: false),
+                    InstructorsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DrivingSchoolModelInstructorModel", x => new { x.AutoEscolasId, x.InstrutoresId });
+                    table.PrimaryKey("PK_DrivingSchoolModelInstructorModel", x => new { x.DrivingScoolsId, x.InstructorsId });
                     table.ForeignKey(
-                        name: "FK_DrivingSchoolModelInstructorModel_AutoEscola_AutoEscolasId",
-                        column: x => x.AutoEscolasId,
-                        principalTable: "AutoEscola",
+                        name: "FK_DrivingSchoolModelInstructorModel_DrivingSchool_DrivingScool~",
+                        column: x => x.DrivingScoolsId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DrivingSchoolModelInstructorModel_Instrutor_InstrutoresId",
-                        column: x => x.InstrutoresId,
-                        principalTable: "Instrutor",
+                        name: "FK_DrivingSchoolModelInstructorModel_Instructor_InstructorsId",
+                        column: x => x.InstructorsId,
+                        principalTable: "Instructor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Turma",
+                name: "File",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Codigo = table.Column<string>(type: "varchar(150)", nullable: true)
+                    FileName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataInicio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DataFim = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: false),
-                    InstrutorId = table.Column<int>(type: "int", nullable: false)
+                    Extension = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Destiny = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: true),
+                    InstructorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Turma", x => x.Id);
+                    table.PrimaryKey("PK_File", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Turma_AutoEscola_AutoEscolaId",
-                        column: x => x.AutoEscolaId,
-                        principalTable: "AutoEscola",
+                        name: "FK_File_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Turma_Instrutor_InstrutorId",
-                        column: x => x.InstrutorId,
-                        principalTable: "Instrutor",
+                        name: "FK_File_Instructor_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Instructor",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Aluno",
+                name: "Student",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(100)", nullable: true)
+                    Name = table.Column<string>(type: "varchar(100)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(70)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cpf = table.Column<string>(type: "varchar(14)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Identidade = table.Column<string>(type: "varchar(20)", nullable: true)
+                    Identity = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Orgao = table.Column<string>(type: "varchar(20)", nullable: true)
+                    Origin = table.Column<string>(type: "varchar(20)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Aniversario = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TurmaId = table.Column<int>(type: "int", nullable: false),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: false),
-                    EnderecoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                    Birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ClassId = table.Column<int>(type: "int", nullable: false),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Aluno", x => x.Id);
+                    table.PrimaryKey("PK_Student", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Aluno_AutoEscola_AutoEscolaId",
-                        column: x => x.AutoEscolaId,
-                        principalTable: "AutoEscola",
+                        name: "FK_Student_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Aluno_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
+                        name: "FK_Student_Class_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Class",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Aluno_Turma_TurmaId",
-                        column: x => x.TurmaId,
-                        principalTable: "Turma",
+                        name: "FK_Student_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Aluno_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
+                        name: "FK_Student_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -555,87 +554,87 @@ namespace AulaRemota.Infra.Migrations
                 name: "CourseModelTurmaModel",
                 columns: table => new
                 {
-                    CursosId = table.Column<int>(type: "int", nullable: false),
-                    TurmasId = table.Column<int>(type: "int", nullable: false)
+                    ClassesId = table.Column<int>(type: "int", nullable: false),
+                    CoursesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseModelTurmaModel", x => new { x.CursosId, x.TurmasId });
+                    table.PrimaryKey("PK_CourseModelTurmaModel", x => new { x.ClassesId, x.CoursesId });
                     table.ForeignKey(
-                        name: "FK_CourseModelTurmaModel_Curso_CursosId",
-                        column: x => x.CursosId,
-                        principalTable: "Curso",
+                        name: "FK_CourseModelTurmaModel_Class_ClassesId",
+                        column: x => x.ClassesId,
+                        principalTable: "Class",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseModelTurmaModel_Turma_TurmasId",
-                        column: x => x.TurmasId,
-                        principalTable: "Turma",
+                        name: "FK_CourseModelTurmaModel_Course_CoursesId",
+                        column: x => x.CoursesId,
+                        principalTable: "Course",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Telefone",
+                name: "Phone",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Telefone = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     EdrivingId = table.Column<int>(type: "int", nullable: true),
-                    ParceiroId = table.Column<int>(type: "int", nullable: true),
-                    AutoEscolaId = table.Column<int>(type: "int", nullable: true),
-                    AdministrativoId = table.Column<int>(type: "int", nullable: true),
-                    InstrutorId = table.Column<int>(type: "int", nullable: true),
-                    AlunoId = table.Column<int>(type: "int", nullable: true)
+                    PartnnerId = table.Column<int>(type: "int", nullable: true),
+                    DrivingSchoolId = table.Column<int>(type: "int", nullable: true),
+                    AdministrativeId = table.Column<int>(type: "int", nullable: true),
+                    InstructorId = table.Column<int>(type: "int", nullable: true),
+                    StudentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Telefone", x => x.Id);
+                    table.PrimaryKey("PK_Phone", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Telefone_Administrativo_AdministrativoId",
-                        column: x => x.AdministrativoId,
-                        principalTable: "Administrativo",
+                        name: "FK_Phone_Administrative_AdministrativeId",
+                        column: x => x.AdministrativeId,
+                        principalTable: "Administrative",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Telefone_Aluno_AlunoId",
-                        column: x => x.AlunoId,
-                        principalTable: "Aluno",
+                        name: "FK_Phone_DrivingSchool_DrivingSchoolId",
+                        column: x => x.DrivingSchoolId,
+                        principalTable: "DrivingSchool",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Telefone_AutoEscola_AutoEscolaId",
-                        column: x => x.AutoEscolaId,
-                        principalTable: "AutoEscola",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Telefone_Edriving_EdrivingId",
+                        name: "FK_Phone_Edriving_EdrivingId",
                         column: x => x.EdrivingId,
                         principalTable: "Edriving",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Telefone_Instrutor_InstrutorId",
-                        column: x => x.InstrutorId,
-                        principalTable: "Instrutor",
+                        name: "FK_Phone_Instructor_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "Instructor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Telefone_Parceiro_ParceiroId",
-                        column: x => x.ParceiroId,
-                        principalTable: "Parceiro",
+                        name: "FK_Phone_Partnner_PartnnerId",
+                        column: x => x.PartnnerId,
+                        principalTable: "Partnner",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Phone_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "EdrivingCargo",
-                columns: new[] { "Id", "Cargo" },
+                table: "EdrivingLevel",
+                columns: new[] { "Id", "Level" },
                 values: new object[,]
                 {
                     { 1, "ADMINISTRATIVO" },
@@ -644,8 +643,8 @@ namespace AulaRemota.Infra.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ParceiroCargo",
-                columns: new[] { "Id", "Cargo" },
+                table: "PartnnerLevel",
+                columns: new[] { "Id", "Level" },
                 values: new object[,]
                 {
                     { 1, "ADMINISTRATIVO" },
@@ -654,41 +653,20 @@ namespace AulaRemota.Infra.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Administrativo_AutoEscolaId",
-                table: "Administrativo",
-                column: "AutoEscolaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Administrativo_EnderecoId",
-                table: "Administrativo",
-                column: "EnderecoId",
+                name: "IX_Administrative_AddressId",
+                table: "Administrative",
+                column: "AddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Administrativo_UsuarioId",
-                table: "Administrativo",
-                column: "UsuarioId",
-                unique: true);
+                name: "IX_Administrative_DrivingSchoolId",
+                table: "Administrative",
+                column: "DrivingSchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Aluno_AutoEscolaId",
-                table: "Aluno",
-                column: "AutoEscolaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Aluno_EnderecoId",
-                table: "Aluno",
-                column: "EnderecoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Aluno_TurmaId",
-                table: "Aluno",
-                column: "TurmaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Aluno_UsuarioId",
-                table: "Aluno",
-                column: "UsuarioId",
+                name: "IX_Administrative_UserId",
+                table: "Administrative",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -697,131 +675,152 @@ namespace AulaRemota.Infra.Migrations
                 column: "RolesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Arquivo_AutoEscolaId",
-                table: "Arquivo",
-                column: "AutoEscolaId");
+                name: "IX_Class_DrivingSchoolId",
+                table: "Class",
+                column: "DrivingSchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Arquivo_InstrutorId",
-                table: "Arquivo",
-                column: "InstrutorId");
+                name: "IX_Class_InstructorId",
+                table: "Class",
+                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutoEscola_EnderecoId",
-                table: "AutoEscola",
-                column: "EnderecoId",
-                unique: true);
+                name: "IX_Course_DrivingSchoolId",
+                table: "Course",
+                column: "DrivingSchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AutoEscola_UsuarioId",
-                table: "AutoEscola",
-                column: "UsuarioId",
-                unique: true);
+                name: "IX_Course_InstructorId",
+                table: "Course",
+                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseModelTurmaModel_TurmasId",
+                name: "IX_CourseModelTurmaModel_CoursesId",
                 table: "CourseModelTurmaModel",
-                column: "TurmasId");
+                column: "CoursesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Curso_AutoEscolasId",
-                table: "Curso",
-                column: "AutoEscolasId");
+                name: "IX_DrivingSchool_AddressId",
+                table: "DrivingSchool",
+                column: "AddressId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Curso_InstrutorId",
-                table: "Curso",
-                column: "InstrutorId");
+                name: "IX_DrivingSchool_UserId",
+                table: "DrivingSchool",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DrivingSchoolModelInstructorModel_InstrutoresId",
+                name: "IX_DrivingSchoolModelInstructorModel_InstructorsId",
                 table: "DrivingSchoolModelInstructorModel",
-                column: "InstrutoresId");
+                column: "InstructorsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Edriving_CargoId",
+                name: "IX_Edriving_LevelId",
                 table: "Edriving",
-                column: "CargoId");
+                column: "LevelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Edriving_UsuarioId",
+                name: "IX_Edriving_UserId",
                 table: "Edriving",
-                column: "UsuarioId",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instrutor_EnderecoId",
-                table: "Instrutor",
-                column: "EnderecoId",
+                name: "IX_File_DrivingSchoolId",
+                table: "File",
+                column: "DrivingSchoolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_File_InstructorId",
+                table: "File",
+                column: "InstructorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Instructor_AddressId",
+                table: "Instructor",
+                column: "AddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instrutor_UsuarioId",
-                table: "Instrutor",
-                column: "UsuarioId",
+                name: "IX_Instructor_UserId",
+                table: "Instructor",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parceiro_CargoId",
-                table: "Parceiro",
-                column: "CargoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Parceiro_EnderecoId",
-                table: "Parceiro",
-                column: "EnderecoId",
+                name: "IX_Partnner_AddressId",
+                table: "Partnner",
+                column: "AddressId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parceiro_UsuarioId",
-                table: "Parceiro",
-                column: "UsuarioId",
+                name: "IX_Partnner_LevelId",
+                table: "Partnner",
+                column: "LevelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partnner_UserId",
+                table: "Partnner",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolesModelUserModel_UsuariosId",
-                table: "RolesModelUserModel",
-                column: "UsuariosId");
+                name: "IX_Phone_AdministrativeId",
+                table: "Phone",
+                column: "AdministrativeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Telefone_AdministrativoId",
-                table: "Telefone",
-                column: "AdministrativoId");
+                name: "IX_Phone_DrivingSchoolId",
+                table: "Phone",
+                column: "DrivingSchoolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Telefone_AlunoId",
-                table: "Telefone",
-                column: "AlunoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Telefone_AutoEscolaId",
-                table: "Telefone",
-                column: "AutoEscolaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Telefone_EdrivingId",
-                table: "Telefone",
+                name: "IX_Phone_EdrivingId",
+                table: "Phone",
                 column: "EdrivingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Telefone_InstrutorId",
-                table: "Telefone",
-                column: "InstrutorId");
+                name: "IX_Phone_InstructorId",
+                table: "Phone",
+                column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Telefone_ParceiroId",
-                table: "Telefone",
-                column: "ParceiroId");
+                name: "IX_Phone_PartnnerId",
+                table: "Phone",
+                column: "PartnnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turma_AutoEscolaId",
-                table: "Turma",
-                column: "AutoEscolaId");
+                name: "IX_Phone_StudentId",
+                table: "Phone",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turma_InstrutorId",
-                table: "Turma",
-                column: "InstrutorId");
+                name: "IX_RolesModelUserModel_UsersId",
+                table: "RolesModelUserModel",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_AddressId",
+                table: "Student",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_ClassId",
+                table: "Student",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_DrivingSchoolId",
+                table: "Student",
+                column: "DrivingSchoolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_UserId",
+                table: "Student",
+                column: "UserId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -830,61 +829,61 @@ namespace AulaRemota.Infra.Migrations
                 name: "ApiUserModelRolesModel");
 
             migrationBuilder.DropTable(
-                name: "Arquivo");
-
-            migrationBuilder.DropTable(
                 name: "CourseModelTurmaModel");
 
             migrationBuilder.DropTable(
                 name: "DrivingSchoolModelInstructorModel");
 
             migrationBuilder.DropTable(
-                name: "RolesModelUserModel");
+                name: "File");
 
             migrationBuilder.DropTable(
-                name: "Telefone");
+                name: "Phone");
+
+            migrationBuilder.DropTable(
+                name: "RolesModelUserModel");
 
             migrationBuilder.DropTable(
                 name: "ApiUser");
 
             migrationBuilder.DropTable(
-                name: "Curso");
+                name: "Course");
 
             migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Administrativo");
-
-            migrationBuilder.DropTable(
-                name: "Aluno");
+                name: "Administrative");
 
             migrationBuilder.DropTable(
                 name: "Edriving");
 
             migrationBuilder.DropTable(
-                name: "Parceiro");
+                name: "Partnner");
 
             migrationBuilder.DropTable(
-                name: "Turma");
+                name: "Student");
 
             migrationBuilder.DropTable(
-                name: "EdrivingCargo");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "ParceiroCargo");
+                name: "EdrivingLevel");
 
             migrationBuilder.DropTable(
-                name: "AutoEscola");
+                name: "PartnnerLevel");
 
             migrationBuilder.DropTable(
-                name: "Instrutor");
+                name: "Class");
 
             migrationBuilder.DropTable(
-                name: "Endereco");
+                name: "DrivingSchool");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "Instructor");
+
+            migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

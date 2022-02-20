@@ -24,10 +24,10 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
             try
             {
                 //return _autoEscolaRepository.Context.Set<AutoEscolaModel>()
-                //            .Include(e => e.Arquivos)
-                //            .Include(e => e.Telefones)
-                //            .Include(e => e.Endereco)
-                //            .Include(e => e.Usuario)
+                //            .Include(e => e.Files)
+                //            .Include(e => e.PhonesNumbers)
+                //            .Include(e => e.Address)
+                //            .Include(e => e.User)
                 //            .ToList();
                 return _autoEscolaRepository.GetAll().ToList();
             }

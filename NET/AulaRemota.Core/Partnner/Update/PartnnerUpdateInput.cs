@@ -11,7 +11,7 @@ namespace AulaRemota.Core.Partnner.Update
     {
         public PartnnerUpdateInput()
         {
-            this.Telefones = new List<PhoneModel>();
+            this.PhonesNumbers = new List<PhoneModel>();
         }
 
         [Required]
@@ -19,13 +19,16 @@ namespace AulaRemota.Core.Partnner.Update
         public int Id { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
+        [StringLength(maximumLength: 70, MinimumLength = 5)]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [StringLength(maximumLength: 14, MinimumLength = 14)]
         public string Cnpj { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
 
         [StringLength(maximumLength: 2, MinimumLength = 2)]
         public string Uf { get; set; }
@@ -34,24 +37,20 @@ namespace AulaRemota.Core.Partnner.Update
         public string Cep { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string EnderecoLogradouro { get; set; }
+        public string Address { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Bairro { get; set; }
+        public string District { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Cidade { get; set; }
+        public string City { get; set; }
 
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Numero { get; set; }
+        public string Number { get; set; }
 
-        [StringLength(maximumLength: 70, MinimumLength = 5)]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        public List<PhoneModel> Telefones { get; set; }
+        public ICollection<PhoneModel> PhonesNumbers { get; set; }
 
         [Range(0, 100)]
-        public int CargoId { get; set; }
+        public int LevelId { get; set; }
     }
 }

@@ -8,23 +8,23 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<PartnnerModel> builder)
         {
-            builder.ToTable("Parceiro");
+            builder.ToTable("partnner");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Name).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Email).HasColumnType("varchar").HasMaxLength(70).IsRequired();
-            builder.Property(e => e.Descricao).HasColumnType("varchar").HasMaxLength(150);
+            builder.Property(e => e.Description).HasColumnType("varchar").HasMaxLength(150);
             builder.Property(e => e.Cnpj).HasColumnType("varchar").HasMaxLength(14).IsRequired();
 
-            builder.Property(e => e.CargoId).HasColumnType("int").IsRequired().IsRequired();
-            builder.Property(e => e.EnderecoId).HasColumnType("int").IsRequired().IsRequired();
-            builder.Property(e => e.UsuarioId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.LevelId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.AddressId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.UserId).HasColumnType("int").IsRequired().IsRequired();
 
 
-            builder.HasOne(e => e.Cargo).WithMany(e => e.Parceiros).HasForeignKey(e => e.CargoId);
-            builder.HasOne(e => e.Usuario).WithOne(e => e.Parceiro);
-            builder.HasMany(e => e.Telefones).WithOne(e => e.Parceiro);
+            builder.HasOne(e => e.Level).WithMany(e => e.Partnners).HasForeignKey(e => e.LevelId);
+            builder.HasOne(e => e.User).WithOne(e => e.Partnner);
+            builder.HasMany(e => e.PhonesNumbers).WithOne(e => e.Partnner);
 
-            builder.HasIndex(e => e.Nome);
+            builder.HasIndex(e => e.Name);
         }
     }
 }

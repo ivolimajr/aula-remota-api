@@ -43,9 +43,9 @@ namespace AulaRemota.Core.Edriving.Update
                 //BUSCA O OBJETO A SER ATUALIZADO
                 var entity = _edrivingRepository.Context
                             .Set<EdrivingModel>()
-                            .Include(e => e.Usuario)
-                            .Include(e => e.Cargo)
-                            .Include(e => e.Telefones)
+                            .Include(e => e.User)
+                            .Include(e => e.Level)
+                            .Include(e => e.PhonesNumbers)
                             .Where(e => e.Id == request.Id)
                             .FirstOrDefault();
 
@@ -60,15 +60,15 @@ namespace AulaRemota.Core.Edriving.Update
                     if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
 
                     //SE NÃO ESTPA EM USO SET OS ATRIBUTOS
-                    entity.Usuario.Email = request.Email.ToUpper();
+                    entity.User.Email = request.Email.ToUpper();
                     entity.Email = request.Email.ToUpper();
 
                 }
                 //ATUALIZA NOME SE INFORMADO - TANTO DO USUÁRIO COMO DO EDRIVING
-                if (request.Nome != null && request.Nome != entity.Nome)
+                if (request.Name != null && request.Name != entity.Name)
                 {
-                    entity.Usuario.Nome = request.Nome.ToUpper();
-                    entity.Nome = request.Nome.ToUpper();
+                    entity.User.Name = request.Name.ToUpper();
+                    entity.Name = request.Name.ToUpper();
                 }
                 //ATUALIZA O CPF SE INFORMADO
                 if (request.Cpf != null && request.Cpf != entity.Cpf)
@@ -80,42 +80,42 @@ namespace AulaRemota.Core.Edriving.Update
                     //SE FOR NULO ELE ATUALIZA O CPF
                     entity.Cpf = request.Cpf.ToUpper();
                 }
-                //SE FOR INFORMADO UM NOVO CARGO, O CARGO ATUAL SERÁ ATUALIZADO
-                if (request.CargoId > 0 && request.CargoId != entity.CargoId)
+                //SE FOR INFORMADO UM NOVO Level, O Level ATUAL SERÁ ATUALIZADO
+                if (request.LevelId > 0 && request.LevelId != entity.LevelId)
                 {
-                    //VERIFICA SE O CARGO INFORMADO EXISTE
-                    var cargo = await _cargoRepository.GetByIdAsync(request.CargoId);
-                    if (cargo == null) throw new CustomException("Cargo Não Encontrado");
+                    //VERIFICA SE O Level INFORMADO EXISTE
+                    var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                    if (Level == null) throw new CustomException("Level Não Encontrado");
 
-                    //SE O CARGO EXISTE, O CARGO SERÁ ATUALIZADO
-                    entity.CargoId = cargo.Id;
-                    entity.Cargo = cargo;
+                    //SE O Level EXISTE, O Level SERÁ ATUALIZADO
+                    entity.LevelId = Level.Id;
+                    entity.Level = Level;
                 }
 
                 //ATUALIZA O TELEFONE SE VIER NA LISTA DO REQUEST
-                if (request.Telefones.Count > 0)
+                if (request.PhonesNumbers.Count > 0)
                 {
-                    foreach (var item in request.Telefones)
+                    foreach (var item in request.PhonesNumbers)
                     {
                         //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
-                        if (!entity.Telefones.Any(e => e.Telefone == item.Telefone))
+                        if (!entity.PhonesNumbers.Any(e => e.PhoneNumber == item.PhoneNumber))
                         {
 
 
                             //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.Telefone == item.Telefone);
+                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.PhoneNumber == item.PhoneNumber);
 
                             //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
                             if (item.Id == 0)
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
-                                entity.Telefones.Add(item);
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
+                                entity.PhonesNumbers.Add(item);
                             }
                             else
                             {
                                 //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.Telefone + " já em uso");
+                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
                                 _telefoneRepository.Update(item);
                             }
                         }
@@ -130,14 +130,14 @@ namespace AulaRemota.Core.Edriving.Update
                 return new EdrivingUpdateResponse
                 {
                     Id = entity.Id,
-                    Nome = entity.Nome,
+                    Name = entity.Name,
                     Email = entity.Email,
                     Cpf = entity.Cpf,
-                    Telefones = entity.Telefones,
-                    CargoId = entity.CargoId,
-                    UsuarioId = entity.UsuarioId,
-                    Cargo = entity.Cargo,
-                    Usuario = entity.Usuario
+                    PhonesNumbers = entity.PhonesNumbers,
+                    LevelId = entity.LevelId,
+                    UserId = entity.UserId,
+                    Level = entity.Level,
+                    User = entity.User
                 };
             }
             catch (Exception e)

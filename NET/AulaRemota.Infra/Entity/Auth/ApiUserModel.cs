@@ -14,13 +14,13 @@ namespace AulaRemota.Infra.Entity.Auth
         [Column(TypeName = "varchar(150)")]
         public string UserName { get; set; }
         [Column(TypeName = "varchar(150)")]
-        public string Nome { get; set; }
+        public string Name { get; set; }
         [Column(TypeName = "varchar(150)")]
         public string Password { get; set; }
         [Column(TypeName = "varchar(150)")]
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
-        public virtual List<RolesModel> Roles { get; set; }
+        public virtual ICollection<RolesModel> Roles { get; set; }
 
     }
 }

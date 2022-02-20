@@ -10,10 +10,10 @@ namespace AulaRemota.Core.User.UpdatePassword
 
         [Required]
         [MaxLength(100)]
-        public string SenhaAtual { get; set; }
+        public string CurrentPassword { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string NovaSenha { get; set; }
+        public string NewPassword { get; set; }
     }
 }

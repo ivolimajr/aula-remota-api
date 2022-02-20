@@ -29,22 +29,22 @@ namespace AulaRemota.Core.File.RemoveFile
         {
             try
             {
-                if (request.IdArquivo == 0) throw new CustomException("Parâmetro inválido", HttpStatusCode.BadRequest);
+                if (request.Id == 0) throw new CustomException("Parâmetro inválido", HttpStatusCode.BadRequest);
                 var fileResult = await _arquivoRepository.Context.Set<FileModel>()
-                    .Include(e => e.AutoEscola)
-                    .Include(e => e.Instrutor)
-                    .Where(e => e.Id.Equals(request.IdArquivo))
+                    .Include(e => e.DrivingSchool)
+                    .Include(e => e.Instructor)
+                    .Where(e => e.Id.Equals(request.Id))
                     .FirstOrDefaultAsync();
                 string typeOfUser = default;
                 if (fileResult == null) throw new CustomException("Arquivo não encontrado", HttpStatusCode.NotFound);
 
-                if (fileResult.AutoEscola != null) typeOfUser = Constants.Roles.AUTOESCOLA;
-                if (fileResult.Instrutor != null) typeOfUser = Constants.Roles.INSTRUTOR;
+                if (fileResult.DrivingSchool != null) typeOfUser = Constants.Roles.AUTOESCOLA;
+                if (fileResult.Instructor != null) typeOfUser = Constants.Roles.INSTRUTOR;
 
                 bool result = await _mediator.Send(new RemoveFromAzureInput()
                 {
-                    TipoUsuario = typeOfUser,
-                    Arquivos = new List<FileModel>() { fileResult }
+                    TypeUser = typeOfUser,
+                    Files = new List<FileModel>() { fileResult }
                 });
                 if (result)
                 {

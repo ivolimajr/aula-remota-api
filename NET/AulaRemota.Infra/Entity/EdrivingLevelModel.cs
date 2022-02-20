@@ -15,9 +15,9 @@ namespace AulaRemota.Infra.Entity
         [Required]
         [MaxLength(70)]
         [MinLength(3)]
-        public string Cargo { get; set; }
+        public string Level { get; set; }
 
         [JsonIgnore]
-        public virtual List<EdrivingModel> Edrivings { get; set; }
+        public virtual ICollection<EdrivingModel> Edrivings { get; set; }
     }
 }

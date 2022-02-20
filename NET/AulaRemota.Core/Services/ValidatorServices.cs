@@ -27,7 +27,7 @@ namespace AulaRemota.Core.Services
         {
             foreach (var item in phoneList)
             {
-                var result = _telefoneRepository.Find(e => e.Telefone == item.Telefone);
+                var result = _telefoneRepository.Find(e => e.PhoneNumber == item.PhoneNumber);
                 if (result != null) return false;
             }
             return true;

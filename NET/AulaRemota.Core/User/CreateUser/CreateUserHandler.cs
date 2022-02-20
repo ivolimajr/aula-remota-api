@@ -25,20 +25,20 @@ namespace AulaRemota.Core.User.CreateUser
 
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            var usuario = new UserModel
+            var User = new UserModel
             {
-                Nome = request.Nome.ToUpper(),
+                Name = request.Name.ToUpper(),
                 Email = request.Email.ToUpper(),
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
             try
             {
-                UserModel user = await _usuarioRepository.CreateAsync(usuario);
+                UserModel user = await _usuarioRepository.CreateAsync(User);
                 return new CreateUserResponse
                 {
                     Id = user.Id,
-                    Nome = user.Nome,
+                    Name = user.Name,
                     Email = user.Email
                 };
 

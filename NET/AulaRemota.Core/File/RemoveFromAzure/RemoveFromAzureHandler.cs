@@ -16,17 +16,17 @@ namespace AulaRemota.Core.File.RemoveFromAzure
         {
             try
             {
-                if (request.TipoUsuario == null) throw new CustomException(new ResponseModel() { UserMessage = "Informe o tipo de usuário", ModelName = nameof(RemoveFromAzureInput), StatusCode = HttpStatusCode.BadRequest });
-                if (request.Arquivos.Count > 0)
+                if (request.TypeUser == null) throw new CustomException(new ResponseModel() { UserMessage = "Informe o tipo de usuário", ModelName = nameof(RemoveFromAzureInput), StatusCode = HttpStatusCode.BadRequest });
+                if (request.Files.Count > 0)
                 {
                     var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
                     var cloudBlobContainer = cloudBlobClient.GetContainerReference("files");
-                    if (request.TipoUsuario.Equals(Constants.Roles.AUTOESCOLA)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.AUTOESCOLA).ToLower());
-                    if (request.TipoUsuario.Equals(Constants.Roles.ADMINISTRATIVO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ADMINISTRATIVO).ToLower());
-                    if (request.TipoUsuario.Equals(Constants.Roles.ALUNO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ALUNO).ToLower());
-                    if (request.TipoUsuario.Equals(Constants.Roles.EDRIVING)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.EDRIVING).ToLower());
-                    if (request.TipoUsuario.Equals(Constants.Roles.INSTRUTOR)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.INSTRUTOR).ToLower());
-                    if (request.TipoUsuario.Equals(Constants.Roles.PARCEIRO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.PARCEIRO).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.AUTOESCOLA)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.AUTOESCOLA).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.ADMINISTRATIVO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ADMINISTRATIVO).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.ALUNO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.ALUNO).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.EDRIVING)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.EDRIVING).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.INSTRUTOR)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.INSTRUTOR).ToLower());
+                    if (request.TypeUser.Equals(Constants.Roles.PARCEIRO)) cloudBlobContainer = cloudBlobClient.GetContainerReference(nameof(Constants.Roles.PARCEIRO).ToLower());
 
                     if (await cloudBlobContainer.CreateIfNotExistsAsync())
                     {
@@ -36,13 +36,13 @@ namespace AulaRemota.Core.File.RemoveFromAzure
                         });
                     }
 
-                    foreach (var item in request.Arquivos)
+                    foreach (var item in request.Files)
                     {
-                        CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(item.Nome);
+                        CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(item.FileName);
 
                         var result = await blob.DeleteIfExistsAsync();
                         if (!result)
-                            throw new CustomException(item.Nome + "não pode ser removido");
+                            throw new CustomException(item.FileName + "não pode ser removido");
                     }
                 }
                 return true;

@@ -10,17 +10,17 @@ namespace AulaRemota.Infra.Configurations
         {
             builder.ToTable("Edriving");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Name).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Cpf).HasColumnType("varchar").HasMaxLength(14).IsRequired();
             builder.Property(e => e.Email).HasColumnType("varchar").HasMaxLength(70).IsRequired();
-            builder.Property(e => e.CargoId).HasColumnType("int").IsRequired().IsRequired();
-            builder.Property(e => e.UsuarioId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.LevelId).HasColumnType("int").IsRequired().IsRequired();
+            builder.Property(e => e.UserId).HasColumnType("int").IsRequired().IsRequired();
 
-            builder.HasIndex(e => e.Nome);
+            builder.HasIndex(e => e.Name);
 
-            builder.HasOne(e => e.Cargo).WithMany(e => e.Edrivings).HasForeignKey(e => e.CargoId);
-            builder.HasOne(e => e.Usuario);
-            builder.HasMany(e => e.Telefones).WithOne(e => e.Edriving);
+            builder.HasOne(e => e.Level).WithMany(e => e.Edrivings).HasForeignKey(e => e.LevelId);
+            builder.HasOne(e => e.User);
+            builder.HasMany(e => e.PhonesNumbers).WithOne(e => e.Edriving);
         }
     }
 }

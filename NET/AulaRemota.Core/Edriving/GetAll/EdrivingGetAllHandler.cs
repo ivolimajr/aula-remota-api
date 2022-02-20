@@ -23,9 +23,9 @@ namespace AulaRemota.Core.Edriving.GetAll
             {
                 return await _edrivingRepository.Context
                     .Set<EdrivingModel>()
-                    .Include(u => u.Usuario)
-                    .Include(c => c.Cargo)
-                    .Include(t => t.Telefones)
+                    .Include(u => u.User)
+                    .Include(c => c.Level)
+                    .Include(t => t.PhonesNumbers)
                     .ToListAsync();
             }
             catch (System.Exception)

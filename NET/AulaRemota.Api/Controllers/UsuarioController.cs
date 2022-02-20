@@ -53,7 +53,7 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Endpoint alterar a senha do usuario pelo ID
+        /// Endpoint alterar a senha do User pelo ID
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -79,7 +79,7 @@ namespace AulaRemota.Api.Controllers
             }
         }
         /// <summary>
-        /// Endpoint alterar a senha do usuario pelo email
+        /// Endpoint alterar a senha do User pelo email
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -112,7 +112,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new RemoveFileInput { IdArquivo = id });
+                var result = await _mediator.Send(new RemoveFileInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)
@@ -150,7 +150,7 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("atualizar-endereco")]
+        [Route("atualizar-Address")]
         [HttpPut]
         [ProducesResponseType(typeof(AddressModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

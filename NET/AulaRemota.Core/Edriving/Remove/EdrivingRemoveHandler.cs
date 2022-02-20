@@ -36,16 +36,16 @@ namespace AulaRemota.Core.Edriving.Remove
                 _edrivingRepository.CreateTransaction();
                 var edriving = await _edrivingRepository.Context
                                         .Set<EdrivingModel>()
-                                        .Include(e => e.Usuario)
-                                        .Include(e => e.Telefones)
+                                        .Include(e => e.User)
+                                        .Include(e => e.PhonesNumbers)
                                         .Where(e => e.Id == request.Id)
                                         .FirstOrDefaultAsync();
                 if (edriving == null) throw new CustomException("Não encontrado");
 
                 _edrivingRepository.Delete(edriving);
-                _usuarioRepository.Delete(edriving.Usuario);
+                _usuarioRepository.Delete(edriving.User);
 
-                foreach (var item in edriving.Telefones)
+                foreach (var item in edriving.PhonesNumbers)
                 {
                     item.Edriving = null;
                     _telefoneRepository.Delete(item);

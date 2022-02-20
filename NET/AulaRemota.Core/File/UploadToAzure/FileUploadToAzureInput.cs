@@ -6,7 +6,7 @@ namespace AulaRemota.Core.File.UploadToAzure
 {
     public class FileUploadToAzureInput : IRequest<FileUploadToAzureResponse>
     {   
-        public List<IFormFile> Arquivos { get; set; }
-        public string TipoUsuario { get; set; }
+        public ICollection<IFormFile> Files { get; set; }
+        public string TypeUser { get; set; }
     }
 }

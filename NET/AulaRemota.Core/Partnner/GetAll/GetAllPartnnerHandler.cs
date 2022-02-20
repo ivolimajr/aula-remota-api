@@ -25,11 +25,11 @@ namespace AulaRemota.Core.Partnner.GetAll
             {
                 return await _parceiroRepository.Context
                     .Set<PartnnerModel>()
-                    .Include(e => e.Usuario)
-                    .Include(e => e.Cargo)
-                    .Include(e => e.Endereco)
-                    .Include(e => e.Telefones)
-                    .Where(e => e.Usuario.status > 0)
+                    .Include(e => e.User)
+                    .Include(e => e.Level)
+                    .Include(e => e.Address)
+                    .Include(e => e.PhonesNumbers)
+                    .Where(e => e.User.Status > 0)
                     .ToListAsync(); ;
             }
             catch (Exception e)

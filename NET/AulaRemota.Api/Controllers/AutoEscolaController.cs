@@ -158,7 +158,7 @@ namespace AulaRemota.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<string> ArquivoDownload(DownloadFileFromAzureInput request)
         {
-                var result = await _mediator.Send(new DownloadFileFromAzureInput { NomeArquivo = request.NomeArquivo });
+                var result = await _mediator.Send(new DownloadFileFromAzureInput { FileName = request.FileName });
                 return result;
         }
     }

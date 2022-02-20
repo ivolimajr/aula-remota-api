@@ -10,13 +10,13 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
 
         public StudentModel()
         {
-            this.Telefones = new List<PhoneModel>();
+            this.PhonesNumbers = new List<PhoneModel>();
         }
 
         public int Id { get; set; }
 
         [Column(TypeName = "varchar(100)")]
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
@@ -25,24 +25,24 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
         public string Cpf { get; set; }
 
         [Column(TypeName = "varchar(20)")]
-        public string Identidade { get; set; }
+        public string Identity { get; set; }
 
         [Column(TypeName = "varchar(20)")]
-        public string Orgao { get; set; }
-        public DateTime Aniversario { get; set; }
+        public string Origin { get; set; }
+        public DateTime Birthdate { get; set; }
 
-        public int TurmaId { get; set; }
-        public TurmaModel Turma { get; set; }
+        public int ClassId { get; set; }
+        public TurmaModel Class { get; set; }
 
-        public int AutoEscolaId { get; set; }
-        public DrivingSchoolModel AutoEscola { get; set; }
+        public int DrivingSchoolId { get; set; }
+        public DrivingSchoolModel DrivingSchool { get; set; }
 
-        public int EnderecoId { get; set; }
-        public AddressModel Endereco { get; set; }
+        public int AddressId { get; set; }
+        public AddressModel Address { get; set; }
 
-        public int UsuarioId { get; set; }
-        public UserModel Usuario { get; set; }
+        public int UserId { get; set; }
+        public UserModel User { get; set; }
 
-        public List<PhoneModel> Telefones { get; set; }
+        public ICollection<PhoneModel> PhonesNumbers { get; set; }
     }
 }

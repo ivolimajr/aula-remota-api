@@ -5,6 +5,6 @@ namespace AulaRemota.Core.File.UploadToAzure
 {
     public class FileUploadToAzureResponse
     {
-        public List<FileModel> Arquivos { get; set; }
+        public ICollection<FileModel> Files { get; set; }
     }
 }

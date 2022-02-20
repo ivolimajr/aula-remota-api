@@ -10,7 +10,7 @@ namespace AulaRemota.Infra.Configurations
         {
             builder.ToTable("ApiUser");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Name).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.UserName).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Password).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.RefreshToken).HasColumnType("varchar").HasMaxLength(150);

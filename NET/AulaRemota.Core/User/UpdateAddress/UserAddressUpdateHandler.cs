@@ -29,10 +29,10 @@ namespace AulaRemota.Core.User.UpdateAddress
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
                 if (request.Uf != null) entity.Uf = request.Uf.ToUpper();
                 if (request.Cep != null) entity.Cep = request.Cep.ToUpper();
-                if (request.EnderecoLogradouro != null) entity.EnderecoLogradouro = request.EnderecoLogradouro.ToUpper();
-                if (request.Bairro != null) entity.Bairro = request.Bairro.ToUpper();
-                if (request.Cidade != null) entity.Cidade = request.Cidade.ToUpper();
-                if (request.Numero != null) entity.Numero = request.Numero.ToUpper();
+                if (request.Address != null) entity.Address = request.Address.ToUpper();
+                if (request.District != null) entity.District = request.District.ToUpper();
+                if (request.City != null) entity.City = request.City.ToUpper();
+                if (request.Number != null) entity.Number = request.Number.ToUpper();
 
                 _enderecoRepository.Update(entity);
                 await _enderecoRepository.SaveChangesAsync();

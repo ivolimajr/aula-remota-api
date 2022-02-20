@@ -8,23 +8,23 @@ namespace AulaRemota.Infra.Configurations.DrivingSchool
     {
         public void Configure(EntityTypeBuilder<StudentModel> builder)
         {
-            builder.ToTable("Aluno");
+            builder.ToTable("student");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Nome).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.Name).HasColumnType("varchar").HasMaxLength(150).IsRequired();
             builder.Property(e => e.Email).HasColumnType("varchar").HasMaxLength(70).IsRequired();
             builder.Property(e => e.Cpf).HasColumnType("varchar").HasMaxLength(14).IsRequired();
-            builder.Property(e => e.Identidade).HasColumnType("varchar").HasMaxLength(20).IsRequired();
-            builder.Property(e => e.Orgao).HasColumnType("varchar").HasMaxLength(70).IsRequired();
-            builder.Property(e => e.Aniversario).HasColumnType("datetime");
-            builder.Property(e => e.TurmaId).HasColumnType("int").IsRequired();
-            builder.Property(e => e.AutoEscolaId).HasColumnType("int").IsRequired();
+            builder.Property(e => e.Identity).HasColumnType("varchar").HasMaxLength(20).IsRequired();
+            builder.Property(e => e.Origin).HasColumnType("varchar").HasMaxLength(70).IsRequired();
+            builder.Property(e => e.Birthdate).HasColumnType("datetime");
+            builder.Property(e => e.ClassId).HasColumnType("int").IsRequired();
+            builder.Property(e => e.DrivingSchoolId).HasColumnType("int").IsRequired();
 
             //RELACIONAMENTOS
-            builder.HasOne(e => e.Turma).WithMany(e => e.Alunos).HasForeignKey(e => e.TurmaId);
-            builder.HasOne(e => e.AutoEscola).WithMany(e => e.Alunos).HasForeignKey(e => e.AutoEscolaId);
-            builder.HasOne(e => e.Endereco).WithMany(e => e.Alunos).HasForeignKey(e => e.EnderecoId);
-            builder.HasOne(e => e.Usuario).WithOne(e => e.Aluno);
-            builder.HasMany(e => e.Telefones).WithOne(e => e.Aluno);
+            builder.HasOne(e => e.Class).WithMany(e => e.Students).HasForeignKey(e => e.ClassId);
+            builder.HasOne(e => e.DrivingSchool).WithMany(e => e.Sudents).HasForeignKey(e => e.DrivingSchoolId);
+            builder.HasOne(e => e.Address).WithMany(e => e.Students).HasForeignKey(e => e.AddressId);
+            builder.HasOne(e => e.User).WithOne(e => e.Student);
+            builder.HasMany(e => e.PhonesNumbers).WithOne(e => e.Student);
         }
     }
 }

@@ -8,13 +8,13 @@ namespace AulaRemota.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<PartnnerLevelModel> builder)
         {
-            builder.ToTable("ParceiroCargo");
+            builder.ToTable("partnnerLevel");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Cargo).HasColumnType("varchar").HasMaxLength(70).IsRequired();
+            builder.Property(e => e.Level).HasColumnType("varchar").HasMaxLength(70).IsRequired();
 
-            builder.HasMany(e => e.Parceiros).WithOne(e => e.Cargo).HasForeignKey(e => e.CargoId);
+            builder.HasMany(e => e.Partnners).WithOne(e => e.Level).HasForeignKey(e => e.LevelId);
 
-            builder.HasIndex(e => e.Cargo);
+            builder.HasIndex(e => e.Level);
 
         }
     }

@@ -10,7 +10,7 @@ namespace AulaRemota.Core.Edriving.Update
     {
         public EdrivingUpdateInput()
         {
-            this.Telefones = new List<PhoneModel>();
+            this.PhonesNumbers = new List<PhoneModel>();
         }
 
         [Required]
@@ -18,7 +18,7 @@ namespace AulaRemota.Core.Edriving.Update
         public int Id { get; set; }
 
         [StringLength(maximumLength: 100, MinimumLength = 3)]
-        public string Nome { get; set; }
+        public string Name { get; set; }
 
         [StringLength(maximumLength: 11, MinimumLength = 11)]
         public string Cpf { get; set; }
@@ -27,9 +27,9 @@ namespace AulaRemota.Core.Edriving.Update
         [EmailAddress]
         public string Email { get; set; }
 
-        public List<PhoneModel> Telefones { get; set; }
+        public ICollection<PhoneModel> PhonesNumbers { get; set; }
 
         [Range(0, 100)]
-        public int CargoId { get; set; }
+        public int LevelId { get; set; }
     }
 }

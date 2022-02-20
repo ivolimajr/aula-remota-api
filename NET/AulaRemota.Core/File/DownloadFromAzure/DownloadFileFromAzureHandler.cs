@@ -16,7 +16,7 @@ namespace AulaRemota.Core.File.DownloadFromAzure
 
             var cloudBlobContainer = cloudBlobClient.GetContainerReference(Container);
 
-            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(request.NomeArquivo);
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(request.FileName);
 
             var uri = cloudBlockBlob.Uri.AbsoluteUri;
             return uri;

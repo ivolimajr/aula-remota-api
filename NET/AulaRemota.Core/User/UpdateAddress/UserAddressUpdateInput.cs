@@ -16,15 +16,15 @@ namespace AulaRemota.Core.User.UpdateAddress
         public string Cep { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string EnderecoLogradouro { get; set; }
+        public string Address { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Bairro { get; set; }
+        public string District { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Cidade { get; set; }
+        public string City { get; set; }
 
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Numero { get; set; }
+        public string Number { get; set; }
     }
 }

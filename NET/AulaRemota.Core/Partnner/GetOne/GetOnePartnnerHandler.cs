@@ -30,27 +30,27 @@ namespace AulaRemota.Core.Partnner.GetOne
 
                 var result = await _parceiroRepository.Context
                         .Set<PartnnerModel>()
-                        .Include(e => e.Usuario)
-                        .Include(e => e.Cargo)
-                        .Include(e => e.Endereco)
-                        .Include(e => e.Telefones)
+                        .Include(e => e.User)
+                        .Include(e => e.Level)
+                        .Include(e => e.Address)
+                        .Include(e => e.PhonesNumbers)
                         .Where(e => e.Id == request.Id)
-                        .Where(e => e.Usuario.status > 0)
+                        .Where(e => e.User.Status > 0)
                         .FirstAsync();
 
                 return new GetOnePartnnerResponse {
                     Id = result.Id,
-                    Nome = result.Nome,
+                    Name = result.Name,
                     Email = result.Email,
-                    Telefones = result.Telefones,
-                    Descricao = result.Descricao,
+                    PhonesNumbers = result.PhonesNumbers,
+                    Description = result.Description,
                     Cnpj = result.Cnpj,
-                    CargoId = result.CargoId,
-                    Cargo = result.Cargo,
-                    EnderecoId = result.EnderecoId,
-                    Endereco = result.Endereco,
-                    UsuarioId = result.UsuarioId,
-                    Usuario = result.Usuario,
+                    LevelId = result.LevelId,
+                    Level = result.Level,
+                    AddressId = result.AddressId,
+                    Address = result.Address,
+                    UserId = result.UserId,
+                    User = result.User,
                 };
             }
             catch (Exception e)

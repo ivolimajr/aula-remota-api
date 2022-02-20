@@ -8,18 +8,18 @@ namespace AulaRemota.Infra.Configurations.DrivingSchool
     {
         public void Configure(EntityTypeBuilder<TurmaModel> builder)
         {
-            builder.ToTable("Turma");
+            builder.ToTable("class");
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Codigo).HasColumnType("varchar").HasMaxLength(150).IsRequired();
-            builder.Property(e => e.DataInicio).HasColumnType("datetime");
-            builder.Property(e => e.DataFim).HasColumnType("datetime");
-            builder.Property(e => e.AutoEscolaId).HasColumnType("int").IsRequired();
-            builder.Property(e => e.InstrutorId).HasColumnType("int").IsRequired();
+            builder.Property(e => e.Code).HasColumnType("varchar").HasMaxLength(150).IsRequired();
+            builder.Property(e => e.StartDate).HasColumnType("datetime");
+            builder.Property(e => e.EndDate).HasColumnType("datetime");
+            builder.Property(e => e.DrivingSchoolId).HasColumnType("int").IsRequired();
+            builder.Property(e => e.InstructorId).HasColumnType("int").IsRequired();
 
             //RELACIONAMENTOS
-            builder.HasOne(e => e.AutoEscola).WithMany(e => e.Turmas).HasForeignKey(e => e.AutoEscolaId);
-            builder.HasMany(e => e.Cursos).WithMany(e => e.Turmas);
-            builder.HasMany(e => e.Alunos).WithOne(e => e.Turma).HasForeignKey(e => e.TurmaId);
+            builder.HasOne(e => e.DrivingSchool).WithMany(e => e.Classes).HasForeignKey(e => e.DrivingSchoolId);
+            builder.HasMany(e => e.Courses).WithMany(e => e.Classes);
+            builder.HasMany(e => e.Students).WithOne(e => e.Class).HasForeignKey(e => e.ClassId);
         }
     }
 }

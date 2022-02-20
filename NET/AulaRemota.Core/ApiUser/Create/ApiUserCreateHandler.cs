@@ -31,7 +31,7 @@ namespace AulaRemota.Core.ApiUser.Create
 
                 var user = new ApiUserModel()
                 {
-                    Nome = request.Nome.ToUpper(),
+                    Name = request.Name.ToUpper(),
                     UserName = request.UserName.ToUpper(),
                     Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                     Roles = new List<RolesModel>()
@@ -50,7 +50,7 @@ namespace AulaRemota.Core.ApiUser.Create
                 return new ApiUserCreateResponse
                 {
                     Id = userResult.Id,
-                    Nome = userResult.Nome,
+                    Name = userResult.Name,
                     UserName = userResult.UserName,
                     Roles = user.Roles
                 };

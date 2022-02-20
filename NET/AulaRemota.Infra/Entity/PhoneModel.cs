@@ -10,19 +10,19 @@ namespace AulaRemota.Infra.Entity
 
         [Required]
         [StringLength(maximumLength: 11, MinimumLength = 10)]
-        public string Telefone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [JsonIgnore]
         public virtual EdrivingModel Edriving { get; set; }
         [JsonIgnore]
-        public virtual PartnnerModel Parceiro { get; set; }
+        public virtual PartnnerModel Partnner { get; set; }
         [JsonIgnore]
-        public virtual DrivingSchoolModel AutoEscola { get; set; }
+        public virtual DrivingSchoolModel DrivingSchool { get; set; }
         [JsonIgnore]
-        public virtual AdministrativeModel Administrativo { get; set; }
+        public virtual AdministrativeModel Administrative { get; set; }
         [JsonIgnore]
-        public virtual InstructorModel Instrutor { get; set; }
+        public virtual InstructorModel Instructor { get; set; }
         [JsonIgnore]
-        public virtual StudentModel Aluno { get; set; }
+        public virtual StudentModel Student { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace AulaRemota.Infra.Entity
         public RolesModel()
         {
             ApiUsers = new List<ApiUserModel>();
-            Usuarios = new List<UserModel>();
+            Users = new List<UserModel>();
         }
 
         public int Id { get; set; }
@@ -20,6 +20,6 @@ namespace AulaRemota.Infra.Entity
         [JsonIgnore]
         public virtual ICollection<ApiUserModel> ApiUsers { get; set; }
         [JsonIgnore]
-        public virtual ICollection<UserModel> Usuarios { get; set; }
+        public virtual ICollection<UserModel> Users { get; set; }
     }
 }

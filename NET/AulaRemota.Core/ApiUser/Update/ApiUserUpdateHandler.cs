@@ -25,7 +25,7 @@ namespace AulaRemota.Core.ApiUser.Update
                 var result = await _authUserRepository.GetByIdAsync(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
-                if (!String.IsNullOrEmpty(request.Name)) result.Nome = request.Name.ToUpper();
+                if (!String.IsNullOrEmpty(request.Name)) result.Name = request.Name.ToUpper();
                 if (!String.IsNullOrEmpty(request.UserName)) result.UserName = request.UserName.ToUpper();
 
                 _authUserRepository.Update(result);
@@ -34,7 +34,7 @@ namespace AulaRemota.Core.ApiUser.Update
                 return new ApiUserUpdateResponse()
                 {
                     Id = result.Id,
-                    Name = result.Nome,
+                    Name = result.Name,
                     UserName = result.UserName
                 };
             }

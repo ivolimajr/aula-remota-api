@@ -7,6 +7,6 @@ namespace AulaRemota.Core.File.RemoveFile
     {
         [Required]
         [Range(1,9999)]
-        public int IdArquivo { get; set; }
+        public int Id { get; set; }
     }
 }
