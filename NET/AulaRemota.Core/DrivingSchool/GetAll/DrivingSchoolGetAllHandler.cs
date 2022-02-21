@@ -25,12 +25,13 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
         {
             try
             {
-                //return _autoEscolaRepository.Context.Set<AutoEscolaModel>()
-                //            .Include(e => e.Files)
-                //            .Include(e => e.PhonesNumbers)
-                //            .Include(e => e.Address)
-                //            .Include(e => e.User)
-                //            .ToList();
+                if (!String.IsNullOrWhiteSpace(request.Uf))
+                {
+                    return await _autoEscolaRepository.Context.Set<DrivingSchoolModel>()
+                            .Where(e => e.Address.Uf.Equals(request.Uf))
+                            .ToListAsync();
+                }
+                
                 return _autoEscolaRepository.GetAll().ToList();
             }
             catch (CustomException e)

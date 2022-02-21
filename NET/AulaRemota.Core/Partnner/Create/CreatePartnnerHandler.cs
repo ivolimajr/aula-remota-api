@@ -4,8 +4,6 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
-using System;
-using AulaRemota.Infra.Entity.DrivingSchool;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 using System.Net;

@@ -19,11 +19,11 @@ namespace AulaRemota.Api.Controllers
     [Authorize("Bearer")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class EdrivingCargoController : ControllerBase
+    public class EdrivingLevelController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public EdrivingCargoController(IMediator mediator)
+        public EdrivingLevelController(IMediator mediator)
         {
             _mediator = mediator;
         }

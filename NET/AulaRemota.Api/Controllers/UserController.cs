@@ -22,11 +22,11 @@ namespace AulaRemota.Api.Controllers
     [Authorize("Bearer")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class UsuarioController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UsuarioController(IMediator mediator)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }

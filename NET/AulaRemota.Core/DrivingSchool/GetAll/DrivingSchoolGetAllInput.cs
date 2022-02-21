@@ -6,5 +6,6 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
 {
     public class DrivingSchoolGetAllInput : IRequest<List<DrivingSchoolModel>>
     {
+        public string Uf { get; set; }
     }
 }
