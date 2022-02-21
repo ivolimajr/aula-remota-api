@@ -19,7 +19,7 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
 
         public async Task<string> Handle(RevokeTokenInput request, CancellationToken cancellationToken)
         {
-            if (request.UserName == string.Empty) throw new CustomException("Parâmetros Inválidos", HttpStatusCode.BadRequest);
+            if (request.UserName == string.Empty) throw new CustomException("Parâmetros Inválidos");
 
             try
             {

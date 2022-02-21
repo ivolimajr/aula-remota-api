@@ -1,10 +1,12 @@
 ﻿using AulaRemota.Infra.Entity.DrivingSchool;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,11 +33,17 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
                 //            .ToList();
                 return _autoEscolaRepository.GetAll().ToList();
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(DrivingSchoolModel),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.NoContent
+                });
             }
-
         }
     }
 }

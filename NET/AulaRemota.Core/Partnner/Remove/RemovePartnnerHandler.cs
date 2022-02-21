@@ -8,6 +8,7 @@ using AulaRemota.Infra.Entity.DrivingSchool;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace AulaRemota.Core.Partnner.Remove
 {
@@ -45,7 +46,7 @@ namespace AulaRemota.Core.Partnner.Remove
                                         .Where(e => e.Id == request.Id)
                                         .FirstOrDefaultAsync();
 
-                if (parceiro == null) throw new CustomException("Não encontrado");
+                if (parceiro == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 _parceiroRepository.Delete(parceiro);
                 _usuarioRepository.Delete(parceiro.User);
@@ -60,10 +61,17 @@ namespace AulaRemota.Core.Partnner.Remove
                 _parceiroRepository.Commit();
                 return true;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _parceiroRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(RemovePartnnerHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

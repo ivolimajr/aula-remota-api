@@ -32,7 +32,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
 
         public async Task<GenerateTokenResponse> Handle(GenerateTokenInput request, CancellationToken cancellationToken)
         {
-            if (request == null) throw new CustomException("Dados Inválidos", HttpStatusCode.BadRequest);
+            if (request == null) throw new CustomException("Dados Inválidos");
 
             try
             {

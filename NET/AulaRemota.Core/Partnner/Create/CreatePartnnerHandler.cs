@@ -8,6 +8,7 @@ using System;
 using AulaRemota.Infra.Entity.DrivingSchool;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
+using System.Net;
 
 namespace AulaRemota.Core.Partnner.Create
 {
@@ -46,7 +47,7 @@ namespace AulaRemota.Core.Partnner.Create
 
                 //VERIFICA SE O Level INFORMADO EXISTE
                 var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
-                if (Level == null) throw new CustomException("Level informado não existe");
+                if (Level == null) throw new CustomException("Level informado não existe", HttpStatusCode.NotFound);
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.PhonesNumbers)
@@ -120,10 +121,17 @@ namespace AulaRemota.Core.Partnner.Create
                 };
 
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _parceiroRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(CreatePartnnerInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

@@ -3,7 +3,6 @@ using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using AulaRemota.Core.DrivingSchool.Create;
@@ -38,7 +37,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<DrivingSchoolModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<List<DrivingSchoolModel>>> GetAll()
         {
             try
@@ -47,11 +45,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -61,7 +57,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(DrivingSchoolGetOneInput), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<DrivingSchoolGetOneInput>> Get(int id)
         {
             try
@@ -71,11 +66,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -85,7 +78,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(DrivingSchoolCreateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Post([FromForm] DrivingSchoolCreateInput request)
         {
             try
@@ -94,11 +86,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -108,7 +98,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(PartnnerUpdateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Put([FromForm] DrivingSchoolUpdateInput request)
         {
             try
@@ -117,11 +106,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -139,11 +126,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -155,7 +140,6 @@ namespace AulaRemota.Api.Controllers
         [AllowAnonymous]
         [Route("ArquivoDownload")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<string> ArquivoDownload(DownloadFileFromAzureInput request)
         {
                 var result = await _mediator.Send(new DownloadFileFromAzureInput { FileName = request.FileName });

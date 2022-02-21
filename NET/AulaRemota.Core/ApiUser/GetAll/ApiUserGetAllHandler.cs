@@ -28,8 +28,7 @@ namespace AulaRemota.Core.ApiUser.GetAll
             {
                 var roles = _authUserServices.GetRoles();
                 var email = _authUserServices.Email;
-                var result = await _authUserRepository.Context.Set<ApiUserModel>()
-                    .Include(r => r.Roles).ToListAsync();
+                var result = await _authUserRepository.Context.Set<ApiUserModel>().Include(r => r.Roles).ToListAsync();
                 foreach (var item in result)
                 {
                     item.RefreshToken = default;

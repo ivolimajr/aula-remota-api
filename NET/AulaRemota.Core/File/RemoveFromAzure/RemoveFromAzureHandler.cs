@@ -16,7 +16,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
         {
             try
             {
-                if (request.TypeUser == null) throw new CustomException(new ResponseModel() { UserMessage = "Informe o tipo de usuário", ModelName = nameof(RemoveFromAzureInput), StatusCode = HttpStatusCode.BadRequest });
+                if (request.TypeUser == null) throw new CustomException("Informe o tipo de usuário", HttpStatusCode.BadRequest );
                 if (request.Files.Count > 0)
                 {
                     var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();

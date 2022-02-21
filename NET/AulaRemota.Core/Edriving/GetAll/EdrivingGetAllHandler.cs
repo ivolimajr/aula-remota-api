@@ -1,8 +1,10 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,11 +30,18 @@ namespace AulaRemota.Core.Edriving.GetAll
                     .Include(t => t.PhonesNumbers)
                     .ToListAsync();
             }
-            catch (System.Exception)
+            catch (CustomException e)
             {
-                throw;
+                _edrivingRepository.Rollback();
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingGetAllInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
-
         }
     }
 }

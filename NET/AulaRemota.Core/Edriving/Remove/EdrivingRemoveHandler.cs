@@ -4,10 +4,9 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
-using AulaRemota.Infra.Entity.DrivingSchool;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace AulaRemota.Core.Edriving.Remove
 {
@@ -40,7 +39,7 @@ namespace AulaRemota.Core.Edriving.Remove
                                         .Include(e => e.PhonesNumbers)
                                         .Where(e => e.Id == request.Id)
                                         .FirstOrDefaultAsync();
-                if (edriving == null) throw new CustomException("Não encontrado");
+                if (edriving == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 _edrivingRepository.Delete(edriving);
                 _usuarioRepository.Delete(edriving.User);
@@ -55,10 +54,17 @@ namespace AulaRemota.Core.Edriving.Remove
                 _edrivingRepository.Commit();
                 return true;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _edrivingRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingRemoveInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

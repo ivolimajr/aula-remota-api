@@ -2,12 +2,11 @@
 using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AulaRemota.Infra.Entity.DrivingSchool;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 
 namespace AulaRemota.Core.Edriving.Update
 {
@@ -50,7 +49,7 @@ namespace AulaRemota.Core.Edriving.Update
                             .FirstOrDefault();
 
                 //SE FOR NULO RETORNA NÃO ENCONTRADO
-                if (entity == null) throw new CustomException("Não Encontrado");
+                if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 //ATUALIZA EMAIL SE INFORMADO - TANTO DO USUÁRIO COMO DO EDRIVING
                 if (request.Email != null && request.Email != entity.Email)
@@ -85,7 +84,7 @@ namespace AulaRemota.Core.Edriving.Update
                 {
                     //VERIFICA SE O Level INFORMADO EXISTE
                     var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
-                    if (Level == null) throw new CustomException("Level Não Encontrado");
+                    if (Level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
 
                     //SE O Level EXISTE, O Level SERÁ ATUALIZADO
                     entity.LevelId = Level.Id;
@@ -140,10 +139,17 @@ namespace AulaRemota.Core.Edriving.Update
                     User = entity.User
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _edrivingRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingUpdateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

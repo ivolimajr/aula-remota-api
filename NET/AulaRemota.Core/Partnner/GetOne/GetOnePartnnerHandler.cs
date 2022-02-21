@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
+using System.Net;
 
 namespace AulaRemota.Core.Partnner.GetOne
 {
@@ -26,7 +26,7 @@ namespace AulaRemota.Core.Partnner.GetOne
             try
             {
                 var res = await _parceiroRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new CustomException("Não Encontrado");
+                if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 var result = await _parceiroRepository.Context
                         .Set<PartnnerModel>()
@@ -53,11 +53,17 @@ namespace AulaRemota.Core.Partnner.GetOne
                     User = result.User,
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(GetOnePartnnerInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
-
         }
     }
 }

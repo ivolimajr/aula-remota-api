@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System;
+using System.Net;
 
 namespace AulaRemota.Core.User.UpdatePassword
 {
@@ -24,10 +25,10 @@ namespace AulaRemota.Core.User.UpdatePassword
             try
             {
                 var user = await _usuarioRepository.GetByIdAsync(request.Id);
-                if (user == null) throw new CustomException("Não Encontrado");
+                if (user == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
-                if (!checkPass) throw new CustomException("Senha atual inválida");
+                if (!checkPass) throw new CustomException("Senha atual inválida", HttpStatusCode.Unauthorized);
 
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 _usuarioRepository.Update(user);
@@ -35,9 +36,16 @@ namespace AulaRemota.Core.User.UpdatePassword
 
                 return true;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(UpdatePasswordInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
 
         }

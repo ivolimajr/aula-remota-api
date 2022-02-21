@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System;
+using System.Net;
 
 namespace AulaRemota.Core.Edriving.GetOne
 {
@@ -26,7 +27,7 @@ namespace AulaRemota.Core.Edriving.GetOne
             try
             {
                 var res = await _edrivingRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new CustomException("Não Encontrado");
+                if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 var result = await _edrivingRepository.Context
                         .Set<EdrivingModel>()
@@ -50,9 +51,17 @@ namespace AulaRemota.Core.Edriving.GetOne
                     User= result.User
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                _edrivingRepository.Rollback();
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingGetOneInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
 
         }

@@ -36,7 +36,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<PartnnerModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<List<PartnnerModel>>> GetAll()
         {
             try
@@ -47,10 +46,6 @@ namespace AulaRemota.Api.Controllers
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
         }
         /// <summary>
         /// Retorna um item com o parceiro solicitado por ID
@@ -59,7 +54,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(GetOnePartnnerResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<GetOnePartnnerResponse>> Get(int id)
         {
             try
@@ -71,10 +65,6 @@ namespace AulaRemota.Api.Controllers
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
         }
         /// <summary>
         /// Insere um novo parceiro
@@ -83,7 +73,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreatePartnnerResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Post([FromBody] CreatePartnnerInput request)
         {
             try
@@ -92,11 +81,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -106,7 +93,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(PartnnerUpdateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Put([FromBody] PartnnerUpdateInput request)
         {
             try
@@ -115,11 +101,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -137,11 +121,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
     }

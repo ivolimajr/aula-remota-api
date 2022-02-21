@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace AulaRemota.Core.DrivingSchool.GetOne
 {
@@ -32,7 +33,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if (result == null) throw new CustomException("Não encontrado");
+                if (result == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
 
 
                 return new DrivingSchoolGetOneResponse

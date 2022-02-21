@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Shared.Helpers.Constants;
 using AulaRemota.Core.File.RemoveFromAzure;
+using System.Net;
 
 namespace AulaRemota.Core.DrivingSchool.Create
 {

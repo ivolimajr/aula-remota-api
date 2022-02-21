@@ -6,18 +6,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace AulaRemota.Core.EdrivingLevel.GetOne
+namespace AulaRemota.Core.PartnnerLevel.GetOne
 {
-    public class EdrivingLevelGetOneHandler : IRequestHandler<EdrivingLevelGetOneInput, EdrivingLevelModel>
+    public class PartnnerLevelGetOneHandler : IRequestHandler<PartnnerLevelGetOneInput, PartnnerLevelModel>
     {
-        private readonly IRepository<EdrivingLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
 
-        public EdrivingLevelGetOneHandler(IRepository<EdrivingLevelModel> edrivingCargoRepository)
+        public PartnnerLevelGetOneHandler(IRepository<PartnnerLevelModel> edrivingCargoRepository)
         {
             _edrivingCargoRepository = edrivingCargoRepository;
         }
 
-        public async Task<EdrivingLevelModel> Handle(EdrivingLevelGetOneInput request, CancellationToken cancellationToken)
+        public async Task<PartnnerLevelModel> Handle(PartnnerLevelGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
@@ -33,12 +33,13 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
-                    ModelName = nameof(EdrivingLevelGetOneInput),
+                    ModelName = nameof(PartnnerLevelGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
                     StatusCode = e.ResponseModel.StatusCode
                 });
             }
+
         }
     }
 }

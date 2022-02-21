@@ -1,8 +1,8 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,11 +32,17 @@ namespace AulaRemota.Core.Partnner.GetAll
                     .Where(e => e.User.Status > 0)
                     .ToListAsync(); ;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(GetAllPartnnerInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
-
         }
     }
 }

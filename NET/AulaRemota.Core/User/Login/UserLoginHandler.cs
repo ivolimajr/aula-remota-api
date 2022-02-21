@@ -28,7 +28,7 @@ namespace AulaRemota.Core.User.Login
          */
         public async Task<UserLoginResponse> Handle(UserLoginInput request, CancellationToken cancellationToken)
         {
-            if (request.Email == string.Empty) throw new CustomException("Valores Inválidos", HttpStatusCode.BadRequest);
+            if (request.Email == string.Empty) throw new CustomException("Valores Inválidos");
 
             try
             {

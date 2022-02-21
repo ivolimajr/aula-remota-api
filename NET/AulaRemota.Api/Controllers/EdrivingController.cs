@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
@@ -36,7 +35,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<EdrivingModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<List<EdrivingModel>>> GetAll()
         {
             try
@@ -45,11 +43,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -59,7 +55,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(EdrivingGetOneResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async ValueTask<ActionResult<EdrivingGetOneResponse>> Get(int id)
         {
             try
@@ -69,11 +64,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -83,7 +76,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(EdrivingCreateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Post([FromBody] EdrivingCreateInput request)
         {
             try
@@ -92,11 +84,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -106,7 +96,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(EdrivingUpdateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Put([FromBody] EdrivingUpdateInput request)
         {
             try
@@ -115,11 +104,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -137,11 +124,9 @@ namespace AulaRemota.Api.Controllers
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status204NoContent);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
     }

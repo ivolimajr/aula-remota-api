@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Shared.Helpers.Constants;
+using System.Net;
 
 namespace AulaRemota.Core.DrivingSchool.Remove
 {
@@ -54,7 +55,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if (autoEscola == null) throw new CustomException("Não encontrado");
+                if (autoEscola == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
 
                 _autoEscolaRepository.Delete(autoEscola);
                 _usuarioRepository.Delete(autoEscola.User);
@@ -67,7 +68,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                         Files = autoEscola.Files,
                         TypeUser = Constants.Roles.AUTOESCOLA
                     });
-                    if (!result) throw new CustomException("Problema ao remover Files de contrato.");
+                    if (!result) throw new CustomException("Problema ao remover Files de contrato.", HttpStatusCode.InternalServerError);
                 }
 
                 foreach (var item in autoEscola.Files)

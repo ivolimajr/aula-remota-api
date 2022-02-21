@@ -1,11 +1,10 @@
-﻿using AulaRemota.Core.PartnnerCargo.ListarPorId;
-using AulaRemota.Core.PartnnerCargo.ListarTodos;
+﻿using AulaRemota.Core.PartnnerLevel.GetOne;
+using AulaRemota.Core.PartnnerLevel.GetAll;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
@@ -33,20 +32,17 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<PartnnerLevelModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult<List<PartnnerLevelModel>>> GetAll()
         {
             try
             {
-                return Ok(await _mediator.Send(new ParceiroCargoListarTodosInput()));
+                return Ok(await _mediator.Send(new PartnnerLevelGetAllInput()));
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
         /// <summary>
@@ -56,21 +52,18 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(PartnnerLevelModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult<PartnnerLevelModel>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new ParceiroCargoListarPorIdInput { Id = id});
+                var result = await _mediator.Send(new PartnnerLevelGetOneInput { Id = id});
                 return Ok(result);
             }
             catch (CustomException e)
             {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
             }
         }
     }

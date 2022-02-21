@@ -1,5 +1,4 @@
 ﻿using AulaRemota.Shared.Helpers;
-using AulaRemota.Infra.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage;
@@ -20,27 +19,41 @@ namespace AulaRemota.Core.File.UploadToAzure
 
         public async Task<FileUploadToAzureResponse> Handle(FileUploadToAzureInput request, CancellationToken cancellationToken)
         {
-            if (request.Files.Count > 0)
+            try
             {
-                var listaArquivos = new List<FileModel>();
-
-                foreach (var item in request.Files)
+                if (request.Files.Count > 0)
                 {
-                    var fileType = Path.GetExtension(item.FileName);
-                    if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".jpeg")
+                    var listaArquivos = new List<FileModel>();
+
+                    foreach (var item in request.Files)
                     {
-                        var fileResult = await SalvarNoAzure(item, request.TypeUser);
-                        fileResult.Extension = fileType;
-                        listaArquivos.Add(fileResult);
+                        var fileType = Path.GetExtension(item.FileName);
+                        if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".jpeg")
+                        {
+                            var fileResult = await SalvarNoAzure(item, request.TypeUser);
+                            fileResult.Extension = fileType;
+                            listaArquivos.Add(fileResult);
+                        }
+                        else
+                        {
+                            throw new CustomException("Formato de arquivo inválido");
+                        }
                     }
-                    else
-                    {
-                        throw new CustomException("Formato de arquivo inválido");
-                    }
+                    return new FileUploadToAzureResponse() { Files = listaArquivos };
                 }
-                return new FileUploadToAzureResponse() { Files = listaArquivos };
+                return null;
             }
-            return null;
+            catch (CustomException e)
+            {
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(FileUploadToAzureInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
+            }
         }
 
         private async Task<FileModel> SalvarNoAzure(IFormFile arquivo, string tipoUsuario)

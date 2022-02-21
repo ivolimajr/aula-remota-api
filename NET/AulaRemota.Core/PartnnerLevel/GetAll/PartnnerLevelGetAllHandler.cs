@@ -7,21 +7,21 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.EdrivingLevel.GetAll
+namespace AulaRemota.Core.PartnnerLevel.GetAll
 {
-    public class EdrivingLevelGetAllHandler : IRequestHandler<EdrivingLevelGetAllInput, List<EdrivingLevelModel>>
+    public class PartnnerLevelGetAllHandler : IRequestHandler<PartnnerLevelGetAllInput, List<PartnnerLevelModel>>
     {
-        private readonly IRepository<EdrivingLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
 
-        public EdrivingLevelGetAllHandler(IRepository<EdrivingLevelModel> edrivingRepository)
+        public PartnnerLevelGetAllHandler(IRepository<PartnnerLevelModel> edrivingRepository)
         {
             _edrivingCargoRepository = edrivingRepository;
         }
 
-        public async Task<List<EdrivingLevelModel>> Handle(EdrivingLevelGetAllInput request, CancellationToken cancellationToken)
+        public async Task<List<PartnnerLevelModel>> Handle(PartnnerLevelGetAllInput request, CancellationToken cancellationToken)
         {
             try
-            {
+            {   
                 return _edrivingCargoRepository.GetAll().OrderBy(u => u.Level).ToList();
             }
             catch (CustomException e)
@@ -29,7 +29,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
-                    ModelName = nameof(EdrivingLevelGetAllInput),
+                    ModelName = nameof(PartnnerLevelGetAllHandler),
                     Exception = e,
                     InnerException = e.InnerException,
                     StatusCode = e.ResponseModel.StatusCode

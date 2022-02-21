@@ -44,10 +44,6 @@ namespace AulaRemota.Api.Controllers
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
         }
         /// <summary>
         /// Retorna apenas um
@@ -67,10 +63,6 @@ namespace AulaRemota.Api.Controllers
             catch (CustomException e)
             {
                 return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
             }
         }
     }

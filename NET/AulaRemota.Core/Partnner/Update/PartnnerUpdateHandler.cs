@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 
 namespace AulaRemota.Core.Partnner.Update
 {
@@ -48,14 +49,14 @@ namespace AulaRemota.Core.Partnner.Update
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
-                if (entity == null) throw new CustomException("Não Encontrado");
+                if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 //SE FOR INFORMADO UM NOVO Level, O Level ATUAL SERÁ ATUALIZADO
                 if (request.LevelId > 0 && request.LevelId != entity.LevelId)
                 {
                     //VERIFICA SE O Level INFORMADO EXISTE
                     var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
-                    if (Level == null) throw new CustomException("Level Não Encontrado");
+                    if (Level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
 
                     //SE O Level EXISTE, O OBJETO SERÁ ATUALIZADO
                     entity.LevelId = Level.Id;
@@ -130,10 +131,17 @@ namespace AulaRemota.Core.Partnner.Update
                     Address = entity.Address
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _parceiroRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(PartnnerUpdateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
             finally
             {

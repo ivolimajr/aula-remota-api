@@ -38,7 +38,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<ApiUserModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult<List<ApiUserModel>>> GetAll()
         {
             try
@@ -60,7 +59,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiUserModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult<ApiUserModel>> Get(int id)
         {
             try
@@ -84,7 +82,6 @@ namespace AulaRemota.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(ApiUserCreateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<ActionResult> Post([FromBody] ApiUserCreateInput request)
         {
             try
@@ -106,7 +103,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(ApiUserUpdateResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async ValueTask<IActionResult> Put([FromBody] ApiUserUpdateInput request)
         {
             try

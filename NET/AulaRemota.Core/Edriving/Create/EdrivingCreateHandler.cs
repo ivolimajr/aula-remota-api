@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 using AulaRemota.Core.Services;
+using System.Net;
 
 namespace AulaRemota.Core.Edriving.Create
 {
@@ -111,10 +112,17 @@ namespace AulaRemota.Core.Edriving.Create
                     User = edrivingModel.User,
                 };
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
                 _edrivingRepository.Rollback();
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingCreateResponse),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
             finally
             {

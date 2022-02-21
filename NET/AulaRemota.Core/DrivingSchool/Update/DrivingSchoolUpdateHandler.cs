@@ -66,19 +66,19 @@ namespace AulaRemota.Core.DrivingSchool.Update
                 if (!String.IsNullOrWhiteSpace(request.District)) autoEscolaDb.Address.District = request.District;
                 if (!String.IsNullOrWhiteSpace(request.City)) autoEscolaDb.Address.City = request.City;
                 if (!String.IsNullOrWhiteSpace(request.Number)) autoEscolaDb.Address.Number = request.Number;
-                if (request.DataFundacao >= DateTime.Today) throw new CustomException("Data da fundação inválida", HttpStatusCode.BadRequest);
+                if (request.DataFundacao >= DateTime.Today) throw new CustomException("Data da fundação inválida");
                 if (request.DataFundacao.Year > 1700) autoEscolaDb.FoundingDate = request.DataFundacao;
 
 
                 if (!String.IsNullOrWhiteSpace(request.StateRegistration) && !request.StateRegistration.Equals(autoEscolaDb.StateRegistration))
                     if (_autoEscolaRepository.Exists(e => e.StateRegistration == request.StateRegistration))
-                        throw new CustomException("Inscrição estadual já em uso.", HttpStatusCode.BadRequest);
+                        throw new CustomException("Inscrição estadual já em uso.");
                 if (!String.IsNullOrWhiteSpace(request.Cnpj) && !request.Cnpj.Equals(autoEscolaDb.Cnpj))
                     if (_autoEscolaRepository.Exists(e => e.Cnpj == request.Cnpj))
-                        throw new CustomException("CNPJ já em uso.", HttpStatusCode.BadRequest);
+                        throw new CustomException("CNPJ já em uso.");
                 if (!String.IsNullOrWhiteSpace(request.Email) && !request.Email.Equals(autoEscolaDb.Email))
                     if (_autoEscolaRepository.Exists(e => e.Email == request.Email))
-                        throw new CustomException("Email estadual já em uso.", HttpStatusCode.BadRequest);
+                        throw new CustomException("Email estadual já em uso.");
 
                 if (!String.IsNullOrWhiteSpace(request.StateRegistration)) autoEscolaDb.StateRegistration = request.StateRegistration;
                 if (!String.IsNullOrWhiteSpace(request.Cnpj)) autoEscolaDb.Cnpj = request.Cnpj;

@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
-using System;
+using System.Net;
 
 namespace AulaRemota.Core.User.UpdatePasswordByEmail
 {
@@ -24,7 +24,7 @@ namespace AulaRemota.Core.User.UpdatePasswordByEmail
             try
             {
                 var user = await _usuarioRepository.FindAsync(e => e.Email == request.Email);
-                if (user == null) throw new CustomException("Não Encontrado");
+                if (user == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
                 if (!checkPass) throw new CustomException("Senha atual inválida");
@@ -35,11 +35,17 @@ namespace AulaRemota.Core.User.UpdatePasswordByEmail
 
                 return true;
             }
-            catch (Exception e)
+            catch (CustomException e)
             {
-                throw new Exception(e.Message);
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(UpdatePasswordByEmailHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = e.ResponseModel.StatusCode
+                });
             }
-
         }
     }
 }
