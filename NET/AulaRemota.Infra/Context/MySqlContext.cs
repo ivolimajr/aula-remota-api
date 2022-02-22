@@ -67,7 +67,7 @@ namespace AulaRemota.Infra.Context
             modelBuilder.Entity<PartnnerLevelModel>().HasData(
                 new PartnnerLevelModel { Id = 1, Level = Constants.ParceiroCargos.ADMINISTRATIVO },
                 new PartnnerLevelModel { Id = 2, Level = Constants.ParceiroCargos.ANALISTA },
-                new PartnnerLevelModel { Id = 3, Level = Constants.ParceiroCargos.DIRETOR}
+                new PartnnerLevelModel { Id = 3, Level = Constants.ParceiroCargos.EMPRESA}
             );
             modelBuilder.Entity<EdrivingLevelModel>().HasData(
                 new EdrivingLevelModel { Id = 1, Level = Constants.EdrivingCargos.ADMINISTRATIVO },
