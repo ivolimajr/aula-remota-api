@@ -1,5 +1,7 @@
-using AulaRemota.Shared.Configuration;
+using AulaRemota.Api.Code;
+using AulaRemota.Api.Code.Logger;
 using AulaRemota.Infra.Context;
+using AulaRemota.Shared.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -9,16 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Text;
-using AulaRemota.Api.Code;
-using System.Reflection;
 using System.IO;
-using AulaRemota.Api.Code.Logger;
-using Microsoft.Extensions.Logging;
+using System.Reflection;
+using System.Text;
 
 namespace AulaRemota.Api
 {
@@ -72,14 +72,16 @@ namespace AulaRemota.Api
 
             services.AddControllers();
             services.AddApiVersioning();
-
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
-            services.AddDbContext<MySqlContext>(
-                dbContextOptions => dbContextOptions
-                    .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
-                                                                                                  //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors());
+
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion), ServiceLifetime.Transient);
+
+            //services.AddDbContext<MySqlContext>(
+            //    dbContextOptions => dbContextOptions
+            //        .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
+            //                                                                                      //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
+            //        .EnableSensitiveDataLogging()
+            //        .EnableDetailedErrors());
 
             services.AddDependencyInjection();
 

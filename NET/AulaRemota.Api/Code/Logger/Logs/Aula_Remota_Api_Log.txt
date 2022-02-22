@@ -528,3 +528,9 @@ Information: 0 - Application started. Press Ctrl+C to shut down.
 Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
 Warning: 10400 - Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: D:\Documents\Pessoal\Projetos\aulaRemota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: D:\Documents\Pessoal\Projetos\aulaRemota\Universal_Aula_Remota_API\NET\AulaRemota.Api
