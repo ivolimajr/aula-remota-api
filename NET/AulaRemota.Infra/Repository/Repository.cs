@@ -9,11 +9,17 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace AulaRemota.Infra.Repository
 {
-    public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity, TKey> : IDisposable, IRepository<TEntity, TKey> where TEntity : class
     {
         private MySqlContext _context;
         private IDbContextTransaction _transaction;
-
+        public virtual DbSet<TEntity> Model
+        {
+            get
+            {
+                return Context.Set<TEntity>();
+            }
+        }
         public Repository(MySqlContext dbContext)
         {
             _context = dbContext;
@@ -24,70 +30,71 @@ namespace AulaRemota.Infra.Repository
             get { return this._context; }
         }
 
-        public IQueryable<TEntity> GetAll()
-        {
-            return _context.Set<TEntity>();
-        }
-
         //INSERIR
-        TEntity IRepository<TEntity>.Create(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            return entity;
+            Context.Attach(entity);
+            Context.Entry(entity).State = EntityState.Added;
+            var result = Model.Add(entity);
+            return result.Entity;
         }
 
-        public async Task<TEntity> CreateAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            var result = await _context.Set<TEntity>().AddAsync(entity);
+            var result = await Model.AddAsync(entity);
             return result.Entity;
         }
 
         //ATUALIZAR
-        void IRepository<TEntity>.Update(TEntity entity)
+        public virtual void Update(TEntity entity)
         {
-            var result = _context.Set<TEntity>().FirstOrDefault(p => p.Equals(entity));
-            if (result != null) _context.Entry(result).CurrentValues.SetValues(entity);
+            Context.Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.Update(entity);
         }
 
         //BUSCAR COM CLÁUSULA
-        IEnumerable<TEntity> IRepository<TEntity>.GetWhere(Expression<Func<TEntity, bool>> queryLambda)
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).AsEnumerable();
+            IQueryable<TEntity> query = Model.AsNoTracking<TEntity>();
+            return query.Where(filter);
         }
 
-        public TEntity Find(Expression<Func<TEntity, bool>> queryLambda)
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefault();
+            return _context.Set<TEntity>().AsNoTracking().Where(filter).FirstOrDefault();
         }
 
-        public bool Exists(Expression<Func<TEntity, bool>> queryLambda)
+        public bool Exists(Expression<Func<TEntity, bool>> filter)
         {
-            return _context.Set<TEntity>().AsNoTracking().Where(queryLambda).Any();
+            return Model.AsNoTracking<TEntity>().Any(filter);
         }
 
-        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda)
+        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter)
         {
-            return await _context.Set<TEntity>().AsNoTracking().Where(queryLambda).FirstOrDefaultAsync();
+            return await _context.Set<TEntity>().AsNoTracking().Where(filter).FirstOrDefaultAsync();
         }
 
         //REMOVER
-        void IRepository<TEntity>.Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            Context.Attach(entity);
+            Context.Entry(entity).State = EntityState.Deleted;
+            Context.Remove(entity);
         }
 
         //BUSCAR TODOS
-        IEnumerable<TEntity> IRepository<TEntity>.GetAll()
+        public virtual IEnumerable<TEntity> All()
         {
             return _context.Set<TEntity>().AsNoTracking().AsEnumerable();
         }
 
         //BUSCAR POR ID
-        TEntity IRepository<TEntity>.GetById(int id)
+        public virtual TEntity Find(int id)
         {
             return _context.Set<TEntity>().Find(id);
         }
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> FindAsync(int id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }

@@ -11,9 +11,9 @@ namespace AulaRemota.Core.ApiUser.Remove
 {
     public class ApiUserRemoveHandler : IRequestHandler<ApiUserRemoveInput, bool>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserRemoveHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserRemoveHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -22,7 +22,7 @@ namespace AulaRemota.Core.ApiUser.Remove
         {
             try
             {
-                var result = await _authUserRepository.GetByIdAsync(request.Id);
+                var result = await _authUserRepository.FindAsync(request.Id);
                 if (result == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
 
                 _authUserRepository.Delete(result);

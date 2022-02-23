@@ -12,16 +12,16 @@ namespace AulaRemota.Core.Edriving.Update
 {
     public class EdrivingUpdateHandler : IRequestHandler<EdrivingUpdateInput, EdrivingUpdateResponse>
     {
-        private readonly IRepository<EdrivingModel> _edrivingRepository;
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<EdrivingLevelModel> _cargoRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
+        private readonly IRepository<EdrivingLevelModel, int> _cargoRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
         public EdrivingUpdateHandler(
-            IRepository<EdrivingModel> edrivingRepository,
-            IRepository<UserModel> usuarioRepository,
-            IRepository<EdrivingLevelModel> cargoRepository,
-            IRepository<PhoneModel> telefoneRepository
+            IRepository<EdrivingModel, int> edrivingRepository,
+            IRepository<UserModel, int>usuarioRepository,
+            IRepository<EdrivingLevelModel, int> cargoRepository,
+            IRepository<PhoneModel, int> telefoneRepository
             )
         {
             _edrivingRepository = edrivingRepository;
@@ -55,7 +55,7 @@ namespace AulaRemota.Core.Edriving.Update
                 if (request.Email != null && request.Email != entity.Email)
                 {
                     //VERIFICA SE O EMAIL JÁ ESTÁ EM USO POR OUTRO USUÁRIO
-                    var emailUnique = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
+                    var emailUnique = await _usuarioRepository.FirstOrDefaultAsync(u => u.Email == request.Email);
                     if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
 
                     //SE NÃO ESTPA EM USO SET OS ATRIBUTOS
@@ -73,7 +73,7 @@ namespace AulaRemota.Core.Edriving.Update
                 if (request.Cpf != null && request.Cpf != entity.Cpf)
                 {
                     //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                    var cpfUnique = await _edrivingRepository.FindAsync(u => u.Cpf == request.Cpf);
+                    var cpfUnique = await _edrivingRepository.FirstOrDefaultAsync(u => u.Cpf == request.Cpf);
                     if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
 
                     //SE FOR NULO ELE ATUALIZA O CPF
@@ -83,7 +83,7 @@ namespace AulaRemota.Core.Edriving.Update
                 if (request.LevelId > 0 && request.LevelId != entity.LevelId)
                 {
                     //VERIFICA SE O Level INFORMADO EXISTE
-                    var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                    var Level = await _cargoRepository.FindAsync(request.LevelId);
                     if (Level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
 
                     //SE O Level EXISTE, O Level SERÁ ATUALIZADO
@@ -102,7 +102,7 @@ namespace AulaRemota.Core.Edriving.Update
 
 
                             //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.PhoneNumber == item.PhoneNumber);
+                            var telefoneResult = await _telefoneRepository.FirstOrDefaultAsync(e => e.PhoneNumber == item.PhoneNumber);
 
                             //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
                             if (item.Id == 0)

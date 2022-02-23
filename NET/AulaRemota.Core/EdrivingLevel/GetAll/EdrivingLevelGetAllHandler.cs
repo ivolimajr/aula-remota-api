@@ -11,9 +11,9 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
 {
     public class EdrivingLevelGetAllHandler : IRequestHandler<EdrivingLevelGetAllInput, List<EdrivingLevelModel>>
     {
-        private readonly IRepository<EdrivingLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<EdrivingLevelModel, int> _edrivingCargoRepository;
 
-        public EdrivingLevelGetAllHandler(IRepository<EdrivingLevelModel> edrivingRepository)
+        public EdrivingLevelGetAllHandler(IRepository<EdrivingLevelModel, int> edrivingRepository)
         {
             _edrivingCargoRepository = edrivingRepository;
         }
@@ -22,7 +22,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
         {
             try
             {
-                return _edrivingCargoRepository.GetAll().OrderBy(u => u.Level).ToList();
+                return _edrivingCargoRepository.All().OrderBy(u => u.Level).ToList();
             }
             catch (CustomException e)
             {

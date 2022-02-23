@@ -15,9 +15,9 @@ namespace AulaRemota.Core.User.Login
 {
     public class UserLoginHandler : IRequestHandler<UserLoginInput, UserLoginResponse>
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
 
-        public UserLoginHandler(IRepository<UserModel> usuarioRepository)
+        public UserLoginHandler(IRepository<UserModel, int>usuarioRepository)
         {
             _usuarioRepository = usuarioRepository;
         }

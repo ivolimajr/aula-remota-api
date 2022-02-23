@@ -12,16 +12,16 @@ namespace AulaRemota.Core.Partnner.Create
 {
     public class CreatePartnnerHandler : IRequestHandler<CreatePartnnerInput, CreatePartnnerResponse>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<PartnnerLevelModel> _cargoRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
+        private readonly IRepository<PartnnerLevelModel, int>_cargoRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
         public CreatePartnnerHandler(
-            IRepository<PartnnerModel> parceiroRepository, 
-            IRepository<UserModel> usuarioRepository, 
-            IRepository<PartnnerLevelModel> cargoRepository,
-            IRepository<PhoneModel> telefoneRepository)
+            IRepository<PartnnerModel, int> parceiroRepository, 
+            IRepository<UserModel, int>usuarioRepository, 
+            IRepository<PartnnerLevelModel, int>cargoRepository,
+            IRepository<PhoneModel, int> telefoneRepository)
         {
             _parceiroRepository = parceiroRepository;
             _usuarioRepository = usuarioRepository;
@@ -36,21 +36,21 @@ namespace AulaRemota.Core.Partnner.Create
                 _parceiroRepository.CreateTransaction();
 
                 //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                var emailResult = await _usuarioRepository.FindAsync(u => u.Email == request.Email);
+                var emailResult = await _usuarioRepository.FirstOrDefaultAsync(u => u.Email == request.Email);
                 if (emailResult != null) throw new CustomException("Email já em uso");
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                var cpfResult = await _parceiroRepository.FindAsync(u => u.Cnpj == request.Cnpj);
+                var cpfResult = await _parceiroRepository.FirstOrDefaultAsync(u => u.Cnpj == request.Cnpj);
                 if (cpfResult != null) throw new CustomException("Cnpj já existe em nossa base de dados");
 
                 //VERIFICA SE O Level INFORMADO EXISTE
-                var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                var Level = await _cargoRepository.FindAsync(request.LevelId);
                 if (Level == null) throw new CustomException("Level informado não existe", HttpStatusCode.NotFound);
 
                 //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.PhonesNumbers)
                 {
-                    var telefoneResult = await _telefoneRepository.FindAsync(u => u.PhoneNumber == item.PhoneNumber);
+                    var telefoneResult = await _telefoneRepository.FirstOrDefaultAsync(u => u.PhoneNumber == item.PhoneNumber);
                     if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
                 }
 
@@ -69,7 +69,7 @@ namespace AulaRemota.Core.Partnner.Create
                         }
                     }
                 };
-                user = _usuarioRepository.Create(user);
+                user = _usuarioRepository.Add(user);
                 _usuarioRepository.SaveChanges();
 
                 //CRIA UM ENDEREÇO
@@ -97,7 +97,7 @@ namespace AulaRemota.Core.Partnner.Create
                     User = user
                 };
 
-                var parceiroModel = await _parceiroRepository.CreateAsync(parceiro);
+                var parceiroModel = await _parceiroRepository.AddAsync(parceiro);
                 _parceiroRepository.SaveChanges();
 
                 _parceiroRepository.Commit();

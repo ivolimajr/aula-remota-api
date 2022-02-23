@@ -12,9 +12,9 @@ namespace AulaRemota.Core.Partnner.GetOne
 {
     public class GetOnePartnnerHandler : IRequestHandler<GetOnePartnnerInput, GetOnePartnnerResponse>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
+        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
 
-        public GetOnePartnnerHandler(IRepository<PartnnerModel> parceiroRepository)
+        public GetOnePartnnerHandler(IRepository<PartnnerModel, int> parceiroRepository)
         {
             _parceiroRepository = parceiroRepository;
         }
@@ -25,7 +25,7 @@ namespace AulaRemota.Core.Partnner.GetOne
 
             try
             {
-                var res = await _parceiroRepository.GetByIdAsync(request.Id);
+                var res = await _parceiroRepository.FindAsync(request.Id);
                 if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 var result = await _parceiroRepository.Context

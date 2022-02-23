@@ -11,9 +11,9 @@ namespace AulaRemota.Core.User.UpdateAddress
 {
     public class UserAddressUpdateHandler : IRequestHandler<UserAddressUpdateInput, AddressModel>
     {
-        private readonly IRepository<AddressModel> _enderecoRepository;
+        private readonly IRepository<AddressModel, int> _enderecoRepository;
 
-        public UserAddressUpdateHandler(IRepository<AddressModel> enderecoRepository)
+        public UserAddressUpdateHandler(IRepository<AddressModel, int> enderecoRepository)
         {
             _enderecoRepository = enderecoRepository;
         }
@@ -24,7 +24,7 @@ namespace AulaRemota.Core.User.UpdateAddress
 
             try
             {
-                var entity = await _enderecoRepository.GetByIdAsync(request.Id);
+                var entity = await _enderecoRepository.FindAsync(request.Id);
                 if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 

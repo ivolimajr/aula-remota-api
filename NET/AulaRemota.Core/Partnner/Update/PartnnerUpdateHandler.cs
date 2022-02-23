@@ -14,16 +14,16 @@ namespace AulaRemota.Core.Partnner.Update
 {
     public class PartnnerUpdateHandler : IRequestHandler<PartnnerUpdateInput, PartnnerUpdateResponse>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<PartnnerLevelModel> _cargoRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
+        private readonly IRepository<PartnnerLevelModel, int>_cargoRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
         public PartnnerUpdateHandler(
-                IRepository<PartnnerModel> parceiroRepository,
-                IRepository<UserModel> usuarioRepository,
-                IRepository<PartnnerLevelModel> cargoRepository,
-                IRepository<PhoneModel> telefoneRepository
+                IRepository<PartnnerModel, int> parceiroRepository,
+                IRepository<UserModel, int>usuarioRepository,
+                IRepository<PartnnerLevelModel, int>cargoRepository,
+                IRepository<PhoneModel, int> telefoneRepository
          )
         {
             _parceiroRepository = parceiroRepository;
@@ -55,7 +55,7 @@ namespace AulaRemota.Core.Partnner.Update
                 if (request.LevelId > 0 && request.LevelId != entity.LevelId)
                 {
                     //VERIFICA SE O Level INFORMADO EXISTE
-                    var Level = await _cargoRepository.GetByIdAsync(request.LevelId);
+                    var Level = await _cargoRepository.FindAsync(request.LevelId);
                     if (Level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
 
                     //SE O Level EXISTE, O OBJETO SERÁ ATUALIZADO
@@ -72,7 +72,7 @@ namespace AulaRemota.Core.Partnner.Update
                         if (!entity.PhonesNumbers.Any(e => e.PhoneNumber == item.PhoneNumber))
                         {
                             //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FindAsync(e => e.PhoneNumber == item.PhoneNumber);
+                            var telefoneResult = await _telefoneRepository.FirstOrDefaultAsync(e => e.PhoneNumber == item.PhoneNumber);
 
                             //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
                             if (item.Id == 0)

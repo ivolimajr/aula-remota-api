@@ -14,16 +14,16 @@ namespace AulaRemota.Core.Partnner.Remove
 {
     public class RemovePartnnerHandler : IRequestHandler<RemovePartnnerInput, bool>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<AddressModel> _enderecoRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
+        private readonly IRepository<UserModel, int> _usuarioRepository;
+        private readonly IRepository<AddressModel, int> _enderecoRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
         public RemovePartnnerHandler(
-            IRepository<PartnnerModel> parceiroRepository, 
-            IRepository<UserModel> usuarioRepository, 
-            IRepository<AddressModel> enderecoRepository,
-            IRepository<PhoneModel> telefoneRepository
+            IRepository<PartnnerModel, int> parceiroRepository, 
+            IRepository<UserModel, int> usuarioRepository, 
+            IRepository<AddressModel, int> enderecoRepository,
+            IRepository<PhoneModel, int> telefoneRepository
             )
         {
             _parceiroRepository = parceiroRepository;

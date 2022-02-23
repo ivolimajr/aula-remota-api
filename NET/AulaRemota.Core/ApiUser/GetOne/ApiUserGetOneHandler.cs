@@ -4,7 +4,6 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 
@@ -12,9 +11,9 @@ namespace AulaRemota.Core.ApiUser.GetOne
 {
     public class ApiUserGetOneHandler : IRequestHandler<ApiUserGetOneInput, ApiUserModel>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserGetOneHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserGetOneHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -23,7 +22,18 @@ namespace AulaRemota.Core.ApiUser.GetOne
         {
             try
             {
-                var result = await _authUserRepository.Context.Set<ApiUserModel>().Include(e => e.Roles).Where(e => e.Id == request.Id).FirstOrDefaultAsync(); 
+                var result = _authUserRepository.Context
+                    .Set<ApiUserModel>()
+                    .Select(e => new ApiUserModel
+                    {
+                        Id = e.Id,
+                        UserName = e.UserName,
+                        Name = e.Name,
+                        Roles = e.Roles,
+                        RefreshTokenExpiryTime = e.RefreshTokenExpiryTime,
+                    })
+                    .Where(e => e.Id.Equals(request.Id))
+                    .FirstOrDefault();
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
                 result.Password = default;
                 result.RefreshToken = default;

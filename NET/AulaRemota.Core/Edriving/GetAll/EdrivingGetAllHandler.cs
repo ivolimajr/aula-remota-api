@@ -12,9 +12,9 @@ namespace AulaRemota.Core.Edriving.GetAll
 {
     public class EdrivingGetAllHandler : IRequestHandler<EdrivingGetAllInput, List<EdrivingModel>>
     {
-        private readonly IRepository<EdrivingModel> _edrivingRepository;
+        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
 
-        public EdrivingGetAllHandler(IRepository<EdrivingModel> edrivingRepository)
+        public EdrivingGetAllHandler(IRepository<EdrivingModel, int> edrivingRepository)
         {
             _edrivingRepository = edrivingRepository;
         }

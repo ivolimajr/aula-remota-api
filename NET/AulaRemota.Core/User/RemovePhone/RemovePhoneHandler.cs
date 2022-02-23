@@ -11,9 +11,9 @@ namespace AulaRemota.Core.User.RemovePhone
 {
     public class RemovePhoneHandler : IRequestHandler<RemovePhoneInput, bool>
     {
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
-        public RemovePhoneHandler(IRepository<PhoneModel> telefoneRepository)
+        public RemovePhoneHandler(IRepository<PhoneModel, int> telefoneRepository)
         {
             _telefoneRepository = telefoneRepository;
         }
@@ -24,7 +24,7 @@ namespace AulaRemota.Core.User.RemovePhone
 
             try
             {
-                var result = _telefoneRepository.GetById(request.Id);
+                var result = _telefoneRepository.Find(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 _telefoneRepository.Delete(result);

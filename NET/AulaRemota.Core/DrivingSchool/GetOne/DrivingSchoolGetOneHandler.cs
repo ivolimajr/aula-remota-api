@@ -12,12 +12,9 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
 {
     public class DrivingSchoolGetOneHandler : IRequestHandler<DrivingSchoolGetOneInput, DrivingSchoolGetOneResponse>
     {
-        private readonly IRepository<DrivingSchoolModel> _autoEscolaRepository;
+        private readonly IRepository<DrivingSchoolModel, int> _autoEscolaRepository;
 
-        public DrivingSchoolGetOneHandler(IRepository<DrivingSchoolModel> autoEscolaRepository)
-        {
-            _autoEscolaRepository = autoEscolaRepository;
-        }
+        public DrivingSchoolGetOneHandler(IRepository<DrivingSchoolModel, int> autoEscolaRepository) => _autoEscolaRepository = autoEscolaRepository;
 
         public async Task<DrivingSchoolGetOneResponse> Handle(DrivingSchoolGetOneInput request, CancellationToken cancellationToken)
         {
@@ -30,6 +27,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     .Include(e => e.Address)
                     .Include(e => e.Files)
                     .Include(e => e.User)
+                    //.Include(e => e.User.Roles)
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
@@ -57,7 +55,6 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
             }
             catch (CustomException e)
             {
-                _autoEscolaRepository.Rollback();
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,

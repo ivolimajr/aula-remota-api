@@ -12,14 +12,14 @@ namespace AulaRemota.Core.Edriving.Remove
 {
     public class EdrivingRemoveHandler : IRequestHandler<EdrivingRemoveInput, bool>
     {
-        private readonly IRepository<EdrivingModel> _edrivingRepository;
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
         public EdrivingRemoveHandler(
-            IRepository<EdrivingModel> edrivingRepository, 
-            IRepository<UserModel> usuarioRepository, 
-            IRepository<PhoneModel> telefoneRepository
+            IRepository<EdrivingModel, int> edrivingRepository, 
+            IRepository<UserModel, int>usuarioRepository, 
+            IRepository<PhoneModel, int> telefoneRepository
             )
         {
             _edrivingRepository = edrivingRepository;

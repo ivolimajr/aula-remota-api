@@ -21,7 +21,7 @@ namespace AulaRemota.Core.File.UploadToAzure
         {
             try
             {
-                if (request.Files.Count > 0)
+                if (request.Files != null && request.Files.Count > 0)
                 {
                     var listaArquivos = new List<FileModel>();
 

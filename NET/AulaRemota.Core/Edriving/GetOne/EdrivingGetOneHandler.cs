@@ -13,9 +13,9 @@ namespace AulaRemota.Core.Edriving.GetOne
 {
     public class EdrivingGetOneHandler : IRequestHandler<EdrivingGetOneInput, EdrivingGetOneResponse>
     {
-        private readonly IRepository<EdrivingModel> _edrivingRepository;
+        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
 
-        public EdrivingGetOneHandler(IRepository<EdrivingModel> edrivingRepository)
+        public EdrivingGetOneHandler(IRepository<EdrivingModel, int> edrivingRepository)
         {
             _edrivingRepository = edrivingRepository;
         }
@@ -26,7 +26,7 @@ namespace AulaRemota.Core.Edriving.GetOne
 
             try
             {
-                var res = await _edrivingRepository.GetByIdAsync(request.Id);
+                var res = await _edrivingRepository.FindAsync(request.Id);
                 if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 var result = await _edrivingRepository.Context

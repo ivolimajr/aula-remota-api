@@ -1,10 +1,10 @@
-﻿using AulaRemota.Core.Services;
-using AulaRemota.Infra.Entity.Auth;
+﻿using AulaRemota.Infra.Entity.Auth;
 using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,28 +13,29 @@ namespace AulaRemota.Core.ApiUser.GetAll
 {
     public class ApiUserGetAllHandler : IRequestHandler<ApiUserGetAllInput, List<ApiUserModel>>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
-        private readonly AuthenticatedUserServices _authUserServices;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserGetAllHandler(IRepository<ApiUserModel> authUserRepository, AuthenticatedUserServices authenticatedUserServices)
+        public ApiUserGetAllHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
-            _authUserServices = authenticatedUserServices;
         }
 
         public async Task<List<ApiUserModel>> Handle(ApiUserGetAllInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var roles = _authUserServices.GetRoles();
-                var email = _authUserServices.Email;
-                var result = await _authUserRepository.Context.Set<ApiUserModel>().Include(r => r.Roles).ToListAsync();
-                foreach (var item in result)
-                {
-                    item.RefreshToken = default;
-                    item.Password = default;
-                }
-                return result;
+                var newsDtoList = await _authUserRepository.Context
+                    .Set<ApiUserModel>()
+                    .Select(x => new ApiUserModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Roles = x.Roles,
+                        UserName = x.UserName,
+                        RefreshTokenExpiryTime = x.RefreshTokenExpiryTime,
+                    })
+                    .ToListAsync();
+                return newsDtoList;
             }
             catch (CustomException e)
             {

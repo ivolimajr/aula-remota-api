@@ -16,10 +16,10 @@ namespace AulaRemota.Core.File.RemoveFile
 {
     public class RemoveFileHandler : IRequestHandler<RemoveFileInput, bool>
     {
-        private readonly IRepository<FileModel> _arquivoRepository;
+        private readonly IRepository<FileModel, int> _arquivoRepository;
         private readonly IMediator _mediator;
 
-        public RemoveFileHandler(IRepository<FileModel> arquivoRepository, IMediator mediator)
+        public RemoveFileHandler(IRepository<FileModel, int> arquivoRepository, IMediator mediator)
         {
             _arquivoRepository = arquivoRepository;
             _mediator = mediator;

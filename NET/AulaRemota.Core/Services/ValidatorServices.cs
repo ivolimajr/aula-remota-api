@@ -7,10 +7,10 @@ namespace AulaRemota.Core.Services
 {
     public class ValidatorServices : IValidatorServices
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
-        private readonly IRepository<PhoneModel> _telefoneRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
+        private readonly IRepository<PhoneModel, int> _telefoneRepository;
 
-        public ValidatorServices(IRepository<UserModel> usuarioRepository, IRepository<PhoneModel> telefoneRepository)
+        public ValidatorServices(IRepository<UserModel, int>usuarioRepository, IRepository<PhoneModel, int> telefoneRepository)
         {
             _usuarioRepository = usuarioRepository;
             _telefoneRepository = telefoneRepository;
@@ -18,7 +18,7 @@ namespace AulaRemota.Core.Services
 
         public bool EmailValidator(string email)
         {
-            var result = _usuarioRepository.Find(e => e.Email.ToLower() == email.ToLower()).Email;
+            var result = _usuarioRepository.FirstOrDefault(e => e.Email.ToLower() == email.ToLower()).Email;
             if (String.IsNullOrEmpty(result)) return false;
             return true;
         }
@@ -27,7 +27,7 @@ namespace AulaRemota.Core.Services
         {
             foreach (var item in phoneList)
             {
-                var result = _telefoneRepository.Find(e => e.PhoneNumber == item.PhoneNumber);
+                var result = _telefoneRepository.FirstOrDefault(e => e.PhoneNumber == item.PhoneNumber);
                 if (result != null) return false;
             }
             return true;

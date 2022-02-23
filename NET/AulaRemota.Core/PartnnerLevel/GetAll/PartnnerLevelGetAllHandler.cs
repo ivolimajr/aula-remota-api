@@ -11,9 +11,9 @@ namespace AulaRemota.Core.PartnnerLevel.GetAll
 {
     public class PartnnerLevelGetAllHandler : IRequestHandler<PartnnerLevelGetAllInput, List<PartnnerLevelModel>>
     {
-        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel, int>_edrivingCargoRepository;
 
-        public PartnnerLevelGetAllHandler(IRepository<PartnnerLevelModel> edrivingRepository)
+        public PartnnerLevelGetAllHandler(IRepository<PartnnerLevelModel, int>edrivingRepository)
         {
             _edrivingCargoRepository = edrivingRepository;
         }
@@ -22,7 +22,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetAll
         {
             try
             {   
-                return _edrivingCargoRepository.GetAll().OrderBy(u => u.Level).ToList();
+                return _edrivingCargoRepository.All().OrderBy(u => u.Level).ToList();
             }
             catch (CustomException e)
             {

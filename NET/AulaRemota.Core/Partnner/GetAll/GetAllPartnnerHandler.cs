@@ -12,9 +12,9 @@ namespace AulaRemota.Core.Partnner.GetAll
 {
     public class GetAllPartnnerHandler : IRequestHandler<GetAllPartnnerInput, List<PartnnerModel>>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
+        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
 
-        public GetAllPartnnerHandler(IRepository<PartnnerModel> parceiroRepository)
+        public GetAllPartnnerHandler(IRepository<PartnnerModel, int> parceiroRepository)
         {
             _parceiroRepository = parceiroRepository;
         }

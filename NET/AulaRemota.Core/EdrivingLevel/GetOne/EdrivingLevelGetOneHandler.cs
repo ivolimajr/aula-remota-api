@@ -10,9 +10,9 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
 {
     public class EdrivingLevelGetOneHandler : IRequestHandler<EdrivingLevelGetOneInput, EdrivingLevelModel>
     {
-        private readonly IRepository<EdrivingLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<EdrivingLevelModel, int> _edrivingCargoRepository;
 
-        public EdrivingLevelGetOneHandler(IRepository<EdrivingLevelModel> edrivingCargoRepository)
+        public EdrivingLevelGetOneHandler(IRepository<EdrivingLevelModel, int> edrivingCargoRepository)
         {
             _edrivingCargoRepository = edrivingCargoRepository;
         }
@@ -23,7 +23,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
 
             try
             {
-                var result = await _edrivingCargoRepository.GetByIdAsync(request.Id);
+                var result = await _edrivingCargoRepository.FindAsync(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 return result;

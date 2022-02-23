@@ -2,21 +2,19 @@
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Repository;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
-using System.Net;
 
 namespace AulaRemota.Core.ApiUser.Create
 {
     public class ApiUserCreateHandler : IRequestHandler<ApiUserCreateInput, ApiUserCreateResponse>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserCreateHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserCreateHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -25,8 +23,7 @@ namespace AulaRemota.Core.ApiUser.Create
         {
             try
             {
-                _authUserRepository.CreateTransaction();
-                var userValidate = _authUserRepository.Find(u => u.UserName == request.UserName);
+                var userValidate = _authUserRepository.FirstOrDefault(u => u.UserName == request.UserName);
                 if (userValidate != null) throw new CustomException("Usuário já cadastrado");
 
                 var user = new ApiUserModel()
@@ -42,9 +39,8 @@ namespace AulaRemota.Core.ApiUser.Create
                         }
                     }
                 };
-                var userResult = await _authUserRepository.CreateAsync(user);
+                var userResult = await _authUserRepository.AddAsync(user);
 
-                _authUserRepository.Commit();
                 _authUserRepository.Save();
 
                 return new ApiUserCreateResponse
@@ -57,7 +53,6 @@ namespace AulaRemota.Core.ApiUser.Create
             }
             catch (CustomException e)
             {
-                _authUserRepository.Rollback();
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
@@ -66,10 +61,6 @@ namespace AulaRemota.Core.ApiUser.Create
                     InnerException = e.InnerException,
                     StatusCode = e.ResponseModel.StatusCode
                 });
-            }
-            finally
-            {
-                _authUserRepository.Context.Dispose();
             }
         }
     }

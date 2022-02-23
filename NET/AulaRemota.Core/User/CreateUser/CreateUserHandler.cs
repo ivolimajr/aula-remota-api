@@ -10,9 +10,9 @@ namespace AulaRemota.Core.User.CreateUser
 {
     class CreateUserHandler : IRequestHandler<CreateUserInput, CreateUserResponse>
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<UserModel, int>_usuarioRepository;
 
-        public CreateUserHandler(IRepository<UserModel> usuarioRepository)
+        public CreateUserHandler(IRepository<UserModel, int>usuarioRepository)
         {
             _usuarioRepository = usuarioRepository;
         }
@@ -20,7 +20,7 @@ namespace AulaRemota.Core.User.CreateUser
         {
             if (request.Email == string.Empty) throw new CustomException("Valores Inválidos");
 
-            var userExists = _usuarioRepository.Find(u => u.Email == request.Email);
+            var userExists = _usuarioRepository.FirstOrDefault(u => u.Email == request.Email);
             if (userExists != null) throw new CustomException("Email já em uso");
 
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -34,7 +34,7 @@ namespace AulaRemota.Core.User.CreateUser
 
             try
             {
-                UserModel user = await _usuarioRepository.CreateAsync(User);
+                UserModel user = await _usuarioRepository.AddAsync(User);
                 return new CreateUserResponse
                 {
                     Id = user.Id,
