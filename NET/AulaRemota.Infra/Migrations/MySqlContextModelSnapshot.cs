@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace AulaRemota.Infra.Migrations
 {
     [DbContext(typeof(MySqlContext))]
@@ -14,8 +16,8 @@ namespace AulaRemota.Infra.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.8");
+                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("ApiUserModelRolesModel", b =>
                 {
@@ -457,7 +459,7 @@ namespace AulaRemota.Infra.Migrations
                         new
                         {
                             Id = 3,
-                            Level = "DIRETOR"
+                            Level = "EMPRESA"
                         });
                 });
 
@@ -852,7 +854,7 @@ namespace AulaRemota.Infra.Migrations
             modelBuilder.Entity("AulaRemota.Infra.Entity.PhoneModel", b =>
                 {
                     b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", "Administrative")
-                        .WithMany("PhonesNumber")
+                        .WithMany("PhonesNumbers")
                         .HasForeignKey("AdministrativeId");
 
                     b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", "DrivingSchool")
@@ -860,7 +862,7 @@ namespace AulaRemota.Infra.Migrations
                         .HasForeignKey("DrivingSchoolId");
 
                     b.HasOne("AulaRemota.Infra.Entity.EdrivingModel", "Edriving")
-                        .WithMany("PhonesNumber")
+                        .WithMany("PhonesNumbers")
                         .HasForeignKey("EdrivingId");
 
                     b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.InstructorModel", "Instructor")
@@ -868,7 +870,7 @@ namespace AulaRemota.Infra.Migrations
                         .HasForeignKey("InstructorId");
 
                     b.HasOne("AulaRemota.Infra.Entity.PartnnerModel", "Partnner")
-                        .WithMany("PhonesNumber")
+                        .WithMany("PhonesNumbers")
                         .HasForeignKey("PartnnerId");
 
                     b.HasOne("AulaRemota.Infra.Entity.DrivingSchool.StudentModel", "Student")
@@ -948,7 +950,7 @@ namespace AulaRemota.Infra.Migrations
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.AdministrativeModel", b =>
                 {
-                    b.Navigation("PhonesNumber");
+                    b.Navigation("PhonesNumbers");
                 });
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.DrivingSchool.DrivingSchoolModel", b =>
@@ -992,7 +994,7 @@ namespace AulaRemota.Infra.Migrations
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.EdrivingModel", b =>
                 {
-                    b.Navigation("PhonesNumber");
+                    b.Navigation("PhonesNumbers");
                 });
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerLevelModel", b =>
@@ -1002,7 +1004,7 @@ namespace AulaRemota.Infra.Migrations
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.PartnnerModel", b =>
                 {
-                    b.Navigation("PhonesNumber");
+                    b.Navigation("PhonesNumbers");
                 });
 
             modelBuilder.Entity("AulaRemota.Infra.Entity.UserModel", b =>

@@ -6,12 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 using System.Net;
 
 namespace AulaRemota.Core.Edriving.GetOne
 {
-    public class EdrivingGetOneHandler : IRequestHandler<EdrivingGetOneInput, EdrivingGetOneResponse>
+    public class EdrivingGetOneHandler : IRequestHandler<EdrivingGetOneInput, EdrivingModel>
     {
         private readonly IRepository<EdrivingModel, int> _edrivingRepository;
 
@@ -20,7 +19,7 @@ namespace AulaRemota.Core.Edriving.GetOne
             _edrivingRepository = edrivingRepository;
         }
 
-        public async Task<EdrivingGetOneResponse> Handle(EdrivingGetOneInput request, CancellationToken cancellationToken)
+        public async Task<EdrivingModel> Handle(EdrivingGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
@@ -38,22 +37,10 @@ namespace AulaRemota.Core.Edriving.GetOne
                         .Where(e => e.User.Status > 0)
                         .FirstOrDefaultAsync();
 
-                return new EdrivingGetOneResponse { 
-                
-                    Id = result.Id,
-                    Name = result.Name,
-                    Email = result.Email,
-                    Cpf = result.Cpf,
-                    PhonesNumbers = result.PhonesNumbers,
-                    LevelId = result.LevelId,
-                    Level = result.Level,
-                    UserId= result.UserId,
-                    User= result.User
-                };
+                return result;
             }
             catch (CustomException e)
             {
-                _edrivingRepository.Rollback();
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,

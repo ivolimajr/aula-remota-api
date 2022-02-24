@@ -1,74 +1,66 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Shared.Helpers;
-using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 
 namespace AulaRemota.Core.Edriving.Remove
 {
     public class EdrivingRemoveHandler : IRequestHandler<EdrivingRemoveInput, bool>
     {
-        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
-        private readonly IRepository<UserModel, int>_usuarioRepository;
-        private readonly IRepository<PhoneModel, int> _telefoneRepository;
-
+        private readonly IUnitOfWork UnitOfWork;
         public EdrivingRemoveHandler(
-            IRepository<EdrivingModel, int> edrivingRepository, 
-            IRepository<UserModel, int>usuarioRepository, 
-            IRepository<PhoneModel, int> telefoneRepository
+            IUnitOfWork _unitOfWork
             )
         {
-            _edrivingRepository = edrivingRepository;
-            _telefoneRepository = telefoneRepository;
-            _usuarioRepository = usuarioRepository;
+            UnitOfWork = _unitOfWork;
         }
 
         public async Task<bool> Handle(EdrivingRemoveInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new CustomException("Busca Inválida");
-            try
+            using (var transaction = UnitOfWork.BeginTransaction())
             {
-                _edrivingRepository.CreateTransaction();
-                var edriving = await _edrivingRepository.Context
-                                        .Set<EdrivingModel>()
-                                        .Include(e => e.User)
-                                        .Include(e => e.PhonesNumbers)
-                                        .Where(e => e.Id == request.Id)
-                                        .FirstOrDefaultAsync();
-                if (edriving == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
-
-                _edrivingRepository.Delete(edriving);
-                _usuarioRepository.Delete(edriving.User);
-
-                foreach (var item in edriving.PhonesNumbers)
+                if (request.Id == 0) throw new CustomException("Busca Inválida");
+                try
                 {
-                    item.Edriving = null;
-                    _telefoneRepository.Delete(item);
+
+                    var edriving = await UnitOfWork.Edriving.Context
+                                            .Set<EdrivingModel>()
+                                            .Include(e => e.User)
+                                            .Include(e => e.PhonesNumbers)
+                                            .Where(e => e.Id == request.Id)
+                                            .FirstOrDefaultAsync();
+                    if (edriving == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+
+                    foreach (var item in edriving.PhonesNumbers)
+                    {
+                        UnitOfWork.Phone.Delete(item);
+                    }
+                    UnitOfWork.SaveChanges();
+
+                    UnitOfWork.User.Delete(edriving.User);
+                    UnitOfWork.Edriving.Delete(edriving);
+
+                    UnitOfWork.SaveChanges();
+                    transaction.Commit();
+                    return true;
                 }
-
-                _edrivingRepository.Save();
-                _edrivingRepository.Commit();
-                return true;
-            }
-            catch (CustomException e)
-            {
-                _edrivingRepository.Rollback();
-                throw new CustomException(new ResponseModel
+                catch (CustomException e)
                 {
-                    UserMessage = e.Message,
-                    ModelName = nameof(EdrivingRemoveInput),
-                    Exception = e,
-                    InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
-                });
-            }
-            finally
-            {
-                _edrivingRepository.Context.Dispose();
+                    transaction.Rollback();
+                    throw new CustomException(new ResponseModel
+                    {
+                        UserMessage = e.Message,
+                        ModelName = nameof(EdrivingRemoveInput),
+                        Exception = e,
+                        InnerException = e.InnerException,
+                        StatusCode = e.ResponseModel.StatusCode
+                    });
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Core.File.RemoveFromAzure;
 using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Models;
 using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Shared.Helpers.Constants;

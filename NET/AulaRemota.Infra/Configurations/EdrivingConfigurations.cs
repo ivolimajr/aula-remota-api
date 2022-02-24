@@ -19,7 +19,7 @@ namespace AulaRemota.Infra.Configurations
             builder.HasIndex(e => e.Name);
 
             builder.HasOne(e => e.Level).WithMany(e => e.Edrivings).HasForeignKey(e => e.LevelId);
-            builder.HasOne(e => e.User);
+            builder.HasOne(e => e.User).WithOne(e => e.Edriving).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(e => e.PhonesNumbers).WithOne(e => e.Edriving);
         }
     }
