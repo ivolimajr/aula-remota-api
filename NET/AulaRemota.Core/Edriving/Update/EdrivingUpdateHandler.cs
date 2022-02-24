@@ -1,5 +1,4 @@
 ﻿using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using System.Threading;
@@ -7,153 +6,100 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
+using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 
 namespace AulaRemota.Core.Edriving.Update
 {
-    public class EdrivingUpdateHandler : IRequestHandler<EdrivingUpdateInput, EdrivingUpdateResponse>
+    public class EdrivingUpdateHandler : IRequestHandler<EdrivingUpdateInput, EdrivingModel>
     {
-        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
-        private readonly IRepository<UserModel, int>_usuarioRepository;
-        private readonly IRepository<EdrivingLevelModel, int> _cargoRepository;
-        private readonly IRepository<PhoneModel, int> _telefoneRepository;
+        private readonly IUnitOfWork UnitOfWork;
+        public EdrivingUpdateHandler(IUnitOfWork _unitOfWork) => UnitOfWork = _unitOfWork;
 
-        public EdrivingUpdateHandler(
-            IRepository<EdrivingModel, int> edrivingRepository,
-            IRepository<UserModel, int>usuarioRepository,
-            IRepository<EdrivingLevelModel, int> cargoRepository,
-            IRepository<PhoneModel, int> telefoneRepository
-            )
-        {
-            _edrivingRepository = edrivingRepository;
-            _usuarioRepository = usuarioRepository;
-            _cargoRepository = cargoRepository;
-            _telefoneRepository = telefoneRepository;
-        }
-
-        public async Task<EdrivingUpdateResponse> Handle(EdrivingUpdateInput request, CancellationToken cancellationToken)
+        public async Task<EdrivingModel> Handle(EdrivingUpdateInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
-            try
+            using (var transaction = UnitOfWork.BeginTransaction())
             {
-                //INICIA UMA TRANSAÇÃO
-                _edrivingRepository.CreateTransaction();
-
-                //BUSCA O OBJETO A SER ATUALIZADO
-                var entity = _edrivingRepository.Context
-                            .Set<EdrivingModel>()
-                            .Include(e => e.User)
-                            .Include(e => e.Level)
-                            .Include(e => e.PhonesNumbers)
-                            .Where(e => e.Id == request.Id)
-                            .FirstOrDefault();
-
-                //SE FOR NULO RETORNA NÃO ENCONTRADO
-                if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
-
-                //ATUALIZA EMAIL SE INFORMADO - TANTO DO USUÁRIO COMO DO EDRIVING
-                if (request.Email != null && request.Email != entity.Email)
+                try
                 {
-                    //VERIFICA SE O EMAIL JÁ ESTÁ EM USO POR OUTRO USUÁRIO
-                    var emailUnique = await _usuarioRepository.FirstOrDefaultAsync(u => u.Email == request.Email);
-                    if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
+                    //BUSCA O OBJETO A SER ATUALIZADO
+                    var edriving = UnitOfWork.Context
+                                .Set<EdrivingModel>()
+                                .Include(e => e.User)
+                                .Include(e => e.Level)
+                                .Include(e => e.PhonesNumbers)
+                                .Where(e => e.Id == request.Id)
+                                .FirstOrDefault();
 
-                    //SE NÃO ESTPA EM USO SET OS ATRIBUTOS
-                    entity.User.Email = request.Email.ToUpper();
-                    entity.Email = request.Email.ToUpper();
+                    if (edriving == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
-                }
-                //ATUALIZA NOME SE INFORMADO - TANTO DO USUÁRIO COMO DO EDRIVING
-                if (request.Name != null && request.Name != entity.Name)
-                {
-                    entity.User.Name = request.Name.ToUpper();
-                    entity.Name = request.Name.ToUpper();
-                }
-                //ATUALIZA O CPF SE INFORMADO
-                if (request.Cpf != null && request.Cpf != entity.Cpf)
-                {
-                    //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                    var cpfUnique = await _edrivingRepository.FirstOrDefaultAsync(u => u.Cpf == request.Cpf);
-                    if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
-
-                    //SE FOR NULO ELE ATUALIZA O CPF
-                    entity.Cpf = request.Cpf.ToUpper();
-                }
-                //SE FOR INFORMADO UM NOVO Level, O Level ATUAL SERÁ ATUALIZADO
-                if (request.LevelId > 0 && request.LevelId != entity.LevelId)
-                {
-                    //VERIFICA SE O Level INFORMADO EXISTE
-                    var Level = await _cargoRepository.FindAsync(request.LevelId);
-                    if (Level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
-
-                    //SE O Level EXISTE, O Level SERÁ ATUALIZADO
-                    entity.LevelId = Level.Id;
-                    entity.Level = Level;
-                }
-
-                //ATUALIZA O TELEFONE SE VIER NA LISTA DO REQUEST
-                if (request.PhonesNumbers.Count > 0)
-                {
-                    foreach (var item in request.PhonesNumbers)
+                    if (!string.IsNullOrEmpty(request.Email) && !request.Email.Equals(edriving.Email))
                     {
-                        //VERIFICA SE JÁ NÃO É O MESMO QUE ESTÁ CADASTRADO
-                        if (!entity.PhonesNumbers.Any(e => e.PhoneNumber == item.PhoneNumber))
+                        var emailUnique = UnitOfWork.User.FirstOrDefault(u => u.Email == request.Email);
+                        if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
+                    }
+                    if (!string.IsNullOrEmpty(request.Cpf) && !request.Cpf.Equals(edriving.Cpf))
+                    {
+                        var cpfUnique = UnitOfWork.Edriving.FirstOrDefault(u => u.Cpf == request.Cpf);
+                        if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
+                    }
+
+                    if (request.LevelId > 0 && !request.LevelId.Equals(edriving.LevelId))
+                    {
+                        var level = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
+                        if (level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
+                        edriving.Level = level;
+                    }
+
+                    edriving.Cpf = !string.IsNullOrEmpty(request.Cpf) ? request.Cpf : edriving.Cpf;
+                    edriving.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : edriving.Email.ToUpper();
+                    edriving.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : edriving.Name.ToUpper();
+                    edriving.User.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : edriving.Email.ToUpper();
+                    edriving.User.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : edriving.Name.ToUpper();
+                    edriving.LevelId = request.LevelId > 0 ? request.LevelId : edriving.LevelId;
+
+                    //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
+                    if (request.PhonesNumbers != null && request.PhonesNumbers.Count > 0)
+                        foreach (var item in request.PhonesNumbers)
                         {
-
-
-                            //VERIFICA SE JÁ EXISTEM UM TELEFONE NO BANCO EM USO
-                            var telefoneResult = await _telefoneRepository.FirstOrDefaultAsync(e => e.PhoneNumber == item.PhoneNumber);
-
-                            //SE O TELEFONE NÃO TIVER ID, É UM TELEFONE NOVO. CASO CONTRÁRIO É ATUALIZADO.
-                            if (item.Id == 0)
+                            if (item.Id.Equals(0))
                             {
-                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
-                                entity.PhonesNumbers.Add(item);
+                                edriving.PhonesNumbers.Add(item);
                             }
                             else
                             {
-                                //ESSA CONDIÇÃO RETORNA ERRO CASO O TELEFONE ESTEJA EM USO
-                                if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
-                                _telefoneRepository.Update(item);
+                                if (!UnitOfWork.Phone.Where(x => x.PhoneNumber.Equals(item.PhoneNumber)).Any())
+                                {
+                                    if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber))
+                                        throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
+
+                                    var phone = edriving.PhonesNumbers.Where(e => e.Id.Equals(item.Id)).FirstOrDefault();
+                                    phone.PhoneNumber = item.PhoneNumber;
+                                    UnitOfWork.Phone.Update(phone);
+                                }
                             }
                         }
-                    }
+
+                    UnitOfWork.Edriving.Update(edriving);
+
+                    UnitOfWork.Edriving.SaveChanges();
+                    transaction.Commit();
+
+                    return edriving;
                 }
-
-                _edrivingRepository.Update(entity);
-
-                _edrivingRepository.Save();
-                _edrivingRepository.Commit();
-
-                return new EdrivingUpdateResponse
+                catch (CustomException e)
                 {
-                    Id = entity.Id,
-                    Name = entity.Name,
-                    Email = entity.Email,
-                    Cpf = entity.Cpf,
-                    PhonesNumbers = entity.PhonesNumbers,
-                    LevelId = entity.LevelId,
-                    UserId = entity.UserId,
-                    Level = entity.Level,
-                    User = entity.User
-                };
-            }
-            catch (CustomException e)
-            {
-                _edrivingRepository.Rollback();
-                throw new CustomException(new ResponseModel
-                {
-                    UserMessage = e.Message,
-                    ModelName = nameof(EdrivingUpdateHandler),
-                    Exception = e,
-                    InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
-                });
-            }
-            finally
-            {
-                _edrivingRepository.Context.Dispose();
+                    transaction.Rollback();
+                    throw new CustomException(new ResponseModel
+                    {
+                        UserMessage = e.Message,
+                        ModelName = nameof(EdrivingUpdateHandler),
+                        Exception = e,
+                        InnerException = e.InnerException,
+                        StatusCode = e.ResponseModel.StatusCode
+                    });
+                }
             }
         }
     }

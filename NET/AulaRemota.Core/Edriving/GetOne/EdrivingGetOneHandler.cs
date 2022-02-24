@@ -31,6 +31,7 @@ namespace AulaRemota.Core.Edriving.GetOne
                 var result = await _edrivingRepository.Context
                         .Set<EdrivingModel>()
                         .Include(e => e.User)
+                        .Include(e => e.User.Roles)
                         .Include(e => e.Level)
                         .Include(e => e.PhonesNumbers)
                         .Where(e => e.Id == res.Id)
@@ -50,7 +51,6 @@ namespace AulaRemota.Core.Edriving.GetOne
                     StatusCode = e.ResponseModel.StatusCode
                 });
             }
-
         }
     }
 }

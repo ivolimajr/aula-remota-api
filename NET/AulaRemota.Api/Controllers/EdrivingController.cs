@@ -94,7 +94,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(EdrivingUpdateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingModel), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> Put([FromBody] EdrivingUpdateInput request)
         {
             try

@@ -16,10 +16,7 @@ namespace AulaRemota.Core.Edriving.Create
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public EdrivingCreateHandler(
-            IUnitOfWork _unitOfWork,
-            IMediator mediator
-            )
+        public EdrivingCreateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;

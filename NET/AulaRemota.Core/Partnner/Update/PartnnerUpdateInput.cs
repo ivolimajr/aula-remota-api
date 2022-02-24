@@ -1,5 +1,4 @@
 ﻿using AulaRemota.Infra.Entity;
-using AulaRemota.Infra.Entity.DrivingSchool;
 using MediatR;
 using System;
 using System.Collections.Generic;

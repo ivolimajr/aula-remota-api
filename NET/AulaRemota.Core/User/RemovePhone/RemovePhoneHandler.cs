@@ -3,7 +3,6 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 using AulaRemota.Infra.Entity;
 using System.Net;
 
@@ -11,11 +10,11 @@ namespace AulaRemota.Core.User.RemovePhone
 {
     public class RemovePhoneHandler : IRequestHandler<RemovePhoneInput, bool>
     {
-        private readonly IRepository<PhoneModel, int> _telefoneRepository;
+        private readonly IRepository<PhoneModel, int> _phoneRepository;
 
-        public RemovePhoneHandler(IRepository<PhoneModel, int> telefoneRepository)
+        public RemovePhoneHandler(IRepository<PhoneModel, int> phoneRepository)
         {
-            _telefoneRepository = telefoneRepository;
+            _phoneRepository = phoneRepository;
         }
 
         public async Task<bool> Handle(RemovePhoneInput request, CancellationToken cancellationToken)
@@ -24,11 +23,11 @@ namespace AulaRemota.Core.User.RemovePhone
 
             try
             {
-                var result = _telefoneRepository.Find(request.Id);
+                var result = _phoneRepository.Find(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
-                _telefoneRepository.Delete(result);
-                await _telefoneRepository.SaveChangesAsync();
+                _phoneRepository.Delete(result);
+                await _phoneRepository.SaveChangesAsync();
                 return true;
             }
             catch (CustomException e)

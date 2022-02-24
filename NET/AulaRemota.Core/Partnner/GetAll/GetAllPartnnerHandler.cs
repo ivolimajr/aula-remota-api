@@ -12,18 +12,16 @@ namespace AulaRemota.Core.Partnner.GetAll
 {
     public class GetAllPartnnerHandler : IRequestHandler<GetAllPartnnerInput, List<PartnnerModel>>
     {
-        private readonly IRepository<PartnnerModel, int> _parceiroRepository;
+        private readonly IRepository<PartnnerModel, int> _partnnerRepository;
 
-        public GetAllPartnnerHandler(IRepository<PartnnerModel, int> parceiroRepository)
-        {
-            _parceiroRepository = parceiroRepository;
-        }
+        public GetAllPartnnerHandler(IRepository<PartnnerModel, int> partnnerRepository) =>
+            _partnnerRepository = partnnerRepository;
 
         public async Task<List<PartnnerModel>> Handle(GetAllPartnnerInput request, CancellationToken cancellationToken)
         {
             try
             {
-                return await _parceiroRepository.Context
+                return await _partnnerRepository.Context
                     .Set<PartnnerModel>()
                     .Include(e => e.User)
                     .Include(e => e.Level)
