@@ -2,7 +2,6 @@
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Repository;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,17 +9,15 @@ namespace AulaRemota.Core.User.CreateUser
 {
     class CreateUserHandler : IRequestHandler<CreateUserInput, CreateUserResponse>
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<UserModel, int>_userRepository;
 
-        public CreateUserHandler(IRepository<UserModel> usuarioRepository)
-        {
-            _usuarioRepository = usuarioRepository;
-        }
+        public CreateUserHandler(IRepository<UserModel, int>userRepository) =>
+            _userRepository = userRepository;
         public async Task<CreateUserResponse> Handle(CreateUserInput request, CancellationToken cancellationToken)
         {
             if (request.Email == string.Empty) throw new CustomException("Valores Inválidos");
 
-            var userExists = _usuarioRepository.Find(u => u.Email == request.Email);
+            var userExists = _userRepository.FirstOrDefault(u => u.Email == request.Email);
             if (userExists != null) throw new CustomException("Email já em uso");
 
             request.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -34,7 +31,7 @@ namespace AulaRemota.Core.User.CreateUser
 
             try
             {
-                UserModel user = await _usuarioRepository.CreateAsync(User);
+                UserModel user = await _userRepository.AddAsync(User);
                 return new CreateUserResponse
                 {
                     Id = user.Id,

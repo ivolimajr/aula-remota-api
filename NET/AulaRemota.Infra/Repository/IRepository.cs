@@ -1,40 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace AulaRemota.Infra.Repository
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity, TKey> where TEntity : class
     {
         public DbContext Context { get; }
 
-        TEntity Create(TEntity entity);
+        public TEntity Add(TEntity entity);
 
-        public Task<TEntity> CreateAsync(TEntity entity);
+        public Task<TEntity> AddAsync(TEntity entity);
 
-        void Update(TEntity entity);
+        public void Update(TEntity entity);
 
-        IEnumerable<TEntity> GetAll();
+        public IEnumerable<TEntity> All();
 
-        public TEntity GetById(int id);
-        public Task<TEntity> GetByIdAsync(int id);
+        public TEntity Find(int id);
+        public Task<TEntity> FindAsync(int id);
 
-        IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> queryLambda);
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> queryLambda);
 
-        TEntity Find(Expression<Func<TEntity, bool>> queryLambda);
-        bool Exists(Expression<Func<TEntity, bool>> queryLambda);
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> queryLambda);
+        public bool Exists(Expression<Func<TEntity, bool>> queryLambda);
 
-        public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> queryLambda);
+        public Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> queryLambda);
 
         public async Task SaveChangesAsync() => await Context.SaveChangesAsync();
         public void SaveChanges() => Context.SaveChanges();
 
-        void Delete(TEntity entity);
-        void CreateTransaction();
-        void Commit();
-        void Rollback();
-        void Save();
+        public void Delete(TEntity entity);
+        public void CreateTransaction();
+        public void Commit();
+        public void Rollback();
+        public void Save();
     }
 }

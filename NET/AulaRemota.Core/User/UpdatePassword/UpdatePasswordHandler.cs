@@ -4,18 +4,17 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
-using System;
 using System.Net;
 
 namespace AulaRemota.Core.User.UpdatePassword
 {
     public class UpdatePasswordHandler : IRequestHandler<UpdatePasswordInput, bool>
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<UserModel, int>_userRepository;
 
-        public UpdatePasswordHandler(IRepository<UserModel> usuarioRepository)
+        public UpdatePasswordHandler(IRepository<UserModel, int>userRepository)
         {
-            _usuarioRepository = usuarioRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<bool> Handle(UpdatePasswordInput request, CancellationToken cancellationToken)
@@ -24,15 +23,15 @@ namespace AulaRemota.Core.User.UpdatePassword
 
             try
             {
-                var user = await _usuarioRepository.GetByIdAsync(request.Id);
+                var user = await _userRepository.FindAsync(request.Id);
                 if (user == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
                 if (!checkPass) throw new CustomException("Senha atual inválida", HttpStatusCode.Unauthorized);
 
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-                _usuarioRepository.Update(user);
-                await _usuarioRepository.SaveChangesAsync();
+                _userRepository.Update(user);
+                await _userRepository.SaveChangesAsync();
 
                 return true;
             }

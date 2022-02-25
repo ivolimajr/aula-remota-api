@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Partnner.Create
 {
-    public class CreatePartnnerInput : IRequest<CreatePartnnerResponse>
+    public class CreatePartnnerInput : IRequest<PartnnerModel>
     {
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]

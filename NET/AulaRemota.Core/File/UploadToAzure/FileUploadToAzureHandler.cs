@@ -21,7 +21,7 @@ namespace AulaRemota.Core.File.UploadToAzure
         {
             try
             {
-                if (request.Files.Count > 0)
+                if (request.Files != null && request.Files.Count > 0)
                 {
                     var listaArquivos = new List<FileModel>();
 
@@ -76,14 +76,14 @@ namespace AulaRemota.Core.File.UploadToAzure
                     PublicAccess = BlobContainerPublicAccessType.Off
                 });
             }
-            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(Guid.NewGuid().ToString("N").Substring(0, 5) + arquivo.FileName.Replace(" ", ""));
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(Guid.NewGuid().ToString("N").Substring(0, 5) + arquivo.FileName.Replace(" ", "").ToLower());
             cloudBlockBlob.Properties.ContentType = arquivo.ContentType;
 
             await cloudBlockBlob.UploadFromStreamAsync(arquivo.OpenReadStream());
 
             var fileResult = new FileModel()
             {
-                FileName = cloudBlockBlob.Name,
+                FileName = cloudBlockBlob.Name.ToLower(),
                 Extension = "",
                 Destiny = cloudBlockBlob.Uri.ToString()
             };

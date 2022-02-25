@@ -22,9 +22,9 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
     {
         private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         private TokenConfiguration _configuration;
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public GenerateTokenHandler(IRepository<ApiUserModel> authUserRepository, TokenConfiguration configuration)
+        public GenerateTokenHandler(IRepository<ApiUserModel, int> authUserRepository, TokenConfiguration configuration)
         {
             _authUserRepository = authUserRepository;
             _configuration = configuration;

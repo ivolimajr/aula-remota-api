@@ -11,9 +11,9 @@ namespace AulaRemota.Core.ApiUser.Update
 {
     public class ApiUserUpdateHandler : IRequestHandler<ApiUserUpdateInput, ApiUserUpdateResponse>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserUpdateHandler(IRepository<ApiUserModel> authUserRepository)
+        public ApiUserUpdateHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -22,7 +22,7 @@ namespace AulaRemota.Core.ApiUser.Update
         {
             try
             {
-                var result = await _authUserRepository.GetByIdAsync(request.Id);
+                var result = await _authUserRepository.FindAsync(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 if (!String.IsNullOrEmpty(request.Name)) result.Name = request.Name.ToUpper();

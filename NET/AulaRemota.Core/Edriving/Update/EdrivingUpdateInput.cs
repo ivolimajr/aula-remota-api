@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Edriving.Update
 {
-    public class EdrivingUpdateInput : IRequest<EdrivingUpdateResponse>
+    public class EdrivingUpdateInput : IRequest<EdrivingModel>
     {
         public EdrivingUpdateInput()
         {

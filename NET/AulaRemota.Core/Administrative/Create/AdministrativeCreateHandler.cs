@@ -10,14 +10,14 @@ namespace AulaRemota.Core.Administrative.Create
 {
     class AdministrativeCreateHandler : IRequestHandler<AdministrativeCreateInput, AdministrativeModel>
     {
-        private readonly IRepository<DrivingSchoolModel> _drivingSchoolRepository;
-        private readonly IRepository<UserModel> _userRepository;
-        private readonly IRepository<AdministrativeModel> _administrativeRepository;
+        private readonly IRepository<DrivingSchoolModel, int> _drivingSchoolRepository;
+        private readonly IRepository<UserModel, int> _userRepository;
+        private readonly IRepository<AdministrativeModel, int> _administrativeRepository;
         private readonly IMediator _mediator;
 
-        public AdministrativeCreateHandler(IRepository<DrivingSchoolModel> drivingSchoolRepository, 
-            IRepository<UserModel> userRepository, 
-            IRepository<AdministrativeModel> administrativeRepository, 
+        public AdministrativeCreateHandler(IRepository<DrivingSchoolModel, int> drivingSchoolRepository,
+            IRepository<UserModel, int> userRepository,
+            IRepository<AdministrativeModel, int> administrativeRepository,
             IMediator mediator)
         {
             _drivingSchoolRepository = drivingSchoolRepository;

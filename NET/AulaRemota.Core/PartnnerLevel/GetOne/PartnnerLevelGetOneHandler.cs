@@ -10,9 +10,9 @@ namespace AulaRemota.Core.PartnnerLevel.GetOne
 {
     public class PartnnerLevelGetOneHandler : IRequestHandler<PartnnerLevelGetOneInput, PartnnerLevelModel>
     {
-        private readonly IRepository<PartnnerLevelModel> _edrivingCargoRepository;
+        private readonly IRepository<PartnnerLevelModel, int>_edrivingCargoRepository;
 
-        public PartnnerLevelGetOneHandler(IRepository<PartnnerLevelModel> edrivingCargoRepository)
+        public PartnnerLevelGetOneHandler(IRepository<PartnnerLevelModel, int>edrivingCargoRepository)
         {
             _edrivingCargoRepository = edrivingCargoRepository;
         }
@@ -23,7 +23,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetOne
 
             try
             {
-                var result = await _edrivingCargoRepository.GetByIdAsync(request.Id);
+                var result = await _edrivingCargoRepository.FindAsync(request.Id);
                 if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 return result;

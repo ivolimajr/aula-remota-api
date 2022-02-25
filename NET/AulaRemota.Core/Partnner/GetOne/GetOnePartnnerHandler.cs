@@ -12,11 +12,11 @@ namespace AulaRemota.Core.Partnner.GetOne
 {
     public class GetOnePartnnerHandler : IRequestHandler<GetOnePartnnerInput, GetOnePartnnerResponse>
     {
-        private readonly IRepository<PartnnerModel> _parceiroRepository;
+        private readonly IRepository<PartnnerModel, int> _partnnerRepository;
 
-        public GetOnePartnnerHandler(IRepository<PartnnerModel> parceiroRepository)
+        public GetOnePartnnerHandler(IRepository<PartnnerModel, int> partnnerRepository)
         {
-            _parceiroRepository = parceiroRepository;
+            _partnnerRepository = partnnerRepository;
         }
 
         public async Task<GetOnePartnnerResponse> Handle(GetOnePartnnerInput request, CancellationToken cancellationToken)
@@ -25,10 +25,10 @@ namespace AulaRemota.Core.Partnner.GetOne
 
             try
             {
-                var res = await _parceiroRepository.GetByIdAsync(request.Id);
-                if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                bool res = _partnnerRepository.Exists(e => e.Id == request.Id);
+                if (!res) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
-                var result = await _parceiroRepository.Context
+                var result = await _partnnerRepository.Context
                         .Set<PartnnerModel>()
                         .Include(e => e.User)
                         .Include(e => e.Level)
@@ -38,7 +38,8 @@ namespace AulaRemota.Core.Partnner.GetOne
                         .Where(e => e.User.Status > 0)
                         .FirstAsync();
 
-                return new GetOnePartnnerResponse {
+                return new GetOnePartnnerResponse
+                {
                     Id = result.Id,
                     Name = result.Name,
                     Email = result.Email,

@@ -10,12 +10,10 @@ namespace AulaRemota.Core.User.UpdatePasswordByEmail
 {
     public class UpdatePasswordByEmailHandler : IRequestHandler<UpdatePasswordByEmailInput, bool>
     {
-        private readonly IRepository<UserModel> _usuarioRepository;
+        private readonly IRepository<UserModel, int>_userRepository;
 
-        public UpdatePasswordByEmailHandler(IRepository<UserModel> usuarioRepository)
-        {
-            _usuarioRepository = usuarioRepository;
-        }
+        public UpdatePasswordByEmailHandler(IRepository<UserModel, int>userRepository) =>
+            _userRepository = userRepository;
 
         public async Task<bool> Handle(UpdatePasswordByEmailInput request, CancellationToken cancellationToken)
         {
@@ -23,15 +21,15 @@ namespace AulaRemota.Core.User.UpdatePasswordByEmail
 
             try
             {
-                var user = await _usuarioRepository.FindAsync(e => e.Email == request.Email);
+                var user = await _userRepository.FirstOrDefaultAsync(e => e.Email == request.Email);
                 if (user == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
                 if (!checkPass) throw new CustomException("Senha atual inválida");
 
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-                _usuarioRepository.Update(user);
-                await _usuarioRepository.SaveChangesAsync();
+                _userRepository.Update(user);
+                await _userRepository.SaveChangesAsync();
 
                 return true;
             }

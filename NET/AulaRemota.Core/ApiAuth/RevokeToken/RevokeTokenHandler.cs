@@ -10,9 +10,9 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
 {
     class RevokeTokenHandler : IRequestHandler<RevokeTokenInput, string>
     {
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public RevokeTokenHandler(IRepository<ApiUserModel> authUserRepository)
+        public RevokeTokenHandler(IRepository<ApiUserModel, int> authUserRepository)
         {
             _authUserRepository = authUserRepository;
         }
@@ -23,10 +23,10 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
 
             try
             {
-                ApiUserModel authUser = _authUserRepository.Find(u => u.UserName == request.UserName);
+                ApiUserModel authUser = _authUserRepository.FirstOrDefault(u => u.UserName == request.UserName);
                 if (authUser == null) throw new CustomException("Credenciais Não encontrada", HttpStatusCode.Unauthorized);
 
-                ApiUserModel User = await _authUserRepository.GetByIdAsync(authUser.Id);
+                ApiUserModel User = await _authUserRepository.FindAsync(authUser.Id);
 
                 User.RefreshToken = null;
                 _authUserRepository.Update(User);

@@ -76,13 +76,6 @@ namespace AulaRemota.Api
 
             services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion), ServiceLifetime.Transient);
 
-            //services.AddDbContext<MySqlContext>(
-            //    dbContextOptions => dbContextOptions
-            //        .UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion) // <- COMENTA ESSA LINHA E DESCOMENTA A DE BAIXO PARA USAR O SANDBOX
-            //                                                                                      //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion) // <--DESCOMENTE PARA USAR O SANDBOX REMOTO
-            //        .EnableSensitiveDataLogging()
-            //        .EnableDetailedErrors());
-
             services.AddDependencyInjection();
 
             var assembly = AppDomain.CurrentDomain.Load("AulaRemota.Core");
@@ -118,8 +111,6 @@ namespace AulaRemota.Api
                          new string[] {}
                     }
                 });
-
-
             });
         }
 

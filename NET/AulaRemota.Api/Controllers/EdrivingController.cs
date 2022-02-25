@@ -54,13 +54,12 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(EdrivingGetOneResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<EdrivingGetOneResponse>> Get(int id)
+        [ProducesResponseType(typeof(EdrivingModel), StatusCodes.Status200OK)]
+        public async ValueTask<ActionResult<EdrivingModel>> Get(int id)
         {
             try
             {
-                var result = await _mediator.Send(new EdrivingGetOneInput { Id = id});
-                return Ok(result);
+                return Ok(await _mediator.Send(new EdrivingGetOneInput { Id = id }));
             }
             catch (CustomException e)
             {
@@ -95,7 +94,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(EdrivingUpdateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingModel), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> Put([FromBody] EdrivingUpdateInput request)
         {
             try

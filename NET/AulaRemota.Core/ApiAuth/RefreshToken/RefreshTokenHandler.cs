@@ -20,9 +20,9 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
     {
         private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
         private TokenConfiguration _configuration;
-        private readonly IRepository<ApiUserModel> _authUserRepository;
+        private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public RefreshTokenHandler(IRepository<ApiUserModel> authUserRepository, TokenConfiguration configuration)
+        public RefreshTokenHandler(IRepository<ApiUserModel, int> authUserRepository, TokenConfiguration configuration)
         {
             _authUserRepository = authUserRepository;
             _configuration = configuration;
@@ -38,7 +38,7 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
                 var principal = GetClaimsPrincipalFromExpiredToken(accessToken);
                 var userName = principal.Identity.Name;
 
-                var user = _authUserRepository.Find(u => (u.UserName == userName));
+                var user = _authUserRepository.FirstOrDefault(u => (u.UserName == userName));
 
                 if (user == null) throw new CustomException("Credenciais Não Encontrada");
                 if (user.RefreshToken != refreshToken) throw new CustomException("Credenciais de Serviço Inválida");

@@ -4,18 +4,17 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
-using System;
 using System.Net;
 
 namespace AulaRemota.Core.User.UpdateAddress
 {
     public class UserAddressUpdateHandler : IRequestHandler<UserAddressUpdateInput, AddressModel>
     {
-        private readonly IRepository<AddressModel> _enderecoRepository;
+        private readonly IRepository<AddressModel, int> _addressRepository;
 
-        public UserAddressUpdateHandler(IRepository<AddressModel> enderecoRepository)
+        public UserAddressUpdateHandler(IRepository<AddressModel, int> addressRepository)
         {
-            _enderecoRepository = enderecoRepository;
+            _addressRepository = addressRepository;
         }
 
         public async Task<AddressModel> Handle(UserAddressUpdateInput request, CancellationToken cancellationToken)
@@ -24,7 +23,7 @@ namespace AulaRemota.Core.User.UpdateAddress
 
             try
             {
-                var entity = await _enderecoRepository.GetByIdAsync(request.Id);
+                var entity = await _addressRepository.FindAsync(request.Id);
                 if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
@@ -35,8 +34,8 @@ namespace AulaRemota.Core.User.UpdateAddress
                 if (request.City != null) entity.City = request.City.ToUpper();
                 if (request.Number != null) entity.Number = request.Number.ToUpper();
 
-                _enderecoRepository.Update(entity);
-                await _enderecoRepository.SaveChangesAsync();
+                _addressRepository.Update(entity);
+                await _addressRepository.SaveChangesAsync();
 
                 return entity;
             }

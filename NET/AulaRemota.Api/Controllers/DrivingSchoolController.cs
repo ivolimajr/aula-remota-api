@@ -13,6 +13,7 @@ using AulaRemota.Core.DrivingSchool.GetOne;
 using AulaRemota.Infra.Entity.DrivingSchool;
 using System.Collections.Generic;
 using AulaRemota.Core.DrivingSchool.Update;
+using AulaRemota.Shared.Helpers.Constants;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -41,7 +42,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                return Ok(await _mediator.Send(new DrivingSchoolGetAllInput() { Uf = uf}));
+                return Ok(await _mediator.Send(new DrivingSchoolGetAllInput() { Uf = uf }));
             }
             catch (CustomException e)
             {
@@ -61,7 +62,7 @@ namespace AulaRemota.Api.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new DrivingSchoolGetOneInput { Id = id});
+                var result = await _mediator.Send(new DrivingSchoolGetOneInput { Id = id });
                 return Ok(result);
             }
             catch (CustomException e)
@@ -137,13 +138,22 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AllowAnonymous]
-        [Route("ArquivoDownload")]
+        [Route("DownloadFile")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        public async ValueTask<string> ArquivoDownload(DownloadFileFromAzureInput request)
+        public async ValueTask<ActionResult<string>> ArquivoDownload(DownloadFileFromAzureInput request)
         {
-                var result = await _mediator.Send(new DownloadFileFromAzureInput { FileName = request.FileName });
+            try
+            {
+                var result = await _mediator.Send(new DownloadFileFromAzureInput { FileName = request.FileName, TypeUser = Constants.Roles.AUTOESCOLA });
                 return result;
+            }
+            catch (CustomException e)
+            {
+                return Problem(detail: e.ResponseModel.UserMessage,
+                                statusCode: (int)e.ResponseModel.StatusCode,
+                                type: e.ResponseModel.ModelName);
+            }
+
         }
     }
 }

@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace AulaRemota.Infra.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -487,14 +489,12 @@ namespace AulaRemota.Infra.Migrations
                         name: "FK_File_DrivingSchool_DrivingSchoolId",
                         column: x => x.DrivingSchoolId,
                         principalTable: "DrivingSchool",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_File_Instructor_InstructorId",
                         column: x => x.InstructorId,
                         principalTable: "Instructor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -597,38 +597,32 @@ namespace AulaRemota.Infra.Migrations
                         name: "FK_Phone_Administrative_AdministrativeId",
                         column: x => x.AdministrativeId,
                         principalTable: "Administrative",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Phone_DrivingSchool_DrivingSchoolId",
                         column: x => x.DrivingSchoolId,
                         principalTable: "DrivingSchool",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Phone_Edriving_EdrivingId",
                         column: x => x.EdrivingId,
                         principalTable: "Edriving",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Phone_Instructor_InstructorId",
                         column: x => x.InstructorId,
                         principalTable: "Instructor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Phone_Partnner_PartnnerId",
                         column: x => x.PartnnerId,
                         principalTable: "Partnner",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Phone_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -649,7 +643,7 @@ namespace AulaRemota.Infra.Migrations
                 {
                     { 1, "ADMINISTRATIVO" },
                     { 2, "ANALISTA" },
-                    { 3, "DIRETOR" }
+                    { 3, "EMPRESA" }
                 });
 
             migrationBuilder.CreateIndex(
