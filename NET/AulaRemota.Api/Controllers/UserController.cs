@@ -1,5 +1,4 @@
-﻿using AulaRemota.Shared.Helpers;
-using AulaRemota.Core.User.UpdateAddress;
+﻿using AulaRemota.Core.User.UpdateAddress;
 using AulaRemota.Core.User.UpdatePassword;
 using AulaRemota.Core.User.UpdatePasswordByEmail;
 using AulaRemota.Core.User.Login;
@@ -8,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using AulaRemota.Core.File.RemoveFile;
 using AulaRemota.Core.User.RemovePhone;
@@ -39,19 +37,8 @@ namespace AulaRemota.Api.Controllers
         /// <response code="401">RefreshToken inválido</response>
         [HttpPost("Login")]
         [ProducesResponseType(typeof(UserLoginResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Login([FromBody] UserLoginInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Login([FromBody] UserLoginInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+
         /// <summary>
         /// Endpoint alterar a senha do User pelo ID
         /// </summary>
@@ -62,19 +49,8 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         [Route("alterar-senha")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> AlterarSenha([FromBody] UpdatePasswordInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> AlterarSenha([FromBody] UpdatePasswordInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+
         /// <summary>
         /// Endpoint alterar a senha do User pelo email
         /// </summary>
@@ -83,39 +59,15 @@ namespace AulaRemota.Api.Controllers
         [HttpPost]
         [Route("alterar-senha-por-email")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UpdatePasswordByEmailInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UpdatePasswordByEmailInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+
         /// <summary>
         /// Remove um arquivo de um usuário
         /// </summary>
         /// <param idArquivo="id do arquivo"></param>
         /// <returns></returns>
         [HttpDelete("RemoveArquivo/{id}")]
-        public async ValueTask<ActionResult> RemoveArquivo(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new RemoveFileInput { Id = id });
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> RemoveArquivo(int id) => Ok(await _mediator.Send(new RemoveFileInput { Id = id }));
         /// <summary>
         /// Remove o telefone de um usuário
         /// </summary>
@@ -123,20 +75,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("Telefone/{id?}")]
-        public async ValueTask<ActionResult> Telefone(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new RemovePhoneInput { Id = id });
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Telefone(int id) => Ok(await _mediator.Send(new RemovePhoneInput { Id = id }));
         /// <summary>
         /// Atualizar endereço de um usuário
         /// </summary>
@@ -145,18 +84,6 @@ namespace AulaRemota.Api.Controllers
         [Route("atualizar-endereco")]
         [HttpPut]
         [ProducesResponseType(typeof(AddressModel), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
     }
 }

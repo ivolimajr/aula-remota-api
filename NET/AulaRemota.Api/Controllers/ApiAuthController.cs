@@ -32,19 +32,8 @@ namespace AulaRemota.Api.Controllers
         /// <response code="401">Provavelmente você não tem acesso a API</response>
         [HttpPost("TokenGenerate")]
         [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> GetToken([FromBody] GenerateTokenInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> GetToken([FromBody] GenerateTokenInput request) =>
+             StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
         /// <summary>
         /// Atualizar o Token
@@ -55,18 +44,7 @@ namespace AulaRemota.Api.Controllers
         /// <response code="404">RefreshToken inválido</response>
         [HttpPost("RefreshToken")]
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Refresh([FromBody] RefreshTokenInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Refresh([FromBody] RefreshTokenInput request) =>
+            StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
     }
 }

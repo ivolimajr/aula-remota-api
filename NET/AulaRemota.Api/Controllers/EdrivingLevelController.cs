@@ -1,12 +1,10 @@
 ﻿using AulaRemota.Core.EdrivingLevel.GetOne;
 using AulaRemota.Core.EdrivingLevel.GetAll;
-using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -34,17 +32,8 @@ namespace AulaRemota.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(List<EdrivingLevelModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<List<EdrivingLevelModel>>> GetAll()
-        {
-            try
-            {
-                return Ok(await _mediator.Send(new EdrivingLevelGetAllInput()));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-        }
+        public async ValueTask<ActionResult<List<EdrivingLevelModel>>> GetAll() => Ok(await _mediator.Send(new EdrivingLevelGetAllInput()));
+
         /// <summary>
         /// Retorna apenas um
         /// </summary>
@@ -53,17 +42,6 @@ namespace AulaRemota.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(EdrivingLevelModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ValueTask<ActionResult<EdrivingLevelModel>> Get(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new EdrivingLevelGetOneInput { Id = id});
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status400BadRequest);
-            }
-        }
+        public async ValueTask<ActionResult<EdrivingLevelModel>> Get(int id) => Ok(await _mediator.Send(new EdrivingLevelGetOneInput { Id = id }));
     }
 }

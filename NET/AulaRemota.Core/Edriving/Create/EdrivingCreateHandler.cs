@@ -8,21 +8,18 @@ using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
-using AulaRemota.Core.Services;
 
 namespace AulaRemota.Core.Edriving.Create
 {
     public class EdrivingCreateHandler : IRequestHandler<EdrivingCreateInput, EdrivingCreateResponse>
     {
         private readonly IUnitOfWork UnitOfWork;
-        private readonly IPhoneServices _phoneServices;
         private readonly IMediator _mediator;
 
-        public EdrivingCreateHandler(IUnitOfWork _unitOfWork, IMediator mediator, IPhoneServices phoneServices)
+        public EdrivingCreateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
-            _phoneServices = phoneServices;
         }
 
         public async Task<EdrivingCreateResponse> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)

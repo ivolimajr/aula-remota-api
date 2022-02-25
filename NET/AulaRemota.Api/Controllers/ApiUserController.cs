@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Core.ApiUser.Update;
 using AulaRemota.Core.ApiUser.Create;
-using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -38,19 +37,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<ApiUserModel>), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<List<ApiUserModel>>> GetAll()
-        {
-            try
-            {
-                return Ok(await _mediator.Send(new ApiUserGetAllInput()));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult<List<ApiUserModel>>> GetAll() => Ok(await _mediator.Send(new ApiUserGetAllInput()));
 
         /// <summary>
         /// Retorna um usuário informando o ID como parâmetro
@@ -59,20 +46,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiUserModel), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<ApiUserModel>> Get(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new ApiUserGetOneInput { Id = id });
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult<ApiUserModel>> Get(int id) => Ok(await _mediator.Send(new ApiUserGetOneInput { Id = id }));
 
         /// <summary>
         /// Cadastra um novo usuário para consumir a API
@@ -82,19 +56,8 @@ namespace AulaRemota.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(ApiUserCreateResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Post([FromBody] ApiUserCreateInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Post([FromBody] ApiUserCreateInput request) =>
+                StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
         /// <summary>
         /// Atualiza um usuário da API
@@ -103,19 +66,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(ApiUserUpdateResponse), StatusCodes.Status200OK)]
-        public async ValueTask<IActionResult> Put([FromBody] ApiUserUpdateInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<IActionResult> Put([FromBody] ApiUserUpdateInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
         /// <summary>
         /// Remove um usuário da API
@@ -123,19 +74,6 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async ValueTask<ActionResult> Delete(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new ApiUserRemoveInput { Id = id });
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Delete(int id) => Ok(await _mediator.Send(new ApiUserRemoveInput { Id = id }));
     }
 }

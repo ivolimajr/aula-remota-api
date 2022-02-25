@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Core.PartnnerLevel.GetOne;
 using AulaRemota.Core.PartnnerLevel.GetAll;
-using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -32,19 +31,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<PartnnerLevelModel>), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<List<PartnnerLevelModel>>> GetAll()
-        {
-            try
-            {
-                return Ok(await _mediator.Send(new PartnnerLevelGetAllInput()));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult<List<PartnnerLevelModel>>> GetAll() => Ok(await _mediator.Send(new PartnnerLevelGetAllInput()));
+
         /// <summary>
         /// Retorna apena um
         /// </summary>
@@ -52,19 +40,6 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(PartnnerLevelModel), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<PartnnerLevelModel>> Get(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new PartnnerLevelGetOneInput { Id = id});
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult<PartnnerLevelModel>> Get(int id) => Ok(await _mediator.Send(new PartnnerLevelGetOneInput { Id = id }));
     }
 }

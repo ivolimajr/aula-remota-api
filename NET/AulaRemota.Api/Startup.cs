@@ -1,5 +1,6 @@
 using AulaRemota.Api.Code;
 using AulaRemota.Api.Code.Logger;
+using AulaRemota.Api.Code.Middleware;
 using AulaRemota.Infra.Context;
 using AulaRemota.Shared.Configuration;
 using MediatR;
@@ -114,7 +115,7 @@ namespace AulaRemota.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -126,11 +127,6 @@ namespace AulaRemota.Api
                     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1");
                 });
             }
-
-            loggerFactory.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
-            {
-                LogLevel = LogLevel.Information
-            }));
 
             app.UseHttpsRedirection();
 
@@ -144,6 +140,8 @@ namespace AulaRemota.Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware(typeof(ErrorMiddleware));
 
             app.UseEndpoints(endpoints =>
             {

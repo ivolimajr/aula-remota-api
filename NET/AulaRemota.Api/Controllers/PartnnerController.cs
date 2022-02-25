@@ -2,7 +2,6 @@
 using AulaRemota.Core.Partnner.Remove;
 using AulaRemota.Core.Partnner.GetAll;
 using AulaRemota.Core.Partnner.Create;
-using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,17 +34,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(List<PartnnerModel>), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<List<PartnnerModel>>> GetAll()
-        {
-            try
-            {
-                return Ok(await _mediator.Send(new GetAllPartnnerInput()));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-        }
+        public async ValueTask<ActionResult<List<PartnnerModel>>> GetAll() => Ok(await _mediator.Send(new GetAllPartnnerInput()));
+
         /// <summary>
         /// Retorna um item com o parceiro solicitado por ID
         /// </summary>
@@ -53,18 +43,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(GetOnePartnnerResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<GetOnePartnnerResponse>> Get(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new GetOnePartnnerInput { Id = id});
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.Message, statusCode: StatusCodes.Status404NotFound);
-            }
-        }
+        public async ValueTask<ActionResult<GetOnePartnnerResponse>> Get(int id) => Ok(await _mediator.Send(new GetOnePartnnerInput { Id = id }));
+
         /// <summary>
         /// Insere um novo parceiro
         /// </summary>
@@ -72,19 +52,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreatePartnnerResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Post([FromBody] CreatePartnnerInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Post([FromBody] CreatePartnnerInput request) => StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
+
         /// <summary>
         /// Atualiza um parceiro
         /// </summary>
@@ -92,38 +61,13 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(typeof(PartnnerUpdateResponse), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> Put([FromBody] PartnnerUpdateInput request)
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Put([FromBody] PartnnerUpdateInput request) => Ok(await _mediator.Send(request));
         /// <summary>
         /// Remove um parceiro
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async ValueTask<ActionResult> Delete(int id)
-        {
-            try
-            {
-                var result = await _mediator.Send(new RemovePartnnerInput { Id = id });
-                return Ok(result);
-            }
-            catch (CustomException e)
-            {
-                return Problem(detail: e.ResponseModel.UserMessage,
-                                statusCode: (int)e.ResponseModel.StatusCode,
-                                type: e.ResponseModel.ModelName);
-            }
-        }
+        public async ValueTask<ActionResult> Delete(int id) => Ok(await _mediator.Send(new RemovePartnnerInput { Id = id }));
     }
 }
