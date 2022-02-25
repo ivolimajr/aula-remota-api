@@ -1376,3 +1376,35 @@ Error: 1 - An unhandled exception has occurred while executing the request.
 Information: 0 - Application started. Press Ctrl+C to shut down.
 Information: 0 - Hosting environment: Development
 Information: 0 - Content root path: C:\Git\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Warning: 20501 - Possible unintended use of method 'Equals' for arguments 'p.PhoneNumber' and '@__phone_0' of different types in a query. This comparison will always return false.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Error: 1 - An unhandled exception has occurred while executing the request.
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api
+Information: 0 - Application started. Press Ctrl+C to shut down.
+Information: 0 - Hosting environment: Development
+Information: 0 - Content root path: C:\Git\Repositorio\UniversalPay\Aula Remota\Universal_Aula_Remota_API\NET\AulaRemota.Api

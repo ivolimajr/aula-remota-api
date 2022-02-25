@@ -8,18 +8,21 @@ using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using AulaRemota.Core.Services;
 
 namespace AulaRemota.Core.Edriving.Create
 {
     public class EdrivingCreateHandler : IRequestHandler<EdrivingCreateInput, EdrivingCreateResponse>
     {
         private readonly IUnitOfWork UnitOfWork;
+        private readonly IPhoneServices _phoneServices;
         private readonly IMediator _mediator;
 
-        public EdrivingCreateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
+        public EdrivingCreateHandler(IUnitOfWork _unitOfWork, IMediator mediator, IPhoneServices phoneServices)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
+            _phoneServices = phoneServices;
         }
 
         public async Task<EdrivingCreateResponse> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)
@@ -28,22 +31,7 @@ namespace AulaRemota.Core.Edriving.Create
             {
                 try
                 {
-                    //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
-                    var emailResult = await UnitOfWork.User.FirstOrDefaultAsync(u => u.Email == request.Email);
-                    if (emailResult != null) throw new CustomException("Email já em uso");
-
-                    //VERIFICA SE O CPF JÁ ESTÁ EM USO
-                    var cpfResult = await UnitOfWork.Edriving.FirstOrDefaultAsync(u => u.Cpf == request.Cpf);
-                    if (cpfResult != null) throw new CustomException("Cpf já existe em nossa base de dados");
-                    //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                    if (request.PhonesNumbers != null)
-                    {
-                        foreach (var item in request.PhonesNumbers)
-                        {
-                            var telefoneResult = await UnitOfWork.Phone.FirstOrDefaultAsync(u => u.PhoneNumber == item.PhoneNumber);
-                            if (telefoneResult != null) throw new CustomException("Telefone: " + telefoneResult.PhoneNumber + " já em uso");
-                        }
-                    }
+                    FildsValidator(request.Email, request.Cpf, request.PhonesNumbers);
                     //VERIFICA SE O Level INFORMADO EXISTE
                     var Level = UnitOfWork.EdrivingLevel.Find(request.LevelId);
                     if (Level == null) throw new CustomException("Level informado não existe");
@@ -103,6 +91,18 @@ namespace AulaRemota.Core.Edriving.Create
                     });
                 }
             }
+        }
+        private void FildsValidator(string email, string cpf, List<PhoneModel> phones)
+        {
+
+            //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
+            if (UnitOfWork.User.Exists(u => u.Email == email)) throw new CustomException("Email já em uso");
+
+            //VERIFICA SE O CPF JÁ ESTÁ EM USO
+            if (UnitOfWork.Edriving.Exists(u => u.Cpf == cpf)) throw new CustomException("Cpf já existe em nossa base de dados");
+            //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
+            foreach (var item in phones)
+                if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
         }
     }
 }

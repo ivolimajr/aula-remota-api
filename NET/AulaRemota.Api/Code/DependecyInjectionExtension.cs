@@ -16,7 +16,7 @@ namespace AulaRemota.Api.Code
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<AuthenticatedUserServices>();
-            services.AddScoped(typeof(IValidatorServices), typeof(ValidatorServices));
+            services.AddScoped(typeof(IPhoneServices), typeof(PhoneServices));
 
             return services;
         }
