@@ -16,11 +16,11 @@ namespace AulaRemota.Infra.Entity
         public string Uf { get; set; }
         [Column(TypeName = "varchar(12)")]
         public string Cep { get; set; }
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(100)")]
         public string Address { get; set; }
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(80)")]
         public string District { get; set; }
-        [Column(TypeName = "varchar(150)")]
+        [Column(TypeName = "varchar(100)")]
         public string City { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string Number { get; set; }

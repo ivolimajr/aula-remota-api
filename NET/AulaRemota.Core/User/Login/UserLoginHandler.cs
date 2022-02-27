@@ -9,6 +9,7 @@ using AulaRemota.Infra.Entity.DrivingSchool;
 using Microsoft.EntityFrameworkCore;
 using AulaRemota.Shared.Helpers.Constants;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.User.Login
 {
@@ -34,13 +35,13 @@ namespace AulaRemota.Core.User.Login
                 var result = await _userRepository.Context.Set<UserModel>().Include(e => e.Roles).Where(e => e.Email.Equals(request.Email)).FirstOrDefaultAsync();
 
                 if (result == null || !result.Email.Equals(request.Email.ToUpper()))
-                    throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
+                    throw new CustomException("Credenciais Inválidas");
 
-                if (result.Status == 0) throw new CustomException("Usuário Removido", HttpStatusCode.Unauthorized);
-                if (result.Status == 2) throw new CustomException("Usuário Inativo", HttpStatusCode.Forbidden);
+                if (result.Status == 0) throw new CustomException("Usuário Removido");
+                if (result.Status == 2) throw new CustomException("Usuário Inativo");
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
-                if (!checkPass) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
+                if (!checkPass) throw new CustomException("Credenciais Inválidas");
 
                 if (result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
                     result.Id = _userRepository.Context.Set<EdrivingModel>().Where(e => e.UserId == result.Id).FirstOrDefault().Id;
@@ -59,7 +60,7 @@ namespace AulaRemota.Core.User.Login
                 };
 
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -67,7 +68,7 @@ namespace AulaRemota.Core.User.Login
                     ModelName = nameof(UserLoginHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.Unauthorized
                 });
             }
         }

@@ -1,5 +1,6 @@
 ﻿using AulaRemota.Infra.Entity.DrivingSchool;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace AulaRemota.Infra.Entity
@@ -10,6 +11,7 @@ namespace AulaRemota.Infra.Entity
 
         [Required]
         [StringLength(maximumLength: 11, MinimumLength = 10)]
+        [Column(TypeName = "varchar(14)")]
         public string PhoneNumber { get; set; }
 
         [JsonIgnore]

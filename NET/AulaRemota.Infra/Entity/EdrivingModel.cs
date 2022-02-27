@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AulaRemota.Infra.Entity
 {
@@ -10,10 +11,13 @@ namespace AulaRemota.Infra.Entity
         }
         public int Id { get; set; }
 
+        [Column(TypeName = "varchar(150)")]
         public string Name { get; set; }
 
+        [Column(TypeName = "varchar(14)")]
         public string Cpf { get; set; }
 
+        [Column(TypeName = "varchar(70)")]
         public string Email { get; set; }
 
         public int LevelId { get; set; }

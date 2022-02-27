@@ -31,7 +31,7 @@ namespace AulaRemota.Core.Edriving.Create
                     FildsValidator(request.Email, request.Cpf, request.PhonesNumbers);
                     //VERIFICA SE O Level INFORMADO EXISTE
                     var Level = UnitOfWork.EdrivingLevel.Find(request.LevelId);
-                    if (Level == null) throw new CustomException("Level informado não existe");
+                    if (Level == null) throw new CustomException("Cargo informado não existe", HttpStatusCode.NotFound);
 
                     //CRIA UM EDRIVING
                     var edriving = new EdrivingModel()
@@ -75,7 +75,7 @@ namespace AulaRemota.Core.Edriving.Create
                         User = edrivingModel.User,
                     };
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw new CustomException(new ResponseModel
@@ -83,7 +83,6 @@ namespace AulaRemota.Core.Edriving.Create
                         UserMessage = e.Message,
                         ModelName = nameof(EdrivingCreateResponse),
                         Exception = e,
-                        InnerException = e.InnerException,
                         StatusCode = HttpStatusCode.BadRequest
                     });
                 }
