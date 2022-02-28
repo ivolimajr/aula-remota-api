@@ -34,7 +34,7 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
                 
                 return _autoEscolaRepository.All().ToList();
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {

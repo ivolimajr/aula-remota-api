@@ -39,10 +39,10 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
                 var user = ValidateCredentials(request);
 
                 var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("n")),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-            };
+                {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("n")),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+                };
 
                 foreach (var item in user.Roles)
                     claims.Add(new Claim(ClaimTypes.Role, item.Role));
@@ -68,7 +68,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
                     refreshToken
                 );
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -76,7 +76,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
                     ModelName = nameof(GenerateTokenHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.Unauthorized
                 });
             }
         }
@@ -86,10 +86,10 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
             var password = ComputeHash(item.Password, new SHA256CryptoServiceProvider());
 
             var user = _authUserRepository.Context.Set<ApiUserModel>().Include(e => e.Roles).Where(e => e.UserName.Equals(item.UserName)).FirstOrDefault();
-            if (user == null) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
+            if (user == null) throw new CustomException("Credenciais Inválidas");
 
             bool passwordResult = BCrypt.Net.BCrypt.Verify(item.Password, user.Password);
-            if (!passwordResult) throw new CustomException("Credenciais Inválidas", HttpStatusCode.Unauthorized);
+            if (!passwordResult) throw new CustomException("Credenciais Inválidas");
 
             return user;
         }

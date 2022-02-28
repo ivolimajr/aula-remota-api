@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.PartnnerLevel.GetOne
 {
@@ -12,10 +13,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetOne
     {
         private readonly IRepository<PartnnerLevelModel, int>_edrivingCargoRepository;
 
-        public PartnnerLevelGetOneHandler(IRepository<PartnnerLevelModel, int>edrivingCargoRepository)
-        {
-            _edrivingCargoRepository = edrivingCargoRepository;
-        }
+        public PartnnerLevelGetOneHandler(IRepository<PartnnerLevelModel, int>edrivingCargoRepository) => _edrivingCargoRepository = edrivingCargoRepository;
 
         public async Task<PartnnerLevelModel> Handle(PartnnerLevelGetOneInput request, CancellationToken cancellationToken)
         {
@@ -24,11 +22,11 @@ namespace AulaRemota.Core.PartnnerLevel.GetOne
             try
             {
                 var result = await _edrivingCargoRepository.FindAsync(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 return result;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -36,10 +34,9 @@ namespace AulaRemota.Core.PartnnerLevel.GetOne
                     ModelName = nameof(PartnnerLevelGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
-
         }
     }
 }

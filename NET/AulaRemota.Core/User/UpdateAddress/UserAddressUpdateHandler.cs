@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.User.UpdateAddress
 {
@@ -24,7 +25,7 @@ namespace AulaRemota.Core.User.UpdateAddress
             try
             {
                 var entity = await _addressRepository.FindAsync(request.Id);
-                if (entity == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (entity == null) throw new CustomException("Não Encontrado");
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
                 if (request.Uf != null) entity.Uf = request.Uf.ToUpper();
@@ -39,7 +40,7 @@ namespace AulaRemota.Core.User.UpdateAddress
 
                 return entity;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -47,7 +48,7 @@ namespace AulaRemota.Core.User.UpdateAddress
                     ModelName = nameof(UserAddressUpdateHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

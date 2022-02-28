@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System;
 
 namespace AulaRemota.Core.Edriving.Update
 {
@@ -32,7 +33,7 @@ namespace AulaRemota.Core.Edriving.Update
                                 .Where(e => e.Id == request.Id)
                                 .FirstOrDefault();
 
-                    if (edriving == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                    if (edriving == null) throw new CustomException("Não Encontrado");
 
                     if (!string.IsNullOrEmpty(request.Email) && !request.Email.Equals(edriving.Email))
                     {
@@ -48,7 +49,7 @@ namespace AulaRemota.Core.Edriving.Update
                     if (request.LevelId > 0 && !request.LevelId.Equals(edriving.LevelId))
                     {
                         var level = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                        if (level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
+                        if (level == null) throw new CustomException("Level Não Encontrado");
                         edriving.Level = level;
                     }
 
@@ -88,7 +89,7 @@ namespace AulaRemota.Core.Edriving.Update
 
                     return edriving;
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw new CustomException(new ResponseModel
@@ -97,7 +98,7 @@ namespace AulaRemota.Core.Edriving.Update
                         ModelName = nameof(EdrivingUpdateHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.BadRequest
                     });
                 }
             }

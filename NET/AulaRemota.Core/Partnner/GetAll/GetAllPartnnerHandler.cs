@@ -3,8 +3,10 @@ using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +32,7 @@ namespace AulaRemota.Core.Partnner.GetAll
                     .Where(e => e.User.Status > 0)
                     .ToListAsync(); ;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -38,7 +40,7 @@ namespace AulaRemota.Core.Partnner.GetAll
                     ModelName = nameof(GetAllPartnnerInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

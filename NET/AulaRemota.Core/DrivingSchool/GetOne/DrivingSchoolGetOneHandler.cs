@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.DrivingSchool.GetOne
 {
@@ -31,7 +32,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                if (result == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não encontrado");
 
 
                 return new DrivingSchoolGetOneResponse
@@ -53,7 +54,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     PhonesNumbers = result.PhonesNumbers
                 };
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -61,7 +62,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     ModelName = nameof(DrivingSchoolGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

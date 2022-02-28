@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System;
 
 namespace AulaRemota.Core.Partnner.Update
 {
@@ -33,12 +34,12 @@ namespace AulaRemota.Core.Partnner.Update
                             .Where(e => e.Id == request.Id)
                             .FirstOrDefaultAsync();
 
-                    if (partnner == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                    if (partnner == null) throw new CustomException("Não Encontrado");
 
                     if (request.LevelId > 0 && !request.LevelId.Equals(partnner.LevelId))
                     {
                         var level = UnitOfWork.PartnnerLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                        if (level == null) throw new CustomException("Level Não Encontrado", HttpStatusCode.NotFound);
+                        if (level == null) throw new CustomException("Level Não Encontrado");
                         partnner.Level = level;
                     }
 
@@ -101,7 +102,7 @@ namespace AulaRemota.Core.Partnner.Update
                         Address = partnner.Address
                     };
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transcation.Rollback();
                     throw new CustomException(new ResponseModel
@@ -110,7 +111,7 @@ namespace AulaRemota.Core.Partnner.Update
                         ModelName = nameof(PartnnerUpdateHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.BadRequest
                     });
                 }
             }

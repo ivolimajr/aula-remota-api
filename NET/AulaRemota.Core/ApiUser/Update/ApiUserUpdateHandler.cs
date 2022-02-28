@@ -23,7 +23,7 @@ namespace AulaRemota.Core.ApiUser.Update
             try
             {
                 var result = await _authUserRepository.FindAsync(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 if (!String.IsNullOrEmpty(request.Name)) result.Name = request.Name.ToUpper();
                 if (!String.IsNullOrEmpty(request.UserName)) result.UserName = request.UserName.ToUpper();
@@ -38,7 +38,7 @@ namespace AulaRemota.Core.ApiUser.Update
                     UserName = result.UserName
                 };
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -46,7 +46,7 @@ namespace AulaRemota.Core.ApiUser.Update
                     ModelName = nameof(ApiUserUpdateHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

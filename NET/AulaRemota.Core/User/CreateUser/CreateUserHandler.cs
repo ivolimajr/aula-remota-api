@@ -4,6 +4,8 @@ using AulaRemota.Infra.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
+using System.Net;
 
 namespace AulaRemota.Core.User.CreateUser
 {
@@ -40,7 +42,7 @@ namespace AulaRemota.Core.User.CreateUser
                 };
 
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -48,7 +50,7 @@ namespace AulaRemota.Core.User.CreateUser
                     ModelName = nameof(CreateUserInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.BadRequest
                 });
             }
         }

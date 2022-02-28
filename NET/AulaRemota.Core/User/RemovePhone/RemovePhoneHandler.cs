@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.User.RemovePhone
 {
@@ -24,13 +25,13 @@ namespace AulaRemota.Core.User.RemovePhone
             try
             {
                 var result = _phoneRepository.Find(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 _phoneRepository.Delete(result);
                 await _phoneRepository.SaveChangesAsync();
                 return true;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -38,7 +39,7 @@ namespace AulaRemota.Core.User.RemovePhone
                     ModelName = nameof(RemovePhoneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

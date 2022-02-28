@@ -63,7 +63,7 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
                     refreshToken
                 );
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {

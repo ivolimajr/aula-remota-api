@@ -2,8 +2,10 @@
 using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +15,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetAll
     {
         private readonly IRepository<PartnnerLevelModel, int>_edrivingCargoRepository;
 
-        public PartnnerLevelGetAllHandler(IRepository<PartnnerLevelModel, int>edrivingRepository)
-        {
-            _edrivingCargoRepository = edrivingRepository;
-        }
+        public PartnnerLevelGetAllHandler(IRepository<PartnnerLevelModel, int>edrivingRepository) => _edrivingCargoRepository = edrivingRepository;
 
         public async Task<List<PartnnerLevelModel>> Handle(PartnnerLevelGetAllInput request, CancellationToken cancellationToken)
         {
@@ -24,7 +23,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetAll
             {   
                 return _edrivingCargoRepository.All().OrderBy(u => u.Level).ToList();
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -32,7 +31,7 @@ namespace AulaRemota.Core.PartnnerLevel.GetAll
                     ModelName = nameof(PartnnerLevelGetAllHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.BadRequest
                 });
             }
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AulaRemota.Infra.Entity;
 using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
+using System;
 
 namespace AulaRemota.Core.ApiUser.Create
 {
@@ -51,15 +52,14 @@ namespace AulaRemota.Core.ApiUser.Create
                     Roles = user.Roles
                 };
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(ApiUserCreateHandler),
                     Exception = e,
-                    InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    InnerException = e.InnerException
                 });
             }
         }

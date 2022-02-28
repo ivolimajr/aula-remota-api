@@ -2,7 +2,6 @@
 using AulaRemota.Shared.Helpers;
 using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Entity.DrivingSchool;
-using AulaRemota.Infra.Repository;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using AulaRemota.Shared.Helpers.Constants;
 using AulaRemota.Core.File.RemoveFromAzure;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System.Net;
 
 namespace AulaRemota.Core.DrivingSchool.Create
 {
@@ -19,10 +19,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public DrivingSchoolCreateHandler(
-            IUnitOfWork _unitOfWork,
-            IMediator mediator
-            )
+        public DrivingSchoolCreateHandler(IUnitOfWork _unitOfWork,IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
@@ -114,7 +111,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                         Files = autoEscolaModel.Files
                     };
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     await _mediator.Send(new RemoveFromAzureInput()
                     {
@@ -129,7 +126,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                         ModelName = nameof(DrivingSchoolCreateHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.BadRequest
                     });
                 }
             }

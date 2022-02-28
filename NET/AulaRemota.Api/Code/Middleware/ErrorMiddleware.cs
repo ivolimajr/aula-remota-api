@@ -70,11 +70,15 @@ namespace AulaRemota.Api.Code.Middleware
                 if (ex.ResponseModel != null) customException = new CustomException(ex.ResponseModel);
                 else customException = new CustomException(ex.Message, ex.InnerException);
 
-                if(ex.ResponseModel.UserMessage == null || ex.ResponseModel.StatusCode == null)
+                if (ex.ResponseModel.Exception.InnerException != null)
                 {
                     ex.ResponseModel.InnerExceptionMessage = ex.ResponseModel.Exception.InnerException.Message;
                     ex.ResponseModel.UserMessage = ex.ResponseModel.Exception.InnerException.Message;
                     ex.ResponseModel.StatusCode = HttpStatusCode.InternalServerError;
+                }
+                else
+                {
+                    ex.ResponseModel.Exception = default;
                 }
             }
             else

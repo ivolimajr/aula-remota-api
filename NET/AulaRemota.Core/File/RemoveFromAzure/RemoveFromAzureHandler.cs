@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AulaRemota.Shared.Helpers.Constants;
 using AulaRemota.Shared.Helpers;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.File.RemoveFromAzure
 {
@@ -16,7 +17,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
         {
             try
             {
-                if (request.TypeUser == null) throw new CustomException("Informe o tipo de usuário", HttpStatusCode.BadRequest );
+                if (request.TypeUser == null) throw new CustomException("Informe o tipo de usuário");
                 if (request.Files.Count > 0)
                 {
                     var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -48,7 +49,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
                 return true;
 
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -56,7 +57,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
                     ModelName = nameof(RemoveFromAzureHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.BadRequest
                 });
             }
         }

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.ApiUser.GetOne
 {
@@ -34,12 +35,12 @@ namespace AulaRemota.Core.ApiUser.GetOne
                     })
                     .Where(e => e.Id.Equals(request.Id))
                     .FirstOrDefault();
-                if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não Encontrado");
                 result.Password = default;
                 result.RefreshToken = default;
                 return result;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -47,7 +48,7 @@ namespace AulaRemota.Core.ApiUser.GetOne
                     ModelName = nameof(ApiUserGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

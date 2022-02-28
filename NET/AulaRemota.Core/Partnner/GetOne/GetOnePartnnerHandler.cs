@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.Partnner.GetOne
 {
@@ -14,10 +15,7 @@ namespace AulaRemota.Core.Partnner.GetOne
     {
         private readonly IRepository<PartnnerModel, int> _partnnerRepository;
 
-        public GetOnePartnnerHandler(IRepository<PartnnerModel, int> partnnerRepository)
-        {
-            _partnnerRepository = partnnerRepository;
-        }
+        public GetOnePartnnerHandler(IRepository<PartnnerModel, int> partnnerRepository) => _partnnerRepository = partnnerRepository;
 
         public async Task<GetOnePartnnerResponse> Handle(GetOnePartnnerInput request, CancellationToken cancellationToken)
         {
@@ -26,7 +24,7 @@ namespace AulaRemota.Core.Partnner.GetOne
             try
             {
                 bool res = _partnnerRepository.Exists(e => e.Id == request.Id);
-                if (!res) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (!res) throw new CustomException("Não Encontrado");
 
                 var result = await _partnnerRepository.Context
                         .Set<PartnnerModel>()
@@ -54,7 +52,7 @@ namespace AulaRemota.Core.Partnner.GetOne
                     User = result.User,
                 };
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -62,7 +60,7 @@ namespace AulaRemota.Core.Partnner.GetOne
                     ModelName = nameof(GetOnePartnnerInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

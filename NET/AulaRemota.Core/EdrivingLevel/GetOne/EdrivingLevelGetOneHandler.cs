@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.EdrivingLevel.GetOne
 {
@@ -12,10 +13,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
     {
         private readonly IRepository<EdrivingLevelModel, int> _edrivingCargoRepository;
 
-        public EdrivingLevelGetOneHandler(IRepository<EdrivingLevelModel, int> edrivingCargoRepository)
-        {
-            _edrivingCargoRepository = edrivingCargoRepository;
-        }
+        public EdrivingLevelGetOneHandler(IRepository<EdrivingLevelModel, int> edrivingCargoRepository) => _edrivingCargoRepository = edrivingCargoRepository;
 
         public async Task<EdrivingLevelModel> Handle(EdrivingLevelGetOneInput request, CancellationToken cancellationToken)
         {
@@ -24,11 +22,11 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
             try
             {
                 var result = await _edrivingCargoRepository.FindAsync(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 return result;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -36,7 +34,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetOne
                     ModelName = nameof(EdrivingLevelGetOneInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

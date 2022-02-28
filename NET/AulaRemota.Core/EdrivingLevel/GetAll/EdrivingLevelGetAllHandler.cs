@@ -2,8 +2,10 @@
 using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +26,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
             {
                 return _edrivingCargoRepository.All().OrderBy(u => u.Level).ToList();
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -32,7 +34,7 @@ namespace AulaRemota.Core.EdrivingLevel.GetAll
                     ModelName = nameof(EdrivingLevelGetAllInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NoContent
                 });
             }
         }

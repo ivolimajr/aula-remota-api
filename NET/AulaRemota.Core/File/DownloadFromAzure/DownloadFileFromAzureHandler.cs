@@ -3,6 +3,7 @@ using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.WindowsAzure.Storage;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,17 +16,14 @@ namespace AulaRemota.Core.File.DownloadFromAzure
 
         private readonly IRepository<FileModel, int> _fileRepository;
 
-        public DownloadFileFromAzureHandler(IRepository<FileModel, int> fileRepository)
-        {
-            _fileRepository = fileRepository;
-        }
+        public DownloadFileFromAzureHandler(IRepository<FileModel, int> fileRepository) => _fileRepository = fileRepository;
 
         public async Task<string> Handle(DownloadFileFromAzureInput request, CancellationToken cancellationToken)
         {
             try
             {
                 var res = Exists(request.FileName.ToLower());
-                if (!res) throw new CustomException("Arquivo não encontrado", HttpStatusCode.NotFound);
+                if (!res) throw new CustomException("Arquivo não encontrado");
 
                 string Container = request.TypeUser.ToLower();
                 var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -34,7 +32,7 @@ namespace AulaRemota.Core.File.DownloadFromAzure
                 var uri = cloudBlockBlob.Uri.AbsoluteUri;
                 return uri;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -42,11 +40,10 @@ namespace AulaRemota.Core.File.DownloadFromAzure
                     ModelName = nameof(DownloadFileFromAzureInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }
-
         private bool Exists(string fileName) =>
             _fileRepository.Exists(e => e.FileName.ToLower().Equals(fileName.ToLower()));
     }

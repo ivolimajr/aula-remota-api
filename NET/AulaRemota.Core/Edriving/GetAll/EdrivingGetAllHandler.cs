@@ -3,6 +3,7 @@ using AulaRemota.Infra.Repository;
 using AulaRemota.Shared.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -28,7 +29,7 @@ namespace AulaRemota.Core.Edriving.GetAll
                     .Include(t => t.PhonesNumbers)
                     .ToListAsync();
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {

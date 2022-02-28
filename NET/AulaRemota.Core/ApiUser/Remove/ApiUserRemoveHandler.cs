@@ -23,13 +23,13 @@ namespace AulaRemota.Core.ApiUser.Remove
             try
             {
                 var result = await _authUserRepository.FindAsync(request.Id);
-                if (result == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
+                if (result == null) throw new CustomException("Não encontrado");
 
                 _authUserRepository.Delete(result);
                 _authUserRepository.SaveChanges();
                 return true;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -37,7 +37,7 @@ namespace AulaRemota.Core.ApiUser.Remove
                     ModelName = nameof(ApiUserRemoveHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

@@ -21,10 +21,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public DrivingSchoolUpdateHandler(
-            IUnitOfWork _unitOfWork,
-            IMediator mediator
-            )
+        public DrivingSchoolUpdateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
@@ -40,7 +37,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
                     var drivingSchoolDb = UnitOfWork.DrivingSchool.Where(e => e.Id.Equals(request.Id))
                                 .Include(e => e.PhonesNumbers).Include(e => e.Files).Include(e => e.User).Include(e => e.Address).FirstOrDefault();
 
-                    if (drivingSchoolDb == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                    if (drivingSchoolDb == null) throw new CustomException("Não Encontrado");
 
                     if (!String.IsNullOrWhiteSpace(request.CorporateName)) drivingSchoolDb.CorporateName = request.CorporateName;
                     if (!String.IsNullOrWhiteSpace(request.FantasyName))
@@ -72,10 +69,11 @@ namespace AulaRemota.Core.DrivingSchool.Update
 
                     if (!String.IsNullOrWhiteSpace(request.StateRegistration)) drivingSchoolDb.StateRegistration = request.StateRegistration;
                     if (!String.IsNullOrWhiteSpace(request.Cnpj)) drivingSchoolDb.Cnpj = request.Cnpj;
-                    if (!String.IsNullOrWhiteSpace(request.Email)) {
+                    if (!String.IsNullOrWhiteSpace(request.Email))
+                    {
                         drivingSchoolDb.Email = request.Email;
                         drivingSchoolDb.User.Email = request.Email;
-                    } 
+                    }
 
                     if (request.Files != null)
                     {
@@ -129,7 +127,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
 
                     return drivingSchoolDb;
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     await _mediator.Send(new RemoveFromAzureInput()
@@ -143,7 +141,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
                         ModelName = nameof(DrivingSchoolUpdateHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.BadRequest
                     });
                 }
             }

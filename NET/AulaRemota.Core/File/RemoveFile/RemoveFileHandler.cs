@@ -5,6 +5,7 @@ using AulaRemota.Shared.Helpers;
 using AulaRemota.Shared.Helpers.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -35,7 +36,7 @@ namespace AulaRemota.Core.File.RemoveFile
                     .Where(e => e.Id.Equals(request.Id))
                     .FirstOrDefaultAsync();
                 string typeOfUser = default;
-                if (fileResult == null) throw new CustomException("Arquivo não encontrado", HttpStatusCode.NotFound);
+                if (fileResult == null) throw new CustomException("Arquivo não encontrado");
 
                 if (fileResult.DrivingSchool != null) typeOfUser = Constants.Roles.AUTOESCOLA;
                 if (fileResult.Instructor != null) typeOfUser = Constants.Roles.INSTRUTOR;
@@ -52,7 +53,7 @@ namespace AulaRemota.Core.File.RemoveFile
                 }
                 return result;                
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -60,7 +61,7 @@ namespace AulaRemota.Core.File.RemoveFile
                     ModelName = nameof(RemoveFileHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

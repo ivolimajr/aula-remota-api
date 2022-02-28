@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System;
 
 namespace AulaRemota.Core.Partnner.Remove
 {
@@ -31,7 +32,7 @@ namespace AulaRemota.Core.Partnner.Remove
                                             .Where(e => e.Id == request.Id)
                                             .FirstOrDefaultAsync();
 
-                    if (partnner == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                    if (partnner == null) throw new CustomException("Não Encontrado");
                     
                     foreach (var item in partnner.PhonesNumbers)
                     {
@@ -48,7 +49,7 @@ namespace AulaRemota.Core.Partnner.Remove
                     transaction.Commit();
                     return true;
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw new CustomException(new ResponseModel
@@ -57,7 +58,7 @@ namespace AulaRemota.Core.Partnner.Remove
                         ModelName = nameof(RemovePartnnerHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.NotFound
                     });
                 }
             }

@@ -11,6 +11,7 @@ using AulaRemota.Shared.Helpers.Constants;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using System.Collections.Generic;
+using System;
 
 namespace AulaRemota.Core.DrivingSchool.Remove
 {
@@ -19,10 +20,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public DrivingSchoolRemoveHandler(
-            IUnitOfWork _unitOfWork,
-            IMediator mediator
-            )
+        public DrivingSchoolRemoveHandler(IUnitOfWork _unitOfWork,IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
@@ -45,7 +43,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
-                    if (autoEscola == null) throw new CustomException("Não encontrado", HttpStatusCode.NotFound);
+                    if (autoEscola == null) throw new CustomException("Não encontrado");
                     foreach (var item in autoEscola.PhonesNumbers)
                     {
                         UnitOfWork.Phone.Delete(item);
@@ -72,11 +70,11 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                             Files = fileList,
                             TypeUser = Constants.Roles.AUTOESCOLA
                         });
-                        if (!result) throw new CustomException("Removido, arquivos na fila para remoção.", HttpStatusCode.InternalServerError);
+                        if (!result) throw new CustomException("Removido, arquivos na fila para remoção.");
                     }
                     return true;
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
 
@@ -86,7 +84,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                         ModelName = nameof(DrivingSchoolRemoveHandler),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.NotFound
                     });
                 }
             }

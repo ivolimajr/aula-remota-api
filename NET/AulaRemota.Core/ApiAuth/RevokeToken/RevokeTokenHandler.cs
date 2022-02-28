@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.ApiAuth.RevokeToken
 {
@@ -24,7 +25,7 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
             try
             {
                 ApiUserModel authUser = _authUserRepository.FirstOrDefault(u => u.UserName == request.UserName);
-                if (authUser == null) throw new CustomException("Credenciais Não encontrada", HttpStatusCode.Unauthorized);
+                if (authUser == null) throw new CustomException("Credenciais Não encontrada");
 
                 ApiUserModel User = await _authUserRepository.FindAsync(authUser.Id);
 
@@ -34,7 +35,7 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
                 return "Usuário da Api Removido";
 
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -42,7 +43,7 @@ namespace AulaRemota.Core.ApiAuth.RevokeToken
                     ModelName = nameof(RevokeTokenHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.Unauthorized
                 });
             }
 

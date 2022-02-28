@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System;
 
 namespace AulaRemota.Core.Edriving.GetOne
 {
@@ -14,19 +15,15 @@ namespace AulaRemota.Core.Edriving.GetOne
     {
         private readonly IRepository<EdrivingModel, int> _edrivingRepository;
 
-        public EdrivingGetOneHandler(IRepository<EdrivingModel, int> edrivingRepository)
-        {
-            _edrivingRepository = edrivingRepository;
-        }
+        public EdrivingGetOneHandler(IRepository<EdrivingModel, int> edrivingRepository) => _edrivingRepository = edrivingRepository;
 
         public async Task<EdrivingModel> Handle(EdrivingGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
-
             try
             {
                 var res = await _edrivingRepository.FindAsync(request.Id);
-                if (res == null) throw new CustomException("Não Encontrado", HttpStatusCode.NotFound);
+                if (res == null) throw new CustomException("Não Encontrado");
 
                 var result = await _edrivingRepository.Context
                         .Set<EdrivingModel>()
@@ -40,7 +37,7 @@ namespace AulaRemota.Core.Edriving.GetOne
 
                 return result;
             }
-            catch (CustomException e)
+            catch (Exception e)
             {
                 throw new CustomException(new ResponseModel
                 {
@@ -48,7 +45,7 @@ namespace AulaRemota.Core.Edriving.GetOne
                     ModelName = nameof(EdrivingGetOneInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = e.ResponseModel.StatusCode
+                    StatusCode = HttpStatusCode.NotFound
                 });
             }
         }

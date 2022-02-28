@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AulaRemota.Shared.Helpers.Constants;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
+using System;
 
 namespace AulaRemota.Core.Partnner.Create
 {
@@ -81,7 +82,7 @@ namespace AulaRemota.Core.Partnner.Create
                     transaction.Commit();
                     return partnnerResult;
                 }
-                catch (CustomException e)
+                catch (Exception e)
                 {
                     transaction.Rollback();
                     throw new CustomException(new ResponseModel
@@ -90,7 +91,7 @@ namespace AulaRemota.Core.Partnner.Create
                         ModelName = nameof(CreatePartnnerInput),
                         Exception = e,
                         InnerException = e.InnerException,
-                        StatusCode = e.ResponseModel.StatusCode
+                        StatusCode = HttpStatusCode.BadRequest
                     });
                 }
             }
