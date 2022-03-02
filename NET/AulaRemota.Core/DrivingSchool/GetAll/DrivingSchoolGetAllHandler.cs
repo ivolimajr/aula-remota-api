@@ -27,8 +27,7 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
             {
                 if (!String.IsNullOrWhiteSpace(request.Uf))
                 {
-                    return await _autoEscolaRepository.Context.Set<DrivingSchoolModel>()
-                            .Where(e => e.Address.Uf.Equals(request.Uf))
+                    return await _autoEscolaRepository.Where(e => e.Address.Uf.Equals(request.Uf))
                             .ToListAsync();
                 }
                 

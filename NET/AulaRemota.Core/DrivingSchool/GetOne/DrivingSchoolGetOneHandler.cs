@@ -3,7 +3,6 @@ using AulaRemota.Infra.Entity.DrivingSchool;
 using AulaRemota.Infra.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -23,14 +22,16 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
 
             try
             {
-                var result = await _autoEscolaRepository.Context.Set<DrivingSchoolModel>()
-                    .Include(e => e.PhonesNumbers)
-                    .Include(e => e.Address)
-                    .Include(e => e.Files)
-                    .Include(e => e.User)
-                    .Include(e => e.Administratives)
-                    .Where(e => e.Id == request.Id)
-                    .FirstOrDefaultAsync();
+                var result = await _autoEscolaRepository.Where(e => e.Id.Equals(request.Id))
+                                    .Include(e => e.User)
+                                    .Include(e => e.PhonesNumbers)
+                                    .Include(e => e.Address)
+                                    .Include(e => e.Files)
+                                    .Include(e => e.Administratives)
+                                    .Include(e => e.Administratives).ThenInclude(e => e.Address)
+                                    .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync();
 
                 if (result == null) throw new CustomException("Não encontrado");
 

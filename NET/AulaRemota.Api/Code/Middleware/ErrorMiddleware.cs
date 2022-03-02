@@ -62,38 +62,48 @@ namespace AulaRemota.Api.Code.Middleware
         {
             //TODO: Gravar log de erro com o trace id
 
-            CustomException customException;
+            ex.ResponseModel.InnerExceptionMessage= ex.InnerException?.Message ?? null;
+            object result = null;
 
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development" ||
-                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Qa")
-            {
-                if (ex.ResponseModel != null) customException = new CustomException(ex.ResponseModel);
-                else customException = new CustomException(ex.Message, ex.InnerException);
+            string userMessage;
+            string modelName;
 
-                if (ex.ResponseModel.Exception.InnerException != null)
-                {
-                    ex.ResponseModel.InnerExceptionMessage = ex.ResponseModel.Exception.InnerException.Message;
-                    ex.ResponseModel.UserMessage = ex.ResponseModel.Exception.InnerException.Message;
-                    ex.ResponseModel.StatusCode = HttpStatusCode.InternalServerError;
-                }
-                else
-                {
-                    ex.ResponseModel.Exception = default;
-                }
-            }
-            else
+
+            switch (ex)
             {
-                if (ex.ResponseModel != null) customException = new CustomException(ex.ResponseModel);
-                else customException = new CustomException(ex.Message, ex.InnerException); ;
+                case CustomException customException:
+                    userMessage = customException.ResponseModel.ModelName ?? null;
+                    modelName = customException.ResponseModel.ModelName ?? null;
+                    break;
             }
+
+
+            if (ex.ResponseModel.Exception.InnerException != null)
+            {
+                result = new
+                {
+                    InnerExceptionMessage = ex.ResponseModel.Exception.InnerException.Message ?? null,
+                    ModelName = ex.ResponseModel.ModelName ?? null,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            } else
+            {
+                result = new
+                {
+                    UserMessage = ex.ResponseModel.UserMessage ?? null,
+                    ModelName = ex.ResponseModel.ModelName ?? null,
+                    statusCode = ex.ResponseModel.StatusCode
+                };
+            }
+
+
+            ex.ResponseModel.Exception = null;
 
             _logger.LogInformation(this.logLineFormatter(ex.ResponseModel));
 
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-            var result = JsonConvert.SerializeObject(customException.ResponseModel);
+            var jsonResult = JsonConvert.SerializeObject(result);
             context.Response.ContentType = "application/json";
-            return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(jsonResult);
         }
     }
 }

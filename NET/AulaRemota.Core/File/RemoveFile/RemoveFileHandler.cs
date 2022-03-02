@@ -30,10 +30,10 @@ namespace AulaRemota.Core.File.RemoveFile
             try
             {
                 if (request.Id == 0) throw new CustomException("Parâmetro inválido");
-                var fileResult = await _arquivoRepository.Context.Set<FileModel>()
+                var fileResult = await _arquivoRepository
+                    .Where(e => e.Id.Equals(request.Id))
                     .Include(e => e.DrivingSchool)
                     .Include(e => e.Instructor)
-                    .Where(e => e.Id.Equals(request.Id))
                     .FirstOrDefaultAsync();
                 string typeOfUser = default;
                 if (fileResult == null) throw new CustomException("Arquivo não encontrado");

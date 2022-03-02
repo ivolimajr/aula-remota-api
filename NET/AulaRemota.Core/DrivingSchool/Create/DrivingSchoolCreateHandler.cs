@@ -26,6 +26,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
         }
         public async Task<DrivingSchoolCreateResponse> Handle(DrivingSchoolCreateInput request, CancellationToken cancellationToken)
         {
+            if (request.Files == null) throw new CustomException("Documentos ausentes");
             using (var transaction = UnitOfWork.BeginTransaction())
             {
                 //Cria uma lista para receber os Files
