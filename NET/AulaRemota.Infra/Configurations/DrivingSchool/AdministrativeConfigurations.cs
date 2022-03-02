@@ -24,6 +24,7 @@ namespace AulaRemota.Infra.Configurations.DrivingSchool
             builder.HasOne(e => e.User).WithOne(e => e.Administrative);
             builder.HasOne(e => e.Address).WithOne(e => e.Administrative);
             builder.HasOne(e => e.DrivingSchool).WithMany(e => e.Administratives).HasForeignKey(e => e.DrivingSchoolId);
+            builder.HasMany(e => e.PhonesNumbers).WithOne(e => e.Administrative);
         }
     }
 }

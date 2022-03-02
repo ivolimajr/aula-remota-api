@@ -20,7 +20,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public DrivingSchoolRemoveHandler(IUnitOfWork _unitOfWork,IMediator mediator)
+        public DrivingSchoolRemoveHandler(IUnitOfWork _unitOfWork, IMediator mediator)
         {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
@@ -40,6 +40,9 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                         .Include(e => e.PhonesNumbers)
                         .Include(e => e.Address)
                         .Include(e => e.Files)
+                        .Include(e => e.Administratives).ThenInclude(e => e.User)
+                        .Include(e => e.Administratives).ThenInclude(e => e.Address)
+                        .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
@@ -52,13 +55,22 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                     UnitOfWork.SaveChanges();
 
                     foreach (var item in autoEscola.Files)
-                    {
                         UnitOfWork.File.Delete(item);
-                    }
                     UnitOfWork.SaveChanges();
 
+                    foreach (var administrative in autoEscola.Administratives)
+                    {
+                        foreach (var phone in administrative.PhonesNumbers)
+                            UnitOfWork.Phone.Delete(phone);
+
+                        await UnitOfWork.SaveChangesAsync();
+                        UnitOfWork.User.Delete(administrative.User);
+                        UnitOfWork.Address.Delete(administrative.Address);
+                        UnitOfWork.Administrative.Delete(administrative);
+                    }
+
                     UnitOfWork.User.Delete(autoEscola.User);
-                    UnitOfWork.Address.Delete(autoEscola.Address);
+                    UnitOfWork.Address.Delete(autoEscola.Address);;
                     UnitOfWork.DrivingSchool.Delete(autoEscola);
 
                     UnitOfWork.SaveChanges();

@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using AulaRemota.Infra.Entity.DrivingSchool;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.DrivingSchool.GetOne
 {
-    public class DrivingSchoolGetOneInput : IRequest<DrivingSchoolGetOneResponse>
+    public class DrivingSchoolGetOneInput : IRequest<DrivingSchoolModel>
     {
         [Required]
         [StringLength(maximumLength: 99999, MinimumLength = 1)]

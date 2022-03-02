@@ -9,9 +9,10 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
     {
         public DrivingSchoolModel()
         {
-            this.Files = new List<FileModel>();
-            this.PhonesNumbers = new List<PhoneModel>();
-            this.Classes = new List<TurmaModel>();
+            Files = new List<FileModel>();
+            PhonesNumbers = new List<PhoneModel>();
+            Administratives = new List<AdministrativeModel>();
+            Classes = new List<TurmaModel>();
         }
 
         public int Id { get; set; }
@@ -38,7 +39,7 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
         public int UserId { get; set; }
         public UserModel User { get; set; }
 
-        [JsonIgnore]
+        
         public virtual ICollection<AdministrativeModel> Administratives { get; set; }
         [JsonIgnore]
         public virtual ICollection<InstructorModel> Instructors { get; set; }

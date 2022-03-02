@@ -51,7 +51,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(EdrivingCreateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EdrivingCreateResponse), StatusCodes.Status201Created)]
         public async ValueTask<ActionResult> Post([FromBody] EdrivingCreateInput request) => StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
 
         /// <summary>

@@ -11,13 +11,13 @@ using System;
 
 namespace AulaRemota.Core.DrivingSchool.GetOne
 {
-    public class DrivingSchoolGetOneHandler : IRequestHandler<DrivingSchoolGetOneInput, DrivingSchoolGetOneResponse>
+    public class DrivingSchoolGetOneHandler : IRequestHandler<DrivingSchoolGetOneInput, DrivingSchoolModel>
     {
         private readonly IRepository<DrivingSchoolModel, int> _autoEscolaRepository;
 
         public DrivingSchoolGetOneHandler(IRepository<DrivingSchoolModel, int> autoEscolaRepository) => _autoEscolaRepository = autoEscolaRepository;
 
-        public async Task<DrivingSchoolGetOneResponse> Handle(DrivingSchoolGetOneInput request, CancellationToken cancellationToken)
+        public async Task<DrivingSchoolModel> Handle(DrivingSchoolGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
@@ -28,31 +28,13 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                     .Include(e => e.Address)
                     .Include(e => e.Files)
                     .Include(e => e.User)
-                    //.Include(e => e.User.Roles)
+                    .Include(e => e.Administratives)
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
                 if (result == null) throw new CustomException("Não encontrado");
 
-
-                return new DrivingSchoolGetOneResponse
-                {
-                    Id = result.Id,
-                    CorporateName = result.CorporateName,
-                    FantasyName = result.FantasyName,
-                    StateRegistration = result.StateRegistration,
-                    FoundingDate = result.FoundingDate,
-                    Email = result.Email,
-                    Description = result.Description,
-                    Site = result.Site,
-                    Cnpj = result.Cnpj,
-                    AddressId = result.AddressId,
-                    Address = result.Address,
-                    UserId = result.UserId,
-                    User = result.User,
-                    Files = result.Files,
-                    PhonesNumbers = result.PhonesNumbers
-                };
+                return result;
             }
             catch (Exception e)
             {

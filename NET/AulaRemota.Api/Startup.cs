@@ -1,5 +1,4 @@
 using AulaRemota.Api.Code;
-using AulaRemota.Api.Code.Logger;
 using AulaRemota.Api.Code.Middleware;
 using AulaRemota.Infra.Context;
 using AulaRemota.Shared.Configuration;
@@ -7,9 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,10 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 
@@ -76,6 +71,9 @@ namespace AulaRemota.Api
             });
 
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             services.AddApiVersioning();
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
 

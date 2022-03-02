@@ -47,7 +47,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(DrivingSchoolGetOneInput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DrivingSchoolModel), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult<DrivingSchoolGetOneInput>> Get(int id) =>
             Ok(await _mediator.Send(new DrivingSchoolGetOneInput { Id = id }));
 
