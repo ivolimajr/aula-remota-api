@@ -57,7 +57,6 @@ namespace AulaRemota.Api.Code.Middleware
                 await HandleExceptionAsync(context, customException);
             }
         }
-
         private Task HandleExceptionAsync(HttpContext context, CustomException ex)
         {
             //TODO: Gravar log de erro com o trace id
@@ -77,7 +76,6 @@ namespace AulaRemota.Api.Code.Middleware
                     break;
             }
 
-
             if (ex.ResponseModel.Exception.InnerException != null)
             {
                 result = new
@@ -95,9 +93,8 @@ namespace AulaRemota.Api.Code.Middleware
                     statusCode = ex.ResponseModel.StatusCode
                 };
             }
-
-
             ex.ResponseModel.Exception = null;
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             _logger.LogInformation(this.logLineFormatter(ex.ResponseModel));
 
