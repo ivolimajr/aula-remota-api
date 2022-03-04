@@ -52,15 +52,7 @@ namespace AulaRemota.Core.Partnner.Create
                         PhonesNumbers = request.PhonesNumbers,
                         LevelId = request.LevelId,
                         Level = Level,
-                        Address = new AddressModel
-                        {
-                            District = request.District.ToUpper(),
-                            Cep = request.Cep.ToUpper(),
-                            City = request.City.ToUpper(),
-                            Address = request.Address.ToUpper(),
-                            Number = request.Number.ToUpper(),
-                            Uf = request.Uf.ToUpper(),
-                        },
+                        Address = request.Address,
                         User = new UserModel
                         {
                             Name = request.Name.ToUpper(),

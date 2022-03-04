@@ -36,27 +36,6 @@ namespace AulaRemota.Core.Partnner.Create
         public int LevelId { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 2, MinimumLength = 2)]
-        public string Uf { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 8, MinimumLength = 8)]
-        public string Cep { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Address { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string District { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string City { get; set; }
-
-        [Required]
-        [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Number { get; set; }
+        public AddressModel Address { get; set; }
     }
 }
