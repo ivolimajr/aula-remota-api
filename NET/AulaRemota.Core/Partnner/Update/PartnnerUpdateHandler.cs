@@ -70,12 +70,12 @@ namespace AulaRemota.Core.Partnner.Update
                     partnner.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : partnner.Name.ToUpper();
                     partnner.Description = !string.IsNullOrEmpty(request.Description) ? request.Description.ToUpper() : partnner.Description.ToUpper();
 
-                    partnner.Address.Uf = !string.IsNullOrEmpty(request.Uf) ? request.Uf.ToUpper() : partnner.Address.Uf.ToUpper();
-                    partnner.Address.Cep = !string.IsNullOrEmpty(request.Cep) ? request.Cep.ToUpper() : partnner.Address.Cep.ToUpper();
-                    partnner.Address.Address = !string.IsNullOrEmpty(request.Address) ? request.Address.ToUpper() : partnner.Address.Address.ToUpper();
-                    partnner.Address.District = !string.IsNullOrEmpty(request.District) ? request.District.ToUpper() : partnner.Address.District.ToUpper();
-                    partnner.Address.City = !string.IsNullOrEmpty(request.City) ? request.City.ToUpper() : partnner.Address.City.ToUpper();
-                    partnner.Address.Number = !string.IsNullOrEmpty(request.Number) ? request.Number.ToUpper() : partnner.Address.Number.ToUpper();
+                    partnner.Address.Uf = !string.IsNullOrEmpty(request.Address.Uf) ? request.Address.Uf.ToUpper() : partnner.Address.Uf.ToUpper();
+                    partnner.Address.Cep = !string.IsNullOrEmpty(request.Address.Cep) ? request.Address.Cep.ToUpper() : partnner.Address.Cep.ToUpper();
+                    partnner.Address.Address = !string.IsNullOrEmpty(request.Address.Address) ? request.Address.Address.ToUpper() : partnner.Address.Address.ToUpper();
+                    partnner.Address.District = !string.IsNullOrEmpty(request.Address.District) ? request.Address.District.ToUpper() : partnner.Address.District.ToUpper();
+                    partnner.Address.City = !string.IsNullOrEmpty(request.Address.City) ? request.Address.City.ToUpper() : partnner.Address.City.ToUpper();
+                    partnner.Address.Number = !string.IsNullOrEmpty(request.Address.Number) ? request.Address.Number.ToUpper() : partnner.Address.Number.ToUpper();
 
                     partnner.User.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : partnner.Email.ToUpper();
                     partnner.User.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : partnner.Name.ToUpper();

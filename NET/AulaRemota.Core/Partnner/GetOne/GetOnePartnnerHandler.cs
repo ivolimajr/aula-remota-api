@@ -23,18 +23,14 @@ namespace AulaRemota.Core.Partnner.GetOne
 
             try
             {
-                bool res = _partnnerRepository.Exists(e => e.Id == request.Id);
-                if (!res) throw new CustomException("Não Encontrado");
-
-                var result = await _partnnerRepository.Context
-                        .Set<PartnnerModel>()
+                var result = _partnnerRepository
+                        .Where(e => e.User.Status > 0 && e.Id == request.Id)
                         .Include(e => e.User)
                         .Include(e => e.Level)
                         .Include(e => e.Address)
-                        .Include(e => e.PhonesNumbers)
-                        .Where(e => e.Id == request.Id)
-                        .Where(e => e.User.Status > 0)
-                        .FirstAsync();
+                        .Include(e => e.PhonesNumbers)                        
+                        .FirstOrDefault();
+                if (result == null) throw new CustomException("Não Encontrado");
 
                 return new GetOnePartnnerResponse
                 {

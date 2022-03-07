@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +22,12 @@ namespace AulaRemota.Core.Partnner.GetAll
         {
             try
             {
-                return await _partnnerRepository.Context
-                    .Set<PartnnerModel>()
+                return await _partnnerRepository
+                    .Where(e => e.User.Status > 0)
                     .Include(e => e.User)
                     .Include(e => e.Level)
                     .Include(e => e.Address)
                     .Include(e => e.PhonesNumbers)
-                    .Where(e => e.User.Status > 0)
                     .ToListAsync(); ;
             }
             catch (Exception e)

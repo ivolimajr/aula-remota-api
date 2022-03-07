@@ -18,9 +18,9 @@ namespace AulaRemota.Core.Administrative.GetAll
 
         public async Task<List<AdministrativeModel>> Handle(AdministrativeGetAllInput request, CancellationToken cancellationToken) {
             var result = _administrativeRepository.Context
-                                            .Set<AdministrativeModel>()
-                                            .Include(e => e.DrivingSchool)
-                                            .ToList();
+                .Set<AdministrativeModel>()
+                .Include(e => e.DrivingSchool)
+                .ToList();
             return result;
         }
             

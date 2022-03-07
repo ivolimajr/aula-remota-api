@@ -1,6 +1,7 @@
 ﻿using AulaRemota.Infra.Entity.DrivingSchool;
 using AulaRemota.Infra.Repository;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,9 +16,12 @@ namespace AulaRemota.Core.Administrative.GetOne
             _administrativeRepository = administrativeRepository;
         }
 
-        public Task<AdministrativeModel> Handle(AdministrativeGetOneInput request, CancellationToken cancellationToken)
+        public async Task<AdministrativeModel> Handle(AdministrativeGetOneInput request, CancellationToken cancellationToken)
         {
-            return _administrativeRepository.FindAsync(request.Id);
+            return await _administrativeRepository.Where(e => e.Id.Equals(request.Id))
+                                .Include(e => e.Address)
+                                .Include(e => e.PhonesNumbers)
+                                .FirstOrDefaultAsync();
         }
     }
 }

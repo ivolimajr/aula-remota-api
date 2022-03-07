@@ -30,7 +30,6 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                                     .Include(e => e.Administratives)
                                     .Include(e => e.Administratives).ThenInclude(e => e.Address)
                                     .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
-                                    .AsNoTracking()
                                     .FirstOrDefaultAsync();
 
                 if (result == null) throw new CustomException("Não encontrado");

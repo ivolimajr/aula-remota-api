@@ -29,23 +29,8 @@ namespace AulaRemota.Core.Partnner.Update
         [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string Description { get; set; }
 
-        [StringLength(maximumLength: 2, MinimumLength = 2)]
-        public string Uf { get; set; }
-
-        [StringLength(maximumLength: 8, MinimumLength = 8)]
-        public string Cep { get; set; }
-
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Address { get; set; }
-
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string District { get; set; }
-
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string City { get; set; }
-
-        [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Number { get; set; }
+        [Required]
+        public AddressModel Address { get; set; }
 
         public ICollection<PhoneModel> PhonesNumbers { get; set; }
 

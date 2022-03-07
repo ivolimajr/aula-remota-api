@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace AulaRemota.Api
 {
@@ -71,9 +72,10 @@ namespace AulaRemota.Api
             });
 
             services.AddControllers();
-            services.AddControllers().AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            //services.AddControllers().AddNewtonsoftJson(options =>
+            //        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //    );
             services.AddApiVersioning();
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
 

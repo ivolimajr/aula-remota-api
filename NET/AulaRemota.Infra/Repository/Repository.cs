@@ -56,7 +56,7 @@ namespace AulaRemota.Infra.Repository
         //BUSCAR COM CLÁUSULA
         public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> filter)
         {
-            IQueryable<TEntity> query = Model.AsNoTracking<TEntity>();
+            IQueryable<TEntity> query = Model.AsNoTracking<TEntity>().IgnoreAutoIncludes();
             return query.Where(filter);
         }
 
@@ -86,7 +86,7 @@ namespace AulaRemota.Infra.Repository
         //BUSCAR TODOS
         public virtual IEnumerable<TEntity> All()
         {
-            return _context.Set<TEntity>().AsNoTracking().AsEnumerable();
+            return Model.AsNoTracking().IgnoreAutoIncludes().AsEnumerable();
         }
 
         //BUSCAR POR ID
