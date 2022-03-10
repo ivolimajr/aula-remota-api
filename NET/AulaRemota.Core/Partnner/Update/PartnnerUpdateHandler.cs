@@ -75,7 +75,7 @@ namespace AulaRemota.Core.Partnner.Update
                     partnner.Address.Address = !string.IsNullOrEmpty(request.Address.Address) ? request.Address.Address.ToUpper() : partnner.Address.Address.ToUpper();
                     partnner.Address.District = !string.IsNullOrEmpty(request.Address.District) ? request.Address.District.ToUpper() : partnner.Address.District.ToUpper();
                     partnner.Address.City = !string.IsNullOrEmpty(request.Address.City) ? request.Address.City.ToUpper() : partnner.Address.City.ToUpper();
-                    partnner.Address.Number = !string.IsNullOrEmpty(request.Address.Number) ? request.Address.Number.ToUpper() : partnner.Address.Number.ToUpper();
+                    partnner.Address.AddressNumber = !string.IsNullOrEmpty(request.Address.AddressNumber) ? request.Address.AddressNumber.ToUpper() : partnner.Address.AddressNumber.ToUpper();
 
                     partnner.User.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : partnner.Email.ToUpper();
                     partnner.User.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : partnner.Name.ToUpper();

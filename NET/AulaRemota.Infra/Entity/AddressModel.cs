@@ -22,8 +22,10 @@ namespace AulaRemota.Infra.Entity
         public string District { get; set; }
         [Column(TypeName = "varchar(100)")]
         public string City { get; set; }
-        [Column(TypeName = "varchar(50)")]
-        public string Number { get; set; }
+        [Column(TypeName = "varchar(10)")]
+        public string AddressNumber { get; set; }
+        [Column(TypeName = "varchar(100)")]
+        public string Complement { get; set; }
 
 
         [JsonIgnore]

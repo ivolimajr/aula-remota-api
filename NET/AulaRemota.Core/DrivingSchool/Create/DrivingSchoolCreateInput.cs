@@ -64,8 +64,11 @@ namespace AulaRemota.Core.DrivingSchool.Create
         public string City { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Number { get; set; }
+        [StringLength(maximumLength: 10, MinimumLength = 1)]
+        public string AddressNumber { get; set; }
+
+        [MaxLength(100)]
+        public string Complement { get; set; }
 
         [Required]
         public ICollection<PhoneModel> PhonesNumbers { get; set; }

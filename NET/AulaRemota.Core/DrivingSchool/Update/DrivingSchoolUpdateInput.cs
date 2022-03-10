@@ -53,8 +53,12 @@ namespace AulaRemota.Core.DrivingSchool.Update
         [StringLength(maximumLength: 150, MinimumLength = 3)]
         public string City { get; set; }
 
-        [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Number { get; set; }
+        [Required]
+        [StringLength(maximumLength: 10, MinimumLength = 1)]
+        public string AddressNumber { get; set; }
+
+        [MaxLength(100)]
+        public string Complement { get; set; }
 
         public ICollection<PhoneModel> PhonesNumbers { get; set; }
         
