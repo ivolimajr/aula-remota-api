@@ -16,13 +16,20 @@ namespace AulaRemota.Core.Administrative.Create
     {
         private readonly IRepository<DrivingSchoolModel, int> _drivingSchoolRepository;
         private readonly IRepository<UserModel, int> _userRepository;
+        private readonly IRepository<PhoneModel, int> _phoneRepository;
+        private readonly IRepository<EdrivingModel, int> _edrivingRepository;
         private readonly IRepository<AdministrativeModel, int> _administrativeRepository;
 
-        public AdministrativeCreateHandler(IRepository<DrivingSchoolModel, int> drivingSchoolRepository,
+        public AdministrativeCreateHandler(
+            IRepository<DrivingSchoolModel, int> drivingSchoolRepository,
+            IRepository<EdrivingModel, int> edrivingRepository,
+            IRepository<PhoneModel, int> phoneRepository,
             IRepository<UserModel, int> userRepository,
             IRepository<AdministrativeModel, int> administrativeRepository)
         {
             _drivingSchoolRepository = drivingSchoolRepository;
+            _edrivingRepository = edrivingRepository;
+            _phoneRepository = phoneRepository;
             _userRepository = userRepository;
             _administrativeRepository = administrativeRepository;
         }
@@ -33,6 +40,13 @@ namespace AulaRemota.Core.Administrative.Create
             {
                 if (_userRepository.Exists(e => e.Email.Equals(request.Email)))
                     throw new CustomException("Email já em uso");
+
+                if(_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)))
+                    throw new CustomException("Cpf já em uso");
+
+                foreach (var item in request.PhonesNumbers)
+                    if(_phoneRepository.Exists(e => e.PhoneNumber.Equals(item.PhoneNumber)))
+                        throw new CustomException(item.PhoneNumber+ " já em uso");
 
                 var administrative = new AdministrativeModel
                 {
