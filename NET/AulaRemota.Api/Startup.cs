@@ -6,7 +6,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +17,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -130,6 +134,20 @@ namespace AulaRemota.Api
                     opt.RoutePrefix = string.Empty;
                     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1");
                 });
+            }
+            else
+            {
+                //app.UseExceptionHandler(appBuilder =>
+                //{
+                //    appBuilder.Use(async (context, next) =>
+                //    {
+                //        var excHandler = context.Features.Get<IExceptionHandlerFeature>();
+                //        context.Response.ContentType = new MediaTypeHeaderValue("application/json").ToString();
+                //        var response = JsonConvert.SerializeObject(excHandler.Error, Formatting.Indented);
+                //        logger.LogError(response);
+                //        await context.Response.WriteAsync(response, Encoding.UTF8);
+                //    });
+                //});
             }
 
             app.UseHttpsRedirection();
