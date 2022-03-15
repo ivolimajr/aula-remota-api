@@ -45,7 +45,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
         public string Cep { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Address { get; set; }
+        public string FullAddress { get; set; }
 
         [StringLength(maximumLength: 150, MinimumLength = 3)]
         public string District { get; set; }

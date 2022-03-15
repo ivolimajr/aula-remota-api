@@ -85,7 +85,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                             District = request.District.ToUpper(),
                             Cep = request.Cep.ToUpper(),
                             City = request.City.ToUpper(),
-                            Address = request.Address.ToUpper(),
+                            Address = request.FullAddress.ToUpper(),
                             AddressNumber = request.AddressNumber.ToUpper(),
                             Complement = request.Complement.ToUpper(),
                             Uf = request.Uf.ToUpper(),

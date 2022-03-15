@@ -49,11 +49,11 @@ namespace AulaRemota.Core.DrivingSchool.Update
                     if (!String.IsNullOrWhiteSpace(request.Site)) drivingSchoolDb.Site = request.Site;
                     if (!String.IsNullOrWhiteSpace(request.Cep)) drivingSchoolDb.Address.Cep = request.Cep;
                     if (!String.IsNullOrWhiteSpace(request.Uf)) drivingSchoolDb.Address.Uf = request.Uf;
-                    if (!String.IsNullOrWhiteSpace(request.Address)) drivingSchoolDb.Address.Address = request.Address;
+                    if (!String.IsNullOrWhiteSpace(request.FullAddress)) drivingSchoolDb.Address.Address = request.FullAddress;
                     if (!String.IsNullOrWhiteSpace(request.District)) drivingSchoolDb.Address.District = request.District;
                     if (!String.IsNullOrWhiteSpace(request.City)) drivingSchoolDb.Address.City = request.City;
                     if (!String.IsNullOrWhiteSpace(request.AddressNumber)) drivingSchoolDb.Address.AddressNumber = request.AddressNumber;
-                    if (!String.IsNullOrWhiteSpace(request.Complement)) drivingSchoolDb.Address.AddressNumber = request.Complement;
+                    if (!String.IsNullOrWhiteSpace(request.Complement)) drivingSchoolDb.Address.Complement = request.Complement;
                     if (request.DataFundacao >= DateTime.Today) throw new CustomException("Data da fundação inválida");
                     if (request.DataFundacao.Year > 1700) drivingSchoolDb.FoundingDate = request.DataFundacao;
 

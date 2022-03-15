@@ -16,6 +16,7 @@ namespace AulaRemota.Infra.Configurations
             builder.Property(e => e.District).HasColumnType("varchar").HasMaxLength(150);
             builder.Property(e => e.City).HasColumnType("varchar").HasMaxLength(150);
             builder.Property(e => e.AddressNumber).HasColumnType("varchar").HasMaxLength(50);
+            builder.Property(e => e.Complement).HasColumnType("varchar").HasMaxLength(100);
 
             builder.HasOne(e => e.Instructor).WithOne(e => e.Address);
             builder.HasOne(e => e.Partnner).WithOne(e => e.Address);

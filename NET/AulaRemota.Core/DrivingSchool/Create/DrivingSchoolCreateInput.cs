@@ -53,7 +53,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
-        public string Address { get; set; }
+        public string FullAddress { get; set; }
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 3)]
