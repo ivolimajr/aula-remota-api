@@ -23,9 +23,7 @@ namespace AulaRemota.Infra.Context
         {
             if (UseProvider)
             {
-                var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
                 optionsBuilder
-                    //.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion)
                     .EnableSensitiveDataLogging()
                     .EnableDetailedErrors();
             }

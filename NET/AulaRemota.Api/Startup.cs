@@ -83,7 +83,8 @@ namespace AulaRemota.Api
             services.AddApiVersioning();
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
 
-            services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion), ServiceLifetime.Transient);
+            //services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion), ServiceLifetime.Transient);
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion), ServiceLifetime.Transient);
 
             services.AddDependencyInjection();
 
