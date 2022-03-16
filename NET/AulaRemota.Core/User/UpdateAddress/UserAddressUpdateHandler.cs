@@ -33,7 +33,7 @@ namespace AulaRemota.Core.User.UpdateAddress
                 if (request.Address != null) entity.Address = request.Address.ToUpper();
                 if (request.District != null) entity.District = request.District.ToUpper();
                 if (request.City != null) entity.City = request.City.ToUpper();
-                if (request.Number != null) entity.AddressNumber = request.Number.ToUpper();
+                if (request.AddressNumber != null) entity.AddressNumber = request.AddressNumber.ToUpper();
 
                 _addressRepository.Update(entity);
                 await _addressRepository.SaveChangesAsync();

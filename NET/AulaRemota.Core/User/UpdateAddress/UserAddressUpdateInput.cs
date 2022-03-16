@@ -25,6 +25,6 @@ namespace AulaRemota.Core.User.UpdateAddress
         public string City { get; set; }
 
         [StringLength(maximumLength: 50, MinimumLength = 1)]
-        public string Number { get; set; }
+        public string AddressNumber { get; set; }
     }
 }

@@ -81,7 +81,7 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("atualizar-endereco")]
+        [Route("update-address")]
         [HttpPut]
         [ProducesResponseType(typeof(AddressModel), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
