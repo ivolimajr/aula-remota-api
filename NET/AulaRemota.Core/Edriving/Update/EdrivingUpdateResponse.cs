@@ -2,7 +2,7 @@
 
 namespace AulaRemota.Core.Edriving.Update
 {
-    public class EdrivingUpdateResponse : EdrivingModel
+    public class EdrivingUpdateResponse
     {
     }
 }

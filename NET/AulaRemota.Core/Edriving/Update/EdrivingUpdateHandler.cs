@@ -25,12 +25,11 @@ namespace AulaRemota.Core.Edriving.Update
                 try
                 {
                     //BUSCA O OBJETO A SER ATUALIZADO
-                    var edriving = UnitOfWork.Context
-                                .Set<EdrivingModel>()
+                    var edriving = UnitOfWork.Edriving
+                                .Where(e => e.Id == request.Id)
                                 .Include(e => e.User)
                                 .Include(e => e.Level)
                                 .Include(e => e.PhonesNumbers)
-                                .Where(e => e.Id == request.Id)
                                 .FirstOrDefault();
 
                     if (edriving == null) throw new CustomException("Não Encontrado");

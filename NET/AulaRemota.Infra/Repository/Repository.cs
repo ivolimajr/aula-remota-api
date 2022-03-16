@@ -92,11 +92,11 @@ namespace AulaRemota.Infra.Repository
         //BUSCAR POR ID
         public virtual TEntity Find(int id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return Model.Find(id);
         }
-        public async Task<TEntity> FindAsync(int id)
+        public virtual async Task<TEntity> FindAsync(int id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await Model.FindAsync(id);
         }
 
         private bool disposed = false;
