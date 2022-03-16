@@ -12,10 +12,7 @@ namespace AulaRemota.Shared.Helpers.Extensions
         public static string TruncateIfNeeded(this string value, int maxlength)
         {
             if (!string.IsNullOrWhiteSpace(value) && value.Length > maxlength)
-            {
                 return value.Substring(0, maxlength);
-            }
-
             return value;
         }
 
@@ -26,9 +23,8 @@ namespace AulaRemota.Shared.Helpers.Extensions
         {
             Check.NotNull<string>(str, "str");
             if (str.EndsWith(c.ToString(), comparisonType))
-            {
                 return str;
-            }
+
             return str + c;
         }
 
@@ -39,19 +35,15 @@ namespace AulaRemota.Shared.Helpers.Extensions
         {
             Check.NotNull<string>(str, "str");
             if (str.StartsWith(c.ToString(), comparisonType))
-            {
                 return str;
-            }
+
             return c + str;
         }
 
         /// <summary>
         /// Indica se esta string é nula ou uma string System.String.Empty.
         /// </summary>
-        public static bool IsNullOrEmpty(this string str)
-        {
-            return string.IsNullOrEmpty(str);
-        }
+        public static bool IsNullOrEmpty(this string str) => string.IsNullOrEmpty(str);
 
         /// <summary>
         /// indica se esta string é nula, vazia ou consiste apenas em caracteres de espaço em branco.
@@ -68,19 +60,16 @@ namespace AulaRemota.Shared.Helpers.Extensions
         {
             Check.NotNull<string>(str, "str");
             if (str.Length < len)
-            {
                 throw new CustomException("len argument can not be bigger than given string's length!");
-            }
+
             return str.Substring(0, len);
         }
 
         /// <summary>
         /// Converter terminações de linha na string para  <see cref="P:System.Environment.NewLine" />.
         /// </summary>
-        public static string NormalizeLineEndings(this string str)
-        {
-            return str.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
-        }
+        public static string NormalizeLineEndings(this string str) =>
+            str.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", Environment.NewLine);
 
         /// <summary>
         /// Obtém o índice da enésima ocorrência de um char em uma string.
@@ -93,12 +82,9 @@ namespace AulaRemota.Shared.Helpers.Extensions
             Check.NotNull<string>(str, "str");
             int count = 0;
             for (int i = 0; i < str.Length; i++)
-            {
                 if (str[i] == c && ++count == n)
-                {
                     return i;
-                }
-            }
+
             return -1;
         }
 
@@ -106,10 +92,8 @@ namespace AulaRemota.Shared.Helpers.Extensions
         {
             Check.NotNull<string>(str, "str");
             int pos = str.IndexOf(search, comparisonType);
-            if (pos < 0)
-            {
-                return str;
-            }
+            if (pos < 0) return str;
+
             return str.Substring(0, pos) + replace + str.Substring(pos + search.Length);
         }
 
@@ -120,43 +104,30 @@ namespace AulaRemota.Shared.Helpers.Extensions
         {
             Check.NotNull<string>(str, "str");
             if (str.Length < len)
-            {
                 throw new CustomException("len argument can not be bigger than given string's length!");
-            }
+
             return str.Substring(str.Length - len, len);
         }
 
         /// <summary>
         /// Usa o método string.Split para dividir determinada string por determinado separador.
         /// </summary>
-        public static string[] Split(this string str, string separator)
-        {
-            return str.Split(new string[1] { separator }, StringSplitOptions.None);
-        }
+        public static string[] Split(this string str, string separator) => str.Split(new string[1] { separator }, StringSplitOptions.None);
 
         /// <summary>
         /// Usa o método string.Split para dividir determinada string por determinado separador.
         /// </summary>
-        public static string[] Split(this string str, string separator, StringSplitOptions options)
-        {
-            return str.Split(new string[1] { separator }, options);
-        }
+        public static string[] Split(this string str, string separator, StringSplitOptions options) => str.Split(new string[1] { separator }, options);
 
         /// <summary>
         /// Usa o método string.Split para dividir determinada string por <see cref="P:System.Environment.NewLine" />.
         /// </summary>
-        public static string[] SplitToLines(this string str)
-        {
-            return Split(str, Environment.NewLine);
-        }
+        public static string[] SplitToLines(this string str) => Split(str, Environment.NewLine);
 
         /// <summary>
         /// Usa o método string.Split para dividir determinada string por <see cref="P:System.Environment.NewLine" />.
         /// </summary>
-        public static string[] SplitToLines(this string str, StringSplitOptions options)
-        {
-            return Split(str, Environment.NewLine, options);
-        }
+        public static string[] SplitToLines(this string str, StringSplitOptions options) => Split(str, Environment.NewLine, options);
 
         /// <summary>
         /// Converte a string PascalCase para a string camelCase.
@@ -167,24 +138,18 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <returns>camelCase da string</returns>
         public static string ToCamelCase(this string str, bool useCurrentCulture = false, bool handleAbbreviations = false)
         {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                return str;
-            }
+            if (string.IsNullOrWhiteSpace(str)) return str;
+
             if (str.Length == 1)
             {
-                if (!useCurrentCulture)
-                {
-                    return str.ToLowerInvariant();
-                }
+                if (!useCurrentCulture) return str.ToLowerInvariant();
+
                 return str.ToLower();
             }
             if (handleAbbreviations && IsAllUpperCase(str))
             {
-                if (!useCurrentCulture)
-                {
-                    return str.ToLowerInvariant();
-                }
+                if (!useCurrentCulture) return str.ToLowerInvariant();
+
                 return str.ToLower();
             }
             return (useCurrentCulture ? char.ToLower(str[0]) : char.ToLowerInvariant(str[0])) + str.Substring(1);
@@ -198,14 +163,8 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <param name="useCurrentCulture">definir true para usar a cultura atual. Caso contrário, a cultura invariável será usada.</param>
         public static string ToSentenceCase(this string str, bool useCurrentCulture = false)
         {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                return str;
-            }
-            if (!useCurrentCulture)
-            {
-                return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + " " + char.ToLowerInvariant(m.Value[1]));
-            }
+            if (string.IsNullOrWhiteSpace(str)) return str;
+            if (!useCurrentCulture) return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + " " + char.ToLowerInvariant(m.Value[1]));
             return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + " " + char.ToLower(m.Value[1]));
         }
 
@@ -216,15 +175,12 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <param name="useCurrentCulture">definir true para usar a cultura atual. Caso contrário, a cultura invariável será usada.</param>
         public static string ToKebabCase(this string str, bool useCurrentCulture = false)
         {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                return str;
-            }
+            if (string.IsNullOrWhiteSpace(str)) return str;
+
             str = str.ToCamelCase();
             if (!useCurrentCulture)
-            {
                 return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + "-" + char.ToLowerInvariant(m.Value[1]));
-            }
+
             return Regex.Replace(str, "[a-z][A-Z]", (Match m) => m.Value[0] + "-" + char.ToLower(m.Value[1]));
         }
 
@@ -237,10 +193,7 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <returns></returns>
         public static string ToSnakeCase(this string str)
         {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                return str;
-            }
+            if (string.IsNullOrWhiteSpace(str)) return str;
             StringBuilder builder = new StringBuilder(str.Length + Math.Min(2, str.Length / 5));
             UnicodeCategory? previousCategory = null;
             for (int currentIndex = 0; currentIndex < str.Length; currentIndex++)
@@ -315,10 +268,10 @@ namespace AulaRemota.Shared.Helpers.Extensions
             byte[] array = md5.ComputeHash(inputBytes);
             StringBuilder sb = new StringBuilder();
             byte[] array2 = array;
+
             foreach (byte hashByte in array2)
-            {
                 sb.Append(hashByte.ToString("X2"));
-            }
+
             return sb.ToString();
         }
 
@@ -330,16 +283,12 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <returns>PascalCase da string</returns>
         public static string ToPascalCase(this string str, bool useCurrentCulture = false)
         {
-            if (string.IsNullOrWhiteSpace(str))
-            {
-                return str;
-            }
+            if (string.IsNullOrWhiteSpace(str)) return str;
             if (str.Length == 1)
             {
                 if (!useCurrentCulture)
-                {
                     return str.ToUpperInvariant();
-                }
+
                 return str.ToUpper();
             }
             return (useCurrentCulture ? char.ToUpper(str[0]) : char.ToUpperInvariant(str[0])) + str.Substring(1);
@@ -350,14 +299,9 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// </summary>
         public static string Truncate(this string str, int maxLength)
         {
-            if (str == null)
-            {
-                return null;
-            }
-            if (str.Length <= maxLength)
-            {
-                return str;
-            }
+            if (str == null) return null;
+            if (str.Length <= maxLength) return str;
+
             return str.Left(maxLength);
         }
 
@@ -366,14 +310,9 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// </summary>
         public static string TruncateFromBeginning(this string str, int maxLength)
         {
-            if (str == null)
-            {
-                return null;
-            }
-            if (str.Length <= maxLength)
-            {
-                return str;
-            }
+            if (str == null) return null;
+            if (str.Length <= maxLength) return str;
+
             return str.Right(maxLength);
         }
 
@@ -382,10 +321,8 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// Adiciona um postfix "..." ao final da string se ela estiver truncada.
         /// A string de retorno não pode ser maior que maxLength.
         /// </summary>
-        public static string TruncateWithPostfix(this string str, int maxLength)
-        {
-            return str.TruncateWithPostfix(maxLength, "...");
-        }
+        public static string TruncateWithPostfix(this string str, int maxLength) =>
+            str.TruncateWithPostfix(maxLength, "...");
 
         /// <summary>
         /// Obtém uma substring de uma string do início da string se exceder o comprimento máximo.
@@ -394,32 +331,20 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// </summary>
         public static string TruncateWithPostfix(this string str, int maxLength, string postfix)
         {
-            if (str == null)
-            {
-                return null;
-            }
-            if (str == string.Empty || maxLength == 0)
-            {
-                return string.Empty;
-            }
-            if (str.Length <= maxLength)
-            {
-                return str;
-            }
-            if (maxLength <= postfix.Length)
-            {
-                return postfix.Left(maxLength);
-            }
+            if (str == null) return null;
+            if (str == string.Empty || maxLength == 0) return string.Empty;
+            if (str.Length <= maxLength) return str;
+            if (maxLength <= postfix.Length) return postfix.Left(maxLength);
+
             return str.Left(maxLength - postfix.Length) + postfix;
         }
 
         /// <summary>
         /// Converte determinada string em uma matriz de bytes usando <see cref="P:System.Text.Encoding.UTF8" /> encoding.
         /// </summary>
-        public static byte[] GetBytes(this string str)
-        {
-            return str.GetBytes(Encoding.UTF8);
-        }
+        public static byte[] GetBytes(this string str) =>
+            str.GetBytes(Encoding.UTF8);
+
 
         /// <summary>
         /// Converte determinada string em uma matriz de bytes usando o dado <paramref name="encoding" />
@@ -442,30 +367,20 @@ namespace AulaRemota.Shared.Helpers.Extensions
         /// <returns></returns>
         public static string ConvertFromBytesWithoutBom(byte[] bytes, Encoding encoding = null)
         {
-            if (bytes == null)
-            {
-                return null;
-            }
-            if (encoding == null)
-            {
-                encoding = Encoding.UTF8;
-            }
+            if (bytes == null) return null;
+            if (encoding == null) encoding = Encoding.UTF8;
             if (bytes.Length >= 3 && bytes[0] == 239 && bytes[1] == 187 && bytes[2] == 191)
-            {
                 return encoding.GetString(bytes, 3, bytes.Length - 3);
-            }
+
             return encoding.GetString(bytes);
         }
 
         private static bool IsAllUpperCase(string input)
         {
             for (int i = 0; i < input.Length; i++)
-            {
                 if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))
-                {
                     return false;
-                }
-            }
+
             return true;
         }
     }

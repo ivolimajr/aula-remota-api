@@ -10,14 +10,14 @@
   },
   "profiles": {
     "IIS Express": {
-      "launchBrowser": true,
+      "launchBrowser": false,
       "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "AulaRemota.Api": {
-      "launchBrowser": true,
+      "launchBrowser": false,
       "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
