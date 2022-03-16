@@ -6,9 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +15,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -84,7 +80,7 @@ namespace AulaRemota.Api
             var serverVersion = new MySqlServerVersion(new Version(5, 6, 23));
 
             //services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnLocal"), serverVersion), ServiceLifetime.Transient);
-            services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnSandbox"), serverVersion), ServiceLifetime.Transient);
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(Configuration.GetConnectionString("Connection"), serverVersion), ServiceLifetime.Transient);
 
             services.AddDependencyInjection();
 

@@ -21,12 +21,7 @@ namespace AulaRemota.Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (UseProvider)
-            {
-                optionsBuilder
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors();
-            }
+            if (UseProvider) optionsBuilder.EnableSensitiveDataLogging().EnableDetailedErrors();
         }
         public MySqlContext()
         {
