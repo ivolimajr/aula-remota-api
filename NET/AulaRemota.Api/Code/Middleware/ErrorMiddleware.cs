@@ -9,41 +9,18 @@ using System.Threading.Tasks;
 namespace AulaRemota.Api.Code.Middleware
 {
     public class ErrorMiddleware
-
     {
         private readonly RequestDelegate next;
-        private readonly ILogger _logger;
+        private readonly ILogger<ErrorMiddleware> Logger;
 
-        public ErrorMiddleware(RequestDelegate next, ILoggerFactory factory)
+        public ErrorMiddleware(RequestDelegate next, ILogger<ErrorMiddleware> logger)
         {
             this.next = next;
-            _logger = factory.CreateLogger("RequestLog");
-        }
-
-        private Func<ResponseModel, string> _logLineFormatter;
-        private Func<ResponseModel, string> logLineFormatter
-        {
-            get
-            {
-
-                if (this._logLineFormatter != null)
-                {
-                    return this._logLineFormatter;
-                }
-                return this.DefaultFormatter();
-            }
-            set
-            {
-                this._logLineFormatter = value;
-            }
+            Logger = logger;
         }
         protected Func<ResponseModel, string> DefaultFormatter()
         {
             return (logData => $"\x1B[44m {logData.UserMessage} - {logData.ModelName} - {logData.StatusCode} - {logData.InnerException}ms \x1B[40m");
-        }
-        public void SetLogLineFormat(Func<ResponseModel, string> formatter)
-        {
-            this._logLineFormatter = formatter;
         }
 
         public async Task Invoke(HttpContext context)
@@ -59,13 +36,12 @@ namespace AulaRemota.Api.Code.Middleware
         }
         private Task HandleExceptionAsync(HttpContext context, CustomException ex)
         {
-            //TODO: Gravar log de erro com o trace id
-
-            ex.ResponseModel.InnerExceptionMessage= ex.InnerException?.Message ?? null;
+            ex.ResponseModel.InnerExceptionMessage = ex.InnerException?.Message ?? null;
             object result = null;
 
             string userMessage;
             string modelName;
+            string dataException = default;
 
 
             switch (ex)
@@ -73,6 +49,7 @@ namespace AulaRemota.Api.Code.Middleware
                 case CustomException customException:
                     userMessage = customException.ResponseModel.ModelName ?? null;
                     modelName = customException.ResponseModel.ModelName ?? null;
+                    if (customException.Data != null) dataException = customException.ResponseModel.Data.ToString();
                     break;
             }
 
@@ -84,7 +61,8 @@ namespace AulaRemota.Api.Code.Middleware
                     ModelName = ex.ResponseModel.ModelName ?? null,
                     StatusCode = HttpStatusCode.InternalServerError
                 };
-            } else
+            }
+            else
             {
                 result = new
                 {
@@ -96,7 +74,15 @@ namespace AulaRemota.Api.Code.Middleware
             ex.ResponseModel.Exception = null;
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            _logger.LogInformation(this.logLineFormatter(ex.ResponseModel));
+            #region Logging
+
+            Logger.LogError(new
+            {
+                result = result,
+                data = dataException
+            }.ToString());
+
+            #endregion Logging
 
             var jsonResult = JsonConvert.SerializeObject(result);
             context.Response.ContentType = "application/json";

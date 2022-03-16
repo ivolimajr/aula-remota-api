@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -120,7 +119,7 @@ namespace AulaRemota.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -131,20 +130,6 @@ namespace AulaRemota.Api
                     opt.RoutePrefix = string.Empty;
                     opt.SwaggerEndpoint("/swagger/v1/swagger.json", "AulaRemota.Api v1");
                 });
-            }
-            else
-            {
-                //app.UseExceptionHandler(appBuilder =>
-                //{
-                //    appBuilder.Use(async (context, next) =>
-                //    {
-                //        var excHandler = context.Features.Get<IExceptionHandlerFeature>();
-                //        context.Response.ContentType = new MediaTypeHeaderValue("application/json").ToString();
-                //        var response = JsonConvert.SerializeObject(excHandler.Error, Formatting.Indented);
-                //        logger.LogError(response);
-                //        await context.Response.WriteAsync(response, Encoding.UTF8);
-                //    });
-                //});
             }
 
             app.UseHttpsRedirection();

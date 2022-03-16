@@ -70,13 +70,18 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    userName = request.UserName
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(GenerateTokenHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.Unauthorized
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Data = result
                 });
             }
         }
