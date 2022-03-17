@@ -2,6 +2,7 @@
 using AulaRemota.Core.Administrative.GetAll;
 using AulaRemota.Core.Administrative.GetOne;
 using AulaRemota.Core.Administrative.Remove;
+using AulaRemota.Core.Administrative.Update;
 using AulaRemota.Infra.Entity.DrivingSchool;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,11 @@ namespace AulaRemota.Api.Controllers
         [ProducesResponseType(typeof(AdministrativeModel), StatusCodes.Status201Created)]
         public async ValueTask<ActionResult> Administrative(AdministrativeCreateInput administrative) =>
                StatusCode(StatusCodes.Status201Created, await _mediator.Send(administrative));
+
+        [HttpPut]
+        [ProducesResponseType(typeof(AdministrativeModel), StatusCodes.Status201Created)]
+        public async ValueTask<ActionResult> Administrative(AdministrativeUpdateInput administrative) =>
+               StatusCode(StatusCodes.Status200OK, await _mediator.Send(administrative));
 
         [HttpDelete("{id}")]
         public async ValueTask<ActionResult> Delete(int id) => Ok(await _mediator.Send(new AdministrativeRemoveInput { Id = id }));

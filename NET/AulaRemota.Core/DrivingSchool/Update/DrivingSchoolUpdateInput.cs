@@ -24,7 +24,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
         public string StateRegistration { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime DataFundacao { get; set; }
+        public DateTime FoundingDate { get; set; }
 
         [StringLength(maximumLength: 70, MinimumLength = 5)]
         public string Email { get; set; }

@@ -26,6 +26,8 @@ namespace AulaRemota.Core.Edriving.Update
         [StringLength(maximumLength: 70, MinimumLength = 5)]
         [EmailAddress]
         public string Email { get; set; }
+        
+        public DateTime Birthdate { get; set; }
 
         public ICollection<PhoneModel> PhonesNumbers { get; set; }
 
