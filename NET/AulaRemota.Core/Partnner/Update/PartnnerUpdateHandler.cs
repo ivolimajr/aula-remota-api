@@ -44,7 +44,7 @@ namespace AulaRemota.Core.Partnner.Update
                     }
 
                     //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                    if (request.PhonesNumbers != null && request.PhonesNumbers.Count > 0)
+                    if (Check.NotNull(request.PhonesNumbers))
                         foreach (var item in request.PhonesNumbers)
                         {
                             if (item.Id.Equals(0))

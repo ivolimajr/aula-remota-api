@@ -9,7 +9,7 @@ public static class Check
 {
     public static T NotNull<T>(T value, string errorMessage)
     {
-        if (value == null) 
+        if (value == null)
             throw new CustomException(errorMessage);
         return value;
     }
@@ -23,7 +23,7 @@ public static class Check
 
     public static T NotNull<T>(T value, string parameterName, string message)
     {
-        if (value == null) 
+        if (value == null)
             throw new CustomException($"{parameterName} {message}");
 
         return value;
@@ -47,13 +47,13 @@ public static class Check
     {
         if (value.IsNullOrWhiteSpace())
             throw new CustomException(parameterName + " não pode ser nulo, vazio ou espaço em branco!");
-        
+
         if (value.Length > maxLength)
             throw new CustomException($"{parameterName} comprimento deve ser igual ou inferior {maxLength}!");
-        
+
         if (minLength > 0 && value.Length < minLength)
             throw new CustomException($"{parameterName} comprimento deve ser igual ou maior que {minLength}!");
-        
+
         return value;
     }
 
@@ -61,13 +61,13 @@ public static class Check
     {
         if (value.IsNullOrEmpty())
             throw new CustomException(parameterName + " não pode ser nulo ou vazio!");
-        
+
         if (value.Length > maxLength)
             throw new CustomException($"{parameterName} comprimento deve ser igual ou inferior {maxLength}!");
-        
+
         if (minLength > 0 && value.Length < minLength)
             throw new CustomException($"{parameterName} comprimento deve ser igual ou maior que {minLength}!");
-        
+
         return value;
     }
 
@@ -75,8 +75,19 @@ public static class Check
     {
         if (value.IsNullOrEmpty())
             throw new CustomException(errorMessage);
-        
+
         return value;
+    }
+
+    public static bool NotNull<T>(ICollection<T> value, string errorMessage = null)
+    {
+        if (value == null || value.Count == 0)
+        {
+            if (string.IsNullOrEmpty(errorMessage))
+                return false;
+            throw new Exception(errorMessage);
+        }
+        return true;
     }
 
     public static void EqualsCount<T>(ICollection<T> list1, ICollection<T> list2, string errorMessage)
@@ -96,7 +107,7 @@ public static class Check
         NotNull(type, parameterName);
         if (!type.IsAssignableTo<TBaseType>())
             throw new CustomException(parameterName + " (o tipo de " + type.AssemblyQualifiedName + ") deve ser atribuível ao " + typeof(TBaseType).GetFullNameWithAssemblyName() + "!");
-        
+
         return type;
     }
 
@@ -106,14 +117,14 @@ public static class Check
         {
             if (string.IsNullOrEmpty(value))
                 throw new CustomException(parameterName + " não pode ser nulo ou vazio!");
-            
+
             if (value.Length < minLength)
                 throw new CustomException($"{parameterName} comprimento deve ser igual ou maior que {minLength}!");
-            
+
         }
         if (value != null && value.Length > maxLength)
             throw new CustomException($"{parameterName} comprimento deve ser igual ou inferior {maxLength}!");
-        
+
         return value;
     }
 

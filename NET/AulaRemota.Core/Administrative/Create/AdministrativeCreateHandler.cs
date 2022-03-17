@@ -64,6 +64,7 @@ namespace AulaRemota.Core.Administrative.Create
                         Email = request.Email.ToUpper(),
                         Name = request.Name.ToUpper(),
                         CreatedAt = DateTime.Now,
+                        Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                         Roles = new List<RolesModel>{
                             new ()
                             {

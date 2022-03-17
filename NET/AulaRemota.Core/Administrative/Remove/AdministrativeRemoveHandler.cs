@@ -14,11 +14,8 @@ namespace AulaRemota.Core.Administrative.Remove
     {
         private readonly IUnitOfWork UnitOfWork;
 
-        public AdministrativeRemoveHandler(IUnitOfWork unitOfWork)
-        {
-            UnitOfWork = unitOfWork;
-        }
-
+        public AdministrativeRemoveHandler(IUnitOfWork unitOfWork) => UnitOfWork = unitOfWork;
+        
         public async Task<bool> Handle(AdministrativeRemoveInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Não encontrado");
@@ -34,10 +31,11 @@ namespace AulaRemota.Core.Administrative.Remove
                                     .Include(e => e.PhonesNumbers)
                                     .FirstOrDefault();
 
-                    if (administrative == null) throw new CustomException("Não encontrado");
-                    
+                    Check.NotNull(administrative, "Não encontrado");
+
                     foreach (var item in administrative.PhonesNumbers)
                         UnitOfWork.Phone.Delete(item);
+
                     await UnitOfWork.SaveChangesAsync();
 
                     UnitOfWork.User.Delete(administrative.User);

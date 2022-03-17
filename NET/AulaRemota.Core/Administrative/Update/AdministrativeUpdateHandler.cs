@@ -63,7 +63,7 @@ namespace AulaRemota.Core.Administrative.Update
                     if (_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)))
                         throw new CustomException("Cpf já em uso");
 
-                if (request.PhonesNumbers != null && request.PhonesNumbers.Count > 0)
+                if (Check.NotNull(request.PhonesNumbers))
                     foreach (var item in request.PhonesNumbers)
                     {
                         if (item.Id.Equals(0))

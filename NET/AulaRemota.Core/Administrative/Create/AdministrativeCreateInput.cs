@@ -40,5 +40,9 @@ namespace AulaRemota.Core.Administrative.Create
 
         [Required]
         public ICollection<PhoneModel> PhonesNumbers { get; set; }
+
+        [Required]
+        [StringLength(maximumLength: 150, MinimumLength = 5)]
+        public string Password { get; internal set; }
     }
 }
