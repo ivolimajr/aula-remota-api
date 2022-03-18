@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="UploadDir\**" />
+    <Compile Remove="User\Deletar\**" />
+    <Compile Remove="User\ListarPorId\**" />
+    <Compile Remove="User\ListarTodos\**" />
+    <EmbeddedResource Remove="UploadDir\**" />
+    <EmbeddedResource Remove="User\Deletar\**" />
+    <EmbeddedResource Remove="User\ListarPorId\**" />
+    <EmbeddedResource Remove="User\ListarTodos\**" />
+    <None Remove="UploadDir\**" />
+    <None Remove="User\Deletar\**" />
+    <None Remove="User\ListarPorId\**" />
+    <None Remove="User\ListarTodos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.11.0" />
+    <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.16.0" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AulaRemota.Infra\AulaRemota.Infra.csproj" />
+    <ProjectReference Include="..\AulaRemota.Shared\AulaRemota.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
