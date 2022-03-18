@@ -40,8 +40,8 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
 
                 var user = _authUserRepository.FirstOrDefault(u => (u.UserName == userName));
 
-                if (user == null) throw new CustomException("Credenciais Não Encontrada");
-                if (user.RefreshToken != refreshToken) throw new CustomException("Credenciais de Serviço Inválida");
+                Check.NotNull(user, "Credenciais Não Encontrada");
+                Check.Equals(user.RefreshToken, refreshToken, "Credenciais de Serviço Inválida");
                 if (user.RefreshTokenExpiryTime < DateTime.Now) throw new CustomException("Credenciais de Serviço Expirada");
 
                 accessToken = GenerateAccessToken(principal.Claims);
@@ -92,9 +92,7 @@ namespace AulaRemota.Core.ApiAuth.RefreshToken
             var jwtSecurityToken = securityToken as JwtSecurityToken;
 
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture)) // SE FOR NULO E SE FOR IGUAL AO HEADER ELE IRÁ LANCAR UMA EXCESSÃO
-            {
                 throw new SecurityTokenException("Invalid Token");
-            }
             return principal;
         }
 

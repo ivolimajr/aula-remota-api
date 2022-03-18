@@ -13,20 +13,17 @@ namespace AulaRemota.Core.ApiUser.Update
     {
         private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserUpdateHandler(IRepository<ApiUserModel, int> authUserRepository)
-        {
-            _authUserRepository = authUserRepository;
-        }
+        public ApiUserUpdateHandler(IRepository<ApiUserModel, int> authUserRepository) => _authUserRepository = authUserRepository;
 
         public async Task<ApiUserUpdateResponse> Handle(ApiUserUpdateInput request, CancellationToken cancellationToken)
         {
             try
             {
                 var result = await _authUserRepository.FindAsync(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado");
+                Check.NotNull(result, "Não Encontrado");
 
-                if (!String.IsNullOrEmpty(request.Name)) result.Name = request.Name.ToUpper();
-                if (!String.IsNullOrEmpty(request.UserName)) result.UserName = request.UserName.ToUpper();
+                result.Name = request.Name ?? result.Name;
+                result.UserName = request.UserName ?? request.UserName;
 
                 _authUserRepository.Update(result);
                 await _authUserRepository.SaveChangesAsync();

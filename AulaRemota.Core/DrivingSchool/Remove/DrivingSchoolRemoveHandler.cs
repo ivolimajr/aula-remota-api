@@ -46,11 +46,13 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                         .Where(e => e.Id == request.Id)
                         .FirstOrDefaultAsync();
 
-                    if (autoEscola == null) throw new CustomException("Não encontrado");
+                    Check.NotNull(autoEscola, "Não encontrado");
+                    Check.NotNull(autoEscola.PhonesNumbers, "Problemas ao remover lista de telefones");
+                    Check.NotNull(autoEscola.Files, "Problemas ao remover lista de arquivos");
+
                     foreach (var item in autoEscola.PhonesNumbers)
-                    {
                         UnitOfWork.Phone.Delete(item);
-                    }
+
                     fileList = autoEscola.Files.ToList();
                     UnitOfWork.SaveChanges();
 
@@ -70,20 +72,17 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                     }
 
                     UnitOfWork.User.Delete(autoEscola.User);
-                    UnitOfWork.Address.Delete(autoEscola.Address);;
+                    UnitOfWork.Address.Delete(autoEscola.Address); ;
                     UnitOfWork.DrivingSchool.Delete(autoEscola);
 
                     UnitOfWork.SaveChanges();
                     transaction.Commit();
-                    if (fileList.Count > 0)
+                    var azureRemoveResult = await _mediator.Send(new RemoveFromAzureInput
                     {
-                        var result = await _mediator.Send(new RemoveFromAzureInput
-                        {
-                            Files = fileList,
-                            TypeUser = Constants.Roles.AUTOESCOLA
-                        });
-                        if (!result) throw new CustomException("Removido, arquivos na fila para remoção.");
-                    }
+                        Files = fileList,
+                        TypeUser = Constants.Roles.AUTOESCOLA
+                    });
+                    if (!azureRemoveResult) throw new CustomException("Removido, arquivos na fila para remoção.");
                     return true;
                 }
                 catch (Exception e)

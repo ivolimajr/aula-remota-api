@@ -32,7 +32,7 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
 
         public async Task<GenerateTokenResponse> Handle(GenerateTokenInput request, CancellationToken cancellationToken)
         {
-            if (request == null) throw new CustomException("Dados Inválidos");
+            Check.NotNull(request, "Dados Inválidos");
 
             try
             {
@@ -91,11 +91,11 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
             var password = ComputeHash(item.Password, new SHA256CryptoServiceProvider());
 
             var user = _authUserRepository.Where(e => e.UserName.Equals(item.UserName)).Include(e => e.Roles).FirstOrDefault();
-            if (user == null) throw new CustomException("Credenciais Inválidas");
+            Check.NotNull(user, "Credenciais Inválidas");
 
             bool passwordResult = BCrypt.Net.BCrypt.Verify(item.Password, user.Password);
             if (!passwordResult) throw new CustomException("Credenciais Inválidas");
-
+            Check.IsTrue(passwordResult, "Credenciais Inválidas");
             return user;
         }
         private string GenerateAccessToken(IEnumerable<Claim> claims)

@@ -25,7 +25,7 @@ namespace AulaRemota.Core.ApiUser.Create
             try
             {
                 var userValidate = _authUserRepository.FirstOrDefault(u => u.UserName == request.UserName);
-                if (userValidate != null) throw new CustomException("Usuário já cadastrado");
+                Check.NotNull(userValidate, "Usuário já cadastrado");
 
                 var user = new ApiUserModel()
                 {
@@ -54,12 +54,18 @@ namespace AulaRemota.Core.ApiUser.Create
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    name = request.Name,
+                    userName = request.UserName
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(ApiUserCreateHandler),
                     Exception = e,
-                    InnerException = e.InnerException
+                    InnerException = e.InnerException,
+                    Data = result
                 });
             }
         }

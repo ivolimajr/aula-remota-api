@@ -42,13 +42,15 @@ namespace AulaRemota.Core.ApiUser.GetOne
             }
             catch (Exception e)
             {
+                object result = new { id = request.Id };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(ApiUserGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
+                    Data = result
                 });
             }
         }

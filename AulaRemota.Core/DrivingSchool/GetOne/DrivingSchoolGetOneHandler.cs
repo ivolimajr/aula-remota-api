@@ -32,19 +32,24 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                                     .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
                                     .FirstOrDefaultAsync();
 
-                if (result == null) throw new CustomException("Não encontrado");
+                 Check.NotNull(result, "Não encontrado");
 
                 return result;
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    id = request.Id
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(DrivingSchoolGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
+                    Data = result
                 });
             }
         }

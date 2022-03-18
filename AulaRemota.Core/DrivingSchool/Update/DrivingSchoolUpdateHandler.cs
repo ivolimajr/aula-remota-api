@@ -28,123 +28,130 @@ namespace AulaRemota.Core.DrivingSchool.Update
         }
         public async Task<DrivingSchoolModel> Handle(DrivingSchoolUpdateInput request, CancellationToken cancellationToken)
         {
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            //Cria uma lista para receber os Files
+            var fileList = new List<FileModel>();
+            try
             {
-                //Cria uma lista para receber os Files
-                var fileList = new List<FileModel>();
-                try
+                var drivingSchoolDb = UnitOfWork.DrivingSchool.Where(e => e.Id.Equals(request.Id))
+                            .Include(e => e.PhonesNumbers)
+                            .Include(e => e.Files)
+                            .Include(e => e.User)
+                            .Include(e => e.Address)
+                            .FirstOrDefault();
+
+                Check.NotNull(drivingSchoolDb, "Não Encontrado");
+
+
+                if (!String.IsNullOrWhiteSpace(request.StateRegistration) && !request.StateRegistration.Equals(drivingSchoolDb.StateRegistration))
+                    if (UnitOfWork.DrivingSchool.Exists(e => e.StateRegistration == request.StateRegistration))
+                        throw new CustomException("Inscrição estadual já em uso.");
+                if (!String.IsNullOrWhiteSpace(request.Cnpj) && !request.Cnpj.Equals(drivingSchoolDb.Cnpj))
+                    if (UnitOfWork.DrivingSchool.Exists(e => e.Cnpj == request.Cnpj))
+                        throw new CustomException("CNPJ já em uso.");
+                if (!String.IsNullOrWhiteSpace(request.Email) && !request.Email.Equals(drivingSchoolDb.Email))
+                    if (UnitOfWork.DrivingSchool.Exists(e => e.Email == request.Email))
+                        throw new CustomException("Email estadual já em uso.");
+
+                if (request.FoundingDate >= DateTime.Today) throw new CustomException("Data da fundação inválida");
+                if (request.FoundingDate.Year > 1700 && request.FoundingDate != drivingSchoolDb.FoundingDate) drivingSchoolDb.FoundingDate = request.FoundingDate;
+
+                DrivingSchoolModel model = new()
                 {
-                    var drivingSchoolDb = UnitOfWork.DrivingSchool.Where(e => e.Id.Equals(request.Id))
-                                .Include(e => e.PhonesNumbers).Include(e => e.Files).Include(e => e.User).Include(e => e.Address).FirstOrDefault();
-
-                    if (drivingSchoolDb == null) throw new CustomException("Não Encontrado");
-
-                    if (!String.IsNullOrWhiteSpace(request.CorporateName)) drivingSchoolDb.CorporateName = request.CorporateName;
-                    if (!String.IsNullOrWhiteSpace(request.FantasyName))
+                    Id = request.Id,
+                    CorporateName = request.CorporateName ?? drivingSchoolDb.CorporateName,
+                    FantasyName = request.FantasyName ?? drivingSchoolDb.FantasyName,
+                    Description = request.Description ?? drivingSchoolDb.Description,
+                    StateRegistration = request.StateRegistration ?? drivingSchoolDb.StateRegistration,
+                    Email = request.Email ?? drivingSchoolDb.Email,
+                    Cnpj = request.Cnpj ?? drivingSchoolDb.Cnpj,
+                    Site = request.Site ?? drivingSchoolDb.Site,
+                    FoundingDate = drivingSchoolDb.FoundingDate,
+                    UserId = drivingSchoolDb.UserId,
+                    User = new()
                     {
-                        drivingSchoolDb.FantasyName = request.FantasyName;
-                        drivingSchoolDb.User.Name = request.FantasyName;
-                    }
-                    if (!String.IsNullOrWhiteSpace(request.Description)) drivingSchoolDb.Description = request.Description;
-                    if (!String.IsNullOrWhiteSpace(request.Site)) drivingSchoolDb.Site = request.Site;
-                    if (!String.IsNullOrWhiteSpace(request.Cep)) drivingSchoolDb.Address.Cep = request.Cep;
-                    if (!String.IsNullOrWhiteSpace(request.Uf)) drivingSchoolDb.Address.Uf = request.Uf;
-                    if (!String.IsNullOrWhiteSpace(request.FullAddress)) drivingSchoolDb.Address.Address = request.FullAddress;
-                    if (!String.IsNullOrWhiteSpace(request.District)) drivingSchoolDb.Address.District = request.District;
-                    if (!String.IsNullOrWhiteSpace(request.City)) drivingSchoolDb.Address.City = request.City;
-                    if (!String.IsNullOrWhiteSpace(request.AddressNumber)) drivingSchoolDb.Address.AddressNumber = request.AddressNumber;
-                    if (!String.IsNullOrWhiteSpace(request.Complement)) drivingSchoolDb.Address.Complement = request.Complement;
-                    if (request.FoundingDate >= DateTime.Today) throw new CustomException("Data da fundação inválida");
-                    if (request.FoundingDate.Year > 1700 && request.FoundingDate != drivingSchoolDb.FoundingDate) drivingSchoolDb.FoundingDate = request.FoundingDate;
-
-
-                    if (!String.IsNullOrWhiteSpace(request.StateRegistration) && !request.StateRegistration.Equals(drivingSchoolDb.StateRegistration))
-                        if (UnitOfWork.DrivingSchool.Exists(e => e.StateRegistration == request.StateRegistration))
-                            throw new CustomException("Inscrição estadual já em uso.");
-                    if (!String.IsNullOrWhiteSpace(request.Cnpj) && !request.Cnpj.Equals(drivingSchoolDb.Cnpj))
-                        if (UnitOfWork.DrivingSchool.Exists(e => e.Cnpj == request.Cnpj))
-                            throw new CustomException("CNPJ já em uso.");
-                    if (!String.IsNullOrWhiteSpace(request.Email) && !request.Email.Equals(drivingSchoolDb.Email))
-                        if (UnitOfWork.DrivingSchool.Exists(e => e.Email == request.Email))
-                            throw new CustomException("Email estadual já em uso.");
-
-                    if (!String.IsNullOrWhiteSpace(request.StateRegistration)) drivingSchoolDb.StateRegistration = request.StateRegistration;
-                    if (!String.IsNullOrWhiteSpace(request.Cnpj)) drivingSchoolDb.Cnpj = request.Cnpj;
-                    if (!String.IsNullOrWhiteSpace(request.Email))
+                        Id = drivingSchoolDb.UserId,
+                        Name = request.FantasyName ?? drivingSchoolDb.FantasyName,
+                        Email = request.Email ?? drivingSchoolDb.Email,
+                        Password = drivingSchoolDb.User.Password,
+                        UpdateAt = DateTime.Now
+                    },
+                    AddressId = drivingSchoolDb.AddressId,
+                    Address = new()
                     {
-                        drivingSchoolDb.Email = request.Email;
-                        drivingSchoolDb.User.Email = request.Email;
-                    }
+                        Id = drivingSchoolDb.AddressId,
+                        Cep = request.Cep ?? drivingSchoolDb.Address.Cep,
+                        Uf = request.Uf ?? drivingSchoolDb.Address.Uf,
+                        Address = request.FullAddress ?? drivingSchoolDb.Address.Address,
+                        District = request.District ?? drivingSchoolDb.Address.District,
+                        City = request.City ?? drivingSchoolDb.Address.City,
+                        AddressNumber = request.AddressNumber ?? drivingSchoolDb.Address.AddressNumber,
+                        Complement = request.Complement ?? drivingSchoolDb.Address.Complement
+                    },
+                    Files = drivingSchoolDb.Files,
+                    PhonesNumbers = drivingSchoolDb.PhonesNumbers
+                };
 
-                    if (request.Files != null)
+                if (Check.NotNull(request.PhonesNumbers))
+                    foreach (var item in request.PhonesNumbers)
                     {
-                        var fileResult = await _mediator.Send(new FileUploadToAzureInput
+                        if (item.Id.Equals(0))
                         {
-                            Files = request.Files,
-                            TypeUser = Constants.Roles.AUTOESCOLA
-                        });
-                        //Salva no banco todas as informações dos Files do upload
-                        foreach (var item in fileResult.Files)
-                        {
-                            var arquivo = await UnitOfWork.File.AddAsync(item);
-                            fileList.Add(item);
+                            model.PhonesNumbers.Add(item);
                         }
-                        foreach (var item in fileList)
+                        else
                         {
-                            drivingSchoolDb.Files.Add(item);
+                            if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber))
+                                throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
+
+                            var phone = model.PhonesNumbers.Where(e => e.Id.Equals(item.Id)).FirstOrDefault();
+                            phone.PhoneNumber = item.PhoneNumber;
+                            UnitOfWork.Phone.Update(phone);
                         }
+                        await UnitOfWork.Phone.SaveChangesAsync();
                     }
 
-                    //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                    if (Check.NotNull(request.PhonesNumbers))
-                    {
-                        foreach (var item in request.PhonesNumbers)
-                        {
-                            if (item.Id.Equals(0))
-                            {
-                                drivingSchoolDb.PhonesNumbers.Add(item);
-                            }
-                            else
-                            {
-                                if (!drivingSchoolDb.PhonesNumbers.Where(x => x.PhoneNumber.Equals(item.PhoneNumber)).Any())
-                                {
-                                    if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber))
-                                        throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
-
-                                    var phone = drivingSchoolDb.PhonesNumbers.Where(e => e.Id.Equals(item.Id)).FirstOrDefault();
-                                    phone.PhoneNumber = item.PhoneNumber;
-                                    UnitOfWork.Phone.Update(phone);
-                                }
-
-                            }
-                        }
-                    }
-
-                    UnitOfWork.Address.Update(drivingSchoolDb.Address);
-                    UnitOfWork.User.Update(drivingSchoolDb.User);
-                    UnitOfWork.DrivingSchool.Update(drivingSchoolDb);
-                    UnitOfWork.DrivingSchool.Save();
-                    transaction.Commit();
-
-                    return drivingSchoolDb;
-                }
-                catch (Exception e)
+                if (Check.NotNull(request.Files))
                 {
-                    transaction.Rollback();
-                    await _mediator.Send(new RemoveFromAzureInput()
+                    var fileResult = await _mediator.Send(new FileUploadToAzureInput
                     {
-                        TypeUser = Constants.Roles.AUTOESCOLA,
-                        Files = fileList
+                        Files = request.Files,
+                        TypeUser = Constants.Roles.AUTOESCOLA
                     });
-                    throw new CustomException(new ResponseModel
+                    //Salva no banco todas as informações dos Files do upload
+                    foreach (var item in fileResult.Files)
                     {
-                        UserMessage = e.Message,
-                        ModelName = nameof(DrivingSchoolUpdateHandler),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.BadRequest
-                    });
+                        var arquivo = await UnitOfWork.File.AddAsync(item);
+                        fileList.Add(item);
+                    }
+                    foreach (var item in fileList)
+                        model.Files.Add(item);
                 }
+
+                UnitOfWork.Address.Update(model.Address);
+                UnitOfWork.User.Update(model.User);
+                UnitOfWork.DrivingSchool.Update(model);
+                UnitOfWork.DrivingSchool.Save();
+                transaction.Commit();
+
+                return model;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                await _mediator.Send(new RemoveFromAzureInput()
+                {
+                    TypeUser = Constants.Roles.AUTOESCOLA,
+                    Files = fileList
+                });
+                throw new CustomException(new ResponseModel
+                {
+                    UserMessage = e.Message,
+                    ModelName = nameof(DrivingSchoolUpdateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
         }
     }
