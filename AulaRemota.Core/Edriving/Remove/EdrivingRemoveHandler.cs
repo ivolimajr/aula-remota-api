@@ -19,43 +19,41 @@ namespace AulaRemota.Core.Edriving.Remove
         public async Task<bool> Handle(EdrivingRemoveInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            try
             {
-                try
+                var edriving = await UnitOfWork.Edriving.Context
+                                        .Set<EdrivingModel>()
+                                        .Include(e => e.User)
+                                        .Include(e => e.PhonesNumbers)
+                                        .Where(e => e.Id == request.Id)
+                                        .FirstOrDefaultAsync();
+                if (edriving == null) throw new CustomException("Não Encontrado");
+
+                foreach (var item in edriving.PhonesNumbers)
                 {
-                    var edriving = await UnitOfWork.Edriving.Context
-                                            .Set<EdrivingModel>()
-                                            .Include(e => e.User)
-                                            .Include(e => e.PhonesNumbers)
-                                            .Where(e => e.Id == request.Id)
-                                            .FirstOrDefaultAsync();
-                    if (edriving == null) throw new CustomException("Não Encontrado");
-
-                    foreach (var item in edriving.PhonesNumbers)
-                    {
-                        UnitOfWork.Phone.Delete(item);
-                    }
-                    UnitOfWork.SaveChanges();
-
-                    UnitOfWork.User.Delete(edriving.User);
-                    UnitOfWork.Edriving.Delete(edriving);
-
-                    UnitOfWork.SaveChanges();
-                    transaction.Commit();
-                    return true;
+                    UnitOfWork.Phone.Delete(item);
                 }
-                catch (Exception e)
+                UnitOfWork.SaveChanges();
+
+                UnitOfWork.User.Delete(edriving.User);
+                UnitOfWork.Edriving.Delete(edriving);
+
+                UnitOfWork.SaveChanges();
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    transaction.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(EdrivingRemoveInput),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.NotFound
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingRemoveInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.NotFound
+                });
             }
         }
     }

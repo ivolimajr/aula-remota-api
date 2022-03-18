@@ -46,34 +46,34 @@ namespace AulaRemota.Core.User.Login
 
             try
             {
-                var result = await _userRepository
+                var userEntity = await _userRepository
                     .Where(e => e.Email.Equals(request.Email))
                     .Include(e => e.Roles)
                     .FirstOrDefaultAsync();
 
-                if (result == null || !result.Email.Equals(request.Email.ToUpper()))
+                if (userEntity == null || !userEntity.Email.Equals(request.Email.ToUpper()))
                     throw new CustomException("Credenciais Inválidas");
 
-                if (result.Status == 0) throw new CustomException("Usuário Removido");
-                if (result.Status == 2) throw new CustomException("Usuário Inativo");
+                if (userEntity.Status == 0) throw new CustomException("Usuário Removido");
+                if (userEntity.Status == 2) throw new CustomException("Usuário Inativo");
 
-                bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, result.Password);
+                bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, userEntity.Password);
                 if (!checkPass) throw new CustomException("Credenciais Inválidas");
 
-                if (result.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
-                    result.Id = _edrivingRepository.Where(e => e.UserId == result.Id).FirstOrDefault().Id;
-                if (result.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
-                    result.Id = _partnnerRepository.Where(e => e.UserId == result.Id).FirstOrDefault().Id;
-                if (result.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
-                    result.Id = _drivingSchoolRepository.Where(e => e.UserId == result.Id).FirstOrDefault().Id;
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
+                    userEntity.Id = _edrivingRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
+                    userEntity.Id = _partnnerRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
+                    userEntity.Id = _drivingSchoolRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
 
                 return new UserLoginResponse
                 {
-                    Id = result.Id,
-                    Name = result.Name,
-                    Email = result.Email,
-                    Status = result.Status,
-                    Roles = result.Roles
+                    Id = userEntity.Id,
+                    Name = userEntity.Name,
+                    Email = userEntity.Email,
+                    Status = userEntity.Status,
+                    Roles = userEntity.Roles
                 };
 
             }

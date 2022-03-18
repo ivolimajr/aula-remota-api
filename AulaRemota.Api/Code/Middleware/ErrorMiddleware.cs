@@ -49,7 +49,7 @@ namespace AulaRemota.Api.Code.Middleware
                 case CustomException customException:
                     userMessage = customException.ResponseModel.ModelName ?? null;
                     modelName = customException.ResponseModel.ModelName ?? null;
-                    if (customException.Data != null) dataException = customException.ResponseModel.Data.ToString();
+                    if (customException.ResponseModel.Data != null) dataException = customException.ResponseModel.Data.ToString();
                     break;
             }
 

@@ -4,116 +4,99 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using System;
+using AulaRemota.Core.Services.Phone.UpdatePhone;
 
 namespace AulaRemota.Core.Partnner.Update
 {
-    public class PartnnerUpdateHandler : IRequestHandler<PartnnerUpdateInput, PartnnerUpdateResponse>
+    public class PartnnerUpdateHandler : IRequestHandler<PartnnerUpdateInput, PartnnerModel>
     {
         private readonly IUnitOfWork UnitOfWork;
+        private readonly IMediator _mediator;
 
-        public PartnnerUpdateHandler(IUnitOfWork _unitOfWork) => UnitOfWork = _unitOfWork;
+        public PartnnerUpdateHandler(IUnitOfWork _unitOfWork, IMediator mediator) {
+            UnitOfWork = _unitOfWork;
+            _mediator = mediator;
+        }
 
-        public async Task<PartnnerUpdateResponse> Handle(PartnnerUpdateInput request, CancellationToken cancellationToken)
+        public async Task<PartnnerModel> Handle(PartnnerUpdateInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
-            using (var transcation = UnitOfWork.BeginTransaction())
+            using var transcation = UnitOfWork.BeginTransaction();
+            try
             {
-                try
+                //BUSCA O OBJETO A SER ATUALIZADO
+                var partnnerEntity = await UnitOfWork.Partnner
+                        .Where(e => e.Id == request.Id)
+                        .Include(e => e.Level)
+                        .Include(e => e.User)
+                        .Include(e => e.Address)
+                        .Include(e => e.PhonesNumbers)                        
+                        .FirstOrDefaultAsync();
+
+                Check.NotNull(partnnerEntity,"Não Encontrado");
+
+                if (request.LevelId > 0 && !request.LevelId.Equals(partnnerEntity.LevelId))
                 {
-                    //BUSCA O OBJETO A SER ATUALIZADO
-                    var partnner = await UnitOfWork.Partnner.Context
-                            .Set<PartnnerModel>()
-                            .Include(e => e.Level)
-                            .Include(e => e.User)
-                            .Include(e => e.Address)
-                            .Include(e => e.PhonesNumbers)
-                            .Where(e => e.Id == request.Id)
-                            .FirstOrDefaultAsync();
+                    var levelEntity = UnitOfWork.PartnnerLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
+                    Check.NotNull(levelEntity, "Cargo Não Encontrado");
+                    partnnerEntity.Level = levelEntity;
+                }
 
-                    if (partnner == null) throw new CustomException("Não Encontrado");
-
-                    if (request.LevelId > 0 && !request.LevelId.Equals(partnner.LevelId))
+                if (Check.NotNull(request.PhonesNumbers))
+                    foreach (var item in request.PhonesNumbers)
                     {
-                        var level = UnitOfWork.PartnnerLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                        if (level == null) throw new CustomException("Level Não Encontrado");
-                        partnner.Level = level;
+                        if (item.Id.Equals(0))
+                        {
+                            partnnerEntity.PhonesNumbers.Add(item);
+                        }
+                        else
+                        {
+                            var res = await _mediator.Send(new PhoneUpdateInput
+                            {
+                                CurrentPhoneList = partnnerEntity.PhonesNumbers,
+                                RequestPhoneList = request.PhonesNumbers
+                            }, cancellationToken);
+                            if (!res) throw new CustomException("Falha ao atualizar contato");
+                        }
                     }
 
-                    //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                    if (Check.NotNull(request.PhonesNumbers))
-                        foreach (var item in request.PhonesNumbers)
-                        {
-                            if (item.Id.Equals(0))
-                            {
-                                partnner.PhonesNumbers.Add(item);
-                            }
-                            else
-                            {
-                                if (!UnitOfWork.Phone.Where(x => x.PhoneNumber.Equals(item.PhoneNumber)).Any())
-                                {
-                                    if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber))
-                                        throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
+                partnnerEntity.Cnpj = request.Cnpj ?? partnnerEntity.Cnpj;
+                partnnerEntity.Email = request.Email ?? partnnerEntity.Email;
+                partnnerEntity.Name =  request.Name ?? partnnerEntity.Name;
+                partnnerEntity.Description = request.Description ?? partnnerEntity.Description;
 
-                                    var phone = partnner.PhonesNumbers.Where(e => e.Id.Equals(item.Id)).FirstOrDefault();
-                                    phone.PhoneNumber = item.PhoneNumber;
-                                    UnitOfWork.Phone.Update(phone);
-                                }
-                            }
-                        }
+                partnnerEntity.Address.Uf = request.Address.Uf ?? partnnerEntity.Address.Uf;
+                partnnerEntity.Address.Cep = request.Address.Cep ?? partnnerEntity.Address.Cep;
+                partnnerEntity.Address.Address = request.Address.Address ?? partnnerEntity.Address.Address;
+                partnnerEntity.Address.District = request.Address.District ?? partnnerEntity.Address.District;
+                partnnerEntity.Address.City = request.Address.City ?? partnnerEntity.Address.City;
+                partnnerEntity.Address.AddressNumber = request.Address.AddressNumber ?? partnnerEntity.Address.AddressNumber;
 
-                    partnner.Cnpj = !string.IsNullOrEmpty(request.Cnpj) ? request.Cnpj : partnner.Cnpj;
-                    partnner.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : partnner.Email.ToUpper();
-                    partnner.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : partnner.Name.ToUpper();
-                    partnner.Description = !string.IsNullOrEmpty(request.Description) ? request.Description.ToUpper() : partnner.Description.ToUpper();
+                partnnerEntity.User.Email = request.Email ?? partnnerEntity.Email;
+                partnnerEntity.User.Name = request.Name ?? partnnerEntity.Name;
 
-                    partnner.Address.Uf = !string.IsNullOrEmpty(request.Address.Uf) ? request.Address.Uf.ToUpper() : partnner.Address.Uf.ToUpper();
-                    partnner.Address.Cep = !string.IsNullOrEmpty(request.Address.Cep) ? request.Address.Cep.ToUpper() : partnner.Address.Cep.ToUpper();
-                    partnner.Address.Address = !string.IsNullOrEmpty(request.Address.Address) ? request.Address.Address.ToUpper() : partnner.Address.Address.ToUpper();
-                    partnner.Address.District = !string.IsNullOrEmpty(request.Address.District) ? request.Address.District.ToUpper() : partnner.Address.District.ToUpper();
-                    partnner.Address.City = !string.IsNullOrEmpty(request.Address.City) ? request.Address.City.ToUpper() : partnner.Address.City.ToUpper();
-                    partnner.Address.AddressNumber = !string.IsNullOrEmpty(request.Address.AddressNumber) ? request.Address.AddressNumber.ToUpper() : partnner.Address.AddressNumber.ToUpper();
+                partnnerEntity.LevelId = request.LevelId > 0 ? request.LevelId : partnnerEntity.LevelId;
 
-                    partnner.User.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : partnner.Email.ToUpper();
-                    partnner.User.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : partnner.Name.ToUpper();
+                UnitOfWork.Partnner.Update(partnnerEntity);
+                UnitOfWork.Partnner.Save();
+                transcation.Commit();
 
-                    partnner.LevelId = request.LevelId > 0 ? request.LevelId : partnner.LevelId;
-
-                    UnitOfWork.Partnner.Update(partnner);
-                    UnitOfWork.Partnner.Save();
-                    transcation.Commit();
-
-                    return new PartnnerUpdateResponse
-                    {
-                        Id = partnner.Id,
-                        Name = partnner.Name,
-                        Email = partnner.Email,
-                        Cnpj = partnner.Cnpj,
-                        Description = partnner.Description,
-                        PhonesNumbers = partnner.PhonesNumbers,
-                        LevelId = partnner.LevelId,
-                        UserId = partnner.UserId,
-                        Level = partnner.Level,
-                        User = partnner.User,
-                        AddressId = partnner.AddressId,
-                        Address = partnner.Address
-                    };
-                }
-                catch (Exception e)
+                return partnnerEntity;
+            }
+            catch (Exception e)
+            {
+                transcation.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    transcation.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(PartnnerUpdateHandler),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.BadRequest
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(PartnnerUpdateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
         }
     }

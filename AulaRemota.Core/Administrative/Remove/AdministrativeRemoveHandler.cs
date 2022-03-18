@@ -20,45 +20,43 @@ namespace AulaRemota.Core.Administrative.Remove
         {
             if (request.Id == 0) throw new CustomException("Não encontrado");
 
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            try
             {
-                try
+                var administrativeEntity = UnitOfWork.Administrative
+                                .Where(e => e.Id.Equals(request.Id))
+                                .Include(e => e.Address)
+                                .Include(e => e.User)
+                                .Include(e => e.PhonesNumbers)
+                                .FirstOrDefault();
+
+                Check.NotNull(administrativeEntity, "Não encontrado");
+
+                foreach (var item in administrativeEntity.PhonesNumbers)
+                    UnitOfWork.Phone.Delete(item);
+
+                await UnitOfWork.SaveChangesAsync();
+
+                UnitOfWork.User.Delete(administrativeEntity.User);
+                UnitOfWork.Address.Delete(administrativeEntity.Address);
+                UnitOfWork.Administrative.Delete(administrativeEntity);
+
+                UnitOfWork.SaveChanges();
+                transaction.Commit();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    var administrative = UnitOfWork.Administrative
-                                    .Where(e => e.Id.Equals(request.Id))
-                                    .Include(e => e.Address)
-                                    .Include(e => e.User)
-                                    .Include(e => e.PhonesNumbers)
-                                    .FirstOrDefault();
-
-                    Check.NotNull(administrative, "Não encontrado");
-
-                    foreach (var item in administrative.PhonesNumbers)
-                        UnitOfWork.Phone.Delete(item);
-
-                    await UnitOfWork.SaveChangesAsync();
-
-                    UnitOfWork.User.Delete(administrative.User);
-                    UnitOfWork.Address.Delete(administrative.Address);
-                    UnitOfWork.Administrative.Delete(administrative);
-
-                    UnitOfWork.SaveChanges();
-                    transaction.Commit();
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(AdministrativeRemoveInput),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.NotFound
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(AdministrativeRemoveInput),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.NotFound
+                });
             }
 
         }

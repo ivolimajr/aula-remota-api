@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AulaRemota.Core.Partnner.Update
 {
-    public class PartnnerUpdateInput : IRequest<PartnnerUpdateResponse>
+    public class PartnnerUpdateInput : IRequest<PartnnerModel>
     {
         public PartnnerUpdateInput()
         {

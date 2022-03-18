@@ -8,98 +8,97 @@ using System.Linq;
 using System.Net;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using System;
+using AulaRemota.Core.Services.Phone.UpdatePhone;
 
 namespace AulaRemota.Core.Edriving.Update
 {
     public class EdrivingUpdateHandler : IRequestHandler<EdrivingUpdateInput, EdrivingModel>
     {
         private readonly IUnitOfWork UnitOfWork;
-        public EdrivingUpdateHandler(IUnitOfWork _unitOfWork) => UnitOfWork = _unitOfWork;
+        private readonly IMediator _mediator;
+        public EdrivingUpdateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
+        {
+            UnitOfWork = _unitOfWork;
+            _mediator = mediator;
+        }
 
         public async Task<EdrivingModel> Handle(EdrivingUpdateInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            try
             {
-                try
+                //BUSCA O OBJETO A SER ATUALIZADO
+                var edrivingEntity = UnitOfWork.Edriving
+                            .Where(e => e.Id == request.Id)
+                            .Include(e => e.User)
+                            .Include(e => e.Level)
+                            .Include(e => e.PhonesNumbers)
+                            .FirstOrDefault();
+
+                Check.NotNull(edrivingEntity, "Não Encontrado");
+
+                if (string.IsNullOrEmpty(request.Email) && request.Email != edrivingEntity.Email)
+                    if (UnitOfWork.User.Exists(e => e.Email.Equals(request.Email)))
+                        throw new CustomException("Email já em uso");
+
+                if (!string.IsNullOrEmpty(request.Cpf) && !request.Cpf.Equals(edrivingEntity.Cpf))
                 {
-                    //BUSCA O OBJETO A SER ATUALIZADO
-                    var edriving = UnitOfWork.Edriving
-                                .Where(e => e.Id == request.Id)
-                                .Include(e => e.User)
-                                .Include(e => e.Level)
-                                .Include(e => e.PhonesNumbers)
-                                .FirstOrDefault();
+                    var cpfUnique = UnitOfWork.Edriving.FirstOrDefault(u => u.Cpf == request.Cpf);
+                    if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
+                }
 
-                    if (edriving == null) throw new CustomException("Não Encontrado");
+                if (request.LevelId > 0 && !request.LevelId.Equals(edrivingEntity.LevelId))
+                {
+                    var level = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
+                    if (level == null) throw new CustomException("Cargo Não Encontrado");
+                    edrivingEntity.Level = level;
+                }
 
-                    if (!string.IsNullOrEmpty(request.Email) && !request.Email.Equals(edriving.Email))
+                edrivingEntity.Cpf = request.Cpf ?? edrivingEntity.Cpf;
+                edrivingEntity.Email = request.Email ?? edrivingEntity.Email.ToUpper();
+                edrivingEntity.Name = request.Name ?? edrivingEntity.Name.ToUpper();
+                edrivingEntity.User.Email = request.Email ?? edrivingEntity.Email.ToUpper();
+                edrivingEntity.User.Name = request.Name ?? edrivingEntity.Name.ToUpper();
+                edrivingEntity.LevelId = request.LevelId > 0 ? request.LevelId : edrivingEntity.LevelId;
+
+                if (Check.NotNull(request.PhonesNumbers))
+                    foreach (var item in request.PhonesNumbers)
                     {
-                        var emailUnique = UnitOfWork.User.FirstOrDefault(u => u.Email == request.Email);
-                        if (emailUnique != null && emailUnique.Id != request.Id) throw new CustomException("Email em uso");
-                    }
-                    if (!string.IsNullOrEmpty(request.Cpf) && !request.Cpf.Equals(edriving.Cpf))
-                    {
-                        var cpfUnique = UnitOfWork.Edriving.FirstOrDefault(u => u.Cpf == request.Cpf);
-                        if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
-                    }
-
-                    if (request.LevelId > 0 && !request.LevelId.Equals(edriving.LevelId))
-                    {
-                        var level = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                        if (level == null) throw new CustomException("Level Não Encontrado");
-                        edriving.Level = level;
-                    }
-
-                    edriving.Cpf = !string.IsNullOrEmpty(request.Cpf) ? request.Cpf : edriving.Cpf;
-                    edriving.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : edriving.Email.ToUpper();
-                    edriving.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : edriving.Name.ToUpper();
-                    edriving.User.Email = !string.IsNullOrEmpty(request.Email) ? request.Email.ToUpper() : edriving.Email.ToUpper();
-                    edriving.User.Name = !string.IsNullOrEmpty(request.Name) ? request.Name.ToUpper() : edriving.Name.ToUpper();
-                    edriving.LevelId = request.LevelId > 0 ? request.LevelId : edriving.LevelId;
-
-                    //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
-                    if (Check.NotNull(request.PhonesNumbers))
-                        foreach (var item in request.PhonesNumbers)
+                        if (item.Id.Equals(0))
                         {
-                            if (item.Id.Equals(0))
-                            {
-                                edriving.PhonesNumbers.Add(item);
-                            }
-                            else
-                            {
-                                if (!UnitOfWork.Phone.Where(x => x.PhoneNumber.Equals(item.PhoneNumber)).Any())
-                                {
-                                    if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber))
-                                        throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
-
-                                    var phone = edriving.PhonesNumbers.Where(e => e.Id.Equals(item.Id)).FirstOrDefault();
-                                    phone.PhoneNumber = item.PhoneNumber;
-                                    UnitOfWork.Phone.Update(phone);
-                                }
-                            }
+                            edrivingEntity.PhonesNumbers.Add(item);
                         }
+                        else
+                        {
+                            var res = await _mediator.Send(new PhoneUpdateInput
+                            {
+                                CurrentPhoneList = edrivingEntity.PhonesNumbers,
+                                RequestPhoneList = request.PhonesNumbers
+                            }, cancellationToken);
+                            if (!res) throw new CustomException("Falha ao atualizar contato");
+                        }
+                    }
 
-                    UnitOfWork.Edriving.Update(edriving);
+                UnitOfWork.Edriving.Update(edrivingEntity);
 
-                    UnitOfWork.Edriving.SaveChanges();
-                    transaction.Commit();
+                UnitOfWork.Edriving.SaveChanges();
+                transaction.Commit();
 
-                    return edriving;
-                }
-                catch (Exception e)
+                return edrivingEntity;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    transaction.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(EdrivingUpdateHandler),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.BadRequest
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingUpdateHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
         }
     }

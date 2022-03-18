@@ -90,13 +90,13 @@ namespace AulaRemota.Core.ApiAuth.GenerateToken
         {
             var password = ComputeHash(item.Password, new SHA256CryptoServiceProvider());
 
-            var user = _authUserRepository.Where(e => e.UserName.Equals(item.UserName)).Include(e => e.Roles).FirstOrDefault();
-            Check.NotNull(user, "Credenciais Inválidas");
+            var userEntity = _authUserRepository.Where(e => e.UserName.Equals(item.UserName)).Include(e => e.Roles).FirstOrDefault();
+            Check.NotNull(userEntity, "Credenciais Inválidas");
 
-            bool passwordResult = BCrypt.Net.BCrypt.Verify(item.Password, user.Password);
+            bool passwordResult = BCrypt.Net.BCrypt.Verify(item.Password, userEntity.Password);
             if (!passwordResult) throw new CustomException("Credenciais Inválidas");
             Check.IsTrue(passwordResult, "Credenciais Inválidas");
-            return user;
+            return userEntity;
         }
         private string GenerateAccessToken(IEnumerable<Claim> claims)
         {

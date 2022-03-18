@@ -6,7 +6,7 @@ using AulaRemota.Infra.Entity;
 
 namespace AulaRemota.Core.Edriving.Create
 {
-    public class EdrivingCreateInput : IRequest<EdrivingCreateResponse>
+    public class EdrivingCreateInput : IRequest<EdrivingModel>
     {
         [Required]
         [StringLength(maximumLength: 100, MinimumLength = 3)]

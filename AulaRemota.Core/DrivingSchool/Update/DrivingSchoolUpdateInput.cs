@@ -53,7 +53,6 @@ namespace AulaRemota.Core.DrivingSchool.Update
         [StringLength(maximumLength: 150, MinimumLength = 3)]
         public string City { get; set; }
 
-        [Required]
         [StringLength(maximumLength: 10, MinimumLength = 1)]
         public string AddressNumber { get; set; }
 

@@ -19,20 +19,24 @@ namespace AulaRemota.Core.ApiUser.Update
         {
             try
             {
-                var result = await _authUserRepository.FindAsync(request.Id);
-                Check.NotNull(result, "Não Encontrado");
+                var apiUserEntity = await _authUserRepository.FindAsync(request.Id);
+                Check.NotNull(apiUserEntity, "Não Encontrado");
 
-                result.Name = request.Name ?? result.Name;
-                result.UserName = request.UserName ?? request.UserName;
+                if (string.IsNullOrEmpty(request.UserName) && request.UserName != apiUserEntity.UserName)
+                    if (_authUserRepository.Exists(e => e.UserName.Equals(request.UserName)))
+                        throw new CustomException("Email já em uso");
 
-                _authUserRepository.Update(result);
+                apiUserEntity.Name = request.Name ?? apiUserEntity.Name;
+                apiUserEntity.UserName = request.UserName ?? request.UserName;
+
+                _authUserRepository.Update(apiUserEntity);
                 await _authUserRepository.SaveChangesAsync();
 
                 return new ApiUserUpdateResponse()
                 {
-                    Id = result.Id,
-                    Name = result.Name,
-                    UserName = result.UserName
+                    Id = apiUserEntity.Id,
+                    Name = apiUserEntity.Name,
+                    UserName = apiUserEntity.UserName
                 };
             }
             catch (Exception e)

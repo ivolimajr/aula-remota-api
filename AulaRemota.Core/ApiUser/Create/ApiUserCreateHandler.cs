@@ -15,17 +15,13 @@ namespace AulaRemota.Core.ApiUser.Create
     {
         private readonly IRepository<ApiUserModel, int> _authUserRepository;
 
-        public ApiUserCreateHandler(IRepository<ApiUserModel, int> authUserRepository)
-        {
-            _authUserRepository = authUserRepository;
-        }
-
+        public ApiUserCreateHandler(IRepository<ApiUserModel, int> authUserRepository) => _authUserRepository = authUserRepository;
         public async Task<ApiUserCreateResponse> Handle(ApiUserCreateInput request, CancellationToken cancellationToken)
         {
             try
             {
-                var userValidate = _authUserRepository.FirstOrDefault(u => u.UserName == request.UserName);
-                Check.NotNull(userValidate, "Usuário já cadastrado");
+                if (_authUserRepository.Exists(u => u.UserName == request.UserName))
+                    throw new CustomException("Usuário já cadastrado");
 
                 var user = new ApiUserModel()
                 {

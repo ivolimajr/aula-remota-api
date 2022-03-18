@@ -52,11 +52,11 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 //Salva no banco todas as informações dos Files do upload
                 foreach (var item in fileResult.Files)
                 {
-                    var arquivo = await UnitOfWork.File.AddAsync(item);
-                    fileList.Add(arquivo);
+                    var file = await UnitOfWork.File.AddAsync(item);
+                    fileList.Add(file);
                 }
 
-                var autoEscola = new DrivingSchoolModel()
+                var drivingSchoolModel = new DrivingSchoolModel()
                 {
                     CorporateName = request.CorporateName.ToUpper(),
                     Cnpj = request.Cnpj.ToUpper(),
@@ -93,25 +93,25 @@ namespace AulaRemota.Core.DrivingSchool.Create
                     },
                     Files = fileList,
                 };
-                var autoEscolaModel = await UnitOfWork.DrivingSchool.AddAsync(autoEscola);
+                var drivingSchoolResult = await UnitOfWork.DrivingSchool.AddAsync(drivingSchoolModel);
                 UnitOfWork.SaveChanges();
                 transaction.Commit();
 
                 return new DrivingSchoolCreateResponse()
                 {
-                    Id = autoEscolaModel.Id,
-                    CorporateName = autoEscolaModel.CorporateName.ToUpper(),
-                    Cnpj = autoEscolaModel.Cnpj.ToUpper(),
-                    Email = autoEscolaModel.Email.ToUpper(),
-                    Description = autoEscolaModel.Description,
-                    PhonesNumbers = autoEscolaModel.PhonesNumbers,
-                    DataFundacao = autoEscolaModel.FoundingDate,
-                    InscricaoEstadual = autoEscolaModel.StateRegistration,
-                    FantasyName = autoEscolaModel.FantasyName,
-                    Site = autoEscolaModel.Site,
-                    User = autoEscolaModel.User,
-                    Address = autoEscolaModel.Address,
-                    Files = autoEscolaModel.Files
+                    Id = drivingSchoolResult.Id,
+                    CorporateName = drivingSchoolResult.CorporateName.ToUpper(),
+                    Cnpj = drivingSchoolResult.Cnpj.ToUpper(),
+                    Email = drivingSchoolResult.Email.ToUpper(),
+                    Description = drivingSchoolResult.Description,
+                    PhonesNumbers = drivingSchoolResult.PhonesNumbers,
+                    DataFundacao = drivingSchoolResult.FoundingDate,
+                    InscricaoEstadual = drivingSchoolResult.StateRegistration,
+                    FantasyName = drivingSchoolResult.FantasyName,
+                    Site = drivingSchoolResult.Site,
+                    User = drivingSchoolResult.User,
+                    Address = drivingSchoolResult.Address,
+                    Files = drivingSchoolResult.Files
                 };
             }
             catch (Exception e)

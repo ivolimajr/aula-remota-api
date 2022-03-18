@@ -20,47 +20,45 @@ namespace AulaRemota.Core.Partnner.Remove
         public async Task<bool> Handle(RemovePartnnerInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            try
             {
-                try
+                var partnner = await UnitOfWork.Partnner.Context
+                                        .Set<PartnnerModel>()
+                                        .Include(e => e.User)
+                                        .Include(e => e.Address)
+                                        .Include(e => e.PhonesNumbers)
+                                        .Where(e => e.Id == request.Id)
+                                        .FirstOrDefaultAsync();
+
+                if (partnner == null) throw new CustomException("Não Encontrado");
+
+                foreach (var item in partnner.PhonesNumbers)
                 {
-                    var partnner = await UnitOfWork.Partnner.Context
-                                            .Set<PartnnerModel>()
-                                            .Include(e => e.User)
-                                            .Include(e => e.Address)
-                                            .Include(e => e.PhonesNumbers)
-                                            .Where(e => e.Id == request.Id)
-                                            .FirstOrDefaultAsync();
-
-                    if (partnner == null) throw new CustomException("Não Encontrado");
-                    
-                    foreach (var item in partnner.PhonesNumbers)
-                    {
-                        item.Edriving = null;
-                        UnitOfWork.Phone.Delete(item);
-                    }
-                    UnitOfWork.SaveChanges();
-
-                    UnitOfWork.Address.Delete(partnner.Address);
-                    UnitOfWork.User.Delete(partnner.User);
-                    UnitOfWork.Partnner.Delete(partnner);
-
-                    UnitOfWork.SaveChanges();
-                    transaction.Commit();
-                    return true;
+                    item.Edriving = null;
+                    UnitOfWork.Phone.Delete(item);
                 }
-                catch (Exception e)
+                UnitOfWork.SaveChanges();
+
+                UnitOfWork.Address.Delete(partnner.Address);
+                UnitOfWork.User.Delete(partnner.User);
+                UnitOfWork.Partnner.Delete(partnner);
+
+                UnitOfWork.SaveChanges();
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    transaction.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(RemovePartnnerHandler),
-                        Exception = e,
-                        InnerException = e.InnerException,
-                        StatusCode = HttpStatusCode.NotFound
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(RemovePartnnerHandler),
+                    Exception = e,
+                    InnerException = e.InnerException,
+                    StatusCode = HttpStatusCode.NotFound
+                });
             }
         }
     }

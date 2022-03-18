@@ -23,29 +23,29 @@ namespace AulaRemota.Core.Partnner.GetOne
 
             try
             {
-                var result = _partnnerRepository
+                var partnnerEntity = _partnnerRepository
                         .Where(e => e.User.Status > 0 && e.Id == request.Id)
                         .Include(e => e.User)
                         .Include(e => e.Level)
                         .Include(e => e.Address)
                         .Include(e => e.PhonesNumbers)                        
                         .FirstOrDefault();
-                if (result == null) throw new CustomException("Não Encontrado");
+                if (partnnerEntity == null) throw new CustomException("Não Encontrado");
 
                 return new GetOnePartnnerResponse
                 {
-                    Id = result.Id,
-                    Name = result.Name,
-                    Email = result.Email,
-                    PhonesNumbers = result.PhonesNumbers,
-                    Description = result.Description,
-                    Cnpj = result.Cnpj,
-                    LevelId = result.LevelId,
-                    Level = result.Level,
-                    AddressId = result.AddressId,
-                    Address = result.Address,
-                    UserId = result.UserId,
-                    User = result.User,
+                    Id = partnnerEntity.Id,
+                    Name = partnnerEntity.Name,
+                    Email = partnnerEntity.Email,
+                    PhonesNumbers = partnnerEntity.PhonesNumbers,
+                    Description = partnnerEntity.Description,
+                    Cnpj = partnnerEntity.Cnpj,
+                    LevelId = partnnerEntity.LevelId,
+                    Level = partnnerEntity.Level,
+                    AddressId = partnnerEntity.AddressId,
+                    Address = partnnerEntity.Address,
+                    UserId = partnnerEntity.UserId,
+                    User = partnnerEntity.User,
                 };
             }
             catch (Exception e)

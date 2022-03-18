@@ -23,7 +23,7 @@ namespace AulaRemota.Core.ApiUser.GetOne
         {
             try
             {
-                var result = _authUserRepository.Context
+                var apiUserEntity = _authUserRepository.Context
                     .Set<ApiUserModel>()
                     .Select(e => new ApiUserModel
                     {
@@ -35,10 +35,10 @@ namespace AulaRemota.Core.ApiUser.GetOne
                     })
                     .Where(e => e.Id.Equals(request.Id))
                     .FirstOrDefault();
-                if (result == null) throw new CustomException("Não Encontrado");
-                result.Password = default;
-                result.RefreshToken = default;
-                return result;
+                if (apiUserEntity == null) throw new CustomException("Não Encontrado");
+                apiUserEntity.Password = default;
+                apiUserEntity.RefreshToken = default;
+                return apiUserEntity;
             }
             catch (Exception e)
             {

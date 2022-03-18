@@ -60,7 +60,7 @@ namespace AulaRemota.Api.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(PartnnerUpdateResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PartnnerModel), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> Put([FromBody] PartnnerUpdateInput request) => Ok(await _mediator.Send(request));
         /// <summary>
         /// Remove um parceiro

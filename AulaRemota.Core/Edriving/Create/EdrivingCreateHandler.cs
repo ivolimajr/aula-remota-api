@@ -11,7 +11,7 @@ using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 
 namespace AulaRemota.Core.Edriving.Create
 {
-    public class EdrivingCreateHandler : IRequestHandler<EdrivingCreateInput, EdrivingCreateResponse>
+    public class EdrivingCreateHandler : IRequestHandler<EdrivingCreateInput, EdrivingModel>
     {
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
@@ -22,26 +22,25 @@ namespace AulaRemota.Core.Edriving.Create
             _mediator = mediator;
         }
 
-        public async Task<EdrivingCreateResponse> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)
+        public async Task<EdrivingModel> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)
         {
             using (var transaction = UnitOfWork.BeginTransaction())
             {
                 try
                 {
-                    FildsValidator(request.Email, request.Cpf, request.PhonesNumbers);
-                    //VERIFICA SE O Level INFORMADO EXISTE
-                    var Level = UnitOfWork.EdrivingLevel.Find(request.LevelId);
-                    if (Level == null) throw new CustomException("Cargo informado não existe", HttpStatusCode.NotFound);
+                    RequestValidator(request.Email, request.Cpf, request.PhonesNumbers);
+                    var level = UnitOfWork.EdrivingLevel.Find(request.LevelId);
+                    Check.NotNull(level, "Cargo informado não existe");
 
                     //CRIA UM EDRIVING
-                    var edriving = new EdrivingModel()
+                    var edrivingModel = new EdrivingModel()
                     {
                         Name = request.Name.ToUpper(),
                         Cpf = request.Cpf.ToUpper(),
                         Email = request.Email.ToUpper(),
                         LevelId = request.LevelId,
                         PhonesNumbers = request.PhonesNumbers,
-                        Level = Level,
+                        Level = level,
                         User = new UserModel
                         {
                             Name = request.Name.ToUpper(),
@@ -56,24 +55,13 @@ namespace AulaRemota.Core.Edriving.Create
                             }
                         }
                     };
-                    var edrivingModel = await UnitOfWork.Edriving.AddAsync(edriving);
+                    var edrivingResult = await UnitOfWork.Edriving.AddAsync(edrivingModel);
                     //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 
                     UnitOfWork.SaveChanges();
                     transaction.Commit();
 
-                    return new EdrivingCreateResponse()
-                    {
-                        Id = edrivingModel.Id,
-                        Name = edrivingModel.Name,
-                        Email = edrivingModel.Email,
-                        Cpf = edrivingModel.Cpf,
-                        PhonesNumbers = edrivingModel.PhonesNumbers,
-                        LevelId = edrivingModel.LevelId,
-                        UserId = edrivingModel.UserId,
-                        Level = edrivingModel.Level,
-                        User = edrivingModel.User,
-                    };
+                    return edrivingResult;
                 }
                 catch (Exception e)
                 {
@@ -88,17 +76,13 @@ namespace AulaRemota.Core.Edriving.Create
                 }
             }
         }
-        private void FildsValidator(string email, string cpf, List<PhoneModel> phones)
+        private void RequestValidator(string email, string cpf, List<PhoneModel> phones)
         {
-
-            //VERIFICA SE O EMAIL JÁ ESTÁ EM USO
             if (UnitOfWork.User.Exists(u => u.Email == email)) throw new CustomException("Email já em uso");
-
-            //VERIFICA SE O CPF JÁ ESTÁ EM USO
             if (UnitOfWork.Edriving.Exists(u => u.Cpf == cpf)) throw new CustomException("Cpf já existe em nossa base de dados");
-            //VERIFICA SE O TELEFONE JÁ ESTÁ EM USO
             foreach (var item in phones)
-                if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
+                if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) 
+                    throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
         }
     }
 }
