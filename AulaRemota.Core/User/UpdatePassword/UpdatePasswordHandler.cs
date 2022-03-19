@@ -11,12 +11,9 @@ namespace AulaRemota.Core.User.UpdatePassword
 {
     public class UpdatePasswordHandler : IRequestHandler<UpdatePasswordInput, bool>
     {
-        private readonly IRepository<UserModel, int>_userRepository;
+        private readonly IRepository<UserModel, int> _userRepository;
 
-        public UpdatePasswordHandler(IRepository<UserModel, int>userRepository)
-        {
-            _userRepository = userRepository;
-        }
+        public UpdatePasswordHandler(IRepository<UserModel, int> userRepository) => _userRepository = userRepository;
 
         public async Task<bool> Handle(UpdatePasswordInput request, CancellationToken cancellationToken)
         {
@@ -25,10 +22,10 @@ namespace AulaRemota.Core.User.UpdatePassword
             try
             {
                 var user = await _userRepository.FindAsync(request.Id);
-                if (user == null) throw new CustomException("Não Encontrado");
+                Check.NotNull(user, "Não Encontrado");
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
-                if (!checkPass) throw new CustomException("Senha atual inválida");
+                Check.IsTrue(checkPass, "Senha atual inválida");
 
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 _userRepository.Update(user);
@@ -38,13 +35,18 @@ namespace AulaRemota.Core.User.UpdatePassword
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    userId = request.Id
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(UpdatePasswordInput),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.Unauthorized
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Data = result
                 });
             }
 

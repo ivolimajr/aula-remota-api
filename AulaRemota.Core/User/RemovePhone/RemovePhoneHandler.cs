@@ -25,7 +25,7 @@ namespace AulaRemota.Core.User.RemovePhone
             try
             {
                 var result = _phoneRepository.Find(request.Id);
-                if (result == null) throw new CustomException("Não Encontrado");
+                Check.NotNull(result, "Não Encontrado");
 
                 _phoneRepository.Delete(result);
                 await _phoneRepository.SaveChangesAsync();
@@ -33,13 +33,18 @@ namespace AulaRemota.Core.User.RemovePhone
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    phoneId = request.id
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(RemovePhoneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
+                    Data = result
                 });
             }
         }

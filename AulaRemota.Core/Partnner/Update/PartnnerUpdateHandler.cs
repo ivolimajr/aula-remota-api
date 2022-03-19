@@ -23,7 +23,7 @@ namespace AulaRemota.Core.Partnner.Update
 
         public async Task<PartnnerModel> Handle(PartnnerUpdateInput request, CancellationToken cancellationToken)
         {
-            if (request.Id == 0) throw new CustomException("Busca Inválida");
+            Check.NotNull(request, "Busca Inválida");
             using var transcation = UnitOfWork.BeginTransaction();
             try
             {

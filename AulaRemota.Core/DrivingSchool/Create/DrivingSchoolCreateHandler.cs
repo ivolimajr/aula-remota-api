@@ -11,6 +11,7 @@ using AulaRemota.Shared.Helpers.Constants;
 using AulaRemota.Core.File.RemoveFromAzure;
 using AulaRemota.Infra.Repository.UnitOfWorkConfig;
 using System.Net;
+using System.Linq;
 
 namespace AulaRemota.Core.DrivingSchool.Create
 {
@@ -33,12 +34,8 @@ namespace AulaRemota.Core.DrivingSchool.Create
             var fileList = new List<FileModel>();
             try
             {
-                if (UnitOfWork.User.Exists(u => u.Email == request.Email)) throw new CustomException("Email já em uso");
-                if (UnitOfWork.DrivingSchool.Exists(u => u.Cnpj == request.Cnpj)) throw new CustomException("Cnpj já existe em nossa base de dados");
 
-                foreach (var item in request.PhonesNumbers)
-                    if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
-
+                ValidateRequest(request.Email, request.Cnpj, request.PhonesNumbers.ToList());
                 /*Faz o upload dos Files no azure e tem como retorno uma lista com os dados do upload
                  * @return nome, formato e destino
                  */
@@ -132,6 +129,15 @@ namespace AulaRemota.Core.DrivingSchool.Create
                     StatusCode = HttpStatusCode.BadRequest
                 });
             }
+        }
+        
+        private void ValidateRequest(string email, string cnpj, List<PhoneModel> phoneList)
+        {
+            if (UnitOfWork.User.Exists(u => u.Email == email)) throw new CustomException("Email já em uso");
+            if (UnitOfWork.DrivingSchool.Exists(u => u.Cnpj == cnpj)) throw new CustomException("Cnpj já existe em nossa base de dados");
+
+            foreach (var item in phoneList)
+                if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
         }
     }
 }

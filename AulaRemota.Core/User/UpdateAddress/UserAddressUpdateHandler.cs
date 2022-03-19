@@ -24,31 +24,42 @@ namespace AulaRemota.Core.User.UpdateAddress
 
             try
             {
-                var entity = await _addressRepository.FindAsync(request.Id);
-                if (entity == null) throw new CustomException("Não Encontrado");
+                var addressEntity = await _addressRepository.FindAsync(request.Id);
+                Check.NotNull(addressEntity, "Não Encontrado");
 
                 // FAZ O SET DOS ATRIBUTOS A SER ATUALIZADO 
-                if (request.Uf != null) entity.Uf = request.Uf.ToUpper();
-                if (request.Cep != null) entity.Cep = request.Cep.ToUpper();
-                if (request.Address != null) entity.Address = request.Address.ToUpper();
-                if (request.District != null) entity.District = request.District.ToUpper();
-                if (request.City != null) entity.City = request.City.ToUpper();
-                if (request.AddressNumber != null) entity.AddressNumber = request.AddressNumber.ToUpper();
+                addressEntity.Uf = request.Uf ?? addressEntity.Uf;
+                addressEntity.Cep = request.Cep ?? addressEntity.Cep;
+                addressEntity.Address = request.Address ?? addressEntity.Address;
+                addressEntity.District = request.District ?? addressEntity.District;
+                addressEntity.City = request.City ?? addressEntity.City;
+                addressEntity.AddressNumber = request.AddressNumber ?? addressEntity.AddressNumber;
 
-                _addressRepository.Update(entity);
+                _addressRepository.Update(addressEntity);
                 await _addressRepository.SaveChangesAsync();
 
-                return entity;
+                return addressEntity;
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    addressId = request.Id,
+                    addressUf = request.Uf,
+                    addressCep = request.Cep,
+                    addressAddress = request.Address,
+                    addressDistrict = request.District,
+                    addressCity = request.City,
+                    addressAddressNumber = request.AddressNumber
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(UserAddressUpdateHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.NotFound
+                    StatusCode = HttpStatusCode.NotFound,
+                    Data = result
                 });
             }
         }

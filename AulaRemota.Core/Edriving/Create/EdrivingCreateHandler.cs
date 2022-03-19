@@ -24,56 +24,53 @@ namespace AulaRemota.Core.Edriving.Create
 
         public async Task<EdrivingModel> Handle(EdrivingCreateInput request, CancellationToken cancellationToken)
         {
-            using (var transaction = UnitOfWork.BeginTransaction())
+            using var transaction = UnitOfWork.BeginTransaction();
+            try
             {
-                try
-                {
-                    RequestValidator(request.Email, request.Cpf, request.PhonesNumbers);
-                    var level = UnitOfWork.EdrivingLevel.Find(request.LevelId);
-                    Check.NotNull(level, "Cargo informado não existe");
+                RequestValidator(request.Email, request.Cpf, request.PhonesNumbers);
+                var levelEntity = UnitOfWork.EdrivingLevel.Find(request.LevelId);
+                Check.NotNull(levelEntity, "Cargo informado não existe");
 
-                    //CRIA UM EDRIVING
-                    var edrivingModel = new EdrivingModel()
+                var edrivingModel = new EdrivingModel()
+                {
+                    Name = request.Name.ToUpper(),
+                    Cpf = request.Cpf.ToUpper(),
+                    Email = request.Email.ToUpper(),
+                    LevelId = request.LevelId,
+                    PhonesNumbers = request.PhonesNumbers,
+                    Level = levelEntity,
+                    User = new UserModel
                     {
                         Name = request.Name.ToUpper(),
-                        Cpf = request.Cpf.ToUpper(),
                         Email = request.Email.ToUpper(),
-                        LevelId = request.LevelId,
-                        PhonesNumbers = request.PhonesNumbers,
-                        Level = level,
-                        User = new UserModel
-                        {
-                            Name = request.Name.ToUpper(),
-                            Email = request.Email.ToUpper(),
-                            Status = 1,
-                            Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                            Roles = new List<RolesModel>()
+                        Status = 1,
+                        Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                        Roles = new List<RolesModel>()
                             {
                             new RolesModel(){
                                     Role = Constants.Roles.EDRIVING
                                 }
                             }
-                        }
-                    };
-                    var edrivingResult = await UnitOfWork.Edriving.AddAsync(edrivingModel);
-                    //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
+                    }
+                };
+                var edrivingResult = await UnitOfWork.Edriving.AddAsync(edrivingModel);
+                //await _mediator.Send(new EnviarEmailRegistroInput { Para = request.Email, Senha = request.Senha });
 
-                    UnitOfWork.SaveChanges();
-                    transaction.Commit();
+                UnitOfWork.SaveChanges();
+                transaction.Commit();
 
-                    return edrivingResult;
-                }
-                catch (Exception e)
+                return edrivingResult;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw new CustomException(new ResponseModel
                 {
-                    transaction.Rollback();
-                    throw new CustomException(new ResponseModel
-                    {
-                        UserMessage = e.Message,
-                        ModelName = nameof(EdrivingCreateResponse),
-                        Exception = e,
-                        StatusCode = HttpStatusCode.BadRequest
-                    });
-                }
+                    UserMessage = e.Message,
+                    ModelName = nameof(EdrivingCreateResponse),
+                    Exception = e,
+                    StatusCode = HttpStatusCode.BadRequest
+                });
             }
         }
         private void RequestValidator(string email, string cpf, List<PhoneModel> phones)

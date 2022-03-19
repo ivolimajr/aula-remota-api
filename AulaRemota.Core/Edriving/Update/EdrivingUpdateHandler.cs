@@ -45,15 +45,15 @@ namespace AulaRemota.Core.Edriving.Update
 
                 if (!string.IsNullOrEmpty(request.Cpf) && !request.Cpf.Equals(edrivingEntity.Cpf))
                 {
-                    var cpfUnique = UnitOfWork.Edriving.FirstOrDefault(u => u.Cpf == request.Cpf);
-                    if (cpfUnique != null && cpfUnique.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
+                    var cpfResult = UnitOfWork.Edriving.FirstOrDefault(u => u.Cpf == request.Cpf);
+                    if (cpfResult != null && cpfResult.Id != request.Id) throw new CustomException("Cpf já existe em nossa base de dados");
                 }
 
                 if (request.LevelId > 0 && !request.LevelId.Equals(edrivingEntity.LevelId))
                 {
-                    var level = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                    if (level == null) throw new CustomException("Cargo Não Encontrado");
-                    edrivingEntity.Level = level;
+                    var levelEntityResult = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
+                    if (levelEntityResult == null) throw new CustomException("Cargo Não Encontrado");
+                    edrivingEntity.Level = levelEntityResult;
                 }
 
                 edrivingEntity.Cpf = request.Cpf ?? edrivingEntity.Cpf;

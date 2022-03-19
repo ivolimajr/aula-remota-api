@@ -42,7 +42,7 @@ namespace AulaRemota.Core.User.Login
          */
         public async Task<UserLoginResponse> Handle(UserLoginInput request, CancellationToken cancellationToken)
         {
-            if (request.Email == string.Empty) throw new CustomException("Valores Inválidos");
+            Check.NotNull(request, "Valores Inválidos");
 
             try
             {
@@ -51,14 +51,13 @@ namespace AulaRemota.Core.User.Login
                     .Include(e => e.Roles)
                     .FirstOrDefaultAsync();
 
-                if (userEntity == null || !userEntity.Email.Equals(request.Email.ToUpper()))
-                    throw new CustomException("Credenciais Inválidas");
+                Check.NotNull(userEntity, "Credenciais Inválidas");
 
                 if (userEntity.Status == 0) throw new CustomException("Usuário Removido");
                 if (userEntity.Status == 2) throw new CustomException("Usuário Inativo");
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, userEntity.Password);
-                if (!checkPass) throw new CustomException("Credenciais Inválidas");
+                Check.IsTrue(checkPass, "Credenciais Inválidas");
 
                 if (userEntity.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
                     userEntity.Id = _edrivingRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
@@ -79,13 +78,18 @@ namespace AulaRemota.Core.User.Login
             }
             catch (Exception e)
             {
+                object result = new
+                {
+                    userName = request.Email
+                };
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
                     ModelName = nameof(UserLoginHandler),
                     Exception = e,
                     InnerException = e.InnerException,
-                    StatusCode = HttpStatusCode.Unauthorized
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    Data = result
                 });
             }
         }

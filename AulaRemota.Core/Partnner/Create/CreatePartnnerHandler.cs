@@ -25,16 +25,14 @@ namespace AulaRemota.Core.Partnner.Create
                 RequestValidator(request.Email, request.Cnpj, request.PhonesNumbers);
 
                 var levelEntity = UnitOfWork.PartnnerLevel.Find(request.LevelId);
-                if (levelEntity == null) throw new CustomException("Cargo informado não existe");
+                Check.NotNull(levelEntity, "Cargo informado não existe");
 
-                //VERIFICA SE O CPF JÁ ESTÁ EM USO
                 foreach (var item in request.PhonesNumbers)
                 {
                     var phoneEntity = await UnitOfWork.Phone.FirstOrDefaultAsync(u => u.PhoneNumber == item.PhoneNumber);
-                    if (phoneEntity != null) throw new CustomException("Telefone: " + phoneEntity.PhoneNumber + " já em uso");
+                    Check.NotNull(phoneEntity, "Telefone: " + phoneEntity.PhoneNumber + " já em uso");
                 }
 
-                //CRIA UM PARCEIRO
                 var partnnerModel = new PartnnerModel()
                 {
                     Name = request.Name.ToUpper(),
