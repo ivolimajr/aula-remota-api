@@ -20,8 +20,7 @@ namespace AulaRemota.Core.ApiUser.Create
         {
             try
             {
-                if (_authUserRepository.Exists(u => u.UserName == request.UserName))
-                    throw new CustomException("Usuário já cadastrado");
+                Check.IsTrue(_authUserRepository.Exists(u => u.UserName == request.UserName), "Usuário já cadastrado");
 
                 var user = new ApiUserModel()
                 {

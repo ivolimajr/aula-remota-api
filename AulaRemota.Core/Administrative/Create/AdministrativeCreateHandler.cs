@@ -38,15 +38,14 @@ namespace AulaRemota.Core.Administrative.Create
         {
             try
             {
-                if (_userRepository.Exists(e => e.Email.Equals(request.Email)))
-                    throw new CustomException("Email já em uso");
+                Check.NotExist(_userRepository.Exists(e => e.Email.Equals(request.Email)), "Email já em uso");
 
-                if(_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)))
-                    throw new CustomException("Cpf já em uso");
+                Check.NotExist(_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)), "Cpf já em uso");
+
+                Check.Exist(_drivingSchoolRepository.Exists(e => e.Id.Equals(request.DrivingSchoolId)), "Auto Escola não existe");
 
                 foreach (var item in request.PhonesNumbers)
-                    if(_phoneRepository.Exists(e => e.PhoneNumber.Equals(item.PhoneNumber)))
-                        throw new CustomException(item.PhoneNumber+ " já em uso");
+                    Check.NotExist(_phoneRepository.Exists(e => e.PhoneNumber.Equals(item.PhoneNumber)), item.PhoneNumber+ " já em uso");
 
                 var administrative = new AdministrativeModel
                 {
@@ -75,7 +74,7 @@ namespace AulaRemota.Core.Administrative.Create
                 };
 
                 var result = _administrativeRepository.Add(administrative);
-                _administrativeRepository.SaveChanges();
+                await _administrativeRepository.SaveChangesAsync();
 
                 return result;
             }

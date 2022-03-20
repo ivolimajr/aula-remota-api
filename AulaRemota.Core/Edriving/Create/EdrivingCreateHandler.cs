@@ -75,11 +75,10 @@ namespace AulaRemota.Core.Edriving.Create
         }
         private void RequestValidator(string email, string cpf, List<PhoneModel> phones)
         {
-            if (UnitOfWork.User.Exists(u => u.Email == email)) throw new CustomException("Email já em uso");
-            if (UnitOfWork.Edriving.Exists(u => u.Cpf == cpf)) throw new CustomException("Cpf já existe em nossa base de dados");
+            Check.NotExist(UnitOfWork.User.Exists(u => u.Email == email), "Email já em uso");
+            Check.NotExist(UnitOfWork.Edriving.Exists(u => u.Cpf == cpf), "Cpf já existe em nossa base de dados");
             foreach (var item in phones)
-                if (UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber)) 
-                    throw new CustomException("Telefone: " + item.PhoneNumber + " já em uso");
+                Check.NotExist(UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber),"Telefone: " + item.PhoneNumber + " já em uso");
         }
     }
 }

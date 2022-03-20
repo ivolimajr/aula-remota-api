@@ -29,16 +29,13 @@ namespace AulaRemota.Core.File.UploadToAzure
                     foreach (var item in request.Files)
                     {
                         var fileType = Path.GetExtension(item.FileName);
-                        if (fileType.ToLower() == ".pdf" || fileType.ToLower() == ".jpg" || fileType.ToLower() == ".jpeg")
-                        {
-                            var fileResult = await SalvarNoAzure(item, request.TypeUser);
-                            fileResult.Extension = fileType;
-                            listaArquivos.Add(fileResult);
-                        }
-                        else
-                        {
-                            throw new CustomException("Formato de arquivo inválido");
-                        }
+                        Check.Equals(fileType.ToLower(), "pdf", "Formato não suportado");
+                        Check.Equals(fileType.ToLower(), "jpg", "Formato não suportado");
+                        Check.Equals(fileType.ToLower(), "jpeg", "Formato não suportado");
+
+                        var fileResult = await SalvarNoAzure(item, request.TypeUser);
+                        fileResult.Extension = fileType;
+                        listaArquivos.Add(fileResult);
                     }
                     return new FileUploadToAzureResponse() { Files = listaArquivos };
                 }

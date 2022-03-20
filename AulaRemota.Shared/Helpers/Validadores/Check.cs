@@ -165,4 +165,26 @@ public static class Check
         }
         return isTrue;
     }
+    public static bool NotExist(bool isTrue, string errorMessage, Exception exception = null)
+    {
+        if (isTrue)
+        {
+            if (exception.IsNotNull())
+                throw new CustomException(errorMessage, exception);
+            else
+                throw new CustomException(errorMessage);
+        }
+        return isTrue;
+    }
+    public static bool Exist(bool isTrue, string errorMessage, Exception exception = null)
+    {
+        if (!isTrue)
+        {
+            if (exception.IsNotNull())
+                throw new CustomException(errorMessage, exception);
+            else
+                throw new CustomException(errorMessage);
+        }
+        return isTrue;
+    }
 }

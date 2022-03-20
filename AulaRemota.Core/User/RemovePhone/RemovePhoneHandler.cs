@@ -35,7 +35,7 @@ namespace AulaRemota.Core.User.RemovePhone
             {
                 object result = new
                 {
-                    phoneId = request.id
+                    phoneId = request.Id
                 };
                 throw new CustomException(new ResponseModel
                 {

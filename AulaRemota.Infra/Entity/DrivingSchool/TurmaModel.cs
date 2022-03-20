@@ -8,8 +8,8 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
     {
         public TurmaModel()
         {
-            this.Students = new List<StudentModel>();
-            this.Courses = new List<CourseModel>();
+            Students = new List<StudentModel>();
+            Courses = new List<CourseModel>();
         }
         public int Id { get; set; }
         [Column(TypeName = "varchar(150)")]

@@ -23,8 +23,7 @@ namespace AulaRemota.Core.ApiUser.Update
                 Check.NotNull(apiUserEntity, "Não Encontrado");
 
                 if (string.IsNullOrEmpty(request.UserName) && request.UserName != apiUserEntity.UserName)
-                    if (_authUserRepository.Exists(e => e.UserName.Equals(request.UserName)))
-                        throw new CustomException("Email já em uso");
+                    Check.NotExist(_authUserRepository.Exists(e => e.UserName.Equals(request.UserName)), "Email já em uso");
 
                 apiUserEntity.Name = request.Name ?? apiUserEntity.Name;
                 apiUserEntity.UserName = request.UserName ?? request.UserName;

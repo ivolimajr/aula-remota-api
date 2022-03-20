@@ -17,7 +17,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
         {
             try
             {
-                if (request.TypeUser == null) throw new CustomException("Informe o tipo de usuário");
+                Check.NotNull(request.TypeUser, "Informe o tipo de usuário");
                 if (request.Files.Count > 0)
                 {
                     var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -42,8 +42,7 @@ namespace AulaRemota.Core.File.RemoveFromAzure
                         CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(item.FileName);
 
                         var result = await blob.DeleteIfExistsAsync();
-                        if (!result)
-                            throw new CustomException(item.FileName + "não pode ser removido");
+                        Check.IsTrue(result, item.FileName + "não pode ser removido");
                     }
                 }
                 return true;

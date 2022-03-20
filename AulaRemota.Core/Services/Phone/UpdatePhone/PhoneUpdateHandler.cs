@@ -1,6 +1,5 @@
 ﻿using AulaRemota.Infra.Entity;
 using AulaRemota.Infra.Repository;
-using AulaRemota.Shared.Helpers;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -12,10 +11,7 @@ namespace AulaRemota.Core.Services.Phone.UpdatePhone
     {
         private readonly IRepository<PhoneModel, int> _authUserRepository;
 
-        public PhoneUpdateHandler(IRepository<PhoneModel, int> authUserRepository)
-        {
-            _authUserRepository = authUserRepository;
-        }
+        public PhoneUpdateHandler(IRepository<PhoneModel, int> authUserRepository) => _authUserRepository = authUserRepository;
 
         public async Task<bool> Handle(PhoneUpdateInput request, CancellationToken cancellationToken)
         {
@@ -27,8 +23,7 @@ namespace AulaRemota.Core.Services.Phone.UpdatePhone
                 {
                     //SE O NÚMERO DE TELEFONE EXISTE E NÃO PERTENCE AO USUÁRIO ATUAL: SIGNIFICA QUE JÁ ESTÁ EM USO É PERTENCE A OUTRO USUÁRIO
                     if (_authUserRepository.Exists(u => u.PhoneNumber == requestItem.PhoneNumber))
-                        if (!request.CurrentPhoneList.Any(e => e.PhoneNumber == requestItem.PhoneNumber))
-                            throw new CustomException("Telefone: " + requestItem.PhoneNumber + " já em uso");
+                        Check.Exist(request.CurrentPhoneList.Any(e => e.PhoneNumber == requestItem.PhoneNumber),"Telefone: " + requestItem.PhoneNumber + " já em uso");
 
                     var phoneEntity = request.CurrentPhoneList.Where(e => e.Id.Equals(requestItem.Id)).FirstOrDefault();
                     if (phoneEntity.PhoneNumber != requestItem.PhoneNumber)

@@ -59,12 +59,10 @@ namespace AulaRemota.Core.Administrative.Update
                 if (request.Birthdate.Year > 1700 && request.Birthdate != administrativeEntity.Birthdate) administrativeEntity.Birthdate = request.Birthdate;
 
                 if (string.IsNullOrEmpty(request.Email) && request.Email != administrativeEntity.Email)
-                    if (_userRepository.Exists(e => e.Email.Equals(request.Email)))
-                        throw new CustomException("Email já em uso");
+                    Check.NotExist(_userRepository.Exists(e => e.Email.Equals(request.Email)), "Email já em uso");
 
                 if (!string.IsNullOrEmpty(request.Cpf) && request.Cpf != administrativeEntity.Cpf)
-                    if (_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)))
-                        throw new CustomException("Cpf já em uso");
+                    Check.NotExist(_edrivingRepository.Exists(e => e.Cpf.Equals(request.Cpf)), "Cpf já em uso");
 
                 if (Check.NotNull(request.PhonesNumbers))
                     foreach (var item in request.PhonesNumbers)
@@ -80,7 +78,7 @@ namespace AulaRemota.Core.Administrative.Update
                                 CurrentPhoneList = administrativeEntity.PhonesNumbers,
                                 RequestPhoneList = request.PhonesNumbers
                             });
-                            if (!res) throw new CustomException("Falha ao atualizar contato");
+                            Check.IsTrue(res, "Falha ao atualizar contato");
                         }
                     }
 

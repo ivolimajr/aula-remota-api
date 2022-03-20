@@ -43,7 +43,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 {
                     Files = request.Files,
                     TypeUser = Constants.Roles.AUTOESCOLA
-                });
+                }, cancellationToken);
                 Check.NotNull(fileResult, "Lista de arquivos ausente");
 
                 //Salva no banco todas as informações dos Files do upload
@@ -117,7 +117,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                 {
                     TypeUser = Constants.Roles.AUTOESCOLA,
                     Files = fileList
-                });
+                }, cancellationToken);
                 transaction.Rollback();
 
                 throw new CustomException(new ResponseModel

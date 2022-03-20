@@ -43,16 +43,12 @@ namespace AulaRemota.Core.DrivingSchool.Update
 
                 Check.NotNull(drivingSchoolEntity, "Não Encontrado");
 
-
                 if (!String.IsNullOrWhiteSpace(request.StateRegistration) && !request.StateRegistration.Equals(drivingSchoolEntity.StateRegistration))
-                    if (UnitOfWork.DrivingSchool.Exists(e => e.StateRegistration == request.StateRegistration))
-                        throw new CustomException("Inscrição estadual já em uso.");
+                    Check.NotExist(UnitOfWork.DrivingSchool.Exists(e => e.StateRegistration == request.StateRegistration),"Inscrição estadual já em uso.");
                 if (!String.IsNullOrWhiteSpace(request.Cnpj) && !request.Cnpj.Equals(drivingSchoolEntity.Cnpj))
-                    if (UnitOfWork.DrivingSchool.Exists(e => e.Cnpj == request.Cnpj))
-                        throw new CustomException("CNPJ já em uso.");
+                    Check.NotExist(UnitOfWork.DrivingSchool.Exists(e => e.Cnpj == request.Cnpj), "CNPJ já em uso.");
                 if (!String.IsNullOrWhiteSpace(request.Email) && !request.Email.Equals(drivingSchoolEntity.Email))
-                    if (UnitOfWork.DrivingSchool.Exists(e => e.Email == request.Email))
-                        throw new CustomException("Email estadual já em uso.");
+                    Check.NotExist(UnitOfWork.DrivingSchool.Exists(e => e.Email == request.Email), "Email estadual já em uso.");
 
                 if (request.FoundingDate >= DateTime.Today) throw new CustomException("Data da fundação inválida");
                 if (request.FoundingDate.Year > 1700 && request.FoundingDate != drivingSchoolEntity.FoundingDate) drivingSchoolEntity.FoundingDate = request.FoundingDate;
@@ -89,8 +85,8 @@ namespace AulaRemota.Core.DrivingSchool.Update
                             {
                                 CurrentPhoneList = drivingSchoolEntity.PhonesNumbers,
                                 RequestPhoneList = request.PhonesNumbers
-                            });
-                            if(!res) throw new CustomException("Falha ao atualizar contato");
+                            }, cancellationToken);
+                            Check.IsTrue(res, "Falha ao atualizar contato");
                         }                        
                     }
 
@@ -100,8 +96,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
                     {
                         Files = request.Files,
                         TypeUser = Constants.Roles.AUTOESCOLA
-                    });
-                    //Salva no banco todas as informações dos Files do upload
+                    }, cancellationToken);
                     foreach (var item in fileResult.Files)
                     {
                         var arquivo = await UnitOfWork.File.AddAsync(item);
@@ -126,7 +121,7 @@ namespace AulaRemota.Core.DrivingSchool.Update
                 {
                     TypeUser = Constants.Roles.AUTOESCOLA,
                     Files = fileList
-                });
+                }, cancellationToken);
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,

@@ -22,8 +22,7 @@ namespace AulaRemota.Core.File.DownloadFromAzure
         {
             try
             {
-                var res = Exists(request.FileName.ToLower());
-                if (!res) throw new CustomException("Arquivo não encontrado");
+                Check.NotNull(_fileRepository.Exists(e => e.FileName.ToLower() == request.FileName.ToLower()), "Arquivo não encontrado");
 
                 string Container = request.TypeUser.ToLower();
                 var cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
@@ -44,7 +43,5 @@ namespace AulaRemota.Core.File.DownloadFromAzure
                 });
             }
         }
-        private bool Exists(string fileName) =>
-            _fileRepository.Exists(e => e.FileName.ToLower().Equals(fileName.ToLower()));
     }
 }

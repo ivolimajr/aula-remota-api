@@ -43,6 +43,6 @@ namespace AulaRemota.Core.Administrative.Create
 
         [Required]
         [StringLength(maximumLength: 150, MinimumLength = 5)]
-        public string Password { get; internal set; }
+        public string Password { get; set; }
     }
 }

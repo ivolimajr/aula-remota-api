@@ -40,8 +40,7 @@ namespace AulaRemota.Core.Edriving.Update
                 Check.NotNull(edrivingEntity, "Não Encontrado");
 
                 if (string.IsNullOrEmpty(request.Email) && request.Email != edrivingEntity.Email)
-                    if (UnitOfWork.User.Exists(e => e.Email.Equals(request.Email)))
-                        throw new CustomException("Email já em uso");
+                    Check.NotExist(UnitOfWork.User.Exists(e => e.Email.Equals(request.Email)), "Email já em uso");
 
                 if (!string.IsNullOrEmpty(request.Cpf) && !request.Cpf.Equals(edrivingEntity.Cpf))
                 {
@@ -52,7 +51,7 @@ namespace AulaRemota.Core.Edriving.Update
                 if (request.LevelId > 0 && !request.LevelId.Equals(edrivingEntity.LevelId))
                 {
                     var levelEntityResult = UnitOfWork.EdrivingLevel.FirstOrDefault(e => e.Id.Equals(request.LevelId));
-                    if (levelEntityResult == null) throw new CustomException("Cargo Não Encontrado");
+                    Check.NotNull(levelEntityResult, "Cargo Não Encontrado");
                     edrivingEntity.Level = levelEntityResult;
                 }
 

@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +35,7 @@ namespace AulaRemota.Core.File.RemoveFile
                     .Include(e => e.Instructor)
                     .FirstOrDefaultAsync();
                 string typeOfUser = default;
-                if (fileResult == null) throw new CustomException("Arquivo não encontrado");
+                Check.NotNull(fileResult, "Arquivo não encontrado");
 
                 if (fileResult.DrivingSchool != null) typeOfUser = Constants.Roles.AUTOESCOLA;
                 if (fileResult.Instructor != null) typeOfUser = Constants.Roles.INSTRUTOR;
@@ -45,7 +44,7 @@ namespace AulaRemota.Core.File.RemoveFile
                 {
                     TypeUser = typeOfUser,
                     Files = new List<FileModel>() { fileResult }
-                });
+                }, cancellationToken);
                 if (result)
                 {
                     _arquivoRepository.Delete(fileResult);
