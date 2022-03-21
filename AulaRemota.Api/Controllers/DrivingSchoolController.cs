@@ -48,8 +48,8 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(DrivingSchoolModel), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult<DrivingSchoolGetOneInput>> Get(int id) =>
-            Ok(await _mediator.Send(new DrivingSchoolGetOneInput { Id = id }));
+        public async ValueTask<ActionResult<DrivingSchoolGetOneInput>> Get(int id, [FromQuery] string uf) =>
+            Ok(await _mediator.Send(new DrivingSchoolGetOneInput { Id = id, Uf = uf }));
 
         /// <summary>
         /// Insere um novo usuário do tipo Auto Escola

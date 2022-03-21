@@ -20,7 +20,7 @@ namespace AulaRemota.Core.Partnner.Update
         [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string Name { get; set; }
         [StringLength(maximumLength: 70, MinimumLength = 5)]
-        [EmailAddress]
+
         public string Email { get; set; }
 
         [StringLength(maximumLength: 14, MinimumLength = 14)]
@@ -29,7 +29,6 @@ namespace AulaRemota.Core.Partnner.Update
         [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string Description { get; set; }
 
-        [Required]
         public AddressModel Address { get; set; }
 
         public ICollection<PhoneModel> PhonesNumbers { get; set; }

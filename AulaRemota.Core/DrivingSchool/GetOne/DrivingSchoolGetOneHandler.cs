@@ -22,7 +22,24 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
 
             try
             {
-                var result = await _autoEscolaRepository.Where(e => e.Id.Equals(request.Id))
+                DrivingSchoolModel result;
+                if (String.IsNullOrEmpty(request.Uf))
+                {
+                    result = await _autoEscolaRepository
+                                .Where(e => e.Id.Equals(request.Id))
+                                .Include(e => e.User)
+                                .Include(e => e.PhonesNumbers)
+                                .Include(e => e.Address)
+                                .Include(e => e.Files)
+                                .Include(e => e.Administratives)
+                                .Include(e => e.Administratives).ThenInclude(e => e.Address)
+                                .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
+                                .FirstOrDefaultAsync();
+                }
+                else
+                {
+                    result = await _autoEscolaRepository
+                                    .Where(e => e.Id.Equals(request.Id) && e.Address.Uf.Equals(request.Uf))
                                     .Include(e => e.User)
                                     .Include(e => e.PhonesNumbers)
                                     .Include(e => e.Address)
@@ -31,8 +48,9 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                                     .Include(e => e.Administratives).ThenInclude(e => e.Address)
                                     .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
                                     .FirstOrDefaultAsync();
+                }
 
-                 Check.NotNull(result, "Não encontrado");
+                Check.NotNull(result, "Não encontrado");
 
                 return result;
             }

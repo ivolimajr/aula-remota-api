@@ -14,9 +14,9 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
 {
     public class DrivingSchoolGetAllHandler : IRequestHandler<DrivingSchoolGetAllInput, List<DrivingSchoolModel>>
     {
-        private readonly IRepository<DrivingSchoolModel, int>_autoEscolaRepository;
+        private readonly IRepository<DrivingSchoolModel, int> _autoEscolaRepository;
 
-        public DrivingSchoolGetAllHandler(IRepository<DrivingSchoolModel, int>autoEscolaRepository)
+        public DrivingSchoolGetAllHandler(IRepository<DrivingSchoolModel, int> autoEscolaRepository)
         {
             _autoEscolaRepository = autoEscolaRepository;
         }
@@ -25,13 +25,11 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
         {
             try
             {
-                if (!String.IsNullOrWhiteSpace(request.Uf))
-                {
-                    return await _autoEscolaRepository.Where(e => e.Address.Uf.Equals(request.Uf))
-                            .ToListAsync();
-                }
-                
-                return _autoEscolaRepository.All().ToList();
+                if (String.IsNullOrWhiteSpace(request.Uf))
+                    return _autoEscolaRepository.All().ToList();
+
+                return await _autoEscolaRepository.Where(e => e.Address.Uf.Equals(request.Uf))
+                        .ToListAsync();
             }
             catch (Exception e)
             {

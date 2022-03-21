@@ -16,7 +16,8 @@ namespace AulaRemota.Core.Partnner.Update
         private readonly IUnitOfWork UnitOfWork;
         private readonly IMediator _mediator;
 
-        public PartnnerUpdateHandler(IUnitOfWork _unitOfWork, IMediator mediator) {
+        public PartnnerUpdateHandler(IUnitOfWork _unitOfWork, IMediator mediator)
+        {
             UnitOfWork = _unitOfWork;
             _mediator = mediator;
         }
@@ -33,10 +34,10 @@ namespace AulaRemota.Core.Partnner.Update
                         .Include(e => e.Level)
                         .Include(e => e.User)
                         .Include(e => e.Address)
-                        .Include(e => e.PhonesNumbers)                        
+                        .Include(e => e.PhonesNumbers)
                         .FirstOrDefaultAsync();
 
-                Check.NotNull(partnnerEntity,"Não Encontrado");
+                Check.NotNull(partnnerEntity, "Não Encontrado");
 
                 if (request.LevelId > 0 && !request.LevelId.Equals(partnnerEntity.LevelId))
                 {
@@ -65,23 +66,28 @@ namespace AulaRemota.Core.Partnner.Update
 
                 partnnerEntity.Cnpj = request.Cnpj ?? partnnerEntity.Cnpj;
                 partnnerEntity.Email = request.Email ?? partnnerEntity.Email;
-                partnnerEntity.Name =  request.Name ?? partnnerEntity.Name;
+                partnnerEntity.Name = request.Name ?? partnnerEntity.Name;
                 partnnerEntity.Description = request.Description ?? partnnerEntity.Description;
-
-                partnnerEntity.Address.Uf = request.Address.Uf ?? partnnerEntity.Address.Uf;
-                partnnerEntity.Address.Cep = request.Address.Cep ?? partnnerEntity.Address.Cep;
-                partnnerEntity.Address.Address = request.Address.Address ?? partnnerEntity.Address.Address;
-                partnnerEntity.Address.District = request.Address.District ?? partnnerEntity.Address.District;
-                partnnerEntity.Address.City = request.Address.City ?? partnnerEntity.Address.City;
-                partnnerEntity.Address.AddressNumber = request.Address.AddressNumber ?? partnnerEntity.Address.AddressNumber;
 
                 partnnerEntity.User.Email = request.Email ?? partnnerEntity.Email;
                 partnnerEntity.User.Name = request.Name ?? partnnerEntity.Name;
-
                 partnnerEntity.LevelId = request.LevelId > 0 ? request.LevelId : partnnerEntity.LevelId;
 
+                if (request.Address != null)
+                {
+                    partnnerEntity.Address.Uf = request.Address.Uf ?? partnnerEntity.Address.Uf;
+                    partnnerEntity.Address.Cep = request.Address.Cep ?? partnnerEntity.Address.Cep;
+                    partnnerEntity.Address.Address = request.Address.Address ?? partnnerEntity.Address.Address;
+                    partnnerEntity.Address.District = request.Address.District ?? partnnerEntity.Address.District;
+                    partnnerEntity.Address.City = request.Address.City ?? partnnerEntity.Address.City;
+                    partnnerEntity.Address.AddressNumber = request.Address.AddressNumber ?? partnnerEntity.Address.AddressNumber;
+                    partnnerEntity.Address.Complement = request.Address.Complement ?? partnnerEntity.Address.Complement;
+                }
+
+                UnitOfWork.Address.Update(partnnerEntity.Address);
+                UnitOfWork.User.Update(partnnerEntity.User);
                 UnitOfWork.Partnner.Update(partnnerEntity);
-                UnitOfWork.Partnner.Save();
+                UnitOfWork.SaveChanges();
                 transcation.Commit();
 
                 return partnnerEntity;

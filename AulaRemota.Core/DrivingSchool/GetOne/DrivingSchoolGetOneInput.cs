@@ -9,5 +9,8 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
         [Required]
         [StringLength(maximumLength: 99999, MinimumLength = 1)]
         public int Id { get; set; }
+
+        [StringLength(maximumLength:2)]
+        public string Uf { get; set; }
     }
 }

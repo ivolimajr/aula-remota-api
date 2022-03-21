@@ -36,10 +36,6 @@ namespace AulaRemota.Core.User.Login
             _drivingSchoolRepository = drivingSchoolRepository;
         }
 
-        /**
-         * Método responsável por efetuar o login do usuário na plataforma.
-         * Diante do nível de acesso do usuário é retornado o ID do tipo de usuário logado.
-         */
         public async Task<UserLoginResponse> Handle(UserLoginInput request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, "Valores Inválidos");
@@ -59,21 +55,44 @@ namespace AulaRemota.Core.User.Login
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, userEntity.Password);
                 Check.IsTrue(checkPass, "Credenciais Inválidas");
 
-                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
-                    userEntity.Id = _edrivingRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
-                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
-                    userEntity.Id = _partnnerRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
-                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
-                    userEntity.Id = _drivingSchoolRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault().Id;
+                UserLoginResponse userResult = new();
 
-                return new UserLoginResponse
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.EDRIVING).Any())
                 {
-                    Id = userEntity.Id,
-                    Name = userEntity.Name,
-                    Email = userEntity.Email,
-                    Status = userEntity.Status,
-                    Roles = userEntity.Roles
-                };
+                    var result = _edrivingRepository.Where(e => e.UserId == userEntity.Id).FirstOrDefault();
+                    userResult.Id = result.Id;
+                    userResult.UserId = userEntity.Id;
+                    userResult.Email = result.Email;
+                    userResult.Name = result.Name;
+                    userResult.Status = userEntity.Status;
+                    userResult.Roles = userEntity.Roles;
+                }
+
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.PARCEIRO).Any())
+                {
+                    var result = _partnnerRepository.Where(e => e.UserId == userEntity.Id).Include(e => e.Address).FirstOrDefault();
+                    userResult.Id = result.Id;
+                    userResult.UserId = userEntity.Id;
+                    userResult.Email = result.Email;
+                    userResult.Name = result.Name;
+                    userResult.Status = userEntity.Status;
+                    userResult.Roles = userEntity.Roles;
+                    userResult.Address = result.Address;
+                }
+
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.AUTOESCOLA).Any())
+                {
+                    var result = _drivingSchoolRepository.Where(e => e.UserId == userEntity.Id).Include(e => e.Address).FirstOrDefault();
+                    userResult.Id = result.Id;
+                    userResult.UserId = userEntity.Id;
+                    userResult.Email = result.Email;
+                    userResult.Name = result.FantasyName;
+                    userResult.Status = userEntity.Status;
+                    userResult.Roles = userEntity.Roles;
+                    userResult.Address = result.Address;
+                }
+
+                return userResult;
 
             }
             catch (Exception e)
