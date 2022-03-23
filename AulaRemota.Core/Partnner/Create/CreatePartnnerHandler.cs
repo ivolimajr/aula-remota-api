@@ -28,10 +28,7 @@ namespace AulaRemota.Core.Partnner.Create
                 Check.NotNull(levelEntity, "Cargo informado não existe");
 
                 foreach (var item in request.PhonesNumbers)
-                {
-                    var phoneEntity = await UnitOfWork.Phone.FirstOrDefaultAsync(u => u.PhoneNumber == item.PhoneNumber);
-                    Check.NotNull(phoneEntity, "Telefone: " + phoneEntity.PhoneNumber + " já em uso");
-                }
+                    Check.NotExist(UnitOfWork.Phone.Exists(u => u.PhoneNumber == item.PhoneNumber), "Telefone: " + item.PhoneNumber + " já em uso");
 
                 var partnnerModel = new PartnnerModel()
                 {
@@ -47,7 +44,7 @@ namespace AulaRemota.Core.Partnner.Create
                     {
                         Name = request.Name.ToUpper(),
                         Email = request.Email.ToUpper(),
-                        Status = 1,
+                        Status = Constants.Status.ATIVO,
                         Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                         Roles = new List<RolesModel>()
                             {

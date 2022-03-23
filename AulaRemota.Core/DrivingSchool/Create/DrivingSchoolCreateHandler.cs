@@ -68,7 +68,7 @@ namespace AulaRemota.Core.DrivingSchool.Create
                     {
                         Name = request.FantasyName.ToUpper(),
                         Email = request.Email.ToUpper(),
-                        Status = 1,
+                        Status = Constants.Status.ATIVO,
                         Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                         Roles = new List<RolesModel>()
                             {

@@ -26,5 +26,11 @@
             public const string ANALISTA = nameof(ANALISTA);
             public const string ADMINISTRATIVO = nameof(ADMINISTRATIVO);
         }
+        public static class Status
+        {
+            public const int ATIVO = 1;
+            public const int INATIVO = 0;
+
+        }
     }
 }
