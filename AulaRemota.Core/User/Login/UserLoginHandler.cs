@@ -49,8 +49,8 @@ namespace AulaRemota.Core.User.Login
 
                 Check.NotNull(userEntity, "Credenciais Inválidas");
 
-                if (userEntity.Status == 0) throw new CustomException("Usuário Removido");
-                if (userEntity.Status == 2) throw new CustomException("Usuário Inativo");
+                if (userEntity.Status == Constants.Status.INATIVO) throw new CustomException("Usuário Inativo");
+                if (userEntity.Status == Constants.Status.REMOVIDO) throw new CustomException("Usuário Removido");
 
                 bool checkPass = BCrypt.Net.BCrypt.Verify(request.Password, userEntity.Password);
                 Check.IsTrue(checkPass, "Credenciais Inválidas");

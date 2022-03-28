@@ -28,9 +28,9 @@
         }
         public static class Status
         {
-            public const int ATIVO = 1;
             public const int INATIVO = 0;
-
+            public const int ATIVO = 1;
+            public const int REMOVIDO =2;
         }
     }
 }
