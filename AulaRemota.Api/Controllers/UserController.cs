@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AulaRemota.Core.File.RemoveFile;
 using AulaRemota.Core.User.RemovePhone;
+using System.Collections.Generic;
+using AulaRemota.Core.User.UploadFile;
 
 namespace AulaRemota.Api.Controllers
 {
@@ -24,10 +26,8 @@ namespace AulaRemota.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public UserController(IMediator mediator) => _mediator = mediator;
+
         /// <summary>
         /// Endpoint para fazer login na plataforma
         /// </summary>
@@ -35,7 +35,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         /// <response code="200">Atualiza o Token</response>
         /// <response code="401">RefreshToken inválido</response>
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [ProducesResponseType(typeof(UserLoginResponse), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> Login([FromBody] UserLoginInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
@@ -46,8 +46,7 @@ namespace AulaRemota.Api.Controllers
         /// <returns></returns>
         /// <response code="200">Atualiza o Token</response>
         /// <response code="401">RefreshToken inválido</response>
-        [HttpPost]
-        [Route("alterar-senha")]
+        [HttpPut("password")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         public async ValueTask<ActionResult> AlterarSenha([FromBody] UpdatePasswordInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
@@ -56,34 +55,43 @@ namespace AulaRemota.Api.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("alterar-senha-por-email")]
+        [HttpPut("password-by-email")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UpdatePasswordByEmailInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+        public async ValueTask<ActionResult> AlterarSenhaPorEmail([FromBody] UpdatePasswordByEmailInput request)
+            => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
 
         /// <summary>
         /// Remove um arquivo de um usuário
         /// </summary>
         /// <param idArquivo="id do arquivo"></param>
         /// <returns></returns>
-        [HttpDelete("RemoveArquivo/{id}")]
+        [HttpDelete("file/{id}")]
         public async ValueTask<ActionResult> RemoveArquivo(int id) => Ok(await _mediator.Send(new RemoveFileInput { Id = id }));
         /// <summary>
         /// Remove o telefone de um usuário
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete]
-        [Route("Telefone/{id?}")]
+        [HttpDelete("phone/{id?}")]
         public async ValueTask<ActionResult> Telefone(int id) => Ok(await _mediator.Send(new RemovePhoneInput { Id = id }));
         /// <summary>
         /// Atualizar endereço de um usuário
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Route("update-address")]
-        [HttpPut]
+        [HttpPut("address")]
         [ProducesResponseType(typeof(AddressModel), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request) => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+        public async ValueTask<ActionResult> AtualizarEndereco([FromBody] UserAddressUpdateInput request)
+            => StatusCode(StatusCodes.Status200OK, await _mediator.Send(request));
+
+        /// <summary>
+        /// Insere uma lista de arquivos
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("files-upload")]
+        [ProducesResponseType(typeof(List<FileModel>), StatusCodes.Status200OK)]
+        public async ValueTask<ActionResult> Post([FromForm] UploadFileInput request)
+            => StatusCode(StatusCodes.Status201Created, await _mediator.Send(request));
     }
 }

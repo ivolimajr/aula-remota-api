@@ -12,9 +12,7 @@ namespace AulaRemota.Core.Administrative.GetOne
         private readonly IRepository<AdministrativeModel, int> _administrativeRepository;
 
         public AdministrativeGetOneHandler(IRepository<AdministrativeModel, int> administrativeRepository)
-        {
-            _administrativeRepository = administrativeRepository;
-        }
+            => _administrativeRepository = administrativeRepository;
 
         public async Task<AdministrativeModel> Handle(AdministrativeGetOneInput request, CancellationToken cancellationToken)
         {

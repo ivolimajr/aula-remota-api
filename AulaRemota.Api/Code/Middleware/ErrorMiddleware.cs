@@ -53,7 +53,7 @@ namespace AulaRemota.Api.Code.Middleware
                     break;
             }
 
-            if (ex.ResponseModel.Exception.InnerException != null)
+            if (ex.ResponseModel.Exception !=null && ex.ResponseModel.Exception.InnerException != null)
             {
                 result = new
                 {
