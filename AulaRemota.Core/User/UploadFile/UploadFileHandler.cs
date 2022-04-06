@@ -40,7 +40,6 @@ namespace AulaRemota.Core.User.UploadFile
         public async Task<List<FileModel>> Handle(UploadFileInput request, CancellationToken cancellationToken)
         {
             string typeUser = default;
-            var fileList = new List<FileModel>();
 
             try
             {
@@ -63,7 +62,7 @@ namespace AulaRemota.Core.User.UploadFile
 
                 Check.NotNull(FileList, "Falha ao fazer upload");
 
-                return fileList;
+                return FileList;
 
             }
             catch (Exception e)

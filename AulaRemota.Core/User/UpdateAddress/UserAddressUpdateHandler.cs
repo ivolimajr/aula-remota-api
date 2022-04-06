@@ -13,10 +13,7 @@ namespace AulaRemota.Core.User.UpdateAddress
     {
         private readonly IRepository<AddressModel, int> _addressRepository;
 
-        public UserAddressUpdateHandler(IRepository<AddressModel, int> addressRepository)
-        {
-            _addressRepository = addressRepository;
-        }
+        public UserAddressUpdateHandler(IRepository<AddressModel, int> addressRepository) => _addressRepository = addressRepository;
 
         public async Task<AddressModel> Handle(UserAddressUpdateInput request, CancellationToken cancellationToken)
         {
@@ -34,6 +31,7 @@ namespace AulaRemota.Core.User.UpdateAddress
                 addressEntity.District = request.District ?? addressEntity.District;
                 addressEntity.City = request.City ?? addressEntity.City;
                 addressEntity.AddressNumber = request.AddressNumber ?? addressEntity.AddressNumber;
+                addressEntity.Complement = request.Complement ?? addressEntity.Complement;
 
                 _addressRepository.Update(addressEntity);
                 await _addressRepository.SaveChangesAsync();
