@@ -169,9 +169,9 @@ public static class Check
     {
         if (value)
         {
-            if (exception.IsNotNull())
+            if (exception.IsNotNull() && errorMessage.IsNotNull())
                 throw new CustomException(errorMessage, exception);
-            else
+            if (errorMessage.IsNotNull())
                 throw new CustomException(errorMessage);
         }
         return value;
@@ -180,9 +180,9 @@ public static class Check
     {
         if (!value)
         {
-            if (exception.IsNotNull())
+            if (exception.IsNotNull() && errorMessage.IsNotNull())
                 throw new CustomException(errorMessage, exception);
-            else
+            if(errorMessage.IsNotNull())
                 throw new CustomException(errorMessage);
         }
         return value;

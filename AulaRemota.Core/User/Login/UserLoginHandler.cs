@@ -92,8 +92,18 @@ namespace AulaRemota.Core.User.Login
                     userResult.Address = result.Address;
                 }
 
+                if (userEntity.Roles.Where(x => x.Role == Constants.Roles.ADMINISTRATIVO).Any())
+                {
+                    var result = _administrativeRepository.Where(e => e.UserId == userEntity.Id).Include(e => e.Address).FirstOrDefault();
+                    userResult.Id = result.Id;
+                    userResult.UserId = userEntity.Id;
+                    userResult.Email = result.Email;
+                    userResult.Name = result.Name;
+                    userResult.Status = userEntity.Status;
+                    userResult.Roles = userEntity.Roles;
+                    userResult.Address = result.Address;
+                }
                 return userResult;
-
             }
             catch (Exception e)
             {

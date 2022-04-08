@@ -64,6 +64,10 @@ namespace AulaRemota.Core.Partnner.Update
                         }
                     }
 
+                if (!string.IsNullOrEmpty(request.Email) && request.Email != partnnerEntity.User.Email)
+                    Check.NotExist(UnitOfWork.User.Exists(e => e.Email == request.Email), "Email já em uso");
+
+
                 partnnerEntity.Cnpj = request.Cnpj ?? partnnerEntity.Cnpj;
                 partnnerEntity.Email = request.Email ?? partnnerEntity.Email;
                 partnnerEntity.Name = request.Name ?? partnnerEntity.Name;
