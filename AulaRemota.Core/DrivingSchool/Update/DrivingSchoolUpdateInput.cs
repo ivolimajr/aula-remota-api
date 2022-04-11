@@ -44,13 +44,13 @@ namespace AulaRemota.Core.DrivingSchool.Update
         [StringLength(maximumLength: 8, MinimumLength = 8)]
         public string Cep { get; set; }
 
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
+        [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string FullAddress { get; set; }
 
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
+        [StringLength(maximumLength: 80, MinimumLength = 3)]
         public string District { get; set; }
 
-        [StringLength(maximumLength: 150, MinimumLength = 3)]
+        [StringLength(maximumLength: 100, MinimumLength = 3)]
         public string City { get; set; }
 
         [StringLength(maximumLength: 10, MinimumLength = 1)]

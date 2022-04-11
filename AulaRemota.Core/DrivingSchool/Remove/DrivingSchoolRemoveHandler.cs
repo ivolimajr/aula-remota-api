@@ -33,7 +33,7 @@ namespace AulaRemota.Core.DrivingSchool.Remove
             var fileList = new List<FileModel>();
             try
             {
-                var autoEscola = await UnitOfWork.DrivingSchool.Context
+                var drivingSchoolEntity = await UnitOfWork.DrivingSchool.Context
                     .Set<DrivingSchoolModel>()
                     .Include(e => e.User)
                     .Include(e => e.PhonesNumbers)
@@ -45,21 +45,21 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                     .Where(e => e.Id == request.Id)
                     .FirstOrDefaultAsync();
 
-                Check.NotNull(autoEscola, "Não encontrado");
-                Check.NotNull(autoEscola.PhonesNumbers, "Problemas ao remover lista de telefones");
-                Check.NotNull(autoEscola.Files, "Problemas ao remover lista de arquivos");
+                Check.NotNull(drivingSchoolEntity, "Não encontrado");
+                Check.NotNull(drivingSchoolEntity.PhonesNumbers, "Problemas ao remover lista de telefones");
+                Check.NotNull(drivingSchoolEntity.Files, "Problemas ao remover lista de arquivos");
 
-                foreach (var item in autoEscola.PhonesNumbers)
+                foreach (var item in drivingSchoolEntity.PhonesNumbers)
                     UnitOfWork.Phone.Delete(item);
 
-                fileList = autoEscola.Files.ToList();
+                fileList = drivingSchoolEntity.Files.ToList();
                 UnitOfWork.SaveChanges();
 
-                foreach (var item in autoEscola.Files)
+                foreach (var item in drivingSchoolEntity.Files)
                     UnitOfWork.File.Delete(item);
                 UnitOfWork.SaveChanges();
 
-                foreach (var administrative in autoEscola.Administratives)
+                foreach (var administrative in drivingSchoolEntity.Administratives)
                 {
                     foreach (var phone in administrative.PhonesNumbers)
                         UnitOfWork.Phone.Delete(phone);
@@ -70,9 +70,9 @@ namespace AulaRemota.Core.DrivingSchool.Remove
                     UnitOfWork.Administrative.Delete(administrative);
                 }
 
-                UnitOfWork.User.Delete(autoEscola.User);
-                UnitOfWork.Address.Delete(autoEscola.Address); ;
-                UnitOfWork.DrivingSchool.Delete(autoEscola);
+                UnitOfWork.User.Delete(drivingSchoolEntity.User);
+                UnitOfWork.Address.Delete(drivingSchoolEntity.Address);
+                UnitOfWork.DrivingSchool.Delete(drivingSchoolEntity);
 
                 UnitOfWork.SaveChanges();
                 transaction.Commit();

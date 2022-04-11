@@ -10,25 +10,23 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AulaRemota.Core.DrivingSchool.GetAll
+namespace AulaRemota.Core.Instructor.GetAll
 {
-    public class DrivingSchoolGetAllHandler : IRequestHandler<DrivingSchoolGetAllInput, List<DrivingSchoolModel>>
+    internal class InstructorGetAllHandler : IRequestHandler<InstructorGetAllInput, List<InstructorModel>>
     {
-        private readonly IRepository<DrivingSchoolModel, int> _autoEscolaRepository;
+        private readonly IRepository<InstructorModel, int> _instructorRepository;
 
-        public DrivingSchoolGetAllHandler(IRepository<DrivingSchoolModel, int> autoEscolaRepository)
-        {
-            _autoEscolaRepository = autoEscolaRepository;
-        }
+        public InstructorGetAllHandler(IRepository<InstructorModel, int> instructorRepository) =>
+            _instructorRepository = instructorRepository;
 
-        public async Task<List<DrivingSchoolModel>> Handle(DrivingSchoolGetAllInput request, CancellationToken cancellationToken)
+        public async Task<List<InstructorModel>> Handle(InstructorGetAllInput request, CancellationToken cancellationToken)
         {
             try
             {
                 if (String.IsNullOrWhiteSpace(request.Uf))
-                    return _autoEscolaRepository.All().ToList();
+                    return _instructorRepository.All().ToList();
 
-                return await _autoEscolaRepository.Where(e => e.Address.Uf.Equals(request.Uf))
+                return await _instructorRepository.Where(e => e.Address.Uf.Equals(request.Uf))
                         .ToListAsync();
             }
             catch (Exception e)
@@ -36,7 +34,7 @@ namespace AulaRemota.Core.DrivingSchool.GetAll
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
-                    ModelName = nameof(DrivingSchoolGetAllHandler),
+                    ModelName = nameof(InstructorGetAllHandler),
                     Exception = e,
                     InnerException = e.InnerException,
                     StatusCode = HttpStatusCode.NoContent

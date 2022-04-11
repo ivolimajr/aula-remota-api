@@ -1,53 +1,49 @@
-﻿using AulaRemota.Shared.Helpers;
-using AulaRemota.Infra.Entity.DrivingSchool;
+﻿using AulaRemota.Infra.Entity.DrivingSchool;
 using AulaRemota.Infra.Repository;
+using AulaRemota.Shared.Helpers;
+using AulaRemota.Shared.Helpers.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Net;
-using System;
 
-namespace AulaRemota.Core.DrivingSchool.GetOne
+namespace AulaRemota.Core.Instructor.GetOne
 {
-    public class DrivingSchoolGetOneHandler : IRequestHandler<DrivingSchoolGetOneInput, DrivingSchoolModel>
+    public class InstructorGetOneHandler : IRequestHandler<InstructorGetOneInput, InstructorModel>
     {
-        private readonly IRepository<DrivingSchoolModel, int> _autoEscolaRepository;
+        private readonly IRepository<InstructorModel, int> _instructorRepository;
 
-        public DrivingSchoolGetOneHandler(IRepository<DrivingSchoolModel, int> autoEscolaRepository) => _autoEscolaRepository = autoEscolaRepository;
+        public InstructorGetOneHandler(IRepository<InstructorModel, int> instructorRepository) =>
+            _instructorRepository = instructorRepository;
 
-        public async Task<DrivingSchoolModel> Handle(DrivingSchoolGetOneInput request, CancellationToken cancellationToken)
+        public async Task<InstructorModel> Handle(InstructorGetOneInput request, CancellationToken cancellationToken)
         {
             if (request.Id == 0) throw new CustomException("Busca Inválida");
 
             try
             {
-                DrivingSchoolModel result;
-                if (string.IsNullOrEmpty(request.Uf))
+                InstructorModel result;
+                if (request.Uf.IsNull())
                 {
-                    result = await _autoEscolaRepository
+                    result = await _instructorRepository
                                 .Where(e => e.Id.Equals(request.Id))
                                 .Include(e => e.User)
                                 .Include(e => e.PhonesNumbers)
                                 .Include(e => e.Address)
                                 .Include(e => e.Files)
-                                .Include(e => e.Administratives)
-                                .Include(e => e.Administratives).ThenInclude(e => e.Address)
-                                .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
-                                .FirstOrDefaultAsync();
+                                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
                 }
                 else
                 {
-                    result = await _autoEscolaRepository
+                    result = await _instructorRepository
                                     .Where(e => e.Id.Equals(request.Id) && e.Address.Uf.Equals(request.Uf))
                                     .Include(e => e.User)
                                     .Include(e => e.PhonesNumbers)
                                     .Include(e => e.Address)
                                     .Include(e => e.Files)
-                                    .Include(e => e.Administratives)
-                                    .Include(e => e.Administratives).ThenInclude(e => e.Address)
-                                    .Include(e => e.Administratives).ThenInclude(e => e.PhonesNumbers)
-                                    .FirstOrDefaultAsync();
+                                    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
                 }
 
                 Check.NotNull(result, "Não encontrado");
@@ -63,7 +59,7 @@ namespace AulaRemota.Core.DrivingSchool.GetOne
                 throw new CustomException(new ResponseModel
                 {
                     UserMessage = e.Message,
-                    ModelName = nameof(DrivingSchoolGetOneHandler),
+                    ModelName = nameof(InstructorGetOneHandler),
                     Exception = e,
                     InnerException = e.InnerException,
                     StatusCode = HttpStatusCode.NotFound,

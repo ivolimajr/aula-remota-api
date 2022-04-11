@@ -9,7 +9,7 @@ namespace AulaRemota.Infra.Entity
     {
         public AddressModel()
         {
-            this.Students = new List<StudentModel>();
+            Students = new List<StudentModel>();
         }
         public int Id { get; set; }
         [Column(TypeName = "varchar(2)")]

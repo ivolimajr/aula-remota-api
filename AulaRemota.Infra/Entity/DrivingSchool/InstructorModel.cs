@@ -8,9 +8,9 @@ namespace AulaRemota.Infra.Entity.DrivingSchool
     {
         public InstructorModel()
         {
-            this.PhonesNumbers = new List<PhoneModel>();
-            this.Courses = new List<CourseModel>();
-            this.DrivingScools = new List<DrivingSchoolModel>();
+            PhonesNumbers = new List<PhoneModel>();
+            Courses = new List<CourseModel>();
+            DrivingScools = new List<DrivingSchoolModel>();
         }
 
         public int Id { get; set; }
