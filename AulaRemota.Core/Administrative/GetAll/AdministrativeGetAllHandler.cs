@@ -16,13 +16,20 @@ namespace AulaRemota.Core.Administrative.GetAll
         public AdministrativeGetAllHandler(IRepository<AdministrativeModel, int> administrativeRepository) =>
             _administrativeRepository = administrativeRepository;
 
-        public async Task<List<AdministrativeModel>> Handle(AdministrativeGetAllInput request, CancellationToken cancellationToken) {
-            var result = _administrativeRepository.Context
+        public async Task<List<AdministrativeModel>> Handle(AdministrativeGetAllInput request, CancellationToken cancellationToken)
+        {
+
+            if (request.DrivingSchoolId > 0)
+                return _administrativeRepository
+                    .Where(e => e.DrivingSchoolId.Equals(request.DrivingSchoolId))
+                    .Include(e => e.DrivingSchool)
+                    .ToList();
+
+            return _administrativeRepository.Context
                 .Set<AdministrativeModel>()
                 .Include(e => e.DrivingSchool)
                 .ToList();
-            return result;
         }
-            
+
     }
 }
