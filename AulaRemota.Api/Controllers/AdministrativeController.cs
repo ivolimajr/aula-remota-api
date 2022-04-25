@@ -21,13 +21,13 @@ namespace AulaRemota.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public AdministrativeController(IMediator mediator)=> 
+        public AdministrativeController(IMediator mediator) =>
             _mediator = mediator;
 
         [HttpGet]
         [ProducesResponseType(typeof(List<AdministrativeModel>), StatusCodes.Status200OK)]
-        public async ValueTask<ActionResult> GetAll() =>
-            StatusCode(StatusCodes.Status200OK, await _mediator.Send(new AdministrativeGetAllInput()));
+        public async ValueTask<ActionResult> GetAll([FromQuery] int drivingSchoolId) =>
+            StatusCode(StatusCodes.Status200OK, await _mediator.Send(new AdministrativeGetAllInput() { DrivingSchoolId = drivingSchoolId }));
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AdministrativeModel), StatusCodes.Status200OK)]
