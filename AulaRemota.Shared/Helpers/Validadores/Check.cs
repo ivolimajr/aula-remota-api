@@ -7,20 +7,27 @@ using System.Diagnostics;
 [DebuggerStepThrough]
 public static class Check
 {
+    /// <summary>
+    /// Verifica se um valor não é nulo, caso seja nulo é retornado uma excessão
+    /// </summary>
     public static T NotNull<T>(T value, string errorMessage)
     {
         if (value == null)
             throw new CustomException(errorMessage);
         return value;
     }
-
+    /// <summary>
+    /// Verifica se um valor não é nulo, caso seja nulo é retornado uma excessão
+    /// </summary>
     public static IList<T> NotNull<T>(IList<T> list, string errorMessage)
     {
         if (list == null || list.Count == 0)
             throw new CustomException(errorMessage);
         return list;
     }
-
+    /// <summary>
+    /// Verifica se um valor não é nulo, caso seja nulo é retornado uma excessão
+    /// </summary>
     public static T NotNull<T>(T value, string parameterName, string message)
     {
         if (value == null)
@@ -28,7 +35,9 @@ public static class Check
 
         return value;
     }
-
+    /// <summary>
+    /// Verifica se um valor não é nulo, caso seja nulo é retornado uma excessão
+    /// </summary>
     public static string NotNull(string value, string parameterName, int maxLength = int.MaxValue, int minLength = 0)
     {
         if (value == null)
@@ -42,7 +51,9 @@ public static class Check
 
         return value;
     }
-
+    /// <summary>
+    /// Verifica se uma string está preenchida
+    /// </summary>
     public static string NotNullOrWhiteSpace(string value, string parameterName, int maxLength = int.MaxValue, int minLength = 0)
     {
         if (value.IsNullOrWhiteSpace())
@@ -56,7 +67,9 @@ public static class Check
 
         return value;
     }
-
+    /// <summary>
+    /// Verifica se uma string está preenchida
+    /// </summary>
     public static string NotNullOrEmpty(string value, string parameterName, int maxLength = int.MaxValue, int minLength = 0)
     {
         if (value.IsNullOrEmpty())
@@ -70,7 +83,9 @@ public static class Check
 
         return value;
     }
-
+    /// <summary>
+    /// Verifica se uma string está preenchida
+    /// </summary>
     public static ICollection<T> NotNullOrEmpty<T>(ICollection<T> value, string errorMessage)
     {
         if (value.IsNullOrEmpty())
@@ -78,7 +93,9 @@ public static class Check
 
         return value;
     }
-
+    /// <summary>
+    /// Verifica se uma lista está preenchida
+    /// </summary>
     public static bool NotNull<T>(ICollection<T> value, string errorMessage = null)
     {
         if (value == null || value.Count == 0)
@@ -141,19 +158,25 @@ public static class Check
             if ((value - DateTime.Now).Days <= totalDays)
                 throw new CustomException(errorMessage);
     }
-
+    /// <summary>
+    /// Verifica se uma elemento é igual outro elemento
+    /// </summary>
     public static void Equals<T>(T value1, T value2, string errorMessage)
     {
         if (value1.IsNotNull() && value2.IsNotNull() && value1.Equals(value2))
             throw new CustomException(errorMessage);
     }
-
+    /// <summary>
+    /// Verifica se uma elemento é diferente de outro elemento
+    /// </summary>
     public static void NotEquals<T>(T value1, T value2, string errorMessage)
     {
         if (value1.IsNotNull() && value2.IsNotNull() && !value1.Equals(value2))
             throw new CustomException(errorMessage);
     }
-
+    /// <summary>
+    /// Verifica se um valor é verdadeiro
+    /// </summary>
     public static bool IsTrue(bool isTrue, string errorMessage, Exception exception = null)
     {
         if (!isTrue)
@@ -165,6 +188,9 @@ public static class Check
         }
         return isTrue;
     }
+    /// <summary>
+    /// Verifica se um valor é falso ou não existe dentro de um argumento
+    /// </summary>
     public static bool NotExist(bool value, string errorMessage, Exception exception = null)
     {
         if (value)
@@ -176,6 +202,9 @@ public static class Check
         }
         return value;
     }
+    /// <summary>
+    /// Verifica se um valor é verdadeiro ou existe dentro de um argumento
+    /// </summary>
     public static bool Exist(bool value, string errorMessage, Exception exception = null)
     {
         if (!value)
